@@ -56,9 +56,33 @@ namespace QuanLyTuyenSinh
         public string MaXa { get; set; }
         [Display(Name = "CCCD/CMND")]
         public string CCCD { get; set; }
+        private string _IdDanToc;
+        public string IdDanToc 
+        { 
+            get => _IdDanToc;
+            set
+            {
+                _IdDanToc = value;
+                var dt = DanhSach.DsDanToc.FirstOrDefault(x => x.Id.Equals(_IdDanToc));
+                DanToc = dt is null ? string.Empty : dt.Ten;
+            } 
+        }
         [Display(Name = "Dân tộc")]
         [Required(ErrorMessage = "Chưa chọn dân tộc")]
         public string DanToc { get; set; }
+        private string _IdTonGiao;
+        [Display(AutoGenerateField = false)]
+        public string IdTonGiao
+        {
+            get => _IdTonGiao;
+            set
+            {
+                _IdTonGiao = value;
+                var tg = DanhSach.DsTonGiao.FirstOrDefault(x => x.Id.Equals(_IdTonGiao));
+                TonGiao = tg is null ? string.Empty : tg.Ten;
+            }
+        }
+        
         [Display(Name = "Tôn giáo")]
         [Required(ErrorMessage = "Chưa chọn tôn giáo")]
         public string TonGiao { get; set; }
@@ -69,9 +93,34 @@ namespace QuanLyTuyenSinh
         public string SDT { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        private string _IdTrinhDoVH;
+        [Display(AutoGenerateField = false)]
+        public string IdTrinhDoVH
+        {
+            get => _IdTrinhDoVH;
+            set
+            {
+                _IdTrinhDoVH = value;
+                var td = DanhSach.DsTrinhDoVH.FirstOrDefault(x => x.Id.Equals(_IdTrinhDoVH));
+                TrinhDo = td is null ? string.Empty : td.Ten;
+            }
+        }
+
         [Display(Name = "Trình độ văn hóa",ShortName = "TĐVH")]
         [Required(ErrorMessage = "Chưa chọn trình độ văn hóa")]
         public string TrinhDo { get; set; }
+        private string _IdHinhThucDT;
+        [Display(AutoGenerateField = false)]
+        public string IdHinhThucDT
+        {
+            get => _IdHinhThucDT;
+            set
+            {
+                _IdHinhThucDT = value;
+                var ht = DanhSach.DsHinhThucDT.FirstOrDefault(x => x.Id.Equals(_IdHinhThucDT));
+                TrinhDo = ht is null ? string.Empty : ht.Ten;
+            }
+        }
         [Display(Name = "Hình thức đào tạo", ShortName = "HTĐT")]
         [Required(ErrorMessage = "Chưa chọn hình thức đào tạo")]
         public string HinhThucDT { get; set; }
@@ -150,8 +199,8 @@ namespace QuanLyTuyenSinh
                 Quoctich = this.Quoctich,
                 SDT = this.SDT,
                 Email = this.Email,
-                TrinhDo = this.TrinhDo,
-                HinhThucDT = this.HinhThucDT,
+                IdHinhThucDT = this.IdHinhThucDT,
+                IdTrinhDo = this.IdTrinhDoVH,
                 HoTenCha = this.HoTenCha,
                 NgheNghiepCha = this.NgheNghiepCha,
                 HoTenMe = this.HoTenMe,
@@ -186,8 +235,8 @@ namespace QuanLyTuyenSinh
         public string Quoctich { get; set; }
         public string SDT { get; set; }
         public string Email { get; set; }
-        public string TrinhDo { get; set; }
-        public string HinhThucDT { get; set; }
+        public string IdTrinhDo { get; set; }
+        public string IdHinhThucDT { get; set; }
         public string HoTenCha { get; set; }
         public string NgheNghiepCha { get; set; }
         public string HoTenMe { get; set; }
@@ -219,8 +268,8 @@ namespace QuanLyTuyenSinh
                 Quoctich = this.Quoctich,
                 SDT = this.SDT,
                 Email = this.Email,
-                TrinhDo = this.TrinhDo,
-                HinhThucDT = this.HinhThucDT,
+                IdTrinhDoVH = this.IdTrinhDo,
+                IdHinhThucDT = this.IdHinhThucDT,
                 HoTenCha = this.HoTenCha,
                 NgheNghiepCha = this.NgheNghiepCha,
                 HoTenMe = this.HoTenMe,
@@ -563,6 +612,8 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Tên nghề")]
         [Required(ErrorMessage = "Chưa nhập tên nghề nghiệp")]
         public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
     }
     public class Truong : BaseClass
     {        
@@ -572,6 +623,8 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Tên trường")]
         [Required(ErrorMessage = "Chưa nhập tên trường")]
         public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
     }
     public class Tinh : BaseClass
     {       
@@ -672,6 +725,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Năm")]
         public int Nam { get; set; } = DateTime.Now.Year;
     }
+
     public class NguyenVong
     {
         private string _IdNghe;
@@ -717,5 +771,36 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-
+    public class DanToc : BaseClass
+    {
+        [Display(Name = "Dân tộc")]
+        [Required(ErrorMessage = "Chưa nhập tên dân tộc")]
+        public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
+    }
+    public class TonGiao : BaseClass
+    {
+        [Display(Name = "Tôn giáo")]
+        [Required(ErrorMessage = "Chưa nhập tên tôn giáo")]
+        public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
+    }
+    public class HinhThucDaoTao : BaseClass
+    {
+        [Display(Name = "Hình thức đào tạo")]
+        [Required(ErrorMessage = "Chưa nhập hình thức đào tạo")]
+        public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
+    }
+    public class TrinhDo : BaseClass
+    {
+        [Display(Name = "Trình độ văn hóa")]
+        [Required(ErrorMessage = "Chưa nhập trình độ văn hóa")]
+        public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
+    }
 }
