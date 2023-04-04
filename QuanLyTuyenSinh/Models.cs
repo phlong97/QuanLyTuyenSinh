@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
@@ -101,7 +102,7 @@ namespace QuanLyTuyenSinh
             set
             {
                 _IdTrinhDoVH = value;
-                var td = DanhSach.DsTrinhDoVH.FirstOrDefault(x => x.Id.Equals(_IdTrinhDoVH));
+                var td = DanhSach.DsTrinhDo.FirstOrDefault(x => x.Id.Equals(_IdTrinhDoVH));
                 TrinhDo = td is null ? string.Empty : td.Ten;
             }
         }
@@ -634,20 +635,20 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Tên tỉnh")]
         [Required(ErrorMessage = "Chưa nhập tên tỉnh")]
         public string Ten { get; set; }
+        public List<Huyen> DsHuyen { get; set; } = new();
+
     }
-    public class Huyen : BaseClass
+    public class Huyen
     {
         [Display(Name = "Mã huyện")]
         [Required(ErrorMessage = "Chưa nhập mã huyện")]
         public string Ma { get; set; }
-        [Display(Name = "Tên tỉnh")]
+        [Display(Name = "Tên huyện")]
         [Required(ErrorMessage = "Chưa nhập tên huyện")]
         public string Ten { get; set; }
-        [Display(Name = "Mã tỉnh")]
-        [Required(ErrorMessage = "Chưa nhập mã tỉnh")]
-        public string MaTinh { get; set; }
+        public List<Xa> DsXa { get; set; } = new();
     }
-    public class Xa : BaseClass
+    public class Xa
     {
         [Display(Name = "Mã xã")]
         [Required(ErrorMessage = "Chưa nhập mã xã")]
@@ -655,9 +656,6 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Tên xã")]
         [Required(ErrorMessage = "Chưa nhập tên xã")]
         public string Ten { get; set; }
-        [Display(Name = "Mã huyện")]
-        [Required(ErrorMessage = "Chưa nhập mã huyện")]
-        public string MaHuyen { get; set; }
     }
     public class KhuVucUT : BaseClass
     {
@@ -671,6 +669,18 @@ namespace QuanLyTuyenSinh
         public int Diem { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+        public ObjCategory ToObjCategory()
+        {
+            return new ObjCategory
+            {
+                Id = this.Id,
+                Loai = TuDien.CategoryName.KhuVucUuTien,
+                Ma = this.Ma,
+                Ten = this.Ten,
+                Diem = this.Diem,
+                MoTa = this.GhiChu
+            };
+        }
     }
     public class DoiTuongUT : BaseClass
     {
@@ -684,6 +694,18 @@ namespace QuanLyTuyenSinh
         public int Diem { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+        public ObjCategory ToObjCategory()
+        {
+            return new ObjCategory 
+            { 
+                Id = this.Id,
+                Loai = TuDien.CategoryName.DoiTuongUuTien, 
+                Ma  = this.Ma,
+                Ten = this.Ten, 
+                Diem = this.Diem,
+                MoTa = this.GhiChu
+            };
+        }
     }
     public class DotXetTuyen : BaseClass
     {
@@ -693,9 +715,11 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Đợt TS")]
         [Required(ErrorMessage = "Chưa nhập đợt")]
         public int DotTS { get; set; }
+
         [Display(Name = "Năm tuyển sinh")]
         [Required(ErrorMessage = "Chưa nhập năm")]
-        public int NamTS { get; set; }
+        public int NamTS { get; set; } = DateTime.Now.Year;
+
     }
     public class ChiTieuXetTuyen
     {
@@ -766,6 +790,7 @@ namespace QuanLyTuyenSinh
         {
             return new NguyenVong
             {
+                
                 IdNghe = IdNghe,
                 NV = NV,
             };
@@ -778,6 +803,16 @@ namespace QuanLyTuyenSinh
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+        public ObjCategory ToObjCategory()
+        {
+            return new ObjCategory 
+            {
+                Id = this.Id, 
+                Loai = TuDien.CategoryName.DanToc, 
+                Ten = this.Ten,
+                MoTa = this.MoTa 
+            };
+        }
     }
     public class TonGiao : BaseClass
     {
@@ -786,6 +821,34 @@ namespace QuanLyTuyenSinh
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+        public ObjCategory ToObjCategory()
+        {
+            return new ObjCategory 
+            {
+                Id = this.Id, 
+                Loai = TuDien.CategoryName.TonGiao, 
+                Ten = this.Ten, 
+                MoTa = this.MoTa, 
+            };
+        }
+    }
+    public class QuocTich : BaseClass
+    {
+        [Display(Name = "Quốc tịch")]
+        [Required(ErrorMessage = "Chưa nhập tên quốc tịch")]
+        public string Ten { get; set; }
+        [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
+        public ObjCategory ToObjCategory()
+        {
+            return new ObjCategory 
+            { 
+                Id = this.Id, 
+                Loai = TuDien.CategoryName.QuocTich, 
+                Ten = this.Ten,
+                MoTa = this.MoTa, 
+            };
+        }
     }
     public class HinhThucDaoTao : BaseClass
     {
@@ -794,6 +857,10 @@ namespace QuanLyTuyenSinh
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+        public ObjCategory ToObjCategory()
+        {
+            return new ObjCategory {Id= this.Id, Loai = TuDien.CategoryName.HinhThucDaoTao, Ten = this.Ten, MoTa = this.MoTa, };
+        }
     }
     public class TrinhDo : BaseClass
     {
@@ -801,6 +868,26 @@ namespace QuanLyTuyenSinh
         [Required(ErrorMessage = "Chưa nhập trình độ văn hóa")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
+        public string MoTa { get; set; }
+        public ObjCategory ToObjCategory() 
+        {
+            return new ObjCategory 
+            { 
+                Id = this.Id,
+                Loai = TuDien.CategoryName.TrinhDo, 
+                Ten = this.Ten, 
+                MoTa = this.MoTa, 
+            };
+        }
+    }
+
+    public class ObjCategory : BaseClass
+    {
+        public string Loai { get; set; }
+        public string Ma { get; set; }
+        public string Ten { get; set; }
+        public int Diem { get; set; }
+        public string Ma2 { get; set; }
         public string MoTa { get; set; }
     }
 }

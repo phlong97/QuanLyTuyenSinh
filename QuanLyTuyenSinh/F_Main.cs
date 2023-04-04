@@ -30,14 +30,19 @@ namespace QuanLyTuyenSinh
 
         private void btnDmTruong_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Form.F_DanhMuc_Truong f = new();
-            f.MdiParent = this;
-            f.Show();
+
         }
 
         private void btnDmNganh_ItemClick(object sender, ItemClickEventArgs e)
         {
             
+        }
+
+        private void btnDanhMuc_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Form.F_DanhMuc f = new();
+            f.MdiParent = this;
+            f.Show();
         }
     }
 }

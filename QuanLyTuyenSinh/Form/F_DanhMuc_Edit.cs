@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Pdf.Native.BouncyCastle.Asn1.X509.Qualified;
+using DevExpress.XtraEditors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,11 +12,13 @@ using System.Windows.Forms;
 
 namespace QuanLyTuyenSinh.Form
 {
-    public partial class F_Truong : DevExpress.XtraEditors.XtraForm
+    public partial class F_DanhMuc_Edit : DevExpress.XtraEditors.XtraForm
     {
-        public F_Truong()
+        BaseClass _obj;
+        public F_DanhMuc_Edit(BaseClass? obj)
         {
             InitializeComponent();
+            _obj = obj;
         }
     }
 }
