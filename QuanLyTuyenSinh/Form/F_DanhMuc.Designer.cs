@@ -55,6 +55,7 @@
             this.btnHTDT = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.gridControl = new DevExpress.XtraGrid.GridControl();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.btnQuocTich = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
@@ -245,7 +246,8 @@
             this.btnDanToc,
             this.btnTonGiao,
             this.btnTDHV,
-            this.btnHTDT});
+            this.btnHTDT,
+            this.btnQuocTich});
             this.accordionControlElement2.Name = "accordionControlElement2";
             this.accordionControlElement2.Text = "Hồ sơ";
             // 
@@ -304,6 +306,13 @@
             this.gridView.OptionsView.RowAutoHeight = true;
             this.gridView.OptionsView.ShowGroupPanel = false;
             // 
+            // btnQuocTich
+            // 
+            this.btnQuocTich.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("accordionControlElement3.ImageOptions.Image")));
+            this.btnQuocTich.Name = "btnQuocTich";
+            this.btnQuocTich.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            this.btnQuocTich.Text = "Quốc tịch";
+            // 
             // F_DanhMuc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -354,5 +363,6 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnHTDT;
         private DevExpress.XtraGrid.GridControl gridControl;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement btnQuocTich;
     }
 }
