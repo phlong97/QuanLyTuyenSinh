@@ -23,11 +23,11 @@ namespace QuanLyTuyenSinh
             var coll = GetDb().GetCollection<T>();
             return coll.Upsert(obj);
         }
-        public static bool DeleteObj<T>(T obj) where T : BaseClass
+        public static bool DeleteObj<T>(string Id) where T : BaseClass
         {
             var coll = GetDb().GetCollection<T>();
 
-            return coll.Delete(obj.Id);
+            return coll.Delete(Id);
         }
     }
 }

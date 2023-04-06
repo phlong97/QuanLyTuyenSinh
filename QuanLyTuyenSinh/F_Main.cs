@@ -40,7 +40,7 @@ namespace QuanLyTuyenSinh
 
         private void btnDanhMuc_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Form.F_DanhMuc f = new();
+            Form.F_Main f = new();
             f.MdiParent = this;
             f.Show();
         }

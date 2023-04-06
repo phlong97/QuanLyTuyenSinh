@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_DanhMuc_Edit));
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.txtCode = new DevExpress.XtraEditors.TextEdit();
@@ -75,7 +74,6 @@
             // 
             // simpleButton1
             // 
-            this.simpleButton1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton1.ImageOptions.Image")));
             this.simpleButton1.Location = new System.Drawing.Point(25, 236);
             this.simpleButton1.Name = "simpleButton1";
             this.simpleButton1.Size = new System.Drawing.Size(87, 36);
@@ -84,7 +82,6 @@
             // 
             // simpleButton2
             // 
-            this.simpleButton2.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton2.ImageOptions.Image")));
             this.simpleButton2.Location = new System.Drawing.Point(118, 236);
             this.simpleButton2.Name = "simpleButton2";
             this.simpleButton2.Size = new System.Drawing.Size(144, 36);
@@ -93,7 +90,6 @@
             // 
             // simpleButton3
             // 
-            this.simpleButton3.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton3.ImageOptions.Image")));
             this.simpleButton3.Location = new System.Drawing.Point(268, 236);
             this.simpleButton3.Name = "simpleButton3";
             this.simpleButton3.Size = new System.Drawing.Size(94, 36);
@@ -115,7 +111,7 @@
             this.txtMoTa.Size = new System.Drawing.Size(243, 120);
             this.txtMoTa.TabIndex = 3;
             // 
-            // F_Truong
+            // F_DanhMuc_Edit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -132,7 +128,7 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(400, 330);
             this.MinimumSize = new System.Drawing.Size(400, 330);
-            this.Name = "F_Truong";
+            this.Name = "F_DanhMuc_Edit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Trường";
             ((System.ComponentModel.ISupportInitialize)(this.txtCode.Properties)).EndInit();

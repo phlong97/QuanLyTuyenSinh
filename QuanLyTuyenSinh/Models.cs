@@ -11,13 +11,22 @@ using Newtonsoft.Json;
 
 namespace QuanLyTuyenSinh
 {
-    public class BaseClass
+    public  class BaseClass
     {
         [Display(AutoGenerateField = false)]
         public string Id { get; set; }
         public BaseClass()
         {
             Id = ObjectId.NewObjectId().ToString();
+        }
+        
+    }
+    public abstract class DanhMuc : BaseClass
+    {
+        public abstract ObjCategory ToObjCategory();
+        public bool SaveToDb()
+        {
+            return _LiteDb.UpsertObj<ObjCategory>(this.ToObjCategory());
         }
     }
     public class HoSoDuTuyen : BaseClass
@@ -216,7 +225,6 @@ namespace QuanLyTuyenSinh
 
             return hs;
         }
-
     }
     public class HoSoDuTuyenDB : BaseClass
     {       
@@ -248,6 +256,7 @@ namespace QuanLyTuyenSinh
         public KiemTraHoSo KiemTraHS { get; set; } = new();
         public List<NguyenVongDB> DsNguyenVong { get; set; } = new();
         public string GhiChu { get; set; }
+
         public HoSoDuTuyen ToHoSoDuTuyen()
         {
             HoSoDuTuyen hs = new()
@@ -479,6 +488,7 @@ namespace QuanLyTuyenSinh
         public KiemTraHoSo KiemTraHS { get; set; } = new();
         public string IdNgheTrungTuyen { get; set; }
         public string GhiChu { get; set; }
+
         public HoSoTrungTuyen ToHoSoTrungTuyen()
         {
             HoSoTrungTuyen hs = new()
@@ -605,18 +615,29 @@ namespace QuanLyTuyenSinh
         public bool GKSK { get; set; }
         public string GhiChu { get; set; }
     }
-    public class Nghe : BaseClass
+    public class Nghe : DanhMuc
     {        
         [Display(Name = "Mã nghề")]
-        [Required(ErrorMessage = "Chưa nhập mã nghề nghiệp")]
+        [Required(ErrorMessage = "Chưa nhập mã nghề nghiệp")]        
         public string Ma { get; set; }
         [Display(Name = "Tên nghề")]
         [Required(ErrorMessage = "Chưa nhập tên nghề nghiệp")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+        public override ObjCategory ToObjCategory()
+        {
+            return new ObjCategory
+            {
+                Id = this.Id,
+                Loai = TuDien.CategoryName.NganhNghe,
+                Ma = this.Ma,
+                Ten = this.Ten,
+                MoTa = this.MoTa
+            };
+        }
     }
-    public class Truong : BaseClass
+    public class Truong : DanhMuc
     {        
         [Display(Name = "Mã trường")]
         [Required(ErrorMessage = "Chưa nhập mã trường")]
@@ -626,6 +647,17 @@ namespace QuanLyTuyenSinh
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+        public override ObjCategory ToObjCategory()
+        {
+            return new ObjCategory
+            {
+                Id = this.Id,
+                Loai = TuDien.CategoryName.TruongHoc,
+                Ma = this.Ma,
+                Ten = this.Ten,
+                MoTa = this.MoTa
+            };
+        }
     }
     public class Tinh : BaseClass
     {       
@@ -657,7 +689,7 @@ namespace QuanLyTuyenSinh
         [Required(ErrorMessage = "Chưa nhập tên xã")]
         public string Ten { get; set; }
     }
-    public class KhuVucUT : BaseClass
+    public class KhuVucUT : DanhMuc
     {
         [Display(Name = "Mã khu vực")]
         [Required(ErrorMessage = "Chưa nhập mã khu vực")]
@@ -669,7 +701,8 @@ namespace QuanLyTuyenSinh
         public int Diem { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
-        public ObjCategory ToObjCategory()
+
+        public override ObjCategory ToObjCategory()
         {
             return new ObjCategory
             {
@@ -682,7 +715,7 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-    public class DoiTuongUT : BaseClass
+    public class DoiTuongUT : DanhMuc
     {
         [Display(Name = "Mã đối tượng")]
         [Required(ErrorMessage = "Chưa nhập mã đối tượng")]
@@ -694,7 +727,8 @@ namespace QuanLyTuyenSinh
         public int Diem { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
-        public ObjCategory ToObjCategory()
+
+        public override ObjCategory ToObjCategory()
         {
             return new ObjCategory 
             { 
@@ -796,14 +830,15 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-    public class DanToc : BaseClass
+    public class DanToc : DanhMuc
     {
         [Display(Name = "Dân tộc")]
         [Required(ErrorMessage = "Chưa nhập tên dân tộc")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public ObjCategory ToObjCategory()
+
+        public override ObjCategory ToObjCategory()
         {
             return new ObjCategory 
             {
@@ -814,14 +849,15 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-    public class TonGiao : BaseClass
+    public class TonGiao : DanhMuc
     {
         [Display(Name = "Tôn giáo")]
         [Required(ErrorMessage = "Chưa nhập tên tôn giáo")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public ObjCategory ToObjCategory()
+
+        public override ObjCategory ToObjCategory()
         {
             return new ObjCategory 
             {
@@ -832,14 +868,15 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-    public class QuocTich : BaseClass
+    public class QuocTich : DanhMuc
     {
         [Display(Name = "Quốc tịch")]
         [Required(ErrorMessage = "Chưa nhập tên quốc tịch")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public ObjCategory ToObjCategory()
+
+        public override ObjCategory ToObjCategory()
         {
             return new ObjCategory 
             { 
@@ -850,26 +887,34 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-    public class HinhThucDaoTao : BaseClass
+    public class HinhThucDaoTao : DanhMuc
     {
         [Display(Name = "Hình thức đào tạo")]
         [Required(ErrorMessage = "Chưa nhập hình thức đào tạo")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public ObjCategory ToObjCategory()
+
+        public override ObjCategory ToObjCategory()
         {
-            return new ObjCategory {Id= this.Id, Loai = TuDien.CategoryName.HinhThucDaoTao, Ten = this.Ten, MoTa = this.MoTa, };
+            return new ObjCategory 
+            {
+                Id= this.Id,
+                Loai = TuDien.CategoryName.HinhThucDaoTao,
+                Ten = this.Ten, 
+                MoTa = this.MoTa, 
+            };
         }
     }
-    public class TrinhDo : BaseClass
+    public class TrinhDo : DanhMuc
     {
         [Display(Name = "Trình độ văn hóa")]
         [Required(ErrorMessage = "Chưa nhập trình độ văn hóa")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public ObjCategory ToObjCategory() 
+
+        public override ObjCategory ToObjCategory() 
         {
             return new ObjCategory 
             { 
@@ -889,5 +934,6 @@ namespace QuanLyTuyenSinh
         public int Diem { get; set; }
         public string Ma2 { get; set; }
         public string MoTa { get; set; }
+
     }
 }
