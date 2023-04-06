@@ -61,6 +61,65 @@ namespace QuanLyTuyenSinh.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Sections Version=&quot;434&quot;&gt;
+        ///  &lt;Section Dynamic=&quot;0&quot; MaxRows=&quot;0&quot;&gt;
+        ///    &lt;Items&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###Quận Ba Đình&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10103###Quận Tây Hồ&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10105###Quận Hoàn Kiếm&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10106###Quận Long Biên&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10107###Quận Hai Bà Trưng&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10108###Quận Hoàng Mai&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10109###Quận Đống đa&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10111###Quận [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Catalogue_Dia_Ban_Huyen {
+            get {
+                return ResourceManager.GetString("Catalogue_Dia_Ban_Huyen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Sections Version=&quot;342&quot;&gt;
+        ///  &lt;Section Dynamic=&quot;0&quot; MaxRows=&quot;0&quot;&gt;
+        ///    &lt;Items&gt;
+        ///      &lt;Item Value=&quot;0###101###Hà Nội&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###103###Hải Phòng&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###107###Hải Dương&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###109###Hưng Yên&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###111###Hà Nam&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###113###Nam Định&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###115###Thái Bình&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###117###Ninh Bình&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###201###Hà Giang&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###203###Cao Bằng&quot; /&gt;
+        ///       [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Catalogue_Dia_Ban_Tinh {
+            get {
+                return ResourceManager.GetString("Catalogue_Dia_Ban_Tinh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Sections Version=&quot;436&quot;&gt;
+        ///  &lt;Section Dynamic=&quot;0&quot; MaxRows=&quot;0&quot;&gt;
+        ///    &lt;Items&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###1010101###Phường Phúc Xá&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###1010103###Phường Trúc Bạch&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###1010105###Phường Vĩnh Phúc&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###1010107###Phường Cống Vị&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###1010109###Phường Liễu Giai&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###101###10101###1010111###P. Nguyễn Trung Trực&quot; /&gt;
+        ///      &lt;Item Value=&quot;0## [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Catalogue_Dia_Ban_Xa {
+            get {
+                return ResourceManager.GetString("Catalogue_Dia_Ban_Xa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap school_background2_2 {

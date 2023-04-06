@@ -11,6 +11,7 @@ namespace QuanLyTuyenSinh.Form
         public F_Main()
         {
             InitializeComponent();
+            var lstP = _Helper.getListWards("10105");
 
         }
         private void F_Main_Load(object sender, EventArgs e)
