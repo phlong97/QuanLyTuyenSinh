@@ -42,6 +42,7 @@
             accordionControlElement5 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnDotTS = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            btnChiTieu = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             Nooi6 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnTruong = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnNghe = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -58,6 +59,10 @@
             panelControl = new Panel();
             btnClose = new DevExpress.XtraEditors.SimpleButton();
             panel1 = new Panel();
+            _panelNam = new Panel();
+            _spinNam = new DevExpress.XtraEditors.SpinEdit();
+            btnLapChiTieu = new DevExpress.XtraEditors.SimpleButton();
+            labelControl1 = new DevExpress.XtraEditors.LabelControl();
             btnDelete = new DevExpress.XtraEditors.SimpleButton();
             btnAdd = new DevExpress.XtraEditors.SimpleButton();
             gridControl = new DevExpress.XtraGrid.GridControl();
@@ -69,6 +74,9 @@
             ((System.ComponentModel.ISupportInitialize)panelGrid).BeginInit();
             panelGrid.SuspendLayout();
             panelControl.SuspendLayout();
+            panel1.SuspendLayout();
+            _panelNam.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_spinNam.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
             SuspendLayout();
@@ -137,7 +145,6 @@
             accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Auto;
             accordionControl1.Size = new Size(236, 536);
             accordionControl1.TabIndex = 4;
-            accordionControl1.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             accordionControl1.ViewType = DevExpress.XtraBars.Navigation.AccordionControlViewType.HamburgerMenu;
             // 
             // accordionControlElement3
@@ -163,7 +170,7 @@
             // 
             // accordionControlElement1
             // 
-            accordionControlElement1.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnDotTS });
+            accordionControlElement1.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnDotTS, btnChiTieu });
             accordionControlElement1.Expanded = true;
             accordionControlElement1.Name = "accordionControlElement1";
             accordionControlElement1.Text = "Tuyển sinh";
@@ -175,6 +182,14 @@
             btnDotTS.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             btnDotTS.Text = "Đọt tuyển sinh";
             btnDotTS.Click += btnDotTS_Click;
+            // 
+            // btnChiTieu
+            // 
+            btnChiTieu.ImageOptions.Image = (Image)resources.GetObject("btnChiTieu.ImageOptions.Image");
+            btnChiTieu.Name = "btnChiTieu";
+            btnChiTieu.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            btnChiTieu.Text = "Chỉ tiêu";
+            btnChiTieu.Click += btnChiTieu_Click;
             // 
             // Nooi6
             // 
@@ -304,21 +319,71 @@
             btnClose.Appearance.Options.UseBorderColor = true;
             btnClose.Dock = DockStyle.Right;
             btnClose.ImageOptions.Image = (Image)resources.GetObject("btnClose.ImageOptions.Image");
-            btnClose.Location = new Point(803, 0);
+            btnClose.Location = new Point(806, 0);
             btnClose.Margin = new Padding(0);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(40, 36);
+            btnClose.Size = new Size(37, 36);
             btnClose.TabIndex = 8;
             btnClose.Click += btnClose_Click;
             // 
             // panel1
             // 
             panel1.BackgroundImageLayout = ImageLayout.Stretch;
+            panel1.Controls.Add(_panelNam);
             panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(164, 0);
+            panel1.Location = new Point(148, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(679, 36);
+            panel1.Size = new Size(695, 36);
             panel1.TabIndex = 9;
+            // 
+            // _panelNam
+            // 
+            _panelNam.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            _panelNam.Controls.Add(_spinNam);
+            _panelNam.Controls.Add(btnLapChiTieu);
+            _panelNam.Controls.Add(labelControl1);
+            _panelNam.Location = new Point(3, 0);
+            _panelNam.Name = "_panelNam";
+            _panelNam.Size = new Size(223, 36);
+            _panelNam.TabIndex = 0;
+            // 
+            // _spinNam
+            // 
+            _spinNam.EditValue = new decimal(new int[] { 1950, 0, 0, 0 });
+            _spinNam.Location = new Point(48, 6);
+            _spinNam.MenuManager = barManager1;
+            _spinNam.Name = "_spinNam";
+            _spinNam.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            _spinNam.Properties.IsFloatValue = false;
+            _spinNam.Properties.MaskSettings.Set("mask", "d");
+            _spinNam.Properties.MaxLength = 4;
+            _spinNam.Properties.MaxValue = new decimal(new int[] { 2100, 0, 0, 0 });
+            _spinNam.Properties.MinValue = new decimal(new int[] { 1950, 0, 0, 0 });
+            _spinNam.Properties.UseMaskAsDisplayFormat = true;
+            _spinNam.Size = new Size(60, 24);
+            _spinNam.TabIndex = 1;
+            // 
+            // btnLapChiTieu
+            // 
+            btnLapChiTieu.Appearance.BackColor = Color.WhiteSmoke;
+            btnLapChiTieu.Appearance.Options.UseBackColor = true;
+            btnLapChiTieu.Dock = DockStyle.Right;
+            btnLapChiTieu.ImageOptions.Image = (Image)resources.GetObject("btnLapChiTieu.ImageOptions.Image");
+            btnLapChiTieu.Location = new Point(111, 0);
+            btnLapChiTieu.Margin = new Padding(0);
+            btnLapChiTieu.Name = "btnLapChiTieu";
+            btnLapChiTieu.Size = new Size(112, 36);
+            btnLapChiTieu.TabIndex = 2;
+            btnLapChiTieu.Text = "Lập chỉ tiêu";
+            btnLapChiTieu.Click += btnLapChiTieu_Click;
+            // 
+            // labelControl1
+            // 
+            labelControl1.Location = new Point(3, 10);
+            labelControl1.Name = "labelControl1";
+            labelControl1.Size = new Size(26, 16);
+            labelControl1.TabIndex = 0;
+            labelControl1.Text = "Năm";
             // 
             // btnDelete
             // 
@@ -326,10 +391,10 @@
             btnDelete.Appearance.Options.UseBackColor = true;
             btnDelete.Dock = DockStyle.Left;
             btnDelete.ImageOptions.Image = (Image)resources.GetObject("btnDelete.ImageOptions.Image");
-            btnDelete.Location = new Point(90, 0);
+            btnDelete.Location = new Point(77, 0);
             btnDelete.Margin = new Padding(0);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(74, 36);
+            btnDelete.Size = new Size(71, 36);
             btnDelete.TabIndex = 1;
             btnDelete.Text = "Xóa";
             btnDelete.Click += btnDelete_Click;
@@ -345,7 +410,7 @@
             btnAdd.Location = new Point(0, 0);
             btnAdd.Margin = new Padding(0);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(90, 36);
+            btnAdd.Size = new Size(77, 36);
             btnAdd.TabIndex = 3;
             btnAdd.Text = "Thêm";
             btnAdd.Click += btnAdd_Click;
@@ -367,6 +432,7 @@
             // 
             gridView1.GridControl = gridControl;
             gridView1.Name = "gridView1";
+            gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // pnImg
             // 
@@ -400,6 +466,10 @@
             ((System.ComponentModel.ISupportInitialize)panelGrid).EndInit();
             panelGrid.ResumeLayout(false);
             panelControl.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            _panelNam.ResumeLayout(false);
+            _panelNam.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)_spinNam.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridControl).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
             ResumeLayout(false);
@@ -441,5 +511,10 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement5;
         private DevExpress.XtraEditors.SimpleButton btnClose;
         private Panel panel1;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement btnChiTieu;
+        private Panel _panelNam;
+        private DevExpress.XtraEditors.SimpleButton btnLapChiTieu;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.SpinEdit _spinNam;
     }
 }

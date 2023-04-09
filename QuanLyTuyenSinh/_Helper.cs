@@ -32,11 +32,18 @@ namespace QuanLyTuyenSinh
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
         }
 
+        #region Addresss
+        public class Adress
+        {
+            public string AdressCode { get; set; }
+            public string AdressName { get; set; }
+                   
+        }
         /// <summary>
         /// Lấy danh sách tỉnh
         /// từ tệp Catalogue_Dia_Ban_Tinh.xml
         /// </summary>
-        /// <returns></returns>
+        /// <returns></returns>     
         public static List<Adress> getListProvince()
         {
             List<Adress> lstReturn = new List<Adress>();
@@ -50,8 +57,17 @@ namespace QuanLyTuyenSinh
             }
             foreach (System.Xml.XmlNode node in nodes)
             {
-                string[] result = node.OuterXml.Replace("\" />","").Split("###");
-                lstReturn.Add(new Adress { AdressCode = result[1], AdressName = result[2], });
+                if (node.Attributes != null)
+                {
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        lstReturn.Add(new Adress { AdressCode = result[1], AdressName = result[2], });
+
+                    }
+                }
+
             }
             return lstReturn;
         }
@@ -61,7 +77,7 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="ProvinceCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListDistrict(string ProvinceCode)
+        public static List<Adress> getListDistrict(string? ProvinceCode = null)
         {
             List<Adress> lstReturn = new List<Adress>();
             XmlDocument doc = new XmlDocument();
@@ -73,11 +89,24 @@ namespace QuanLyTuyenSinh
             }
             foreach (System.Xml.XmlNode node in nodes)
             {
-                string[] result = node.OuterXml.Replace("\" />", "").Split("###");
-                if (result[2].StartsWith(ProvinceCode))
+                if (node.Attributes != null)
                 {
-                    lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
-                }                
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        if (ProvinceCode is not null && result[2].StartsWith(ProvinceCode))
+                        {
+                            lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
+                        }
+                        else
+                        {
+                            lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
+                        }
+
+                    }
+                }
+
             }
 
             return lstReturn;
@@ -88,7 +117,7 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="DistrictCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListWards(string DistrictCode)
+        public static List<Adress> getListWards(string? DistrictCode = null)
         {
             List<Adress> lstReturn = new List<Adress>();
 
@@ -101,20 +130,30 @@ namespace QuanLyTuyenSinh
             }
             foreach (System.Xml.XmlNode node in nodes)
             {
-                string[] result = node.OuterXml.Replace("\" />", "").Split("###");
-                if (result[3].StartsWith(DistrictCode))
+                if (node.Attributes != null)
                 {
-                    lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
-                }                
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        if (DistrictCode is not null && result[3].StartsWith(DistrictCode))
+                        {
+                            lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
+                        }
+                        else
+                        {
+                            lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
+                        }
+                    }
+                }
+
             }
 
             return lstReturn;
         }
+        #endregion
+
     }
 
-    public class Adress
-    {
-        public string AdressCode { get; set; }
-        public string AdressName { get; set; }
-    }
+    
 }

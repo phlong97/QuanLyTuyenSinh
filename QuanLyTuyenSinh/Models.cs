@@ -1,33 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using DevExpress.XtraSpreadsheet.Import.Xls;
 using LiteDB;
 using Newtonsoft.Json;
 
 namespace QuanLyTuyenSinh
 {
-    public  class BaseClass
+    public class BaseClass
     {
         [Display(AutoGenerateField = false)]
         public string Id { get; set; }
         public BaseClass()
         {
             Id = ObjectId.NewObjectId().ToString();
-        }
-        
+        }        
     }
-    public abstract class DanhMuc : BaseClass
+    public abstract class DBClass : BaseClass
     {
-        public abstract ObjCategory ToObjCategory();
-        public bool SaveToDb()
-        {
-            return _LiteDb.UpsertObj<ObjCategory>(this.ToObjCategory());
-        }
+        public abstract bool SaveToDB();
+        public abstract bool DeleteFromDB();
+        public abstract BsonDocument ToBsonDocument();
     }
     public class HoSoDuTuyen : BaseClass
     {        
@@ -192,35 +184,35 @@ namespace QuanLyTuyenSinh
         {
             HoSoDuTuyenDB hs = new()
             {
-                Id = this.Id,
-                MaHoSo = this.MaHoSo,
-                Ho = this.Ho,
-                Ten = this.Ten,
-                NgaySinh = this.NgaySinh,
-                GioiTinh = this.GioiTinh,
-                NoiSinh = this.NoiSinh,
-                SoNha = this.SoNha,
-                MaTinh = this.MaTinh,
-                MaHuyen = this.MaHuyen,
-                MaXa = this.MaXa,
-                CCCD = this.CCCD,
-                DanToc = this.DanToc,
-                TonGiao = this.TonGiao,
-                Quoctich = this.Quoctich,
-                SDT = this.SDT,
-                Email = this.Email,
-                IdHinhThucDT = this.IdHinhThucDT,
-                IdTrinhDo = this.IdTrinhDoVH,
-                HoTenCha = this.HoTenCha,
-                NgheNghiepCha = this.NgheNghiepCha,
-                HoTenMe = this.HoTenMe,
-                NgheNghiepMe = this.NgheNghiepMe,
-                IdTruong = this.IdTruong,
-                IdDotXT = this.IdDotXT,
-                DXT = this.DXT.ToDiemXetTuyenDB(),
-                KiemTraHS = this.KiemTraHS.CloneJson(),
-                DsNguyenVong = this.DsNguyenVong.Select(x => x.ToNguyenVongDB()).ToList(),
-                GhiChu = this.GhiChu,
+                Id = Id,
+                MaHoSo = MaHoSo,
+                Ho = Ho,
+                Ten = Ten,
+                NgaySinh = NgaySinh,
+                GioiTinh = GioiTinh,
+                NoiSinh = NoiSinh,
+                SoNha = SoNha,
+                MaTinh = MaTinh,
+                MaHuyen = MaHuyen,
+                MaXa = MaXa,
+                CCCD = CCCD,
+                DanToc = DanToc,
+                TonGiao = TonGiao,
+                Quoctich = Quoctich,
+                SDT = SDT,
+                Email = Email,
+                IdHinhThucDT = IdHinhThucDT,
+                IdTrinhDo = IdTrinhDoVH,
+                HoTenCha = HoTenCha,
+                NgheNghiepCha = NgheNghiepCha,
+                HoTenMe = HoTenMe,
+                NgheNghiepMe = NgheNghiepMe,
+                IdTruong = IdTruong,
+                IdDotXT = IdDotXT,
+                DXT = DXT.ToDiemXetTuyenDB(),
+                KiemTraHS = KiemTraHS.CloneJson(),
+                DsNguyenVong = DsNguyenVong.Select(x => x.ToNguyenVongDB()).ToList(),
+                GhiChu = GhiChu,
             };
 
             return hs;
@@ -256,40 +248,39 @@ namespace QuanLyTuyenSinh
         public KiemTraHoSo KiemTraHS { get; set; } = new();
         public List<NguyenVongDB> DsNguyenVong { get; set; } = new();
         public string GhiChu { get; set; }
-
         public HoSoDuTuyen ToHoSoDuTuyen()
         {
             HoSoDuTuyen hs = new()
             {
-                Id = this.Id,
-                MaHoSo = this.MaHoSo,
-                Ho = this.Ho,
-                Ten = this.Ten,
-                NgaySinh = this.NgaySinh,
-                GioiTinh = this.GioiTinh,
-                NoiSinh = this.NoiSinh,
-                SoNha = this.SoNha,
-                MaTinh = this.MaTinh,
-                MaHuyen = this.MaHuyen,
-                MaXa = this.MaXa,
-                CCCD = this.CCCD,
-                DanToc = this.DanToc,
-                TonGiao = this.TonGiao,
-                Quoctich = this.Quoctich,
-                SDT = this.SDT,
-                Email = this.Email,
-                IdTrinhDoVH = this.IdTrinhDo,
-                IdHinhThucDT = this.IdHinhThucDT,
-                HoTenCha = this.HoTenCha,
-                NgheNghiepCha = this.NgheNghiepCha,
-                HoTenMe = this.HoTenMe,
-                NgheNghiepMe = this.NgheNghiepMe,
-                IdTruong = this.IdTruong,
-                IdDotXT = this.IdDotXT,
-                DXT = this.DXT.ToDiemXetTuyen(),
-                KiemTraHS = this.KiemTraHS.CloneJson(),
-                DsNguyenVong = this.DsNguyenVong.Select(x => x.ToNguyenVong()).ToList(),
-                GhiChu = this.GhiChu,
+                Id = Id,
+                MaHoSo = MaHoSo,
+                Ho = Ho,
+                Ten = Ten,
+                NgaySinh = NgaySinh,
+                GioiTinh = GioiTinh,
+                NoiSinh = NoiSinh,
+                SoNha = SoNha,
+                MaTinh = MaTinh,
+                MaHuyen = MaHuyen,
+                MaXa = MaXa,
+                CCCD = CCCD,
+                DanToc = DanToc,
+                TonGiao = TonGiao,
+                Quoctich = Quoctich,
+                SDT = SDT,
+                Email = Email,
+                IdTrinhDoVH = IdTrinhDo,
+                IdHinhThucDT = IdHinhThucDT,
+                HoTenCha = HoTenCha,
+                NgheNghiepCha = NgheNghiepCha,
+                HoTenMe = HoTenMe,
+                NgheNghiepMe = NgheNghiepMe,
+                IdTruong = IdTruong,
+                IdDotXT = IdDotXT,
+                DXT = DXT.ToDiemXetTuyen(),
+                KiemTraHS = KiemTraHS.CloneJson(),
+                DsNguyenVong = DsNguyenVong.Select(x => x.ToNguyenVong()).ToList(),
+                GhiChu = GhiChu,
             };
 
             return hs;
@@ -425,34 +416,34 @@ namespace QuanLyTuyenSinh
         {
             HoSoTrungTuyenDB hs = new()
             {
-                Id = this.Id,
-                MaHoSo = this.MaHoSo,
-                Ho = this.Ho,
-                Ten = this.Ten,
-                NgaySinh = this.NgaySinh,
-                GioiTinh = this.GioiTinh,
-                NoiSinh = this.NoiSinh,
-                SoNha = this.SoNha,
-                MaTinh = this.MaTinh,
-                MaHuyen = this.MaHuyen,
-                MaXa = this.MaXa,
-                CCCD = this.CCCD,
-                DanToc = this.DanToc,
-                TonGiao = this.TonGiao,
-                Quoctich = this.Quoctich,
-                SDT = this.SDT,
-                Email = this.Email,
-                TrinhDo = this.TrinhDo,
-                HinhThucDT = this.HinhThucDT,
-                HoTenCha = this.HoTenCha,
-                NgheNghiepCha = this.NgheNghiepCha,
-                HoTenMe = this.HoTenMe,
-                NgheNghiepMe = this.NgheNghiepMe,
-                IdTruong = this.IdTruong,
-                IdDotXT = this.IdDotXT,
-                DXT = this.DXT.ToDiemXetTuyenDB(),
-                IdNgheTrungTuyen = this.IdNgheTrungTuyen,
-                GhiChu = this.GhiChu,
+                Id = Id,
+                MaHoSo = MaHoSo,
+                Ho = Ho,
+                Ten = Ten,
+                NgaySinh = NgaySinh,
+                GioiTinh = GioiTinh,
+                NoiSinh = NoiSinh,
+                SoNha = SoNha,
+                MaTinh = MaTinh,
+                MaHuyen = MaHuyen,
+                MaXa = MaXa,
+                CCCD = CCCD,
+                DanToc = DanToc,
+                TonGiao = TonGiao,
+                Quoctich = Quoctich,
+                SDT = SDT,
+                Email = Email,
+                TrinhDo = TrinhDo,
+                HinhThucDT = HinhThucDT,
+                HoTenCha = HoTenCha,
+                NgheNghiepCha = NgheNghiepCha,
+                HoTenMe = HoTenMe,
+                NgheNghiepMe = NgheNghiepMe,
+                IdTruong = IdTruong,
+                IdDotXT = IdDotXT,
+                DXT = DXT.ToDiemXetTuyenDB(),
+                IdNgheTrungTuyen = IdNgheTrungTuyen,
+                GhiChu = GhiChu,
             };
 
             return hs;
@@ -493,34 +484,34 @@ namespace QuanLyTuyenSinh
         {
             HoSoTrungTuyen hs = new()
             {
-                Id = this.Id,
-                MaHoSo = this.MaHoSo,
-                Ho = this.Ho,
-                Ten = this.Ten,
-                NgaySinh = this.NgaySinh,
-                GioiTinh = this.GioiTinh,
-                NoiSinh = this.NoiSinh,
-                SoNha = this.SoNha,
-                MaTinh = this.MaTinh,
-                MaHuyen = this.MaHuyen,
-                MaXa = this.MaXa,
-                CCCD = this.CCCD,
-                DanToc = this.DanToc,
-                TonGiao = this.TonGiao,
-                Quoctich = this.Quoctich,
-                SDT = this.SDT,
-                Email = this.Email,
-                TrinhDo = this.TrinhDo,
-                HinhThucDT = this.HinhThucDT,
-                HoTenCha = this.HoTenCha,
-                NgheNghiepCha = this.NgheNghiepCha,
-                HoTenMe = this.HoTenMe,
-                NgheNghiepMe = this.NgheNghiepMe,
-                IdTruong = this.IdTruong,
-                IdDotXT = this.IdDotXT,
-                DXT = this.DXT.ToDiemXetTuyen(),                
-                IdNgheTrungTuyen = this.IdNgheTrungTuyen,
-                GhiChu = this.GhiChu,
+                Id = Id,
+                MaHoSo = MaHoSo,
+                Ho = Ho,
+                Ten = Ten,
+                NgaySinh = NgaySinh,
+                GioiTinh = GioiTinh,
+                NoiSinh = NoiSinh,
+                SoNha = SoNha,
+                MaTinh = MaTinh,
+                MaHuyen = MaHuyen,
+                MaXa = MaXa,
+                CCCD = CCCD,
+                DanToc = DanToc,
+                TonGiao = TonGiao,
+                Quoctich = Quoctich,
+                SDT = SDT,
+                Email = Email,
+                TrinhDo = TrinhDo,
+                HinhThucDT = HinhThucDT,
+                HoTenCha = HoTenCha,
+                NgheNghiepCha = NgheNghiepCha,
+                HoTenMe = HoTenMe,
+                NgheNghiepMe = NgheNghiepMe,
+                IdTruong = IdTruong,
+                IdDotXT = IdDotXT,
+                DXT = DXT.ToDiemXetTuyen(),                
+                IdNgheTrungTuyen = IdNgheTrungTuyen,
+                GhiChu = GhiChu,
             };
 
             return hs;
@@ -574,11 +565,11 @@ namespace QuanLyTuyenSinh
         {
             return new DiemXetTuyenDB
             {
-                HanhKiem = this.HanhKiem,
-                XLHocTap = this.XLHocTap,
-                XLTN = this.XLTN,
-                IdDTUT = this.IdDTUT,
-                IdKVUT = this.IdKVUT,
+                HanhKiem = HanhKiem,
+                XLHocTap = XLHocTap,
+                XLTN = XLTN,
+                IdDTUT = IdDTUT,
+                IdKVUT = IdKVUT,
             };                 
         }
 
@@ -594,11 +585,11 @@ namespace QuanLyTuyenSinh
         {
             return new DiemXetTuyen
             {
-                HanhKiem = this.HanhKiem,
-                XLHocTap = this.XLHocTap,
-                XLTN = this.XLTN,
-                IdDTUT = this.IdDTUT,
-                IdKVUT = this.IdKVUT,
+                HanhKiem = HanhKiem,
+                XLHocTap = XLHocTap,
+                XLTN = XLTN,
+                IdDTUT = IdDTUT,
+                IdKVUT = IdKVUT,
             };
         }
 
@@ -615,29 +606,41 @@ namespace QuanLyTuyenSinh
         public bool GKSK { get; set; }
         public string GhiChu { get; set; }
     }
-    public class Nghe : DanhMuc
+    public class Nghe : DBClass
     {        
         [Display(Name = "Mã nghề")]
-        [Required(ErrorMessage = "Chưa nhập mã nghề nghiệp")]        
+        [Required(ErrorMessage = "Chưa nhập mã nghề nghiệp")]
         public string Ma { get; set; }
         [Display(Name = "Tên nghề")]
         [Required(ErrorMessage = "Chưa nhập tên nghề nghiệp")]
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public override ObjCategory ToObjCategory()
+
+        public override bool DeleteFromDB()
         {
-            return new ObjCategory
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(),TuDien.DbName.Category_DB);
+        }
+
+        public override BsonDocument ToBsonDocument()
+        {
+            var obj = new BsonDocument
             {
-                Id = this.Id,
-                Loai = TuDien.CategoryName.NganhNghe,
-                Ma = this.Ma,
-                Ten = this.Ten,
-                MoTa = this.MoTa
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.NganhNghe },
+                { "Ma", Ma },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
         }
     }
-    public class Truong : DanhMuc
+    public class Truong : DBClass
     {        
         [Display(Name = "Mã trường")]
         [Required(ErrorMessage = "Chưa nhập mã trường")]
@@ -647,49 +650,30 @@ namespace QuanLyTuyenSinh
         public string Ten { get; set; }
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory
+            var obj = new BsonDocument
             {
-                Id = this.Id,
-                Loai = TuDien.CategoryName.TruongHoc,
-                Ma = this.Ma,
-                Ten = this.Ten,
-                MoTa = this.MoTa
+                { "_id", Id },                
+                { "Loai", TuDien.CategoryName.TruongHoc },
+                { "Ma", Ma },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class Tinh : BaseClass
-    {       
-        [Display(Name = "Mã tỉnh")]
-        [Required(ErrorMessage = "Chưa nhập mã tỉnh")]
-        public string Ma { get; set; }
-        [Display(Name = "Tên tỉnh")]
-        [Required(ErrorMessage = "Chưa nhập tên tỉnh")]
-        public string Ten { get; set; }
-        public List<Huyen> DsHuyen { get; set; } = new();
-
-    }
-    public class Huyen
-    {
-        [Display(Name = "Mã huyện")]
-        [Required(ErrorMessage = "Chưa nhập mã huyện")]
-        public string Ma { get; set; }
-        [Display(Name = "Tên huyện")]
-        [Required(ErrorMessage = "Chưa nhập tên huyện")]
-        public string Ten { get; set; }
-        public List<Xa> DsXa { get; set; } = new();
-    }
-    public class Xa
-    {
-        [Display(Name = "Mã xã")]
-        [Required(ErrorMessage = "Chưa nhập mã xã")]
-        public string Ma { get; set; }
-        [Display(Name = "Tên xã")]
-        [Required(ErrorMessage = "Chưa nhập tên xã")]
-        public string Ten { get; set; }
-    }
-    public class KhuVucUT : DanhMuc
+    public class KhuVucUT : DBClass
     {
         [Display(Name = "Mã khu vực")]
         [Required(ErrorMessage = "Chưa nhập mã khu vực")]
@@ -698,24 +682,34 @@ namespace QuanLyTuyenSinh
         [Required(ErrorMessage = "Chưa nhập tên khu vực")]
         public string Ten { get; set; }
         [Display(Name = "Điểm")]
-        public int Diem { get; set; }
+        public double Diem { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
-
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory
+            var obj = new BsonDocument
             {
-                Id = this.Id,
-                Loai = TuDien.CategoryName.KhuVucUuTien,
-                Ma = this.Ma,
-                Ten = this.Ten,
-                Diem = this.Diem,
-                MoTa = this.GhiChu
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.KhuVucUuTien },
+                { "Ma", Ma },
+                { "Ten", Ten },
+                { "Diem", Diem },
+                { "MoTa", GhiChu }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class DoiTuongUT : DanhMuc
+    public class DoiTuongUT : DBClass
     {
         [Display(Name = "Mã đối tượng")]
         [Required(ErrorMessage = "Chưa nhập mã đối tượng")]
@@ -724,47 +718,80 @@ namespace QuanLyTuyenSinh
         [Required(ErrorMessage = "Chưa nhập tên đối tượng")]
         public string Ten { get; set; }
         [Display(Name = "Điểm")]
-        public int Diem { get; set; }
+        public double Diem { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
-
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory 
-            { 
-                Id = this.Id,
-                Loai = TuDien.CategoryName.DoiTuongUuTien, 
-                Ma  = this.Ma,
-                Ten = this.Ten, 
-                Diem = this.Diem,
-                MoTa = this.GhiChu
+            var obj = new BsonDocument
+            {
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.DoiTuongUuTien },
+                { "Ma", Ma },
+                { "Ten", Ten },
+                { "MoTa", GhiChu }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class DotXetTuyen : BaseClass
+    public class DotXetTuyen : DBClass
     {
         [Display(Name = "Mã đọt")]
         [Required(ErrorMessage = "Chưa nhập mã")]
         public string Ma { get; set; }
-        [Display(Name = "Đợt TS")]
+
+        [Display(Name = "Đợt tuyển sinh")]
         [Required(ErrorMessage = "Chưa nhập đợt")]
-        public int DotTS { get; set; }
+        public int DotTS { get; set; }  
 
         [Display(Name = "Năm tuyển sinh")]
         [Required(ErrorMessage = "Chưa nhập năm")]
         public int NamTS { get; set; } = DateTime.Now.Year;
 
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.DotXetTuyen_DB);
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.DotXetTuyen_DB);
+        }
+
+        public override BsonDocument ToBsonDocument()
+        {
+            var obj = new BsonDocument
+            {
+                { "_id", Id },
+                { "Ma", Ma },
+                { "DotTS", DotTS },
+                { "NamTS", NamTS }
+            };
+            return obj;
+        }
     }
-    public class ChiTieuXetTuyen
-    {
-        [Display(Name = "Mã chỉ tiêu")]
-        [Required(ErrorMessage = "Chưa nhập mã")]
-        public string MaCT { get; set; }
+    public class ChiTieuXetTuyen : DBClass
+    {       
+        
+        [Display(Name = "Năm")]
+        [Required(ErrorMessage = "Chưa nhập năm")]
+        public int Nam { get; set; } = DateTime.Now.Year;
+
         private string _IdNghe;
         [Display(AutoGenerateField = false)]
-        [Required(ErrorMessage = "Chưa chọn nghề nghiệp")]
-        public string IdNghe 
-        { 
+        [Editable(false)]
+        public string IdNghe
+        {
             get => _IdNghe;
             set
             {
@@ -772,18 +799,73 @@ namespace QuanLyTuyenSinh
                 var nghe = DanhSach.DsNghe.FirstOrDefault(x => x.Id.Equals(_IdNghe));
                 MaNghe = nghe is null ? string.Empty : nghe.Ma;
                 TenNghe = nghe is null ? string.Empty : nghe.Ten;
-            } 
+            }
         }
-        [Display(Name = "Mã nghề")]        
+        [Display(Name = "Mã nghề")]
+        [Editable(false)]
         public string MaNghe { get; set; }
         [Display(Name = "Tên nghề")]
+        [Editable(false)]
         public string TenNghe { get; set; }
         [Display(Name = "Chỉ tiêu")]
         public int ChiTieu { get; set; }
-        [Display(Name = "Năm")]
-        public int Nam { get; set; } = DateTime.Now.Year;
-    }
 
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.ChiTieuXetTuyen_DB);
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.ChiTieuXetTuyen_DB);
+        }
+
+        public override BsonDocument ToBsonDocument()
+        {
+            var obj = new BsonDocument
+            {
+                { "_id", Id },
+                { "Nam", Nam },
+                { "IdNghe", _IdNghe},
+                { "ChiTieu", ChiTieu},
+            };
+            return obj;
+        }
+    }    
+    public class ChiTieuNghe
+    {
+        private string _IdNghe;
+        [Display(AutoGenerateField = false)]        
+        [Editable(false)]
+        public string IdNghe
+        {
+            get => _IdNghe;
+            set
+            {
+                _IdNghe = value;
+                var nghe = DanhSach.DsNghe.FirstOrDefault(x => x.Id.Equals(_IdNghe));
+                MaNghe = nghe is null ? string.Empty : nghe.Ma;
+                TenNghe = nghe is null ? string.Empty : nghe.Ten;
+            }
+        }
+        [Display(Name = "Mã nghề")]
+        [Editable(false)]
+        public string MaNghe { get; set; }
+        [Display(Name = "Tên nghề")]
+        [Editable(false)]
+        public string TenNghe { get; set; }
+        [Display(Name = "Chỉ tiêu")]
+        public int ChiTieu { get; set; }
+        public BsonDocument ToBsonDocument()
+        {
+            var obj = new BsonDocument
+            {
+                { "IdNghe", _IdNghe },
+                { "ChiTieu", ChiTieu }
+            };
+            return obj;
+        }
+    }
     public class NguyenVong
     {
         private string _IdNghe;
@@ -830,7 +912,7 @@ namespace QuanLyTuyenSinh
             };
         }
     }
-    public class DanToc : DanhMuc
+    public class DanToc : DBClass
     {
         [Display(Name = "Dân tộc")]
         [Required(ErrorMessage = "Chưa nhập tên dân tộc")]
@@ -838,18 +920,29 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory 
+            var obj = new BsonDocument
             {
-                Id = this.Id, 
-                Loai = TuDien.CategoryName.DanToc, 
-                Ten = this.Ten,
-                MoTa = this.MoTa 
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.DanToc },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class TonGiao : DanhMuc
+    public class TonGiao : DBClass
     {
         [Display(Name = "Tôn giáo")]
         [Required(ErrorMessage = "Chưa nhập tên tôn giáo")]
@@ -857,18 +950,29 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory 
+            var obj = new BsonDocument
             {
-                Id = this.Id, 
-                Loai = TuDien.CategoryName.TonGiao, 
-                Ten = this.Ten, 
-                MoTa = this.MoTa, 
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.TonGiao },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class QuocTich : DanhMuc
+    public class QuocTich : DBClass
     {
         [Display(Name = "Quốc tịch")]
         [Required(ErrorMessage = "Chưa nhập tên quốc tịch")]
@@ -876,18 +980,29 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory 
-            { 
-                Id = this.Id, 
-                Loai = TuDien.CategoryName.QuocTich, 
-                Ten = this.Ten,
-                MoTa = this.MoTa, 
+            var obj = new BsonDocument
+            {
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.QuocTich },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class HinhThucDaoTao : DanhMuc
+    public class HinhThucDaoTao : DBClass
     {
         [Display(Name = "Hình thức đào tạo")]
         [Required(ErrorMessage = "Chưa nhập hình thức đào tạo")]
@@ -895,18 +1010,29 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override ObjCategory ToObjCategory()
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory 
+            var obj = new BsonDocument
             {
-                Id= this.Id,
-                Loai = TuDien.CategoryName.HinhThucDaoTao,
-                Ten = this.Ten, 
-                MoTa = this.MoTa, 
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.HinhThucDaoTao },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
-    public class TrinhDo : DanhMuc
+    public class TrinhDo : DBClass
     {
         [Display(Name = "Trình độ văn hóa")]
         [Required(ErrorMessage = "Chưa nhập trình độ văn hóa")]
@@ -914,26 +1040,37 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override ObjCategory ToObjCategory() 
+        public override BsonDocument ToBsonDocument()
         {
-            return new ObjCategory 
-            { 
-                Id = this.Id,
-                Loai = TuDien.CategoryName.TrinhDo, 
-                Ten = this.Ten, 
-                MoTa = this.MoTa, 
+            var obj = new BsonDocument
+            {
+                { "_id", Id },
+                { "Loai", TuDien.CategoryName.TrinhDo },
+                { "Ten", Ten },
+                { "MoTa", MoTa }
             };
+            return obj;
+        }
+
+        public override bool SaveToDB()
+        {
+            return _LiteDb.UpsertObj(ToBsonDocument(), TuDien.DbName.Category_DB);
+        }
+
+        public override bool DeleteFromDB()
+        {
+            return _LiteDb.DeleteObj(Id, TuDien.DbName.Category_DB);
         }
     }
 
-    public class ObjCategory : BaseClass
+    public class ObjCategory
     {
+        public string Id { get; set; }
         public string Loai { get; set; }
         public string Ma { get; set; }
         public string Ten { get; set; }
-        public int Diem { get; set; }
-        public string Ma2 { get; set; }
+        public double Diem { get; set; }
         public string MoTa { get; set; }
-
     }
+
 }

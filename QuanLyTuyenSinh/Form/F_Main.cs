@@ -1,4 +1,7 @@
-﻿using DevExpress.XtraGrid.Views.Grid;
+﻿using DevExpress.XtraCharts.Native;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
+using LiteDB;
 using QuanLyTuyenSinh.Properties;
 using System.ComponentModel;
 
@@ -11,42 +14,50 @@ namespace QuanLyTuyenSinh.Form
         public F_Main()
         {
             InitializeComponent();
-            var lstP = _Helper.getListWards("10105");
-
         }
         private void F_Main_Load(object sender, EventArgs e)
         {
-            pnImg.BackgroundImage = Resources.school_background2_2;
+            //pnImg.BackgroundImage = Resources.school_background2_2;
             pnImg.BringToFront();
+
             GridViewInit();
+
+            _spinNam.Value = DateTime.Now.Year;
         }
+        #region Xử lý GridControl
         private void GridViewInit()
         {
+            gridView1.IndicatorWidth = 55;
+            gridView1.OptionsCustomization.AllowColumnMoving = false;
+            gridView1.OptionsCustomization.AllowMergedGrouping = DevExpress.Utils.DefaultBoolean.False;
+            gridView1.OptionsView.NewItemRowPosition = NewItemRowPosition.Bottom;
             gridView1.CellValueChanged += GridView_CellValueChanged;
             gridView1.RowUpdated += GridView_RowUpdated;
-            gridView1.ValidateRow += GridView_ValidateRow;
+            gridView1.ShowingEditor += GridView_ShowingEditor;
+            gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
+
         }
 
-        private void GridView_ValidateRow(object sender, DevExpress.XtraGrid.Views.Base.ValidateRowEventArgs e)
+        private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
         {
-            if (e.Valid)
-            {
-                var r = e.Row as DanhMuc;
-                if (r != null)
-                {
-                    r.SaveToDb();
-                    DanhSach.Refresh = true;
-                }
-            }
+            if (e.RowHandle >= 0)
+                e.Info.DisplayText = (e.RowHandle + 1).ToString("D3");
         }
+
+        private void GridView_ShowingEditor(object? sender, CancelEventArgs e)
+        {
+            //e.Cancel = (gridView1.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
+        }       
 
         private void GridView_RowUpdated(object sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
         {
-            var r = e.Row as DanhMuc;
+            var r = e.Row as DBClass;
             if (r != null)
             {
-                r.SaveToDb();
-                DanhSach.Refresh = true;
+                if (r.SaveToDB())
+                {
+                    DanhSach.RefreshDS(TenDm);
+                }
             }
         }
 
@@ -71,6 +82,7 @@ namespace QuanLyTuyenSinh.Form
         {
             return DanhSach.categories.Where(x => x.Loai.Equals(TenDm)).Any(x => x.Ma.Equals(code));
         }
+        #endregion
 
         private void LoadDanhMuc()
         {
@@ -78,39 +90,48 @@ namespace QuanLyTuyenSinh.Form
             _bindingSource = new BindingSource();
             switch (TenDm)
             {
-                case "TH":
+                case TuDien.CategoryName.TruongHoc:
                     _bindingSource.DataSource = DanhSach.DsTruong;
                     break;
-                case "NN":
+                case TuDien.CategoryName.NganhNghe:
                     _bindingSource.DataSource = DanhSach.DsNghe;
                     break;
-                case "DTUT":
+                case TuDien.CategoryName.DoiTuongUuTien:
                     _bindingSource.DataSource = DanhSach.DsDoiTuongUT;
                     break;
-                case "KVUT":
+                case TuDien.CategoryName.KhuVucUuTien:
                     _bindingSource.DataSource = DanhSach.DsKhuVucUT;
                     break;
-                case "DT":
+                case TuDien.CategoryName.DanToc:
                     _bindingSource.DataSource = DanhSach.DsDanToc;
                     break;
-                case "TG":
+                case TuDien.CategoryName.TonGiao:
                     _bindingSource.DataSource = DanhSach.DsTonGiao;
                     break;
-                case "TDHV":
+                case TuDien.CategoryName.TrinhDo:
                     _bindingSource.DataSource = DanhSach.DsTrinhDo;
                     break;
-                case "HTDT":
+                case TuDien.CategoryName.HinhThucDaoTao:
                     _bindingSource.DataSource = DanhSach.DsHinhThucDT;
                     break;
-                case "DTS":
+                case TuDien.CategoryName.QuocTich:
+                    _bindingSource.DataSource = DanhSach.DsQuocTich;
+                    break;
+                case TuDien.CategoryName.DotXetTuyen:
                     _bindingSource.DataSource = DanhSach.DsDotXetTuyen;
                     break;
-                case "QT":
-                    _bindingSource.DataSource = DanhSach.DsQuocTich;
+                case TuDien.CategoryName.ChiTieu:
+                    _bindingSource.DataSource = DanhSach.DsChiTieu;
                     break;
                 default: break;
             }
             gridControl.DataSource = _bindingSource;
+            if (TenDm.Equals(TuDien.CategoryName.ChiTieu))
+            {
+                gridView1.Columns.ColumnByName("colNam").Group();
+            }
+            btnAdd.Visible = !TenDm.Equals(TuDien.CategoryName.ChiTieu);
+            _panelNam.Visible = TenDm.Equals(TuDien.CategoryName.ChiTieu);
             panelGrid.BringToFront();
         }
 
@@ -141,6 +162,11 @@ namespace QuanLyTuyenSinh.Form
         private void btnDotTS_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DotXetTuyen;
+            LoadDanhMuc();
+        }
+        private void btnChiTieu_Click(object sender, EventArgs e)
+        {
+            TenDm = TuDien.CategoryName.ChiTieu;
             LoadDanhMuc();
         }
 
@@ -184,28 +210,40 @@ namespace QuanLyTuyenSinh.Form
             gridView1.AddNewRow();
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            var r = gridView1.GetFocusedRow() as DanhMuc;
+            var r = gridView1.GetFocusedRow() as DBClass;
             if (r is not null)
             {
                 if (MessageBox.Show(this, "Xác nhận xóa?", "Xóa", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    if (_LiteDb.DeleteObj<ObjCategory>(r.Id))
+                    if (r.DeleteFromDB())
                     {
-                        MessageBox.Show(this, "Xóa thành công");
-                        DanhSach.Refresh = true;
+                        DanhSach.RefreshDS(TenDm);
+                        LoadDanhMuc();
                     }
                 }
 
             }
         }
 
+        private void btnLapChiTieu_Click(object sender, EventArgs e)
+        {
+            int Nam = Convert.ToInt32(_spinNam.Value);
+            if (DanhSach.DsChiTieu.FirstOrDefault(x => x.Nam == Nam) is not null)
+            {
+                MessageBox.Show(this, $"Đã tồn tại chỉ tiêu năm {Nam}");
+                return;
+            }
 
+            foreach (var nghe in DanhSach.DsNghe)
+            {
+                ChiTieuXetTuyen ct = new() { IdNghe = nghe.Id, Nam = Nam, ChiTieu = TuDien.Settings.CHITIEUMACDINH };
+                ct.SaveToDB();
+            }
+            DanhSach.RefreshDS(TenDm);
+            LoadDanhMuc();
+            gridView1.ExpandAllGroups();
+        }
     }
 }

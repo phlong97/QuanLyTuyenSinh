@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using DevExpress.CodeParser;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +19,23 @@ namespace QuanLyTuyenSinh
             return Db;
         }
 
-        public static bool UpsertObj<T>(T obj) where T : BaseClass
+        public static bool UpsertObj(BsonDocument obj,string ColName)
         {
-            var coll = GetDb().GetCollection<T>();
+            var coll = GetDb().GetCollection(ColName);
             return coll.Upsert(obj);
         }
-        public static bool DeleteObj<T>(string Id) where T : BaseClass
+        public static bool DeleteObj(string Id,string ColName)
+        {
+            var coll = GetDb().GetCollection(ColName);
+
+            return coll.Delete(Id);
+        }
+
+        public static List<T> GetData<T>() where T : DBClass
         {
             var coll = GetDb().GetCollection<T>();
 
-            return coll.Delete(Id);
+            return coll.FindAll().ToList();
         }
     }
 }
