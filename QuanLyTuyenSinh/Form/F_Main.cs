@@ -1,6 +1,4 @@
-﻿using DevExpress.XtraCharts.Native;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Grid;
+﻿using DevExpress.XtraGrid.Views.Grid;
 using LiteDB;
 using QuanLyTuyenSinh.Properties;
 using System.ComponentModel;
@@ -9,6 +7,7 @@ namespace QuanLyTuyenSinh.Form
 {
     public partial class F_Main : DevExpress.XtraEditors.XtraForm
     {
+        bool EditMode;
         string TenDm { get; set; }
         BindingSource _bindingSource;
         public F_Main()
@@ -17,12 +16,19 @@ namespace QuanLyTuyenSinh.Form
         }
         private void F_Main_Load(object sender, EventArgs e)
         {
-            //pnImg.BackgroundImage = Resources.school_background2_2;
-            pnImg.BringToFront();
+            System.IO.Directory.CreateDirectory(TuDien.JSON_FOLDER_PATH);
 
             GridViewInit();
-
+            LoadBackgound();
             _spinNam.Value = DateTime.Now.Year;
+        }
+        void LoadBackgound()
+        {
+            pnImg.BackgroundImage = Resources.school_background2_2;
+            pnImg.BringToFront();
+            pnImg.Dock = DockStyle.Fill;
+            this.Refresh();
+            pnImg.Visible = true;
         }
         #region Xử lý GridControl
         private void GridViewInit()
@@ -30,7 +36,8 @@ namespace QuanLyTuyenSinh.Form
             gridView1.IndicatorWidth = 55;
             gridView1.OptionsCustomization.AllowColumnMoving = false;
             gridView1.OptionsCustomization.AllowMergedGrouping = DevExpress.Utils.DefaultBoolean.False;
-            gridView1.OptionsView.NewItemRowPosition = NewItemRowPosition.Bottom;
+            gridView1.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.True;
+            gridView1.OptionsView.NewItemRowPosition = NewItemRowPosition.None;
             gridView1.CellValueChanged += GridView_CellValueChanged;
             gridView1.RowUpdated += GridView_RowUpdated;
             gridView1.ShowingEditor += GridView_ShowingEditor;
@@ -46,18 +53,15 @@ namespace QuanLyTuyenSinh.Form
 
         private void GridView_ShowingEditor(object? sender, CancelEventArgs e)
         {
-            //e.Cancel = (gridView1.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
-        }       
+            e.Cancel = EditMode ^ (gridView1.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
+        }
 
         private void GridView_RowUpdated(object sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
         {
-            var r = e.Row as DBClass;
+            var r = e.Row;
             if (r != null)
             {
-                if (r.SaveToDB())
-                {
-                    DanhSach.RefreshDS(TenDm);
-                }
+                DanhSach.SaveDS(TenDm);
             }
         }
 
@@ -68,7 +72,7 @@ namespace QuanLyTuyenSinh.Form
                 string? value = e.Value.ToString();
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (CheckDuplicateCode(value))
+                    if (DanhSach.CheckDupCode(value, TenDm))
                     {
                         MessageBox.Show(this, "Trùng mã!");
                         gridView1.DeleteSelectedRows();
@@ -76,11 +80,6 @@ namespace QuanLyTuyenSinh.Form
                     }
                 }
             }
-        }
-
-        private bool CheckDuplicateCode(string code)
-        {
-            return DanhSach.categories.Where(x => x.Loai.Equals(TenDm)).Any(x => x.Ma.Equals(code));
         }
         #endregion
 
@@ -207,21 +206,22 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (EditMode)
+            {
+                btnSaveEdit_Click(sender,null);
+            }
             gridView1.AddNewRow();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            var r = gridView1.GetFocusedRow() as DBClass;
+            var r = gridView1.GetFocusedRow();
             if (r is not null)
             {
                 if (MessageBox.Show(this, "Xác nhận xóa?", "Xóa", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    if (r.DeleteFromDB())
-                    {
-                        DanhSach.RefreshDS(TenDm);
-                        LoadDanhMuc();
-                    }
+                    _bindingSource.Remove(r);
+                    DanhSach.SaveDS(TenDm);
                 }
 
             }
@@ -239,11 +239,27 @@ namespace QuanLyTuyenSinh.Form
             foreach (var nghe in DanhSach.DsNghe)
             {
                 ChiTieuXetTuyen ct = new() { IdNghe = nghe.Id, Nam = Nam, ChiTieu = TuDien.Settings.CHITIEUMACDINH };
-                ct.SaveToDB();
+                _bindingSource.Add(ct);
             }
-            DanhSach.RefreshDS(TenDm);
-            LoadDanhMuc();
+            DanhSach.SaveDS(TenDm);
             gridView1.ExpandAllGroups();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            EditMode = true;
+
+            btnEdit.Text = "Lưu";
+            btnEdit.Click -= btnEdit_Click;
+            btnEdit.Click += btnSaveEdit_Click;
+        }
+
+        private void btnSaveEdit_Click(object? sender, EventArgs e)
+        {
+            EditMode = false;
+            btnEdit.Text = "Sửa";
+            btnEdit.Click -= btnSaveEdit_Click;
+            btnEdit.Click += btnEdit_Click;
         }
     }
 }

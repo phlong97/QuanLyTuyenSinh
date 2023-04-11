@@ -1,11 +1,5 @@
-﻿using DevExpress.CodeParser;
-using DevExpress.XtraReports.Serialization;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System.IO;
 using System.Xml;
 
 namespace QuanLyTuyenSinh
@@ -31,6 +25,26 @@ namespace QuanLyTuyenSinh
 
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
         }
+
+        // Lưu List<T> vào tệp JSON
+        public static void SaveToJson<T>(List<T> myList, string filePath)
+        {
+            string json = JsonConvert.SerializeObject(myList);
+            File.WriteAllText(filePath, json);
+        }
+
+        // Đọc List<T> từ tệp JSON
+        public static List<T> LoadFromJson<T>(string filePath)
+        {
+            List<T> myList = new List<T>();
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                myList = JsonConvert.DeserializeObject<List<T>>(json);
+            }
+            return myList;
+        }
+
 
         #region Addresss
         public class Adress
@@ -153,6 +167,23 @@ namespace QuanLyTuyenSinh
         }
         #endregion
 
+        public static void ResetDSTonGiao()
+        {
+            string DsTG = "Không,Phật giáo,Công giáo,Bùi Sơn Kì hương,Cao đài,Chăm Bà la môn," +
+                "Đạo tứ Ân Hiếu nghĩa,Giáo hội Các thành hữu Ngày sau của Chúa Giê su Ky tô (Mormon)," +
+                "Giáo hội Cơ đốc Phục lâm Việt Nam,Giáo hội Phật đường Nam Tông Minh Sư đạo,Hồi giáo," +
+                "Hội thánh Minh lý đạo - Tam Tông Miếu,Phật giáo Hiếu Nghĩa Tà Lơn (Cấp đăng ký hoạt động)," +
+                "Phật giáo Hòa Hảo,Tin lành,Tịnh độ Cư sỹ Phật hội Việt Nam,Tôn giáo Baha'i";           
+           
+            var dstg = DsTG.Split(',');
+            List<TonGiao> tonGiaos = new();
+            for (int i = 0; i < dstg.Count(); i++)
+            {                
+               tonGiaos.Add(new TonGiao { Ma = i.ToString("d2"), Ten = dstg[i] });
+            };
+            SaveToJson(tonGiaos, Path.Combine(TuDien.JSON_FOLDER_PATH, TuDien.DbName.TonGiao));   
+                
+        }
     }
 
     

@@ -55,6 +55,7 @@
             btnHTDT = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnQuocTich = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             pnMain = new Panel();
+            pnImg = new Panel();
             panelGrid = new DevExpress.Utils.Layout.TablePanel();
             panelControl = new Panel();
             btnClose = new DevExpress.XtraEditors.SimpleButton();
@@ -63,11 +64,11 @@
             _spinNam = new DevExpress.XtraEditors.SpinEdit();
             btnLapChiTieu = new DevExpress.XtraEditors.SimpleButton();
             labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            btnDelete = new DevExpress.XtraEditors.SimpleButton();
+            btnEdit = new DevExpress.XtraEditors.SimpleButton();
             btnAdd = new DevExpress.XtraEditors.SimpleButton();
             gridControl = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            pnImg = new Panel();
+            simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)barManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)accordionControl1).BeginInit();
             pnMain.SuspendLayout();
@@ -194,6 +195,7 @@
             // Nooi6
             // 
             Nooi6.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnTruong, btnNghe, btnDTUT, btnKVUT });
+            Nooi6.Expanded = true;
             Nooi6.Name = "Nooi6";
             Nooi6.Text = "Thông tin chung";
             // 
@@ -277,13 +279,22 @@
             // 
             // pnMain
             // 
-            pnMain.Controls.Add(panelGrid);
             pnMain.Controls.Add(pnImg);
+            pnMain.Controls.Add(panelGrid);
             pnMain.Dock = DockStyle.Fill;
             pnMain.Location = new Point(236, 20);
             pnMain.Name = "pnMain";
             pnMain.Size = new Size(873, 536);
             pnMain.TabIndex = 10;
+            // 
+            // pnImg
+            // 
+            pnImg.BackgroundImageLayout = ImageLayout.Stretch;
+            pnImg.Location = new Point(0, 0);
+            pnImg.Name = "pnImg";
+            pnImg.Size = new Size(10, 10);
+            pnImg.TabIndex = 7;
+            pnImg.Visible = false;
             // 
             // panelGrid
             // 
@@ -303,7 +314,7 @@
             panelGrid.SetColumn(panelControl, 0);
             panelControl.Controls.Add(btnClose);
             panelControl.Controls.Add(panel1);
-            panelControl.Controls.Add(btnDelete);
+            panelControl.Controls.Add(btnEdit);
             panelControl.Controls.Add(btnAdd);
             panelControl.Location = new Point(15, 14);
             panelControl.Name = "panelControl";
@@ -329,6 +340,7 @@
             // panel1
             // 
             panel1.BackgroundImageLayout = ImageLayout.Stretch;
+            panel1.Controls.Add(simpleButton1);
             panel1.Controls.Add(_panelNam);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(148, 0);
@@ -338,18 +350,18 @@
             // 
             // _panelNam
             // 
-            _panelNam.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            _panelNam.Anchor = AnchorStyles.Left;
             _panelNam.Controls.Add(_spinNam);
             _panelNam.Controls.Add(btnLapChiTieu);
             _panelNam.Controls.Add(labelControl1);
-            _panelNam.Location = new Point(3, 0);
+            _panelNam.Location = new Point(80, 0);
             _panelNam.Name = "_panelNam";
             _panelNam.Size = new Size(223, 36);
             _panelNam.TabIndex = 0;
             // 
             // _spinNam
             // 
-            _spinNam.EditValue = new decimal(new int[] { 1950, 0, 0, 0 });
+            _spinNam.EditValue = new decimal(new int[] { 2000, 0, 0, 0 });
             _spinNam.Location = new Point(48, 6);
             _spinNam.MenuManager = barManager1;
             _spinNam.Name = "_spinNam";
@@ -358,7 +370,7 @@
             _spinNam.Properties.MaskSettings.Set("mask", "d");
             _spinNam.Properties.MaxLength = 4;
             _spinNam.Properties.MaxValue = new decimal(new int[] { 2100, 0, 0, 0 });
-            _spinNam.Properties.MinValue = new decimal(new int[] { 1950, 0, 0, 0 });
+            _spinNam.Properties.MinValue = new decimal(new int[] { 2000, 0, 0, 0 });
             _spinNam.Properties.UseMaskAsDisplayFormat = true;
             _spinNam.Size = new Size(60, 24);
             _spinNam.TabIndex = 1;
@@ -385,19 +397,19 @@
             labelControl1.TabIndex = 0;
             labelControl1.Text = "Năm";
             // 
-            // btnDelete
+            // btnEdit
             // 
-            btnDelete.Appearance.BackColor = Color.WhiteSmoke;
-            btnDelete.Appearance.Options.UseBackColor = true;
-            btnDelete.Dock = DockStyle.Left;
-            btnDelete.ImageOptions.Image = (Image)resources.GetObject("btnDelete.ImageOptions.Image");
-            btnDelete.Location = new Point(77, 0);
-            btnDelete.Margin = new Padding(0);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(71, 36);
-            btnDelete.TabIndex = 1;
-            btnDelete.Text = "Xóa";
-            btnDelete.Click += btnDelete_Click;
+            btnEdit.Appearance.BackColor = Color.WhiteSmoke;
+            btnEdit.Appearance.Options.UseBackColor = true;
+            btnEdit.Dock = DockStyle.Left;
+            btnEdit.ImageOptions.Image = (Image)resources.GetObject("btnDelete.ImageOptions.Image");
+            btnEdit.Location = new Point(77, 0);
+            btnEdit.Margin = new Padding(0);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(71, 36);
+            btnEdit.TabIndex = 1;
+            btnEdit.Text = "Sửa";
+            btnEdit.Click += btnEdit_Click;
             // 
             // btnAdd
             // 
@@ -432,16 +444,22 @@
             // 
             gridView1.GridControl = gridControl;
             gridView1.Name = "gridView1";
-            gridView1.OptionsView.ShowGroupPanel = false;
             // 
-            // pnImg
+            // simpleButton1
             // 
-            pnImg.BackgroundImageLayout = ImageLayout.Stretch;
-            pnImg.Dock = DockStyle.Fill;
-            pnImg.Location = new Point(0, 0);
-            pnImg.Name = "pnImg";
-            pnImg.Size = new Size(873, 536);
-            pnImg.TabIndex = 7;
+            simpleButton1.Appearance.BackColor = Color.WhiteSmoke;
+            simpleButton1.Appearance.BorderColor = Color.WhiteSmoke;
+            simpleButton1.Appearance.Options.UseBackColor = true;
+            simpleButton1.Appearance.Options.UseBorderColor = true;
+            simpleButton1.Dock = DockStyle.Left;
+            simpleButton1.ImageOptions.Image = (Image)resources.GetObject("simpleButton1.ImageOptions.Image");
+            simpleButton1.Location = new Point(0, 0);
+            simpleButton1.Margin = new Padding(0);
+            simpleButton1.Name = "simpleButton1";
+            simpleButton1.Size = new Size(77, 36);
+            simpleButton1.TabIndex = 4;
+            simpleButton1.Text = "Xóa";
+            simpleButton1.Click += btnDelete_Click;
             // 
             // F_Main
             // 
@@ -504,7 +522,7 @@
         private DevExpress.XtraGrid.GridControl gridControl;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private Panel panelControl;
-        private DevExpress.XtraEditors.SimpleButton btnDelete;
+        private DevExpress.XtraEditors.SimpleButton btnEdit;
         private DevExpress.XtraEditors.SimpleButton btnAdd;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement3;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement4;
@@ -516,5 +534,6 @@
         private DevExpress.XtraEditors.SimpleButton btnLapChiTieu;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.SpinEdit _spinNam;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
     }
 }
