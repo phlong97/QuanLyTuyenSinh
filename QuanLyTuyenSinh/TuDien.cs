@@ -1,59 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace QuanLyTuyenSinh
 {
     internal static class TuDien
     {
-        public const string JSON_FOLDER_PATH = "DanhMuc";
+        public const string JSON_FOLDER_PATH = "Data";
 
-        public static string LITEDB_LOCAL_PATH { get; internal set; }
+        public static class CategoryName
+        {
+            public const string TruongHoc = "DMTH", NganhNghe = "DMNN",
+                DoiTuongUuTien = "DMDTUT", KhuVucUuTien = "DMKVUT", DotXetTuyen = "DXT", DanToc = "DMDT",
+                TonGiao = "DMTG", QuocTich = "DMQT", TrinhDo = "DMTDVH", ChiTieu = "CT",
+                HoSoDuTuyen = "HSDT", HoSoTrungTuyen = "HSTT", ThongKeDiemDT = "TKDT", ThongKeTT = "TKTT";
+        }
 
         public static class DbName
         {
-            public static string TruongHoc = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "TH"),
-                NganhNghe = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "NN"), DoiTuongUuTien = Path.Combine(
+            public static string TruongHoc = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "TH"),
+                NganhNghe = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "NN"), DoiTuongUuTien = Path.Combine(
                 Environment.CurrentDirectory,
-                "DanhMuc",
+                JSON_FOLDER_PATH,
                 "DTUT"),
-                KhuVucUuTien = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "KVUT"), DotXetTuyen = Path.Combine(
+                KhuVucUuTien = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "KVUT"), DotXetTuyen = Path.Combine(
                 Environment.CurrentDirectory,
-                "DanhMuc",
+                JSON_FOLDER_PATH,
                 "DXT"),
-                DanToc = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "DT"), TonGiao = Path.Combine(
+                DanToc = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "DT"), TonGiao = Path.Combine(
                 Environment.CurrentDirectory,
-                "DanhMuc",
+                JSON_FOLDER_PATH,
                 "TG"),
-                QuocTich = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "QT"), TrinhDo = Path.Combine(
+                QuocTich = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "QT"), TrinhDo = Path.Combine(
                 Environment.CurrentDirectory,
-                "DanhMuc",
-                "TDVH"),
-                HinhThucDaoTao = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "HTDT"), ChiTieu = Path.Combine(
+                JSON_FOLDER_PATH,
+                "TDVH")
+                , ChiTieu = Path.Combine(
                 Environment.CurrentDirectory,
-                "DanhMuc",
+                JSON_FOLDER_PATH,
                 "CT"),
-                HoSoDuTuyen = Path.Combine(Environment.CurrentDirectory, "DanhMuc", "HSDT"), HoSoTrungTuyen = Path.Combine(
+                HoSoDuTuyen = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "HSDT"), HoSoTrungTuyen = Path.Combine(
                 Environment.CurrentDirectory,
-                "DanhMuc",
-                "HSTT");
-        }
-        public static class CategoryName
-        {
-            public const string TruongHoc = "TH", NganhNghe = "NN",
-                DoiTuongUuTien = "DTUT", KhuVucUuTien = "KVUT", DotXetTuyen = "DXT", DanToc = "DT",
-                TonGiao = "TG",QuocTich = "QT", TrinhDo = "TDVH", HinhThucDaoTao = "HTDT",ChiTieu = "CT",
-                HoSoDuTuyen = "HSDT", HoSoTrungTuyen = "HSTT";
-        }
-
-        public static class Settings
-        {
-            public const string TEN_TRUONG = "Trường ";
-            public const int CHITIEUMACDINH = 250;
-            public const double CHITIEUVUOTMUC = 0.1;
+                JSON_FOLDER_PATH,
+                "HSTT"),
+                User = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "USER"), Settings = Path.Combine(Environment.CurrentDirectory,
+                JSON_FOLDER_PATH, "Settings")
+                ;
         }
     }
 }

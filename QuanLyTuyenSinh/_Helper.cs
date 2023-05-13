@@ -1,5 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Globalization;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml;
 
 namespace QuanLyTuyenSinh
@@ -45,19 +54,22 @@ namespace QuanLyTuyenSinh
             return myList;
         }
 
-
         #region Addresss
+
         public class Adress
         {
+            [Display(Name = "Mã địa chỉ")]
             public string AdressCode { get; set; }
+
+            [Display(Name = "Tên địa chỉ")]
             public string AdressName { get; set; }
-                   
         }
+
         /// <summary>
         /// Lấy danh sách tỉnh
         /// từ tệp Catalogue_Dia_Ban_Tinh.xml
         /// </summary>
-        /// <returns></returns>     
+        /// <returns></returns>
         public static List<Adress> getListProvince()
         {
             List<Adress> lstReturn = new List<Adress>();
@@ -78,20 +90,19 @@ namespace QuanLyTuyenSinh
                     {
                         string[] result = attribute.Value.Split("###");
                         lstReturn.Add(new Adress { AdressCode = result[1], AdressName = result[2], });
-
                     }
                 }
-
             }
             return lstReturn;
         }
+
         /// <summary>
         /// Lấy danh sách huyện theo mã tỉnh
         /// từ tệp Catalogue_Dia_Ban_Huyen
         /// </summary>
         /// <param name="ProvinceCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListDistrict(string? ProvinceCode = null)
+        public static List<Adress> getListDistrict(string ProvinceCode)
         {
             List<Adress> lstReturn = new List<Adress>();
             XmlDocument doc = new XmlDocument();
@@ -109,29 +120,24 @@ namespace QuanLyTuyenSinh
                     if (attribute != null)
                     {
                         string[] result = attribute.Value.Split("###");
-                        if (ProvinceCode is not null && result[2].StartsWith(ProvinceCode))
+                        if (!string.IsNullOrEmpty(ProvinceCode) && result[2].StartsWith(ProvinceCode))
                         {
                             lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
                         }
-                        else
-                        {
-                            lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
-                        }
-
                     }
                 }
-
             }
 
             return lstReturn;
         }
+
         /// <summary>
         /// Lấy danh sách phường, xã theo mã huyện
         /// từ tệp Catalogue_Dia_Ban_Xa
         /// </summary>
         /// <param name="DistrictCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListWards(string? DistrictCode = null)
+        public static List<Adress> getListWards(string DistrictCode)
         {
             List<Adress> lstReturn = new List<Adress>();
 
@@ -150,41 +156,108 @@ namespace QuanLyTuyenSinh
                     if (attribute != null)
                     {
                         string[] result = attribute.Value.Split("###");
-                        if (DistrictCode is not null && result[3].StartsWith(DistrictCode))
-                        {
-                            lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
-                        }
-                        else
+                        if (!string.IsNullOrEmpty(DistrictCode) && result[3].StartsWith(DistrictCode))
                         {
                             lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
                         }
                     }
                 }
-
             }
 
             return lstReturn;
         }
-        #endregion
 
-        public static void ResetDSTonGiao()
+        #endregion Addresss
+
+        public static void InitSearchLookupEdit<T>(SearchLookUpEdit lookUp, string display, string member, List<T> source = null, string nullText = "(Trống)") where T : class
         {
-            string DsTG = "Không,Phật giáo,Công giáo,Bùi Sơn Kì hương,Cao đài,Chăm Bà la môn," +
-                "Đạo tứ Ân Hiếu nghĩa,Giáo hội Các thành hữu Ngày sau của Chúa Giê su Ky tô (Mormon)," +
-                "Giáo hội Cơ đốc Phục lâm Việt Nam,Giáo hội Phật đường Nam Tông Minh Sư đạo,Hồi giáo," +
-                "Hội thánh Minh lý đạo - Tam Tông Miếu,Phật giáo Hiếu Nghĩa Tà Lơn (Cấp đăng ký hoạt động)," +
-                "Phật giáo Hòa Hảo,Tin lành,Tịnh độ Cư sỹ Phật hội Việt Nam,Tôn giáo Baha'i";           
-           
-            var dstg = DsTG.Split(',');
-            List<TonGiao> tonGiaos = new();
-            for (int i = 0; i < dstg.Count(); i++)
-            {                
-               tonGiaos.Add(new TonGiao { Ma = i.ToString("d2"), Ten = dstg[i] });
-            };
-            SaveToJson(tonGiaos, Path.Combine(TuDien.JSON_FOLDER_PATH, TuDien.DbName.TonGiao));   
-                
+            if (lookUp == null)
+            {
+                return;
+            }
+            if (source is not null) lookUp.Properties.DataSource = source;
+            lookUp.Properties.DisplayMember = display;
+            lookUp.Properties.ValueMember = member;
+            lookUp.Properties.BestFitMode = BestFitMode.BestFit;
+            lookUp.Properties.AutoHeight = true;
+            lookUp.Properties.NullText = nullText;
+        }
+
+        public static void InitComboboxEdit(ComboBoxEdit cbb, string[] lst, string nullText = "(Trống)", bool allowEdit = false, bool autoComplete = false)
+        {
+            cbb.Properties.Items.Clear();
+            cbb.Properties.TextEditStyle = TextEditStyles.DisableTextEditor;
+            cbb.Properties.NullText = nullText;
+            cbb.Properties.TextEditStyle = allowEdit ? TextEditStyles.Standard : TextEditStyles.DisableTextEditor;
+            cbb.Properties.AutoComplete = autoComplete;
+
+            cbb.Properties.Items.AddRange(lst);
+        }
+
+        public static int GetVisibleToUsersColumnCount(GridView view)
+        {
+            GridViewInfo info = view.GetViewInfo() as GridViewInfo;
+            int result = 0;
+            for (int i = 0; i < view.VisibleColumns.Count; i++)
+                if (info.GetColumnLeftCoord(view.GetVisibleColumn(i)) < view.ViewRect.Width - info.ViewRects.IndicatorWidth)
+                    result++;
+            return result;
+        }
+
+        public static string ToTitleCase(this string title)
+        {
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
+        }
+
+        /// <summary>
+        /// Extension method to convert dynamic data to a DataTable. Useful for databinding.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns>A DataTable with the copied dynamic data.</returns>
+        public static DataTable ToDataTable(this IEnumerable<dynamic> items)
+        {
+            var data = items.ToArray();
+            if (data.Count() == 0) return null;
+
+            var dt = new DataTable();
+            foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
+            {
+                dt.Columns.Add(key);
+            }
+            foreach (var d in data)
+            {
+                dt.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
+            }
+            return dt;
         }
     }
 
-    
+    public static class PasswordHasher
+    {
+        public static string GenerateSalt()
+        {
+            byte[] saltBytes = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(saltBytes);
+            }
+            return Convert.ToBase64String(saltBytes);
+        }
+
+        public static string HashPassword(string password, string salt)
+        {
+            using (var hasher = SHA256.Create())
+            {
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(password + salt);
+                byte[] hashBytes = hasher.ComputeHash(passwordBytes);
+                return Convert.ToBase64String(hashBytes);
+            }
+        }
+
+        public static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
+        {
+            string newHash = HashPassword(enteredPassword, storedSalt);
+            return newHash == storedHash;
+        }
+    }
 }
