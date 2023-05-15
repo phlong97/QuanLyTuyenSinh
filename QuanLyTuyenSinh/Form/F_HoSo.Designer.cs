@@ -35,6 +35,11 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             tablePanelTT = new DevExpress.Utils.Layout.TablePanel();
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -123,7 +128,6 @@
             txtSDT = new DevExpress.XtraEditors.TextEdit();
             txtCCCD = new DevExpress.XtraEditors.TextEdit();
             txtTenCha = new DevExpress.XtraEditors.TextEdit();
-            txtMaHS = new DevExpress.XtraEditors.TextEdit();
             txtNNCha = new DevExpress.XtraEditors.TextEdit();
             txtHo = new DevExpress.XtraEditors.TextEdit();
             lookTruong = new DevExpress.XtraEditors.SearchLookUpEdit();
@@ -143,6 +147,7 @@
             lookTDVH = new DevExpress.XtraEditors.SearchLookUpEdit();
             gridView8 = new DevExpress.XtraGrid.Views.Grid.GridView();
             cbbNoiSinh = new DevExpress.XtraEditors.ComboBoxEdit();
+            txtMaHS = new DevExpress.XtraEditors.ButtonEdit();
             directxFormContainerControl1 = new DevExpress.XtraEditors.DirectXFormContainerControl();
             ((System.ComponentModel.ISupportInitialize)tablePanelTT).BeginInit();
             tablePanelTT.SuspendLayout();
@@ -192,7 +197,6 @@
             ((System.ComponentModel.ISupportInitialize)txtSDT.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtCCCD.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtTenCha.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)txtMaHS.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtNNCha.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtHo.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lookTruong.Properties).BeginInit();
@@ -212,6 +216,7 @@
             ((System.ComponentModel.ISupportInitialize)lookTDVH.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cbbNoiSinh.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtMaHS.Properties).BeginInit();
             directxFormContainerControl1.SuspendLayout();
             SuspendLayout();
             // 
@@ -250,7 +255,7 @@
             gridControl1.MenuManager = barManager1;
             gridControl1.Name = "gridControl1";
             gridControl1.Size = new Size(521, 132);
-            gridControl1.TabIndex = 20;
+            gridControl1.TabIndex = 0;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
             // gridView1
@@ -385,7 +390,7 @@
             btnAdd.Margin = new Padding(0);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(73, 24);
-            btnAdd.TabIndex = 7;
+            btnAdd.TabIndex = 0;
             btnAdd.Text = "Thêm";
             // 
             // btnEdit
@@ -493,7 +498,7 @@
             cbbHanhKiem.Name = "cbbHanhKiem";
             cbbHanhKiem.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbHanhKiem.Size = new Size(124, 22);
-            cbbHanhKiem.TabIndex = 33;
+            cbbHanhKiem.TabIndex = 0;
             // 
             // cbbXLHT
             // 
@@ -501,7 +506,7 @@
             cbbXLHT.Name = "cbbXLHT";
             cbbXLHT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbXLHT.Size = new Size(124, 22);
-            cbbXLHT.TabIndex = 34;
+            cbbXLHT.TabIndex = 1;
             // 
             // cbbXLTN
             // 
@@ -509,7 +514,7 @@
             cbbXLTN.Name = "cbbXLTN";
             cbbXLTN.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbXLTN.Size = new Size(124, 22);
-            cbbXLTN.TabIndex = 35;
+            cbbXLTN.TabIndex = 2;
             // 
             // lookDTUT
             // 
@@ -519,7 +524,7 @@
             lookDTUT.Properties.NullText = "(Trống)";
             lookDTUT.Properties.PopupView = gridView10;
             lookDTUT.Size = new Size(186, 22);
-            lookDTUT.TabIndex = 36;
+            lookDTUT.TabIndex = 3;
             // 
             // gridView10
             // 
@@ -536,7 +541,7 @@
             lookKVUT.Properties.NullText = "(Trống)";
             lookKVUT.Properties.PopupView = gridView11;
             lookKVUT.Size = new Size(186, 22);
-            lookKVUT.TabIndex = 37;
+            lookKVUT.TabIndex = 4;
             // 
             // gridView11
             // 
@@ -593,7 +598,7 @@
             chkCCCD.Name = "chkCCCD";
             chkCCCD.Properties.Caption = "CCCD/CMND";
             chkCCCD.Size = new Size(113, 24);
-            chkCCCD.TabIndex = 26;
+            chkCCCD.TabIndex = 5;
             // 
             // chkBangTN
             // 
@@ -602,7 +607,7 @@
             chkBangTN.Name = "chkBangTN";
             chkBangTN.Properties.Caption = "Bằng tốt nghiệp";
             chkBangTN.Size = new Size(125, 24);
-            chkBangTN.TabIndex = 23;
+            chkBangTN.TabIndex = 7;
             // 
             // chkGKS
             // 
@@ -611,7 +616,7 @@
             chkGKS.Name = "chkGKS";
             chkGKS.Properties.Caption = "Giấy khai sinh";
             chkGKS.Size = new Size(109, 24);
-            chkGKS.TabIndex = 24;
+            chkGKS.TabIndex = 4;
             // 
             // chkAnh
             // 
@@ -620,7 +625,7 @@
             chkAnh.Name = "chkAnh";
             chkAnh.Properties.Caption = "Ảnh thẻ";
             chkAnh.Size = new Size(83, 24);
-            chkAnh.TabIndex = 25;
+            chkAnh.TabIndex = 8;
             // 
             // chkHocBa
             // 
@@ -629,7 +634,7 @@
             chkHocBa.Name = "chkHocBa";
             chkHocBa.Properties.Caption = "Học bạ";
             chkHocBa.Size = new Size(83, 24);
-            chkHocBa.TabIndex = 22;
+            chkHocBa.TabIndex = 6;
             // 
             // txtGhiChu
             // 
@@ -637,7 +642,7 @@
             txtGhiChu.Location = new Point(22, 213);
             txtGhiChu.Name = "txtGhiChu";
             txtGhiChu.Size = new Size(494, 40);
-            txtGhiChu.TabIndex = 21;
+            txtGhiChu.TabIndex = 9;
             // 
             // chkCNUT
             // 
@@ -645,7 +650,7 @@
             chkCNUT.Name = "chkCNUT";
             chkCNUT.Properties.Caption = "Giấy chứng nhận ưu tiên";
             chkCNUT.Size = new Size(166, 24);
-            chkCNUT.TabIndex = 19;
+            chkCNUT.TabIndex = 3;
             // 
             // chkGKSK
             // 
@@ -653,7 +658,7 @@
             chkGKSK.Name = "chkGKSK";
             chkGKSK.Properties.Caption = "Giấy khám sức khỏe";
             chkGKSK.Size = new Size(166, 24);
-            chkGKSK.TabIndex = 18;
+            chkGKSK.TabIndex = 2;
             // 
             // chkCNTN
             // 
@@ -661,7 +666,7 @@
             chkCNTN.Name = "chkCNTN";
             chkCNTN.Properties.Caption = "Chứng nhận tốt nghiệp";
             chkCNTN.Size = new Size(166, 24);
-            chkCNTN.TabIndex = 17;
+            chkCNTN.TabIndex = 1;
             // 
             // chkPhieuDKDT
             // 
@@ -669,7 +674,7 @@
             chkPhieuDKDT.Name = "chkPhieuDKDT";
             chkPhieuDKDT.Properties.Caption = "Phiếu đăng ký đự tuyển";
             chkPhieuDKDT.Size = new Size(166, 24);
-            chkPhieuDKDT.TabIndex = 16;
+            chkPhieuDKDT.TabIndex = 0;
             // 
             // panelControl3
             // 
@@ -714,7 +719,6 @@
             panelControl3.Controls.Add(txtSDT);
             panelControl3.Controls.Add(txtCCCD);
             panelControl3.Controls.Add(txtTenCha);
-            panelControl3.Controls.Add(txtMaHS);
             panelControl3.Controls.Add(txtNNCha);
             panelControl3.Controls.Add(txtHo);
             panelControl3.Controls.Add(lookTruong);
@@ -726,6 +730,7 @@
             panelControl3.Controls.Add(lookQuanHuyen);
             panelControl3.Controls.Add(lookTDVH);
             panelControl3.Controls.Add(cbbNoiSinh);
+            panelControl3.Controls.Add(txtMaHS);
             panelControl3.Dock = DockStyle.Fill;
             panelControl3.Location = new Point(15, 14);
             panelControl3.Name = "panelControl3";
@@ -742,7 +747,7 @@
             rdGioiTinh.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             rdGioiTinh.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] { new DevExpress.XtraEditors.Controls.RadioGroupItem(true, "Nam", true, null, "rdNam"), new DevExpress.XtraEditors.Controls.RadioGroupItem(false, "Nữ", true, null, "rdNu") });
             rdGioiTinh.Size = new Size(227, 29);
-            rdGioiTinh.TabIndex = 88;
+            rdGioiTinh.TabIndex = 3;
             // 
             // labelControl35
             // 
@@ -808,7 +813,7 @@
             txtDiaChi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Cập nhật địa chỉ", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
             txtDiaChi.Properties.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             txtDiaChi.Size = new Size(620, 22);
-            txtDiaChi.TabIndex = 81;
+            txtDiaChi.TabIndex = 18;
             // 
             // labelControl26
             // 
@@ -824,7 +829,7 @@
             txtThonDuong.Location = new Point(95, 275);
             txtThonDuong.Name = "txtThonDuong";
             txtThonDuong.Size = new Size(619, 22);
-            txtThonDuong.TabIndex = 69;
+            txtThonDuong.TabIndex = 14;
             // 
             // cbbHTDT
             // 
@@ -832,14 +837,14 @@
             cbbHTDT.Name = "cbbHTDT";
             cbbHTDT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbHTDT.Size = new Size(239, 22);
-            cbbHTDT.TabIndex = 78;
+            cbbHTDT.TabIndex = 24;
             // 
             // txtHSGhiChu
             // 
             txtHSGhiChu.Location = new Point(94, 502);
             txtHSGhiChu.Name = "txtHSGhiChu";
             txtHSGhiChu.Size = new Size(620, 64);
-            txtHSGhiChu.TabIndex = 80;
+            txtHSGhiChu.TabIndex = 25;
             // 
             // labelControl20
             // 
@@ -1026,21 +1031,21 @@
             txtNNMe.Location = new Point(475, 124);
             txtNNMe.Name = "txtNNMe";
             txtNNMe.Size = new Size(240, 22);
-            txtNNMe.TabIndex = 63;
+            txtNNMe.TabIndex = 7;
             // 
             // txtLop
             // 
             txtLop.Location = new Point(474, 376);
             txtLop.Name = "txtLop";
             txtLop.Size = new Size(239, 22);
-            txtLop.TabIndex = 75;
+            txtLop.TabIndex = 21;
             // 
             // txtEmail
             // 
             txtEmail.Location = new Point(93, 403);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(229, 22);
-            txtEmail.TabIndex = 75;
+            txtEmail.TabIndex = 20;
             // 
             // dtNgaySinh
             // 
@@ -1050,28 +1055,28 @@
             dtNgaySinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             dtNgaySinh.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             dtNgaySinh.Size = new Size(229, 22);
-            dtNgaySinh.TabIndex = 38;
+            dtNgaySinh.TabIndex = 8;
             // 
             // txtTenMe
             // 
             txtTenMe.Location = new Point(475, 95);
             txtTenMe.Name = "txtTenMe";
             txtTenMe.Size = new Size(240, 22);
-            txtTenMe.TabIndex = 48;
+            txtTenMe.TabIndex = 6;
             // 
             // txtTen
             // 
             txtTen.Location = new Point(95, 94);
             txtTen.Name = "txtTen";
             txtTen.Size = new Size(229, 22);
-            txtTen.TabIndex = 35;
+            txtTen.TabIndex = 2;
             // 
             // txtSDT
             // 
             txtSDT.Location = new Point(94, 377);
             txtSDT.Name = "txtSDT";
             txtSDT.Size = new Size(229, 22);
-            txtSDT.TabIndex = 74;
+            txtSDT.TabIndex = 19;
             // 
             // txtCCCD
             // 
@@ -1080,37 +1085,28 @@
             txtCCCD.Properties.MaskSettings.Set("MaskManagerType", typeof(DevExpress.Data.Mask.RegularMaskManager));
             txtCCCD.Properties.MaskSettings.Set("mask", "\\d{10,12}");
             txtCCCD.Size = new Size(229, 22);
-            txtCCCD.TabIndex = 39;
+            txtCCCD.TabIndex = 10;
             // 
             // txtTenCha
             // 
             txtTenCha.Location = new Point(475, 37);
             txtTenCha.Name = "txtTenCha";
             txtTenCha.Size = new Size(240, 22);
-            txtTenCha.TabIndex = 42;
-            // 
-            // txtMaHS
-            // 
-            txtMaHS.Location = new Point(95, 37);
-            txtMaHS.Name = "txtMaHS";
-            txtMaHS.Properties.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
-            txtMaHS.Properties.Appearance.Options.UseFont = true;
-            txtMaHS.Size = new Size(229, 22);
-            txtMaHS.TabIndex = 33;
+            txtTenCha.TabIndex = 4;
             // 
             // txtNNCha
             // 
             txtNNCha.Location = new Point(475, 66);
             txtNNCha.Name = "txtNNCha";
             txtNNCha.Size = new Size(240, 22);
-            txtNNCha.TabIndex = 44;
+            txtNNCha.TabIndex = 5;
             // 
             // txtHo
             // 
             txtHo.Location = new Point(95, 65);
             txtHo.Name = "txtHo";
             txtHo.Size = new Size(229, 22);
-            txtHo.TabIndex = 34;
+            txtHo.TabIndex = 1;
             // 
             // lookTruong
             // 
@@ -1120,7 +1116,7 @@
             lookTruong.Properties.NullText = "(Trống)";
             lookTruong.Properties.PopupView = searchLookUpEdit1View;
             lookTruong.Size = new Size(240, 22);
-            lookTruong.TabIndex = 76;
+            lookTruong.TabIndex = 22;
             // 
             // searchLookUpEdit1View
             // 
@@ -1137,7 +1133,7 @@
             lookXa.Properties.NullText = "(Trống)";
             lookXa.Properties.PopupView = gridView2;
             lookXa.Size = new Size(190, 22);
-            lookXa.TabIndex = 73;
+            lookXa.TabIndex = 17;
             // 
             // gridView2
             // 
@@ -1154,7 +1150,7 @@
             lookDanToc.Properties.NullText = "(Trống)";
             lookDanToc.Properties.PopupView = gridView3;
             lookDanToc.Size = new Size(240, 22);
-            lookDanToc.TabIndex = 64;
+            lookDanToc.TabIndex = 11;
             // 
             // gridView3
             // 
@@ -1171,7 +1167,7 @@
             lookTonGiao.Properties.NullText = "(Trống)";
             lookTonGiao.Properties.PopupView = gridView4;
             lookTonGiao.Size = new Size(240, 22);
-            lookTonGiao.TabIndex = 65;
+            lookTonGiao.TabIndex = 12;
             // 
             // gridView4
             // 
@@ -1188,7 +1184,7 @@
             lookQuocTich.Properties.NullText = "(Trống)";
             lookQuocTich.Properties.PopupView = gridView5;
             lookQuocTich.Size = new Size(240, 22);
-            lookQuocTich.TabIndex = 67;
+            lookQuocTich.TabIndex = 13;
             // 
             // gridView5
             // 
@@ -1205,7 +1201,7 @@
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
             lookTinh.Size = new Size(92, 22);
-            lookTinh.TabIndex = 70;
+            lookTinh.TabIndex = 15;
             // 
             // gridView6
             // 
@@ -1222,7 +1218,7 @@
             lookQuanHuyen.Properties.NullText = "(Trống)";
             lookQuanHuyen.Properties.PopupView = gridView7;
             lookQuanHuyen.Size = new Size(136, 22);
-            lookQuanHuyen.TabIndex = 72;
+            lookQuanHuyen.TabIndex = 16;
             // 
             // gridView7
             // 
@@ -1239,7 +1235,7 @@
             lookTDVH.Properties.NullText = "(Trống)";
             lookTDVH.Properties.PopupView = gridView8;
             lookTDVH.Size = new Size(240, 22);
-            lookTDVH.TabIndex = 77;
+            lookTDVH.TabIndex = 23;
             // 
             // gridView8
             // 
@@ -1257,7 +1253,18 @@
             cbbNoiSinh.Properties.NullText = "(Trống)";
             cbbNoiSinh.Properties.PopupSizeable = true;
             cbbNoiSinh.Size = new Size(228, 22);
-            cbbNoiSinh.TabIndex = 82;
+            cbbNoiSinh.TabIndex = 9;
+            // 
+            // txtMaHS
+            // 
+            txtMaHS.Location = new Point(95, 37);
+            txtMaHS.Name = "txtMaHS";
+            txtMaHS.Properties.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            txtMaHS.Properties.Appearance.Options.UseFont = true;
+            txtMaHS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Cập nhật mã", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            txtMaHS.Properties.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            txtMaHS.Size = new Size(229, 22);
+            txtMaHS.TabIndex = 0;
             // 
             // directxFormContainerControl1
             // 
@@ -1334,7 +1341,6 @@
             ((System.ComponentModel.ISupportInitialize)txtSDT.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtCCCD.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtTenCha.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)txtMaHS.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtNNCha.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtHo.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)lookTruong.Properties).EndInit();
@@ -1354,6 +1360,7 @@
             ((System.ComponentModel.ISupportInitialize)lookTDVH.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView8).EndInit();
             ((System.ComponentModel.ISupportInitialize)cbbNoiSinh.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtMaHS.Properties).EndInit();
             directxFormContainerControl1.ResumeLayout(false);
             directxFormContainerControl1.PerformLayout();
             ResumeLayout(false);
@@ -1397,7 +1404,6 @@
         private DevExpress.XtraEditors.TextEdit txtSDT;
         private DevExpress.XtraEditors.TextEdit txtCCCD;
         private DevExpress.XtraEditors.TextEdit txtTenCha;
-        private DevExpress.XtraEditors.TextEdit txtMaHS;
         private DevExpress.XtraEditors.TextEdit txtNNCha;
         private DevExpress.XtraEditors.TextEdit txtHo;
         private DevExpress.XtraEditors.SearchLookUpEdit lookTruong;
@@ -1472,5 +1478,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl28;
         private DevExpress.XtraEditors.LabelControl labelControl27;
         private DevExpress.XtraEditors.RadioGroup rdGioiTinh;
+        private DevExpress.XtraEditors.ButtonEdit txtMaHS;
     }
 }

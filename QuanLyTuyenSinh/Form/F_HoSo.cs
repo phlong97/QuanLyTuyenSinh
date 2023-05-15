@@ -29,8 +29,7 @@ namespace QuanLyTuyenSinh.Form
             TopMost = true;
             MinimumSize = MaximumSize = Size;
             MaximizeBox = false;
-            //rdNam.CheckedChanged += RdNam_CheckedChanged;
-            txtMaHS.Enabled = false;
+
             _hoSo = hoSo;
             Text = DanhSach.CurrSettings.TENTRUONG;
             if (!string.IsNullOrEmpty(_hoSo.MaTinh))
@@ -76,10 +75,33 @@ namespace QuanLyTuyenSinh.Form
             lookTinh.TextChanged += LookTinh_TextChanged;
             lookTruong.EditValueChanged += lookTruong_EditValueChanged;
             txtDiaChi.ButtonClick += TxtDiaChi_ButtonClick;
+            txtMaHS.ButtonClick += TxtMaHS_ButtonClick;
             txtThonDuong.TextChanged += txtThonDuong_TextChanged;
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
+        }
+
+        private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (_hoSo.DsNguyenVong.Count >= 1)
+            {
+                var nv = _hoSo.DsNguyenVong.FirstOrDefault();
+                if (nv == null) return;
+                if (nv.NV != 1 || nv.IdNghe == null)
+                    return;
+                var nv1 = DanhSach.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
+                if (nv1 == null)
+                    return;
+                string manghe = nv1.Ma2;
+                var max = DanhSach.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
+                else
+                {
+                    int maxstt = int.Parse(max.MaHoSo.Substring(6, 3)) + 1;
+                    txtMaHS.Text = $"{_hoSo.NamTS}{manghe}{maxstt.ToString("D3")}";
+                }
+            }
         }
 
         private void DtNgaySinh_LostFocus(object? sender, EventArgs e)
@@ -138,17 +160,21 @@ namespace QuanLyTuyenSinh.Form
         {
             if (_hoSo.DsNguyenVong.Count >= 1 && e.Column.FieldName.Equals("IdNghe"))
             {
-                var nv = _hoSo.DsNguyenVong.First();
+                var nv = _hoSo.DsNguyenVong.FirstOrDefault();
+                if (nv == null) return;
                 if (nv.NV != 1 || nv.IdNghe == null)
                     return;
                 var nv1 = DanhSach.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
-                string manghe = "";
-                if (nv1 != null)
-                    manghe = nv1.Ma2;
-                else
+                if (nv1 == null)
                     return;
-                int maxCount = DanhSach.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).Count();
-                txtMaHS.Text = $"{_hoSo.NamTS}{manghe}{(maxCount + 1).ToString("D3")}";
+                string manghe = nv1.Ma2;
+                var max = DanhSach.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                if(max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
+                else
+                {
+                    int maxstt = int.Parse(max.MaHoSo.Substring(6, 3)) + 1;
+                    txtMaHS.Text = $"{_hoSo.NamTS}{manghe}{maxstt.ToString("D3")}";
+                }
             }
         }
 
@@ -220,7 +246,7 @@ namespace QuanLyTuyenSinh.Form
                         return;
                     }
                     int sl = chitieu.ChiTieu;
-                    int chitieutoida = int.Parse((sl + sl * DanhSach.CurrSettings.CHITIEUVUOTMUC).ToString());
+                    double chitieutoida = Math.Floor(sl + sl * DanhSach.CurrSettings.CHITIEUVUOTMUC);
                     int sltt = DanhSach.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(value)).Count();
                     if (SLdutuyen + sltt >= sl + (sl * DanhSach.CurrSettings.CHITIEUVUOTMUC))
                     {

@@ -234,7 +234,7 @@ namespace QuanLyTuyenSinh
         {
             List<HoSoDuTuyenView> lst = new();
             lst = DSHoSoDT.Where(
-                hs => (DotTS == 0 ? true : hs.DotTS == DotTS) && hs.TDHV.Equals(TDHV)
+                hs => (DotTS == 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true)
                 && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)) &&
                 (string.IsNullOrEmpty(IdNghe) ? true : hs.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(IdNghe)) is not null)
                 && (string.IsNullOrEmpty(IdDTUT) ? true : string.IsNullOrEmpty(hs.IdDTUT) ? false : hs.IdDTUT.Equals(IdDTUT))

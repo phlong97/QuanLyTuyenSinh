@@ -108,6 +108,7 @@
             barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            btnRefreshDTS = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)accordionControl1).BeginInit();
             pnMain.SuspendLayout();
             panelGrid.SuspendLayout();
@@ -553,7 +554,7 @@
             panelFilter.Controls.Add(lookNghe);
             panelFilter.Controls.Add(labelControl4);
             panelFilter.Dock = DockStyle.Left;
-            panelFilter.Location = new Point(364, 0);
+            panelFilter.Location = new Point(445, 0);
             panelFilter.Name = "panelFilter";
             panelFilter.Size = new Size(833, 34);
             panelFilter.TabIndex = 12;
@@ -660,6 +661,7 @@
             // 
             // panelTS
             // 
+            panelTS.Controls.Add(btnRefreshDTS);
             panelTS.Controls.Add(cbbTDHV);
             panelTS.Controls.Add(labelControl2);
             panelTS.Controls.Add(cbbDTS);
@@ -667,12 +669,12 @@
             panelTS.Dock = DockStyle.Left;
             panelTS.Location = new Point(0, 0);
             panelTS.Name = "panelTS";
-            panelTS.Size = new Size(364, 34);
+            panelTS.Size = new Size(445, 34);
             panelTS.TabIndex = 22;
             // 
             // cbbTDHV
             // 
-            cbbTDHV.Location = new Point(255, 9);
+            cbbTDHV.Location = new Point(332, 6);
             cbbTDHV.Name = "cbbTDHV";
             cbbTDHV.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbTDHV.Size = new Size(103, 22);
@@ -680,7 +682,7 @@
             // 
             // labelControl2
             // 
-            labelControl2.Location = new Point(148, 12);
+            labelControl2.Location = new Point(225, 9);
             labelControl2.Name = "labelControl2";
             labelControl2.Size = new Size(96, 16);
             labelControl2.TabIndex = 33;
@@ -688,7 +690,7 @@
             // 
             // cbbDTS
             // 
-            cbbDTS.Location = new Point(60, 9);
+            cbbDTS.Location = new Point(60, 6);
             cbbDTS.Name = "cbbDTS";
             cbbDTS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbDTS.Size = new Size(84, 22);
@@ -696,7 +698,7 @@
             // 
             // labelControl3
             // 
-            labelControl3.Location = new Point(14, 12);
+            labelControl3.Location = new Point(14, 9);
             labelControl3.Name = "labelControl3";
             labelControl3.Size = new Size(40, 16);
             labelControl3.TabIndex = 27;
@@ -870,6 +872,16 @@
             barDockControlRight.Manager = barManager1;
             barDockControlRight.Size = new Size(0, 652);
             // 
+            // btnRefreshDTS
+            // 
+            btnRefreshDTS.ImageOptions.Image = (Image)resources.GetObject("simpleButton1.ImageOptions.Image");
+            btnRefreshDTS.Location = new Point(145, 6);
+            btnRefreshDTS.Name = "btnRefreshDTS";
+            btnRefreshDTS.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            btnRefreshDTS.Size = new Size(74, 22);
+            btnRefreshDTS.TabIndex = 35;
+            btnRefreshDTS.Text = "Refresh";
+            // 
             // F_Main
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
@@ -1002,5 +1014,6 @@
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private DevExpress.XtraEditors.SimpleButton btnRefreshDTS;
     }
 }

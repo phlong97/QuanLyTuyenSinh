@@ -368,6 +368,7 @@ namespace QuanLyTuyenSinh.Form
             btnClose.Click += btnClose_Click;
             btnExel.Click += BtnExel_Click;
             btnLoadExel.Click += BtnLoadExel_Click;
+            btnRefreshDTS.Click += BtnRefreshDTS_Click;
 
             lookNghe.EditValueChanged += LookNghe_EditValueChanged;
             looktruong.EditValueChanged += Looktruong_EditValueChanged;
@@ -379,6 +380,11 @@ namespace QuanLyTuyenSinh.Form
             lookQuanHuyen.TextChanged += LookQuanHuyen_TextChanged;
             lookXa.TextChanged += LookXa_TextChanged;
             ResumeLayout(false);
+        }
+
+        private void BtnRefreshDTS_Click(object? sender, EventArgs e)
+        {
+            LoadComboBoxDTS();
         }
 
         private string connString = "";
@@ -1093,7 +1099,7 @@ namespace QuanLyTuyenSinh.Form
             btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieu) ? 110 : 0;
             _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 192;
-            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 364 : 0;
+            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 445 : 0;
             panelFilter.Visible = TenDm.StartsWith("HS") ? true : false;
             btnThongKe.Visible = TenDm.StartsWith("TK") ? true : false;
             dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 160 : 0;

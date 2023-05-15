@@ -1,6 +1,4 @@
-﻿using DevExpress.Pdf.Native;
-using DevExpress.XtraRichEdit.Commands;
-using LiteDB;
+﻿using LiteDB;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,7 +18,9 @@ namespace QuanLyTuyenSinh
     public class HoSoDuTuyen : BaseClass
     {
         [Display(Name = "Mã hồ sơ")]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string MaHoSo { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         [Display(Name = "Họ học sinh")]
         public string Ho { get; set; }
@@ -36,7 +36,9 @@ namespace QuanLyTuyenSinh
         public bool GioiTinh { get; set; } = true;// 0: Nữ 1: Nam
 
         [Display(Name = "Địa chỉ")]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string DiaChi { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         [Display(AutoGenerateField = false)]
         public string ThonDuong { get; set; }
@@ -166,8 +168,12 @@ namespace QuanLyTuyenSinh
                 errs += "Chưa chọn quốc tịch\n";
             if (string.IsNullOrEmpty(IdTrinhDoVH))
                 errs += "Chưa chọn trình độ văn hóa\n";
+            if (string.IsNullOrEmpty(IdTruong))
+                errs += "Chưa chọn trường\n";
             if (DsNguyenVong.Count() == 0)
                 errs += "Chưa chọn nguyện vọng\n";
+            if (DsNguyenVong.Where(x => x.IdNghe == null).Count() > 0)
+                errs += "Chưa chọn nghề cho nguyện vọng\n";
             return errs;
         }
 
@@ -523,11 +529,10 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Xếp loại HT")]
         public double XLHT { get; set; }
-
-        [Display(Name = "Ưu tiên KV")]
+        [Display(Name = "Ưu tiên đối tượng")]
         public double UTDT { get; set; }
 
-        [Display(Name = "Ưu tiên đối tượng")]
+        [Display(Name = "Ưu tiên KV")]
         public double UTKV { get; set; }
 
         [Display(Name = "Tổng điểm xét tuyển")]
@@ -918,7 +923,9 @@ namespace QuanLyTuyenSinh
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public string PasswordHash { get; set; }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string Salt { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string Permissons { get; set; } = "Create/Read/Update/Delete";
     }
 
