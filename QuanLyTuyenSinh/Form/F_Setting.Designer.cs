@@ -51,12 +51,10 @@
             labelControl16 = new DevExpress.XtraEditors.LabelControl();
             spinHKTHPT_Tot = new DevExpress.XtraEditors.SpinEdit();
             spinHKTHCS_Tot = new DevExpress.XtraEditors.SpinEdit();
-            spinXLHTTHPT_Yeu = new DevExpress.XtraEditors.SpinEdit();
             spinXLHTTHPT_Kha = new DevExpress.XtraEditors.SpinEdit();
             labelControl19 = new DevExpress.XtraEditors.LabelControl();
             spinXLTNTHPT_Kha = new DevExpress.XtraEditors.SpinEdit();
             spinXLTNTHCS_Kha = new DevExpress.XtraEditors.SpinEdit();
-            labelControl26 = new DevExpress.XtraEditors.LabelControl();
             labelControl13 = new DevExpress.XtraEditors.LabelControl();
             labelControl24 = new DevExpress.XtraEditors.LabelControl();
             spinHKTHPT_Kha = new DevExpress.XtraEditors.SpinEdit();
@@ -97,7 +95,6 @@
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_Gioi.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHPT_Tot.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHCS_Tot.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Yeu.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Kha.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHPT_Kha.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_Kha.Properties).BeginInit();
@@ -200,12 +197,10 @@
             groupControl1.Controls.Add(labelControl16);
             groupControl1.Controls.Add(spinHKTHPT_Tot);
             groupControl1.Controls.Add(spinHKTHCS_Tot);
-            groupControl1.Controls.Add(spinXLHTTHPT_Yeu);
             groupControl1.Controls.Add(spinXLHTTHPT_Kha);
             groupControl1.Controls.Add(labelControl19);
             groupControl1.Controls.Add(spinXLTNTHPT_Kha);
             groupControl1.Controls.Add(spinXLTNTHCS_Kha);
-            groupControl1.Controls.Add(labelControl26);
             groupControl1.Controls.Add(labelControl13);
             groupControl1.Controls.Add(labelControl24);
             groupControl1.Controls.Add(spinHKTHPT_Kha);
@@ -262,7 +257,7 @@
             // 
             // labelControl7
             // 
-            labelControl7.Location = new Point(282, 233);
+            labelControl7.Location = new Point(282, 228);
             labelControl7.Name = "labelControl7";
             labelControl7.Size = new Size(71, 16);
             labelControl7.TabIndex = 4;
@@ -270,7 +265,7 @@
             // 
             // labelControl6
             // 
-            labelControl6.Location = new Point(36, 233);
+            labelControl6.Location = new Point(36, 228);
             labelControl6.Name = "labelControl6";
             labelControl6.Size = new Size(65, 16);
             labelControl6.TabIndex = 4;
@@ -287,7 +282,7 @@
             // spinXLHTTHPT_Gioi
             // 
             spinXLHTTHPT_Gioi.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_Gioi.Location = new Point(428, 372);
+            spinXLHTTHPT_Gioi.Location = new Point(427, 327);
             spinXLHTTHPT_Gioi.Name = "spinXLHTTHPT_Gioi";
             spinXLHTTHPT_Gioi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLHTTHPT_Gioi.Properties.MaskSettings.Set("mask", "f");
@@ -306,7 +301,7 @@
             // 
             // labelControl25
             // 
-            labelControl25.Location = new Point(332, 376);
+            labelControl25.Location = new Point(331, 331);
             labelControl25.Name = "labelControl25";
             labelControl25.Size = new Size(30, 16);
             labelControl25.TabIndex = 4;
@@ -358,20 +353,10 @@
             spinHKTHCS_Tot.Size = new Size(53, 24);
             spinHKTHCS_Tot.TabIndex = 2;
             // 
-            // spinXLHTTHPT_Yeu
-            // 
-            spinXLHTTHPT_Yeu.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_Yeu.Location = new Point(428, 247);
-            spinXLHTTHPT_Yeu.Name = "spinXLHTTHPT_Yeu";
-            spinXLHTTHPT_Yeu.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinXLHTTHPT_Yeu.Properties.MaskSettings.Set("mask", "f");
-            spinXLHTTHPT_Yeu.Size = new Size(53, 24);
-            spinXLHTTHPT_Yeu.TabIndex = 9;
-            // 
             // spinXLHTTHPT_Kha
             // 
             spinXLHTTHPT_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_Kha.Location = new Point(428, 332);
+            spinXLHTTHPT_Kha.Location = new Point(427, 287);
             spinXLHTTHPT_Kha.Name = "spinXLHTTHPT_Kha";
             spinXLHTTHPT_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLHTTHPT_Kha.Properties.MaskSettings.Set("mask", "f");
@@ -406,14 +391,6 @@
             spinXLTNTHCS_Kha.Size = new Size(53, 24);
             spinXLTNTHCS_Kha.TabIndex = 4;
             // 
-            // labelControl26
-            // 
-            labelControl26.Location = new Point(333, 255);
-            labelControl26.Name = "labelControl26";
-            labelControl26.Size = new Size(30, 16);
-            labelControl26.TabIndex = 4;
-            labelControl26.Text = "- Yếu";
-            // 
             // labelControl13
             // 
             labelControl13.Location = new Point(68, 167);
@@ -424,7 +401,7 @@
             // 
             // labelControl24
             // 
-            labelControl24.Location = new Point(332, 336);
+            labelControl24.Location = new Point(331, 291);
             labelControl24.Name = "labelControl24";
             labelControl24.Size = new Size(30, 16);
             labelControl24.TabIndex = 4;
@@ -468,7 +445,7 @@
             // 
             // labelControl23
             // 
-            labelControl23.Location = new Point(332, 295);
+            labelControl23.Location = new Point(331, 250);
             labelControl23.Name = "labelControl23";
             labelControl23.Size = new Size(71, 16);
             labelControl23.TabIndex = 4;
@@ -517,7 +494,7 @@
             // spinXLHTTHPT_TB
             // 
             spinXLHTTHPT_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_TB.Location = new Point(428, 291);
+            spinXLHTTHPT_TB.Location = new Point(427, 246);
             spinXLHTTHPT_TB.Name = "spinXLHTTHPT_TB";
             spinXLHTTHPT_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLHTTHPT_TB.Properties.MaskSettings.Set("mask", "f");
@@ -687,7 +664,6 @@
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_Gioi.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHPT_Tot.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHCS_Tot.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Yeu.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Kha.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHPT_Kha.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_Kha.Properties).EndInit();
@@ -751,9 +727,7 @@
         private DevExpress.XtraEditors.SpinEdit spinXLTNTHPT_TB;
         private DevExpress.XtraEditors.SpinEdit spinXLHTTHPT_Gioi;
         private DevExpress.XtraEditors.LabelControl labelControl25;
-        private DevExpress.XtraEditors.SpinEdit spinXLHTTHPT_Yeu;
         private DevExpress.XtraEditors.SpinEdit spinXLHTTHPT_Kha;
-        private DevExpress.XtraEditors.LabelControl labelControl26;
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraEditors.LabelControl labelControl23;
         private DevExpress.XtraEditors.SpinEdit spinXLHTTHPT_TB;

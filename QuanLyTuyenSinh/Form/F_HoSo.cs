@@ -4,11 +4,10 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using System.ComponentModel;
 using System.Data;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace QuanLyTuyenSinh.Form
 {
-    public partial class F_HoSo : DevExpress.XtraEditors.DirectXForm
+    public partial class F_HoSo : DirectXForm
     {
         private HoSoDuTuyen _hoSo;
         private BindingSource _sourceHS;
@@ -64,7 +63,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void F_HoSo_Shown(object? sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             gridView1.CellValueChanged += GridView1_CellValueChanged;
             btnSaveAndClose.ItemClick += btnSaveCloseHS_Click;
             btnSaveAndNew.ItemClick += btnSaveNewHS_Click;
@@ -80,6 +79,8 @@ namespace QuanLyTuyenSinh.Form
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
+
+            ActiveControl = txtHo;
         }
 
         private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -398,7 +399,7 @@ namespace QuanLyTuyenSinh.Form
         private void LoadComboBox()
         {
             string[] lstHanhKiem = { "Trung bình", "Khá", "Tốt" };
-            string[] lstXepLoaiHocTap = { "Yếu", "Trung bình", "Khá", "Giỏi" };
+            string[] lstXepLoaiHocTap = { "Trung bình", "Khá", "Giỏi" };
             string[] lstXepLoaiTotNghiep = { "Trung bình", "Khá", "Giỏi" };
             string[] lstHTDT = { "Chính quy", "Đào tạo kỹ thuật an toàn lao động", "Đào tạo huấn luyện kỹ năng", "Đào tạo Và nâng cao trình độ chuyên môn kỹ thuật", "Đào tạo thường xuyên", "Đào tạo từ xa, tự học có hướng dẫn", "Vừa làm vừa học" };
 

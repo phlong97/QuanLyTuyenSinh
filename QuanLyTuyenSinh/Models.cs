@@ -18,9 +18,7 @@ namespace QuanLyTuyenSinh
     public class HoSoDuTuyen : BaseClass
     {
         [Display(Name = "Mã hồ sơ")]
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string MaHoSo { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         [Display(Name = "Họ học sinh")]
         public string Ho { get; set; }
@@ -36,9 +34,7 @@ namespace QuanLyTuyenSinh
         public bool GioiTinh { get; set; } = true;// 0: Nữ 1: Nam
 
         [Display(Name = "Địa chỉ")]
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string DiaChi { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         [Display(AutoGenerateField = false)]
         public string ThonDuong { get; set; }
@@ -221,11 +217,9 @@ namespace QuanLyTuyenSinh
                     case "Khá":
                         tong += DanhSach.CurrSettings.XLHT_THPT.KHA; break;
                     case "Trung bình":
-                        tong += DanhSach.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
-                    case "Yếu":
-                        tong += DanhSach.CurrSettings.XLHT_THPT.YEU; break;
+                        tong += DanhSach.CurrSettings.XLHT_THPT.TRUNG_BINH; break;                    
                     default:
-                        tong += DanhSach.CurrSettings.XLHT_THPT.YEU; break;
+                        tong += DanhSach.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                 }
                 switch (XLTN)
                 {
@@ -249,7 +243,8 @@ namespace QuanLyTuyenSinh
             {
                 IdHoSo = Id,
                 MaHoSo = MaHoSo,
-                HoTen = $"{Ho} {Ten}",
+                Ho = Ho,
+                Ten = Ten,
                 NgaySinh = NgaySinh,
                 GT = GioiTinh ? "Nam" : "Nữ",
                 DiaChi = DiaChi,
@@ -308,11 +303,9 @@ namespace QuanLyTuyenSinh
                     case "Khá":
                         th.XLHT = DanhSach.CurrSettings.XLHT_THPT.KHA; break;
                     case "Trung bình":
-                        th.XLHT = DanhSach.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
-                    case "Yếu":
-                        th.XLHT = DanhSach.CurrSettings.XLHT_THPT.YEU; break;
+                        th.XLHT = DanhSach.CurrSettings.XLHT_THPT.TRUNG_BINH; break;                    
                     default:
-                        th.XLHT = DanhSach.CurrSettings.XLHT_THPT.YEU; break;
+                        th.XLHT = DanhSach.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                 }
                 switch (XLTN)
                 {
@@ -395,6 +388,8 @@ namespace QuanLyTuyenSinh
                 HoTenMe = HoTenMe,
                 NoiSinh = NoiSinh,
                 DiaChi = DiaChi,
+                CCCD = CCCD,
+                Lop = Lop,
                 BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
                 GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
                 GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
@@ -403,6 +398,7 @@ namespace QuanLyTuyenSinh
                 HinhThe = KiemTraHS.HinhThe ? "X" : string.Empty,
                 HocBa = KiemTraHS.HocBa ? "X" : string.Empty,
                 PhieuDKDT = KiemTraHS.PhieuDKDT ? "X" : string.Empty,
+                CCCDX = KiemTraHS.CCCD ? "X" : string.Empty,
                 SDT = SDT,
                 NamTS = NamTS,
                 DotTS = DotTS,
@@ -457,9 +453,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+        [Display(Name = "CCCD")]
+        public string CCCD { get; set; }
 
         [Display(Name = "Trường")]
         public string IdTruong { get; set; }
+        [Display(Name = "Lớp")]
+        public string Lop { get; set; }
 
         [Display(Name = "Họ tên cha")]
         public string HoTenCha { get; set; }
@@ -490,6 +490,8 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Giấy khai sinh")]
         public string GiayKhaiSinh { get; set; }
+        [Display(Name = "CCCD")]
+        public string CCCDX { get; set; }
 
         [Display(Name = "Ảnh thẻ")]
         public string HinhThe { get; set; }
@@ -509,8 +511,10 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
 
-        [Display(Name = "Họ và tên học sinh")]
-        public string HoTen { get; set; }
+        [Display(Name = "Họ")]
+        public string Ho { get; set; }
+        [Display(Name = "Tên học sinh")]
+        public string Ten { get; set; }
 
         [Display(Name = "Ngày sinh")]
         public DateTime NgaySinh { get; set; }
@@ -721,6 +725,7 @@ namespace QuanLyTuyenSinh
         public bool GiayKhaiSinh { get; set; }
         public bool GiayCNUT { get; set; }
         public bool GKSK { get; set; }
+        public bool CCCD { get; set; }
         public string GhiChu { get; set; }
     }
 
@@ -967,8 +972,7 @@ namespace QuanLyTuyenSinh
     }
 
     public class XLHT_THPT
-    {
-        public double YEU { get; set; } = 1;
+    {        
         public double TRUNG_BINH { get; set; } = 2;
         public double KHA { get; set; } = 3;
         public double GIOI { get; set; } = 4;

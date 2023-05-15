@@ -543,7 +543,7 @@ namespace QuanLyTuyenSinh.Form
         private void BtnThongKeTheoXa_ItemClick(object sender, ItemClickEventArgs e)
         {
             gridView1.Columns.Clear();
-            gridView1.CustomDrawCell += GridView1_CustomDrawCell;
+            gridView1.CustomDrawCell += HighlightTotal;
             _bindingSource.DataSource = DanhSach.THSLTTTheoXa(cbbDTS.SelectedIndex);
             _FormatLastColumn = true;
             gridView1.BestFitColumns(true);
@@ -770,7 +770,7 @@ namespace QuanLyTuyenSinh.Form
                     SLNV1 = lstNV1.Count(),
                     SLNV2 = lstNV2.Count(),
                 });
-                gridView1.CustomDrawCell += GridView1_CustomDrawCell;
+                gridView1.CustomDrawCell += HighlightTotal;
                 _bindingSource.DataSource = lstReport;
                 gridView1.BestFitColumns(true);
             }
@@ -804,13 +804,13 @@ namespace QuanLyTuyenSinh.Form
                     SLTNTHCS = lstReport.Sum(x => x.SLTNTHCS),
                     SLTNTHPTT = lstReport.Sum(x => x.SLTNTHPTT),
                 });
-                gridView1.CustomDrawCell += GridView1_CustomDrawCell;
+                gridView1.CustomDrawCell += HighlightTotal;
                 _bindingSource.DataSource = lstReport;
                 gridView1.BestFitColumns(true);
             }
         }
 
-        private void GridView1_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        private void HighlightTotal(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
             DevExpress.XtraGrid.Views.Grid.GridView gridView = sender as DevExpress.XtraGrid.Views.Grid.GridView;
 
@@ -825,7 +825,7 @@ namespace QuanLyTuyenSinh.Form
         private void BtnThongKeTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
         {
             gridView1.Columns.Clear();
-            gridView1.CustomDrawCell += GridView1_CustomDrawCell;
+            gridView1.CustomDrawCell += HighlightTotal;
             if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
             {
                 _bindingSource.DataSource = DanhSach.THSLNgheTheoTruong(cbbDTS.SelectedIndex);
@@ -853,7 +853,7 @@ namespace QuanLyTuyenSinh.Form
         {
             EditMode = false;
             gridView1.Columns.Clear();
-            gridView1.CustomDrawCell -= GridView1_CustomDrawCell;
+            gridView1.CustomDrawCell -= HighlightTotal;
             _FormatLastColumn = false;
             _bindingSource = new BindingSource();
             switch (TenDm)
@@ -1102,7 +1102,7 @@ namespace QuanLyTuyenSinh.Form
             panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 445 : 0;
             panelFilter.Visible = TenDm.StartsWith("HS") ? true : false;
             btnThongKe.Visible = TenDm.StartsWith("TK") ? true : false;
-            dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 160 : 0;
+            dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 185 : 0;
             btnLoadExel.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 236 : 0;
             panelGrid.BringToFront();
             gridView1.ExpandAllGroups();

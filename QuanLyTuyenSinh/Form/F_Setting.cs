@@ -58,9 +58,7 @@
             spinXLTNTHPT_Kha.DataBindings.Add("EditValue", source, "XLTN_THPT.KHA", true, DataSourceUpdateMode.OnPropertyChanged);
             spinXLTNTHPT_Gioi.DataBindings.Clear();
             spinXLTNTHPT_Gioi.DataBindings.Add("EditValue", source, "XLTN_THPT.GIOI", true, DataSourceUpdateMode.OnPropertyChanged);
-
-            spinXLHTTHPT_Yeu.DataBindings.Clear();
-            spinXLHTTHPT_Yeu.DataBindings.Add("EditValue", source, "XLHT_THPT.YEU", true, DataSourceUpdateMode.OnPropertyChanged);
+            
             spinXLHTTHPT_TB.DataBindings.Clear();
             spinXLHTTHPT_TB.DataBindings.Add("EditValue", source, "XLHT_THPT.TRUNG_BINH", true, DataSourceUpdateMode.OnPropertyChanged);
             spinXLHTTHPT_Kha.DataBindings.Clear();
