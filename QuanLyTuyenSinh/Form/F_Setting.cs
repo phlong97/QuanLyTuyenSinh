@@ -86,8 +86,8 @@
             source = new BindingSource();
             source.DataSource = _setting;
             CreateBinding();
-            _Helper.InitSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
-            _Helper.InitSearchLookupEdit<_Helper.Adress>(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
+            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
 
             Shown += F_Setting_Shown;
         }

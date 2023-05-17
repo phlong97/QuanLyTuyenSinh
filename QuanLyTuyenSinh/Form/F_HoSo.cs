@@ -9,15 +9,15 @@ namespace QuanLyTuyenSinh.Form
 {
     public partial class F_HoSo : DirectXForm
     {
-        private HoSoDuTuyen _hoSo;
-        private BindingSource _sourceHS;
-        private BindingSource _sourceNV;
+        HoSoDuTuyen _hoSo;
+        BindingSource _sourceHS;
+        BindingSource _sourceNV;
 
-        private bool EditMode;
-        private string Diachi = string.Empty;
-        private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
-        private List<_Helper.Adress> lstQuanHuyen;
-        private List<_Helper.Adress> lstPhuongXa;
+        bool EditMode;
+        string Diachi = string.Empty;
+        List<_Helper.Adress> lstTinh = _Helper.getListProvince();
+        List<_Helper.Adress> lstQuanHuyen;
+        List<_Helper.Adress> lstPhuongXa;
 
         public F_HoSo(HoSoDuTuyen hoSo)
         {
@@ -170,7 +170,7 @@ namespace QuanLyTuyenSinh.Form
                     return;
                 string manghe = nv1.Ma2;
                 var max = DanhSach.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
-                if(max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
+                if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
                 else
                 {
                     int maxstt = int.Parse(max.MaHoSo.Substring(6, 3)) + 1;
@@ -204,13 +204,8 @@ namespace QuanLyTuyenSinh.Form
             gridView1.ShowingEditor += GridView_ShowingEditor;
             gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
 
-            gridView1.Columns.ColumnByFieldName("IdNghe").ColumnEdit = new RepositoryItemLookUpEdit()
-            {
-                DataSource = DanhSach.DsNghe,
-                DisplayMember = "Ten",
-                ValueMember = "Id",
-                NullText = "(Trống)",
-            };
+            DevForm.CreateRepositoryItemLookUpEdit(gridView1, DanhSach.DsNghe, "IdNghe", "Ten", "Id");
+            
         }
 
         private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
@@ -349,7 +344,12 @@ namespace QuanLyTuyenSinh.Form
             cbbHTDT.DataBindings.Add("SelectedItem", _sourceHS, "HTDT", true, DataSourceUpdateMode.OnPropertyChanged);
             txtHSGhiChu.DataBindings.Clear();
             txtHSGhiChu.DataBindings.Add("Text", _sourceHS, "GhiChu", true, DataSourceUpdateMode.OnPropertyChanged);
-
+            txtNSCha.DataBindings.Clear();
+            txtNSCha.DataBindings.Add("Text", _sourceHS, "NamSinhCha", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtNSMe.DataBindings.Clear();
+            txtNSMe.DataBindings.Add("Text", _sourceHS, "NamSinhMe", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtNamTN.DataBindings.Clear();
+            txtNamTN.DataBindings.Add("Text", _sourceHS, "NamTN", true, DataSourceUpdateMode.OnPropertyChanged);
             //Kiểm tra hồ sơ
             chkPhieuDKDT.DataBindings.Clear();
             chkPhieuDKDT.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.PhieuDKDT", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -384,16 +384,16 @@ namespace QuanLyTuyenSinh.Form
 
         private void InitLookupEdits()
         {
-            _Helper.InitSearchLookupEdit(lookDanToc, "Ten", "Id", DanhSach.DsDanToc);
-            _Helper.InitSearchLookupEdit(lookQuocTich, "Ten", "Id", DanhSach.DsQuocTich);
-            _Helper.InitSearchLookupEdit(lookTonGiao, "Ten", "Id", DanhSach.DsTonGiao);
-            _Helper.InitSearchLookupEdit(lookTDVH, "Ten", "Id", DanhSach.DsTrinhDo);
-            _Helper.InitSearchLookupEdit(lookDTUT, "Ten", "Id", DanhSach.DsDoiTuongUT);
-            _Helper.InitSearchLookupEdit(lookKVUT, "Ten", "Id", DanhSach.DsKhuVucUT);
-            _Helper.InitSearchLookupEdit(lookTruong, "Ten", "Id", DanhSach.DsTruong);
-            _Helper.InitSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
-            _Helper.InitSearchLookupEdit<_Helper.Adress>(lookQuanHuyen, "AdressName", "AdressCode");
-            _Helper.InitSearchLookupEdit<_Helper.Adress>(lookXa, "AdressName", "AdressCode");
+            DevForm.CreateSearchLookupEdit(lookDanToc, "Ten", "Id", DanhSach.DsDanToc);
+            DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", DanhSach.DsQuocTich);
+            DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", DanhSach.DsTonGiao);
+            DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", DanhSach.DsTrinhDo);
+            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DanhSach.DsDoiTuongUT);
+            DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", DanhSach.DsKhuVucUT);
+            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DanhSach.DsTruong);
+            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode");
+            DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode");
         }
 
         private void LoadComboBox()
@@ -403,11 +403,11 @@ namespace QuanLyTuyenSinh.Form
             string[] lstXepLoaiTotNghiep = { "Trung bình", "Khá", "Giỏi" };
             string[] lstHTDT = { "Chính quy", "Đào tạo kỹ thuật an toàn lao động", "Đào tạo huấn luyện kỹ năng", "Đào tạo Và nâng cao trình độ chuyên môn kỹ thuật", "Đào tạo thường xuyên", "Đào tạo từ xa, tự học có hướng dẫn", "Vừa làm vừa học" };
 
-            _Helper.InitComboboxEdit(cbbHanhKiem, lstHanhKiem);
-            _Helper.InitComboboxEdit(cbbXLHT, lstXepLoaiHocTap);
-            _Helper.InitComboboxEdit(cbbXLTN, lstXepLoaiTotNghiep);
-            _Helper.InitComboboxEdit(cbbHTDT, lstHTDT);
-            _Helper.InitComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AdressName).ToArray(), "", true, true);
+            DevForm.CreateComboboxEdit(cbbHanhKiem, lstHanhKiem);
+            DevForm.CreateComboboxEdit(cbbXLHT, lstXepLoaiHocTap);
+            DevForm.CreateComboboxEdit(cbbXLTN, lstXepLoaiTotNghiep);
+            DevForm.CreateComboboxEdit(cbbHTDT, lstHTDT);
+            DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AdressName).ToArray(), "", true, true);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -490,6 +490,7 @@ namespace QuanLyTuyenSinh.Form
                     DanhSach.DSHoSoDT.Add(_hoSo);
                 }
                 DanhSach.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
+                DanhSach.RefreshDS(TuDien.CategoryName.HoSoDuTuyen);
                 Close();
             }
             else { XtraMessageBox.Show(this, errs, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error); }

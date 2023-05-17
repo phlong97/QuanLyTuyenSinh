@@ -56,7 +56,7 @@
             pnMain = new Panel();
             panelGrid = new TableLayoutPanel();
             gridControl = new DevExpress.XtraGrid.GridControl();
-            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
             lookXa = new DevExpress.XtraEditors.SearchLookUpEdit();
             gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -113,7 +113,7 @@
             pnMain.SuspendLayout();
             panelGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
             panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)lookXa.Properties).BeginInit();
@@ -152,7 +152,7 @@
             accordionControl1.Name = "accordionControl1";
             accordionControl1.OptionsMinimizing.AllowMinimizeMode = DevExpress.Utils.DefaultBoolean.True;
             accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Auto;
-            accordionControl1.Size = new Size(236, 652);
+            accordionControl1.Size = new Size(270, 652);
             accordionControl1.TabIndex = 4;
             accordionControl1.ViewType = DevExpress.XtraBars.Navigation.AccordionControlViewType.HamburgerMenu;
             // 
@@ -331,9 +331,9 @@
             pnMain.Controls.Add(panelGrid);
             pnMain.Controls.Add(pnImg);
             pnMain.Dock = DockStyle.Fill;
-            pnMain.Location = new Point(236, 20);
+            pnMain.Location = new Point(270, 20);
             pnMain.Name = "pnMain";
-            pnMain.Size = new Size(1444, 652);
+            pnMain.Size = new Size(1650, 652);
             pnMain.TabIndex = 10;
             // 
             // panelGrid
@@ -353,23 +353,23 @@
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             panelGrid.RowStyles.Add(new RowStyle());
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            panelGrid.Size = new Size(1444, 652);
+            panelGrid.Size = new Size(1650, 652);
             panelGrid.TabIndex = 19;
             // 
             // gridControl
             // 
             gridControl.Dock = DockStyle.Fill;
             gridControl.Location = new Point(3, 113);
-            gridControl.MainView = gridView1;
+            gridControl.MainView = gridView;
             gridControl.Name = "gridControl";
-            gridControl.Size = new Size(1438, 536);
+            gridControl.Size = new Size(1644, 536);
             gridControl.TabIndex = 10;
-            gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
             // 
-            // gridView1
+            // gridView
             // 
-            gridView1.GridControl = gridControl;
-            gridView1.Name = "gridView1";
+            gridView.GridControl = gridControl;
+            gridView.Name = "gridView";
             // 
             // panelControl1
             // 
@@ -382,17 +382,17 @@
             panelControl1.Dock = DockStyle.Fill;
             panelControl1.Location = new Point(3, 73);
             panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(1438, 34);
+            panelControl1.Size = new Size(1644, 34);
             panelControl1.TabIndex = 20;
             // 
             // lookXa
             // 
-            lookXa.Location = new Point(970, 7);
+            lookXa.Location = new Point(1109, 7);
             lookXa.Name = "lookXa";
             lookXa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookXa.Properties.NullText = "(Trống)";
             lookXa.Properties.PopupView = gridView5;
-            lookXa.Size = new Size(216, 22);
+            lookXa.Size = new Size(247, 22);
             lookXa.TabIndex = 36;
             // 
             // gridView5
@@ -404,12 +404,12 @@
             // 
             // lookTinh
             // 
-            lookTinh.Location = new Point(414, 5);
+            lookTinh.Location = new Point(473, 5);
             lookTinh.Name = "lookTinh";
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
-            lookTinh.Size = new Size(192, 22);
+            lookTinh.Size = new Size(219, 22);
             lookTinh.TabIndex = 34;
             // 
             // gridView6
@@ -421,12 +421,12 @@
             // 
             // lookQuanHuyen
             // 
-            lookQuanHuyen.Location = new Point(688, 6);
+            lookQuanHuyen.Location = new Point(786, 6);
             lookQuanHuyen.Name = "lookQuanHuyen";
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";
             lookQuanHuyen.Properties.PopupView = gridView7;
-            lookQuanHuyen.Size = new Size(197, 22);
+            lookQuanHuyen.Size = new Size(225, 22);
             lookQuanHuyen.TabIndex = 35;
             // 
             // gridView7
@@ -438,25 +438,25 @@
             // 
             // labelControl9
             // 
-            labelControl9.Location = new Point(900, 10);
+            labelControl9.Location = new Point(1029, 10);
             labelControl9.Name = "labelControl9";
-            labelControl9.Size = new Size(63, 16);
+            labelControl9.Size = new Size(66, 16);
             labelControl9.TabIndex = 31;
             labelControl9.Text = "Xã/Phường";
             // 
             // labelControl8
             // 
-            labelControl8.Location = new Point(612, 9);
+            labelControl8.Location = new Point(699, 9);
             labelControl8.Name = "labelControl8";
-            labelControl8.Size = new Size(70, 16);
+            labelControl8.Size = new Size(75, 16);
             labelControl8.TabIndex = 32;
             labelControl8.Text = "Quận/Huyện";
             // 
             // labelControl7
             // 
-            labelControl7.Location = new Point(383, 8);
+            labelControl7.Location = new Point(438, 8);
             labelControl7.Name = "labelControl7";
-            labelControl7.Size = new Size(25, 16);
+            labelControl7.Size = new Size(26, 16);
             labelControl7.TabIndex = 33;
             labelControl7.Text = "Tỉnh";
             // 
@@ -472,7 +472,7 @@
             panelControl2.Dock = DockStyle.Fill;
             panelControl2.Location = new Point(3, 3);
             panelControl2.Name = "panelControl2";
-            panelControl2.Size = new Size(1438, 24);
+            panelControl2.Size = new Size(1644, 24);
             panelControl2.TabIndex = 21;
             // 
             // btnExel
@@ -483,10 +483,10 @@
             btnExel.Appearance.Options.UseFont = true;
             btnExel.Dock = DockStyle.Left;
             btnExel.ImageOptions.Image = (Image)resources.GetObject("btnExel.ImageOptions.Image");
-            btnExel.Location = new Point(806, 2);
+            btnExel.Location = new Point(921, 2);
             btnExel.Margin = new Padding(0);
             btnExel.Name = "btnExel";
-            btnExel.Size = new Size(120, 20);
+            btnExel.Size = new Size(137, 20);
             btnExel.TabIndex = 31;
             btnExel.Text = "Xuất file Exel";
             // 
@@ -498,10 +498,10 @@
             btnLoadExel.Appearance.Options.UseFont = true;
             btnLoadExel.Dock = DockStyle.Left;
             btnLoadExel.ImageOptions.Image = (Image)resources.GetObject("btnLoadExel.ImageOptions.Image");
-            btnLoadExel.Location = new Point(570, 2);
+            btnLoadExel.Location = new Point(651, 2);
             btnLoadExel.Margin = new Padding(0);
             btnLoadExel.Name = "btnLoadExel";
-            btnLoadExel.Size = new Size(236, 20);
+            btnLoadExel.Size = new Size(270, 20);
             btnLoadExel.TabIndex = 32;
             btnLoadExel.Text = "Nhập DS trúng tuyển từ file Exel";
             // 
@@ -513,9 +513,9 @@
             dropbtnDSTT.Appearance.Options.UseFont = true;
             dropbtnDSTT.Dock = DockStyle.Left;
             dropbtnDSTT.ImageOptions.Image = (Image)resources.GetObject("dropbtnDSTT.ImageOptions.Image");
-            dropbtnDSTT.Location = new Point(385, 2);
+            dropbtnDSTT.Location = new Point(440, 2);
             dropbtnDSTT.Name = "dropbtnDSTT";
-            dropbtnDSTT.Size = new Size(185, 20);
+            dropbtnDSTT.Size = new Size(211, 20);
             dropbtnDSTT.TabIndex = 33;
             dropbtnDSTT.Text = "Lập DS trúng tuyển";
             // 
@@ -527,10 +527,10 @@
             btnLapChiTieu.Appearance.Options.UseFont = true;
             btnLapChiTieu.Dock = DockStyle.Left;
             btnLapChiTieu.ImageOptions.Image = (Image)resources.GetObject("btnLapChiTieu.ImageOptions.Image");
-            btnLapChiTieu.Location = new Point(275, 2);
+            btnLapChiTieu.Location = new Point(314, 2);
             btnLapChiTieu.Margin = new Padding(0);
             btnLapChiTieu.Name = "btnLapChiTieu";
-            btnLapChiTieu.Size = new Size(110, 20);
+            btnLapChiTieu.Size = new Size(126, 20);
             btnLapChiTieu.TabIndex = 29;
             btnLapChiTieu.Text = "Lập chỉ tiêu";
             // 
@@ -542,10 +542,10 @@
             btnRefresh.Appearance.Options.UseBorderColor = true;
             btnRefresh.Dock = DockStyle.Left;
             btnRefresh.ImageOptions.Image = (Image)resources.GetObject("btnRefresh.ImageOptions.Image");
-            btnRefresh.Location = new Point(194, 2);
+            btnRefresh.Location = new Point(221, 2);
             btnRefresh.Margin = new Padding(0);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(81, 20);
+            btnRefresh.Size = new Size(93, 20);
             btnRefresh.TabIndex = 28;
             btnRefresh.Text = "Load lại";
             // 
@@ -557,10 +557,10 @@
             btnClose.Appearance.Options.UseBorderColor = true;
             btnClose.Dock = DockStyle.Right;
             btnClose.ImageOptions.Image = (Image)resources.GetObject("btnClose.ImageOptions.Image");
-            btnClose.Location = new Point(1413, 2);
+            btnClose.Location = new Point(1616, 2);
             btnClose.Margin = new Padding(0);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(23, 20);
+            btnClose.Size = new Size(26, 20);
             btnClose.TabIndex = 30;
             // 
             // _panelButton
@@ -571,7 +571,7 @@
             _panelButton.Dock = DockStyle.Left;
             _panelButton.Location = new Point(2, 2);
             _panelButton.Name = "_panelButton";
-            _panelButton.Size = new Size(192, 20);
+            _panelButton.Size = new Size(219, 20);
             _panelButton.TabIndex = 27;
             // 
             // btnDelete
@@ -582,10 +582,10 @@
             btnDelete.Appearance.Options.UseBorderColor = true;
             btnDelete.Dock = DockStyle.Left;
             btnDelete.ImageOptions.Image = (Image)resources.GetObject("btnDelete.ImageOptions.Image");
-            btnDelete.Location = new Point(125, 0);
+            btnDelete.Location = new Point(143, 0);
             btnDelete.Margin = new Padding(0);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(64, 20);
+            btnDelete.Size = new Size(73, 20);
             btnDelete.TabIndex = 13;
             btnDelete.Text = "Xóa";
             // 
@@ -595,10 +595,10 @@
             btnEdit.Appearance.Options.UseBackColor = true;
             btnEdit.Dock = DockStyle.Left;
             btnEdit.ImageOptions.Image = (Image)resources.GetObject("btnEdit.ImageOptions.Image");
-            btnEdit.Location = new Point(67, 0);
+            btnEdit.Location = new Point(77, 0);
             btnEdit.Margin = new Padding(0);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(58, 20);
+            btnEdit.Size = new Size(66, 20);
             btnEdit.TabIndex = 11;
             btnEdit.Text = "Sửa";
             // 
@@ -613,7 +613,7 @@
             btnAdd.Location = new Point(0, 0);
             btnAdd.Margin = new Padding(0);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(67, 20);
+            btnAdd.Size = new Size(77, 20);
             btnAdd.TabIndex = 10;
             btnAdd.Text = "Thêm";
             // 
@@ -625,7 +625,7 @@
             panelControl3.Dock = DockStyle.Fill;
             panelControl3.Location = new Point(3, 33);
             panelControl3.Name = "panelControl3";
-            panelControl3.Size = new Size(1438, 34);
+            panelControl3.Size = new Size(1644, 34);
             panelControl3.TabIndex = 22;
             // 
             // panelFilter
@@ -639,19 +639,19 @@
             panelFilter.Controls.Add(lookNghe);
             panelFilter.Controls.Add(labelControl4);
             panelFilter.Dock = DockStyle.Left;
-            panelFilter.Location = new Point(428, 2);
+            panelFilter.Location = new Point(489, 2);
             panelFilter.Name = "panelFilter";
-            panelFilter.Size = new Size(829, 30);
+            panelFilter.Size = new Size(947, 30);
             panelFilter.TabIndex = 29;
             // 
             // lookKVUT
             // 
-            lookKVUT.Location = new Point(677, 4);
+            lookKVUT.Location = new Point(774, 4);
             lookKVUT.Name = "lookKVUT";
             lookKVUT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookKVUT.Properties.NullText = "(Trống)";
             lookKVUT.Properties.PopupView = gridView4;
-            lookKVUT.Size = new Size(139, 22);
+            lookKVUT.Size = new Size(159, 22);
             lookKVUT.TabIndex = 32;
             // 
             // gridView4
@@ -663,20 +663,20 @@
             // 
             // labelControl6
             // 
-            labelControl6.Location = new Point(637, 7);
+            labelControl6.Location = new Point(728, 7);
             labelControl6.Name = "labelControl6";
-            labelControl6.Size = new Size(32, 16);
+            labelControl6.Size = new Size(36, 16);
             labelControl6.TabIndex = 31;
             labelControl6.Text = "KTƯT";
             // 
             // lookDTUT
             // 
-            lookDTUT.Location = new Point(485, 4);
+            lookDTUT.Location = new Point(554, 4);
             lookDTUT.Name = "lookDTUT";
             lookDTUT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookDTUT.Properties.NullText = "(Trống)";
             lookDTUT.Properties.PopupView = gridView3;
-            lookDTUT.Size = new Size(139, 22);
+            lookDTUT.Size = new Size(159, 22);
             lookDTUT.TabIndex = 30;
             // 
             // gridView3
@@ -688,20 +688,20 @@
             // 
             // labelControl1
             // 
-            labelControl1.Location = new Point(445, 7);
+            labelControl1.Location = new Point(509, 7);
             labelControl1.Name = "labelControl1";
-            labelControl1.Size = new Size(34, 16);
+            labelControl1.Size = new Size(37, 16);
             labelControl1.TabIndex = 29;
             labelControl1.Text = "ĐTƯT";
             // 
             // looktruong
             // 
-            looktruong.Location = new Point(290, 4);
+            looktruong.Location = new Point(331, 4);
             looktruong.Name = "looktruong";
             looktruong.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             looktruong.Properties.NullText = "(Trống)";
             looktruong.Properties.PopupView = gridView2;
-            looktruong.Size = new Size(139, 22);
+            looktruong.Size = new Size(159, 22);
             looktruong.TabIndex = 28;
             // 
             // gridView2
@@ -713,20 +713,20 @@
             // 
             // labelControl5
             // 
-            labelControl5.Location = new Point(242, 7);
+            labelControl5.Location = new Point(277, 7);
             labelControl5.Name = "labelControl5";
-            labelControl5.Size = new Size(42, 16);
+            labelControl5.Size = new Size(43, 16);
             labelControl5.TabIndex = 27;
             labelControl5.Text = "Trường";
             // 
             // lookNghe
             // 
-            lookNghe.Location = new Point(90, 4);
+            lookNghe.Location = new Point(103, 4);
             lookNghe.Name = "lookNghe";
             lookNghe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookNghe.Properties.NullText = "(Trống)";
             lookNghe.Properties.PopupView = gridView11;
-            lookNghe.Size = new Size(146, 22);
+            lookNghe.Size = new Size(167, 22);
             lookNghe.TabIndex = 26;
             // 
             // gridView11
@@ -738,9 +738,9 @@
             // 
             // labelControl4
             // 
-            labelControl4.Location = new Point(13, 7);
+            labelControl4.Location = new Point(15, 7);
             labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(71, 16);
+            labelControl4.Size = new Size(77, 16);
             labelControl4.TabIndex = 25;
             labelControl4.Text = "Nghề nghiệp";
             // 
@@ -754,48 +754,48 @@
             panelTS.Dock = DockStyle.Left;
             panelTS.Location = new Point(2, 2);
             panelTS.Name = "panelTS";
-            panelTS.Size = new Size(426, 30);
+            panelTS.Size = new Size(487, 30);
             panelTS.TabIndex = 28;
             // 
             // btnRefreshDTS
             // 
             btnRefreshDTS.ImageOptions.Image = (Image)resources.GetObject("btnRefreshDTS.ImageOptions.Image");
-            btnRefreshDTS.Location = new Point(134, 6);
+            btnRefreshDTS.Location = new Point(153, 6);
             btnRefreshDTS.Name = "btnRefreshDTS";
             btnRefreshDTS.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            btnRefreshDTS.Size = new Size(74, 22);
+            btnRefreshDTS.Size = new Size(85, 22);
             btnRefreshDTS.TabIndex = 40;
             btnRefreshDTS.Text = "Refresh";
             // 
             // cbbTDHV
             // 
-            cbbTDHV.Location = new Point(321, 6);
+            cbbTDHV.Location = new Point(367, 6);
             cbbTDHV.Name = "cbbTDHV";
             cbbTDHV.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbTDHV.Size = new Size(103, 22);
+            cbbTDHV.Size = new Size(118, 22);
             cbbTDHV.TabIndex = 39;
             // 
             // labelControl2
             // 
-            labelControl2.Location = new Point(214, 9);
+            labelControl2.Location = new Point(245, 9);
             labelControl2.Name = "labelControl2";
-            labelControl2.Size = new Size(96, 16);
+            labelControl2.Size = new Size(99, 16);
             labelControl2.TabIndex = 38;
             labelControl2.Text = "Trình độ học vấn";
             // 
             // cbbDTS
             // 
-            cbbDTS.Location = new Point(49, 6);
+            cbbDTS.Location = new Point(56, 6);
             cbbDTS.Name = "cbbDTS";
             cbbDTS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbDTS.Size = new Size(84, 22);
+            cbbDTS.Size = new Size(96, 22);
             cbbDTS.TabIndex = 37;
             // 
             // labelControl3
             // 
             labelControl3.Location = new Point(3, 9);
             labelControl3.Name = "labelControl3";
-            labelControl3.Size = new Size(40, 16);
+            labelControl3.Size = new Size(41, 16);
             labelControl3.TabIndex = 36;
             labelControl3.Text = "Đợt TS";
             // 
@@ -805,17 +805,17 @@
             btnThongKe.Appearance.Options.UseBackColor = true;
             btnThongKe.Dock = DockStyle.Right;
             btnThongKe.ImageOptions.Image = (Image)resources.GetObject("btnThongKe.ImageOptions.Image");
-            btnThongKe.Location = new Point(1263, 2);
+            btnThongKe.Location = new Point(1444, 2);
             btnThongKe.Name = "btnThongKe";
-            btnThongKe.Size = new Size(173, 30);
+            btnThongKe.Size = new Size(198, 30);
             btnThongKe.TabIndex = 27;
             btnThongKe.Text = "Thống kê";
             // 
             // pnImg
             // 
-            pnImg.Location = new Point(4, 1);
+            pnImg.Location = new Point(5, 1);
             pnImg.Name = "pnImg";
-            pnImg.Size = new Size(10, 11);
+            pnImg.Size = new Size(11, 11);
             pnImg.TabIndex = 0;
             // 
             // splashScreenManager1
@@ -864,7 +864,7 @@
             barDockControlTop.Dock = DockStyle.Top;
             barDockControlTop.Location = new Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new Size(1680, 20);
+            barDockControlTop.Size = new Size(1920, 20);
             // 
             // barDockControlBottom
             // 
@@ -872,7 +872,7 @@
             barDockControlBottom.Dock = DockStyle.Bottom;
             barDockControlBottom.Location = new Point(0, 672);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new Size(1680, 0);
+            barDockControlBottom.Size = new Size(1920, 0);
             // 
             // barDockControlLeft
             // 
@@ -886,22 +886,22 @@
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = DockStyle.Right;
-            barDockControlRight.Location = new Point(1680, 20);
+            barDockControlRight.Location = new Point(1920, 20);
             barDockControlRight.Manager = barManager1;
             barDockControlRight.Size = new Size(0, 652);
             // 
             // F_Main
             // 
-            AutoScaleDimensions = new SizeF(7F, 16F);
+            AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1680, 672);
+            ClientSize = new Size(1920, 672);
             Controls.Add(pnMain);
             Controls.Add(accordionControl1);
             Controls.Add(barDockControlLeft);
             Controls.Add(barDockControlRight);
             Controls.Add(barDockControlBottom);
             Controls.Add(barDockControlTop);
-            Margin = new Padding(4);
+            Margin = new Padding(5, 4, 5, 4);
             Name = "F_Main";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý tuyển sinh";
@@ -911,7 +911,7 @@
             pnMain.ResumeLayout(false);
             panelGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridControl).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
             panelControl1.ResumeLayout(false);
             panelControl1.PerformLayout();
@@ -971,7 +971,7 @@
         private Panel pnImg;
         private TableLayoutPanel panelGrid;
         private DevExpress.XtraGrid.GridControl gridControl;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement5;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnSetting;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnAccount;

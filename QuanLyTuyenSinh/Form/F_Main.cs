@@ -7,6 +7,7 @@ using DevExpress.Utils.Extensions;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraExport.Helpers;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraPrinting;
@@ -17,12 +18,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Controls;
 using DataTable = System.Data.DataTable;
-
 using Excel = Microsoft.Office.Interop.Excel;
-
 using Font = System.Drawing.Font;
 using SummaryItemType = DevExpress.Data.SummaryItemType;
 
@@ -53,9 +54,9 @@ namespace QuanLyTuyenSinh.Form
         {
             set
             {
-                if (gridView1.Columns is null || gridView1.Columns.Count <= 0)
+                if (gridView.Columns is null || gridView.Columns.Count <= 0)
                     return;
-                var lastColumn = gridView1.Columns[gridView1.Columns.Count - 1];
+                var lastColumn = gridView.Columns[gridView.Columns.Count - 1];
                 lastColumn.AppearanceCell.Options.UseTextOptions = value;
                 lastColumn.AppearanceCell.Font = new Font(lastColumn.AppearanceCell.Font, FontStyle.Bold);
 
@@ -117,10 +118,11 @@ namespace QuanLyTuyenSinh.Form
                             IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
                             IdTonGiao = tg is not null ? tg.Id : string.Empty,
                         });
-                        f.FormClosed += F_FormClosed;
-                        f.Show(this);
+                        f.ShowDialog(this);
                     }
-                    finally { }
+                    finally
+                    {
+                    }
                 }
                 else
                 {
@@ -128,12 +130,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
             else
-                gridView1.AddNewRow();
-        }
-
-        private void F_FormClosed(object? sender, FormClosedEventArgs e)
-        {
-            BtnRefresh_Click(null, null);
+                gridView.AddNewRow();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -143,7 +140,8 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            var selectedRowHandles = gridView1.GetSelectedRows();
+            var selectedRowHandles = gridView.GetSelectedRows();
+            if (selectedRowHandles.Length == 0) return;
             if (selectedRowHandles[0] == -1) selectedRowHandles = selectedRowHandles.Skip(1).ToArray();
             if (selectedRowHandles.Length > 0)
             {
@@ -154,7 +152,7 @@ namespace QuanLyTuyenSinh.Form
                         for (int i = selectedRowHandles.Length - 1; i >= 0; i--)
                         {
                             int seletedRowHandle = selectedRowHandles[i];
-                            var r = gridView1.GetRow(seletedRowHandle) as BaseClass;
+                            var r = gridView.GetRow(seletedRowHandle) as BaseClass;
                             if (r is not null)
                             {
                                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
@@ -195,7 +193,7 @@ namespace QuanLyTuyenSinh.Form
             {
                 try
                 {
-                    var r = gridView1.GetFocusedRow() as BaseClass;
+                    var r = gridView.GetFocusedRow() as BaseClass;
                     if (r is not null)
                     {
                         var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.Id));
@@ -253,7 +251,7 @@ namespace QuanLyTuyenSinh.Form
                     advOptions.TextExportMode = TextExportMode.Text;
                     advOptions.SheetName = "Sheet1";
 
-                    gridView1.BestFitColumns(true);
+                    gridView.BestFitColumns(true);
                     gridControl.ExportToXlsx(saveFileDialog1.FileName, advOptions);
                     XtraMessageBox.Show(this, "Xuất file thành công", "Thành công");
                 }
@@ -277,7 +275,7 @@ namespace QuanLyTuyenSinh.Form
                     }
                 }
                 DanhSach.SaveDS(TenDm);
-                gridView1.ExpandAllGroups();
+                gridView.ExpandAllGroups();
             }
         }
 
@@ -286,9 +284,8 @@ namespace QuanLyTuyenSinh.Form
             if (!TenDm.StartsWith("DM"))
             {
                 LoadComboBoxHTDT();
-                _Helper.InitSearchLookupEdit(lookNghe, "Ten", "Id", DanhSach.DsNghe);
-                _Helper.InitSearchLookupEdit(looktruong, "Ten", "Id", DanhSach.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList());
-                LoadComboBoxDTS();
+                DevForm.CreateSearchLookupEdit(lookNghe, "Ten", "Id", DanhSach.DsNghe);
+                DevForm.CreateSearchLookupEdit(looktruong, "Ten", "Id", DanhSach.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList());
             }
 
             DanhSach.RefreshDS(TenDm);
@@ -303,7 +300,7 @@ namespace QuanLyTuyenSinh.Form
                 return;
 
             LoadDanhMuc();
-            gridView1.ExpandAllGroups();
+            gridView.ExpandAllGroups();
         }
 
         private void CbbHTDT_EditValueChanged(object? sender, EventArgs e)
@@ -323,8 +320,8 @@ namespace QuanLyTuyenSinh.Form
                 if (lstHDTTTemp.Count > 0)
                 {
                     _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(td));
-                    gridView1.RefreshData();
-                    gridView1.ExpandAllGroups();
+                    gridView.RefreshData();
+                    gridView.ExpandAllGroups();
                     return;
                 }
             }
@@ -334,32 +331,35 @@ namespace QuanLyTuyenSinh.Form
         private void F_Main_Load(object sender, EventArgs e)
         {
             SuspendLayout();
+            WindowState = FormWindowState.Maximized;
+            MinimumSize = this.Size;
+            MaximumSize = this.Size;
             GridViewInit();
             LoadBackgound();
             LoadbtnDSTT();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
 
-            _Helper.InitSearchLookupEdit(lookNghe, "Ten", "Id", DanhSach.DsNghe);
-            _Helper.InitSearchLookupEdit(looktruong, "Ten", "Id", DanhSach.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList());
-            _Helper.InitSearchLookupEdit(lookDTUT, "Ma", "Id", DanhSach.DsDoiTuongUT);
-            _Helper.InitSearchLookupEdit(lookKVUT, "Ma", "Id", DanhSach.DsKhuVucUT);
+            DevForm.CreateSearchLookupEdit(lookNghe, "Ten", "Id", DanhSach.DsNghe);
+            DevForm.CreateSearchLookupEdit(looktruong, "Ten", "Id", DanhSach.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList());
+            DevForm.CreateSearchLookupEdit(lookDTUT, "Ma", "Id", DanhSach.DsDoiTuongUT);
+            DevForm.CreateSearchLookupEdit(lookKVUT, "Ma", "Id", DanhSach.DsKhuVucUT);
 
             lookTinh.EditValue = DanhSach.CurrSettings.MaTinh;
             lookQuanHuyen.EditValue = DanhSach.CurrSettings.MaHuyen;
             lstQuanHuyen = _Helper.getListDistrict(DanhSach.CurrSettings.MaTinh);
             lstPhuongXa = _Helper.getListWards(DanhSach.CurrSettings.MaHuyen);
 
-            _Helper.InitSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
-            _Helper.InitSearchLookupEdit<_Helper.Adress>(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
-            _Helper.InitSearchLookupEdit<_Helper.Adress>(lookXa, "AdressName", "AdressCode", lstPhuongXa);
+            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
+            DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode", lstPhuongXa);
 
             Shown += F_Main_Shown;
         }
 
         private void F_Main_Shown(object? sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(300);
+            System.Threading.Thread.Sleep(100);
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnRefresh.Click += BtnRefresh_Click;
@@ -379,7 +379,7 @@ namespace QuanLyTuyenSinh.Form
             lookTinh.TextChanged += LookTinh_TextChanged;
             lookQuanHuyen.TextChanged += LookQuanHuyen_TextChanged;
             lookXa.TextChanged += LookXa_TextChanged;
-            ResumeLayout(false);
+            ResumeLayout(true);
         }
 
         private void BtnRefreshDTS_Click(object? sender, EventArgs e)
@@ -484,12 +484,13 @@ namespace QuanLyTuyenSinh.Form
 
         private void LoadBackgound()
         {
+            pnImg.SuspendLayout();
             pnImg.BackgroundImage = Resources.school_background2_2;
             pnImg.Dock = DockStyle.Fill;
             pnImg.Visible = true;
             pnMain.Controls.Add(pnImg);
-            Refresh();
             pnImg.BringToFront();
+            pnImg.ResumeLayout();
         }
 
         private void LoadComboBoxDTS()
@@ -502,14 +503,15 @@ namespace QuanLyTuyenSinh.Form
             var lst = new List<string>() { "Cả năm" };
             lst.AddRange(ds.Select(x => x.DotTS.ToString()).ToList());
 
-            _Helper.InitComboboxEdit(cbbDTS, lst.ToArray());
-            cbbDTS.SelectedIndex = lst.Count - 1;
+            DevForm.CreateComboboxEdit(cbbDTS, lst.ToArray());
+
+            cbbDTS.SelectedIndex = 0;
         }
 
         private void LoadComboBoxHTDT()
         {
             string[] ds = { "THCS", "THPT" };
-            _Helper.InitComboboxEdit(cbbTDHV, ds);
+            DevForm.CreateComboboxEdit(cbbTDHV, ds);
             cbbTDHV.SelectedIndex = 0;
         }
 
@@ -542,16 +544,18 @@ namespace QuanLyTuyenSinh.Form
 
         private void BtnThongKeTheoXa_ItemClick(object sender, ItemClickEventArgs e)
         {
-            gridView1.Columns.Clear();
-            gridView1.CustomDrawCell += HighlightTotal;
+            gridView.Columns.Clear();
+            gridView.CustomDrawCell += HighlightTotal;
             _bindingSource.DataSource = DanhSach.THSLTTTheoXa(cbbDTS.SelectedIndex);
             _FormatLastColumn = true;
-            gridView1.BestFitColumns(true);
+            gridView.BestFitColumns(true);
         }
 
         private PopupMenu popupMenu1;
         private BarButtonItem btnSaveDSTT;
         private BarButtonItem btnExportXls;
+        private BarButtonItem btnDsKhongTT;
+        private BarButtonItem btnDanhLaiMa;
 
         private void LoadbtnDSTT()
         {
@@ -561,13 +565,81 @@ namespace QuanLyTuyenSinh.Form
             popupMenu1.AutoFillEditorWidth = true;
             btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
             btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu");
+            btnDsKhongTT = new BarButtonItem(barManager1, "Xem danh sách không trúng tuyển");
+            btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
 
             btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
             btnExportXls.ItemClick += BtnExportXls_ItemClick;
-
+            btnDsKhongTT.ItemClick += btnDsKhongTT_ItemClick;
+            btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
             popupMenu1.AddItem(btnSaveDSTT);
             popupMenu1.AddItem(btnExportXls);
+            popupMenu1.AddItem(btnDsKhongTT);
+            popupMenu1.AddItem(btnDanhLaiMa);
+
             dropbtnDSTT.DropDownControl = popupMenu1;
+        }
+
+        private void BtnDanhLaiMa_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
+            {
+                XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
+                return;
+            }
+
+            var ds = DanhSach.DSHoSoTT.Where(x => x.DotTS == dts);
+            if (ds.Count() > 0)
+            {
+                if (XtraMessageBox.Show($"Bạn xác nhận muốn lập lại mã đợt {dts}",
+                    "Lập mã hồ sơ", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    foreach (var nghe in DanhSach.DsNghe)
+                    {
+                        var dstheonghe = ds.Where(x => x.IdNgheTrungTuyen == nghe.Id).OrderBy(x => x.Ten);
+                        int i = 1;
+                        foreach (var hs in dstheonghe)
+                        {
+                            hs.MaHoSo = $"{_NamTS}{nghe.Ma2}{i.ToString("D3")}";
+                            i++;
+                        }
+                    }
+                    DanhSach.SaveDS(TenDm);
+                    BtnRefresh_Click(this, null);
+                }
+            }
+
+        }
+
+        private void btnDsKhongTT_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            List<HoSoTrungTuyen> lstHsKhongTT = new();
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
+            {
+                XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
+                return;
+            }
+
+            if (DanhSach.DSHoSoTT.Count(x => x.DotTS.Equals(dts)) > 0)
+            {
+                lstHsKhongTT.Clear();
+                var lstHSDT = DanhSach.DSHoSoDT.Where(x => x.DotTS == dts).Select(x => x.Id).ToList();
+                var lstHSTT = DanhSach.DSHoSoTT.Where(x => x.DotTS == dts).Select(x => x.IdHSDT).ToList();
+                var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
+                foreach (var id in lstHSKhongTT)
+                {
+                    var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.DotTS == dts && x.Id == id);
+                    if (hs != null)
+                        lstHsKhongTT.Add(hs.ToHSTT());
+                }
+
+                _bindingSource.DataSource = lstHsKhongTT;
+                gridView.RefreshData();
+                gridView.ExpandAllGroups();
+            }
+
         }
 
         private void BtnExportXls_ItemClick(object sender, ItemClickEventArgs e)
@@ -667,38 +739,35 @@ namespace QuanLyTuyenSinh.Form
 
         private void BtnSaveDSTT_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
             {
-                int dts = cbbDTS.SelectedIndex;
-                if (dts <= 0)
-                {
-                    XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
-                    return;
-                }
+                XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
+                return;
+            }
 
-                if (DanhSach.DSHoSoTT.Where(x => x.DotTS == dts).Count() > 0)
+            if (DanhSach.DSHoSoTT.Where(x => x.DotTS == dts).Count() > 0)
+            {
+                if (lstHDTTTemp.Count() > 0)
                 {
-                    if (lstHDTTTemp.Count() > 0)
+                    if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lưu lại?",
+                    "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lưu lại?",
-                        "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        {
-                            DanhSach.DSHoSoTT.RemoveAll(x => x.DotTS == cbbDTS.SelectedIndex);
-                            DanhSach.DSHoSoTT.AddRange(lstHDTTTemp);
-                            lstHDTTTemp = new();
-                            _Helper.SaveToJson(DanhSach.DSHoSoTT, TuDien.DbName.HoSoTrungTuyen);
-                            LoadDanhMuc();
-                        }
+                        DanhSach.DSHoSoTT.RemoveAll(x => x.DotTS == dts);
+                        DanhSach.DSHoSoTT.AddRange(lstHDTTTemp);
+                        lstHDTTTemp = new();
+                        DanhSach.SaveDS(TenDm);
+                        LoadDanhMuc();
                     }
                 }
-                else if (lstHDTTTemp.Count() > 0)
-                {
-                    DanhSach.DSHoSoTT.AddRange(lstHDTTTemp);
-                    lstHDTTTemp = new();
-                    _Helper.SaveToJson(DanhSach.DSHoSoTT, TuDien.DbName.HoSoTrungTuyen);
-                    XtraMessageBox.Show("Đã lưu lại danh sách!");
-                    LoadDanhMuc();
-                }
+            }
+            else if (lstHDTTTemp.Count() > 0)
+            {
+                DanhSach.DSHoSoTT.AddRange(lstHDTTTemp);
+                lstHDTTTemp = new();
+                _Helper.SaveToJson(DanhSach.DSHoSoTT, TuDien.DbName.HoSoTrungTuyen);
+                XtraMessageBox.Show("Đã lưu lại danh sách!");
+                LoadDanhMuc();
             }
         }
 
@@ -706,32 +775,29 @@ namespace QuanLyTuyenSinh.Form
 
         private void DropbtnDSTT_Click(object? sender, EventArgs e)
         {
-            if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
             {
-                int dts = cbbDTS.SelectedIndex;
-                if (dts <= 0)
+                XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
+                return;
+            }
+            if (DanhSach.DSHoSoTT.Count(x => x.DotTS.Equals(dts)) > 0)
+            {
+                if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lập lại danh sách?",
+                    "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
-                    return;
-                }
-                if (DanhSach.DSHoSoTT.Where(x => x.DotTS == dts).Count() > 0)
-                {
-                    if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lập lại danh sách?",
-                        "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        lstHDTTTemp = DanhSach.LapDSTrungTuyen(cbbDTS.SelectedIndex < 0 ? 0 : cbbDTS.SelectedIndex);
-                        _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
-                        gridView1.RefreshData();
-                        gridView1.ExpandAllGroups();
-                    }
-                }
-                else
-                {
-                    lstHDTTTemp = DanhSach.LapDSTrungTuyen(cbbDTS.SelectedIndex < 0 ? 0 : cbbDTS.SelectedIndex);
+                    lstHDTTTemp = DanhSach.LapDSTrungTuyen(cbbDTS.SelectedIndex);
                     _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
-                    gridView1.RefreshData();
-                    gridView1.ExpandAllGroups();
+                    gridView.RefreshData();
+                    gridView.ExpandAllGroups();
                 }
+            }
+            else
+            {
+                lstHDTTTemp = DanhSach.LapDSTrungTuyen(cbbDTS.SelectedIndex);
+                _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
+                gridView.RefreshData();
+                gridView.ExpandAllGroups();
             }
         }
 
@@ -739,7 +805,7 @@ namespace QuanLyTuyenSinh.Form
         {
             if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
             {
-                gridView1.Columns.Clear();
+                gridView.Columns.Clear();
                 List<THSLTheoNghe> lstReport = new();
 
                 List<NguyenVong> lstNV1 = new();
@@ -770,13 +836,13 @@ namespace QuanLyTuyenSinh.Form
                     SLNV1 = lstNV1.Count(),
                     SLNV2 = lstNV2.Count(),
                 });
-                gridView1.CustomDrawCell += HighlightTotal;
+                gridView.CustomDrawCell += HighlightTotal;
                 _bindingSource.DataSource = lstReport;
-                gridView1.BestFitColumns(true);
+                gridView.BestFitColumns(true);
             }
             else if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
             {
-                gridView1.Columns.Clear();
+                gridView.Columns.Clear();
                 List<THSLTTTheoNghe> lstReport = new();
 
                 for (int i = 0; i < DanhSach.DsNghe.Count; i++)
@@ -804,9 +870,9 @@ namespace QuanLyTuyenSinh.Form
                     SLTNTHCS = lstReport.Sum(x => x.SLTNTHCS),
                     SLTNTHPTT = lstReport.Sum(x => x.SLTNTHPTT),
                 });
-                gridView1.CustomDrawCell += HighlightTotal;
+                gridView.CustomDrawCell += HighlightTotal;
                 _bindingSource.DataSource = lstReport;
-                gridView1.BestFitColumns(true);
+                gridView.BestFitColumns(true);
             }
         }
 
@@ -824,8 +890,8 @@ namespace QuanLyTuyenSinh.Form
 
         private void BtnThongKeTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
         {
-            gridView1.Columns.Clear();
-            gridView1.CustomDrawCell += HighlightTotal;
+            gridView.Columns.Clear();
+            gridView.CustomDrawCell += HighlightTotal;
             if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
             {
                 _bindingSource.DataSource = DanhSach.THSLNgheTheoTruong(cbbDTS.SelectedIndex);
@@ -835,25 +901,25 @@ namespace QuanLyTuyenSinh.Form
                 _bindingSource.DataSource = DanhSach.THSLTTNgheTheoTruong(cbbDTS.SelectedIndex);
             }
             _FormatLastColumn = true;
-            gridView1.BestFitColumns(true);
+            gridView.BestFitColumns(true);
         }
 
         private void ShowTotalFooter()
         {
-            if (gridView1.Columns["MaHoSo"] is not null)
+            if (gridView.Columns["MaHoSo"] is not null)
             {
                 GridColumnSummaryItem siTotal = new GridColumnSummaryItem();
                 siTotal.SummaryType = SummaryItemType.Count;
                 siTotal.DisplayFormat = "Tổng số: {0} thí sinh";
-                gridView1.Columns["MaHoSo"].Summary.Add(siTotal);
+                gridView.Columns["MaHoSo"].Summary.Add(siTotal);
             }
         }
 
         private void LoadDanhMuc()
         {
             EditMode = false;
-            gridView1.Columns.Clear();
-            gridView1.CustomDrawCell -= HighlightTotal;
+            gridView.Columns.Clear();
+            gridView.CustomDrawCell -= HighlightTotal;
             _FormatLastColumn = false;
             _bindingSource = new BindingSource();
             switch (TenDm)
@@ -861,81 +927,60 @@ namespace QuanLyTuyenSinh.Form
                 case TuDien.CategoryName.TruongHoc:
                     _bindingSource.DataSource = DanhSach.DsTruong;
                     break;
-
                 case TuDien.CategoryName.NganhNghe:
                     _bindingSource.DataSource = DanhSach.DsNghe;
                     break;
-
                 case TuDien.CategoryName.DoiTuongUuTien:
-
                     _bindingSource.DataSource = DanhSach.DsDoiTuongUT;
                     break;
-
                 case TuDien.CategoryName.KhuVucUuTien:
-
                     _bindingSource.DataSource = DanhSach.DsKhuVucUT;
                     break;
-
                 case TuDien.CategoryName.DanToc:
-
                     _bindingSource.DataSource = DanhSach.DsDanToc;
                     break;
-
                 case TuDien.CategoryName.TonGiao:
-
                     _bindingSource.DataSource = DanhSach.DsTonGiao;
                     break;
-
                 case TuDien.CategoryName.TrinhDo:
-
                     _bindingSource.DataSource = DanhSach.DsTrinhDo;
                     break;
-
                 case TuDien.CategoryName.QuocTich:
-
                     _bindingSource.DataSource = DanhSach.DsQuocTich;
                     break;
-
                 case TuDien.CategoryName.DotXetTuyen:
-
                     _bindingSource.DataSource = DanhSach.DsDotXetTuyen;
                     break;
-
                 case TuDien.CategoryName.ChiTieu:
                     _bindingSource.DataSource = DanhSach.DsChiTieu;
                     break;
-
                 case TuDien.CategoryName.HoSoDuTuyen:
                     _bindingSource.DataSource = DanhSach.GetDSDuTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS", (string)looktruong.EditValue, (string)lookNghe.EditValue, (string)lookDTUT.EditValue, (string)lookKVUT.EditValue);
                     break;
-
                 case TuDien.CategoryName.HoSoTrungTuyen:
                     _bindingSource.DataSource = DanhSach.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS", (string)looktruong.EditValue, (string)lookNghe.EditValue, (string)lookDTUT.EditValue, (string)lookKVUT.EditValue
                     , (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue);
                     break;
-
                 case TuDien.CategoryName.ThongKeDiemDT:
                     _bindingSource.DataSource = DanhSach.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
                     LoadbtnThongKe();
                     break;
-
                 case TuDien.CategoryName.ThongKeTT:
                     _bindingSource.DataSource = DanhSach.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
                     LoadbtnThongKe();
                     break;
-
                 default: break;
             }
             gridControl.DataSource = _bindingSource;
-            FocusRowGrid();
-            ShowTotalFooter();
+            gridView.OptionsSelection.MultiSelect = !TenDm.StartsWith("TK");
+            gridView.OptionsSelection.MultiSelectMode = !TenDm.StartsWith("TK") ? GridMultiSelectMode.CheckBoxRowSelect : GridMultiSelectMode.RowSelect;
             if (TenDm.Equals(TuDien.CategoryName.TruongHoc))
             {
-                var colLoaiTruong = gridView1.Columns.ColumnByFieldName("LoaiTruong");
+                var colLoaiTruong = gridView.Columns.ColumnByFieldName("LoaiTruong");
                 if (colLoaiTruong != null)
                 {
                     RepositoryItemComboBox riComboBox = new RepositoryItemComboBox();
@@ -945,148 +990,60 @@ namespace QuanLyTuyenSinh.Form
             }
             if (TenDm.Equals(TuDien.CategoryName.ChiTieu))
             {
-                var colNam = gridView1.Columns.ColumnByFieldName("Nam");
-                if (colNam != null) colNam.Group();
+                GridColumnSummaryItem gsTong = new();
+                gsTong.SummaryType = SummaryItemType.Sum;
+                gsTong.DisplayFormat = "Tổng: {0}";
+                var colct = gridView.Columns.ColumnByFieldName("ChiTieu");
+                if (colct != null) colct.Summary.Add(gsTong);
             }
             if (TenDm.Equals(TuDien.CategoryName.DotXetTuyen))
             {
-                var colDotXT = gridView1.Columns.ColumnByFieldName("NamTS");
+                var colDotXT = gridView.Columns.ColumnByFieldName("NamTS");
                 if (colDotXT != null) colDotXT.Group();
             }
             if (TenDm.StartsWith("HS"))
             {
-                var colGT = gridView1.Columns.ColumnByFieldName("GioiTinh");
+                var colGT = gridView.Columns.ColumnByFieldName("GioiTinh");
                 if (colGT != null)
                 {
                     RepositoryItemTextEdit riComboBox = new RepositoryItemTextEdit();
                     colGT.ColumnEdit = riComboBox;
                 }
-                var colTruong = gridView1.Columns.ColumnByFieldName("IdTruong");
-                if (colTruong != null)
-                {
-                    colTruong.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsTruong,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "(Trống)",
-                    };
-                }
-                var colDTUT = gridView1.Columns.ColumnByFieldName("IdDTUT");
-                if (colDTUT != null)
-                {
-                    colDTUT.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsDoiTuongUT,
-                        DisplayMember = "Ma",
-                        ValueMember = "Id",
-                        NullText = "",
-                    };
-                }
-                var colKVUT = gridView1.Columns.ColumnByFieldName("IdKVUT");
-                if (colKVUT != null)
-                {
-                    colKVUT.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsKhuVucUT,
-                        DisplayMember = "Ma",
-                        ValueMember = "Id",
-                        NullText = "",
-                    };
-                }
-                var colNghe1 = gridView1.Columns.ColumnByFieldName("IdNgheDT1");
-                if (colNghe1 != null)
-                {
-                    colNghe1.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsNghe,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "(Trống)",
-                    };
-                }
-                var colNghe2 = gridView1.Columns.ColumnByFieldName("IdNgheDT2");
-                if (colNghe2 != null)
-                {
-                    colNghe2.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsNghe,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "",
-                    };
-                }
-                var colNgeTT = gridView1.Columns.ColumnByFieldName("IdNgheTrungTuyen");
-                if (colNgeTT != null)
-                {
-                    colNgeTT.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsNghe,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "",
-                    };
-                }
-
-                var colXLHT = gridView1.Columns.ColumnByFieldName("XLHT");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsTruong, "IdTruong", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheDT1", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheDT2", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
+                var colXLHT = gridView.Columns.ColumnByFieldName("XLHT");
                 if (colXLHT != null) { colXLHT.Visible = ((string)cbbTDHV.EditValue != "THCS"); }
                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
                 {
-                    for (int i = 17; i <= 25; i++)
+                    for (int i = 23; i <= 32; i++)
                     {
-                        gridView1.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
+                        gridView.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
                     }
                 }
-                var colDotTS = gridView1.Columns.ColumnByFieldName("DotTS");
+                var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
                 if (colDotTS != null) colDotTS.Group();
             }
             if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
             {
-                var colNghe1 = gridView1.Columns.ColumnByFieldName("IdNgheNV1");
-                if (colNghe1 != null)
-                {
-                    colNghe1.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsNghe,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "(Trống)",
-                    };
-                    gridView1.Columns.ColumnByFieldName("IdNgheNV1").Group();
-                }
-                var colDTTUT = gridView1.Columns.ColumnByFieldName("IdDTUT");
-                if (colDTTUT != null)
-                {
-                    colDTTUT.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsDoiTuongUT,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "(Trống)",
-                    };
-                }
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheNV1", "Ten", "Id");
+                gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdDTUT", "Ten", "Id");
             }
             if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
             {
-                var colNghe = gridView1.Columns.ColumnByFieldName("IdNgheTrungTuyen");
-                if (colNghe != null)
-                {
-                    colNghe.ColumnEdit = new RepositoryItemLookUpEdit()
-                    {
-                        DataSource = DanhSach.DsNghe,
-                        DisplayMember = "Ten",
-                        ValueMember = "Id",
-                        NullText = "(Trống)",
-                    };
-                    gridView1.Columns.ColumnByFieldName("IdNgheTrungTuyen").Group();
-                }
-                var colGT = gridView1.Columns.ColumnByFieldName("GioiTinh");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
+                gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen").Group();
+                var colGT = gridView.Columns.ColumnByFieldName("GioiTinh");
                 if (colGT != null)
                 {
                     RepositoryItemTextEdit riComboBox = new RepositoryItemTextEdit();
                     colGT.ColumnEdit = riComboBox;
                 }
-                var colDTS = gridView1.Columns.ColumnByFieldName("DotTS");
+                var colDTS = gridView.Columns.ColumnByFieldName("DotTS");
                 if (colDTS != null)
                 {
                     colDTS.Visible = false;
@@ -1098,23 +1055,27 @@ namespace QuanLyTuyenSinh.Form
             btnAdd.Enabled = (TenDm.Equals(TuDien.CategoryName.ChiTieu) || TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen)) ? false : true;
             btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieu) ? 110 : 0;
-            _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 192;
-            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 445 : 0;
+            _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 220;
+            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 487 : 0;
             panelFilter.Visible = TenDm.StartsWith("HS") ? true : false;
             btnThongKe.Visible = TenDm.StartsWith("TK") ? true : false;
             dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 185 : 0;
             btnLoadExel.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 236 : 0;
+
+            FocusRowGrid();
+            ShowTotalFooter();
             panelGrid.BringToFront();
-            gridView1.ExpandAllGroups();
-            gridView1.BestFitColumns(true);
+            gridView.ExpandAllGroups();
+            gridView.BestFitColumns(true);
+
         }
 
         private void FocusRowGrid()
         {
             // Prevent the focused cell from being highlighted.
-            gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            gridView.OptionsSelection.EnableAppearanceFocusedCell = false;
             // Draw a dotted focus rectangle around the entire row.
-            gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            gridView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
         }
 
         private void LookQuanHuyen_TextChanged(object? sender, EventArgs e)
@@ -1169,7 +1130,7 @@ namespace QuanLyTuyenSinh.Form
         {
             string? value = e.Value.ToString();
 
-            gridView1.CellValueChanged -= GridView_CellValueChanged;
+            gridView.CellValueChanged -= GridView_CellValueChanged;
             if (e.Column.FieldName.Equals("Ma"))
             {
                 if (!string.IsNullOrEmpty(value))
@@ -1177,7 +1138,7 @@ namespace QuanLyTuyenSinh.Form
                     if (DanhSach.CheckDupCode(value, TenDm))
                     {
                         MessageBox.Show(this, "Trùng mã!");
-                        gridView1.SetFocusedRowCellValue("Ma", string.Empty);
+                        gridView.SetFocusedRowCellValue("Ma", string.Empty);
                     }
                 }
             }
@@ -1188,13 +1149,13 @@ namespace QuanLyTuyenSinh.Form
                     if (DanhSach.CheckDupCode(value, TenDm))
                     {
                         MessageBox.Show(this, "Trùng mã!");
-                        gridView1.SetFocusedRowCellValue("Ma", string.Empty);
+                        gridView.SetFocusedRowCellValue("Ma", string.Empty);
                     }
                     else
-                        gridView1.SetFocusedRowCellValue("Ma2", value.ToUpper());
+                        gridView.SetFocusedRowCellValue("Ma2", value.ToUpper());
                 }
             }
-            gridView1.CellValueChanged += GridView_CellValueChanged;
+            gridView.CellValueChanged += GridView_CellValueChanged;
         }
 
         private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
@@ -1209,29 +1170,28 @@ namespace QuanLyTuyenSinh.Form
             {
                 try
                 {
-                    var r = gridView1.GetFocusedRow() as BaseClass;
+                    var r = gridView.GetFocusedRow() as BaseClass;
                     if (r is not null)
                     {
                         var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.Id));
                         if (hs is not null)
                         {
                             F_HoSo f = new(hs.CloneJson());
-                            f.Show(this);
+                            f.ShowDialog(this);
                         }
                     }
                 }
                 catch
                 {
-                    return;
+
                 }
-                return;
             }
         }
 
         private void GridView_RowUpdated(object sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
         {
             var r = e.Row;
-            if (r != null)
+            if (r != null && !TenDm.StartsWith("HS"))
             {
                 DanhSach.SaveDS(TenDm);
             }
@@ -1239,7 +1199,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void GridView_ShowingEditor(object? sender, CancelEventArgs e)
         {
-            e.Cancel = EditMode ^ (gridView1.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
+            e.Cancel = EditMode ^ (gridView.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
         }
 
         private void GridView_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
@@ -1257,29 +1217,29 @@ namespace QuanLyTuyenSinh.Form
 
         private void GridViewInit()
         {
-            gridView1.IndicatorWidth = 55;
-            gridView1.OptionsCustomization.AllowColumnMoving = false;
-            gridView1.OptionsCustomization.AllowMergedGrouping = DevExpress.Utils.DefaultBoolean.True;
-            gridView1.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.False;
-            gridView1.OptionsView.NewItemRowPosition = NewItemRowPosition.None;
-            gridView1.OptionsView.ShowFooter = true;
-            gridView1.OptionsPrint.AutoWidth = false;
-            gridView1.OptionsView.ColumnAutoWidth = false;
-            gridView1.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
-            gridView1.OptionsSelection.MultiSelect = true;
-            gridView1.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            gridView.IndicatorWidth = 55;
+            gridView.OptionsCustomization.AllowColumnMoving = false;
+            gridView.OptionsCustomization.AllowMergedGrouping = DevExpress.Utils.DefaultBoolean.True;
+            gridView.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.False;
+            gridView.OptionsView.NewItemRowPosition = NewItemRowPosition.None;
+            gridView.OptionsView.ShowFooter = true;
+            gridView.OptionsPrint.AutoWidth = false;
+            gridView.OptionsView.ColumnAutoWidth = false;
+            gridView.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+            gridView.OptionsView.ShowAutoFilterRow = true;
+            gridView.OptionsView.ShowGroupPanel = false;
 
             GridGroupSummaryItem gscCount = new GridGroupSummaryItem();
             gscCount.SummaryType = SummaryItemType.Count;
             gscCount.DisplayFormat = "(Số lượng: {0})";
-            gridView1.GroupSummary.Add(gscCount);
+            gridView.GroupSummary.Add(gscCount);
 
-            gridView1.CellValueChanged += GridView_CellValueChanged;
-            gridView1.RowUpdated += GridView_RowUpdated;
-            gridView1.ShowingEditor += GridView_ShowingEditor;
-            gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
-            gridView1.DoubleClick += GridView_DoubleClick;
-            gridView1.CustomColumnDisplayText += GridView_CustomColumnDisplayText;
+            gridView.CellValueChanged += GridView_CellValueChanged;
+            gridView.RowUpdated += GridView_RowUpdated;
+            gridView.ShowingEditor += GridView_ShowingEditor;
+            gridView.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
+            gridView.DoubleClick += GridView_DoubleClick;
+            gridView.CustomColumnDisplayText += GridView_CustomColumnDisplayText;
         }
 
         #endregion Xử lý GridControl

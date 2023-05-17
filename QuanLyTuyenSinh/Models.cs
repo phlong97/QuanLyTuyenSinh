@@ -77,6 +77,8 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string Lop { get; set; }
+        [Display(AutoGenerateField = false)]
+        public string NamTN { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string HTDT { get; set; }
@@ -86,12 +88,16 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string NgheNghiepCha { get; set; }
+        [Display(AutoGenerateField = false)]
+        public string NamSinhCha { get; set; }  
 
         [Display(AutoGenerateField = false)]
         public string HoTenMe { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string NgheNghiepMe { get; set; }
+        [Display(AutoGenerateField = false)]
+        public string NamSinhMe { get; set; }
 
         [Display(Name = "Hạnh kiểm")]
         public string HanhKiem { get; set; } = "Trung bình";
@@ -137,7 +143,7 @@ namespace QuanLyTuyenSinh
                 errs += "Chưa nhập họ học sinh \n";
             if (string.IsNullOrEmpty(Ten))
                 errs += "Chưa nhập tên học sinh \n";
-            if (!string.IsNullOrEmpty(CCCD))
+            if (!string.IsNullOrEmpty(CCCD) || !string.IsNullOrWhiteSpace(CCCD))
             {
                 if (CCCD.Length > 0 && CCCD.Length == 11)
                     errs += "Nhập sai CCCD/CMND! \n";
@@ -323,10 +329,11 @@ namespace QuanLyTuyenSinh
             return th;
         }
 
-        public HoSoTrungTuyen ToHSTT(int NV = 1)
+        public HoSoTrungTuyen ToHSTT()
         {
             var hs = new HoSoTrungTuyen()
             {
+                IdHSDT = Id,
                 MaHoSo = MaHoSo,
                 Ho = Ho,
                 Ten = Ten,
@@ -337,13 +344,16 @@ namespace QuanLyTuyenSinh
                 GhiChu = GhiChu,
                 GioiTinh = GioiTinh,
                 HoTenCha = HoTenCha,
+                NamSinhCha = NamSinhCha,
                 HoTenMe = HoTenMe,
+                NamSinhMe = NamSinhMe,
                 IdDanToc = IdDanToc,
+                NamTN = NamTN,
                 NamTS = NamTS,
                 HTDT = HTDT,
                 TDHV = TDHV,
                 Lop = Lop,
-                IdNgheTrungTuyen = DsNguyenVong.FirstOrDefault(x => x.NV == NV) != null ? DsNguyenVong.First(x => x.NV == NV).IdNghe : string.Empty,
+                IdNgheTrungTuyen = DsNguyenVong.First(x => x.NV == 1).IdNghe,
                 IdQuocTich = IdQuocTich,
                 IdTonGiao = IdTonGiao,
                 IdTrinhDoVH = IdTrinhDoVH,
@@ -384,12 +394,15 @@ namespace QuanLyTuyenSinh
                 IdNgheDT2 = DsNguyenVong.FirstOrDefault(x => x.NV == 2) != null ? DsNguyenVong.First(x => x.NV == 2).IdNghe : string.Empty,
                 GhiChu = GhiChu,
                 IdTruong = IdTruong,
+                Lop = Lop,
+                NamTN = NamTN,
                 HoTenCha = HoTenCha,
+                NamSinhCha = NamSinhCha,
                 HoTenMe = HoTenMe,
+                NamSinhMe = NamSinhMe,
                 NoiSinh = NoiSinh,
                 DiaChi = DiaChi,
                 CCCD = CCCD,
-                Lop = Lop,
                 BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
                 GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
                 GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
@@ -460,12 +473,18 @@ namespace QuanLyTuyenSinh
         public string IdTruong { get; set; }
         [Display(Name = "Lớp")]
         public string Lop { get; set; }
+        [Display(Name = "Năm TN")]
+        public string NamTN { get; set; }
 
         [Display(Name = "Họ tên cha")]
         public string HoTenCha { get; set; }
+        [Display(Name = "Năm sinh cha")]
+        public string NamSinhCha { get; set; }
 
         [Display(Name = "Họ tên mẹ")]
         public string HoTenMe { get; set; }
+        [Display(Name = "Năm sinh mẹ")]
+        public string NamSinhMe { get; set; }
 
         [Display(Name = "Số ĐT")]
         public string SDT { get; set; }
@@ -575,6 +594,8 @@ namespace QuanLyTuyenSinh
 
     public class HoSoTrungTuyen : BaseClass
     {
+        [Display(AutoGenerateField = false)]
+        public string IdHSDT { get; set; }
         [Display(Name = "Mã HS")]
         [Required(ErrorMessage = "Chưa nhập mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -640,15 +661,22 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string Lop { get; set; }
+        [Display(AutoGenerateField = false)]
+        public string NamTN { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string HoTenCha { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public string NamSinhCha { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string NgheNghiepCha { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string HoTenMe { get; set; }
+        [Display(AutoGenerateField = false)]
+        public string NamSinhMe { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string NgheNghiepMe { get; set; }
@@ -756,9 +784,8 @@ namespace QuanLyTuyenSinh
 
     public class ChiTieuXetTuyen : BaseClass
     {
-        [Display(Name = "Năm")]
-        [Editable(false)]
-        public int Nam { get; set; } = DateTime.Now.Year;
+        [Display(AutoGenerateField = false)]
+        public int Nam { get; set; } = DanhSach._NamTS;
 
         private string _IdNghe;
 

@@ -1,8 +1,10 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using Newtonsoft.Json;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Globalization;
@@ -169,40 +171,7 @@ namespace QuanLyTuyenSinh
 
         #endregion Addresss
 
-        public static void InitSearchLookupEdit<T>(SearchLookUpEdit lookUp, string display, string member, List<T> source = null, string nullText = "(Trống)") where T : class
-        {
-            if (lookUp == null)
-            {
-                return;
-            }
-            if (source is not null) lookUp.Properties.DataSource = source;
-            lookUp.Properties.DisplayMember = display;
-            lookUp.Properties.ValueMember = member;
-            lookUp.Properties.BestFitMode = BestFitMode.BestFit;
-            lookUp.Properties.AutoHeight = true;
-            lookUp.Properties.NullText = nullText;
-        }
-
-        public static void InitComboboxEdit(ComboBoxEdit cbb, string[] lst, string nullText = "(Trống)", bool allowEdit = false, bool autoComplete = false)
-        {
-            cbb.Properties.Items.Clear();
-            cbb.Properties.TextEditStyle = TextEditStyles.DisableTextEditor;
-            cbb.Properties.NullText = nullText;
-            cbb.Properties.TextEditStyle = allowEdit ? TextEditStyles.Standard : TextEditStyles.DisableTextEditor;
-            cbb.Properties.AutoComplete = autoComplete;
-
-            cbb.Properties.Items.AddRange(lst);
-        }
-
-        public static int GetVisibleToUsersColumnCount(GridView view)
-        {
-            GridViewInfo info = view.GetViewInfo() as GridViewInfo;
-            int result = 0;
-            for (int i = 0; i < view.VisibleColumns.Count; i++)
-                if (info.GetColumnLeftCoord(view.GetVisibleColumn(i)) < view.ViewRect.Width - info.ViewRects.IndicatorWidth)
-                    result++;
-            return result;
-        }
+       
 
         public static string ToTitleCase(this string title)
         {
@@ -229,6 +198,57 @@ namespace QuanLyTuyenSinh
                 dt.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
             }
             return dt;
+        }
+    }
+
+    public static class DevForm
+    {
+        public static void CreateSearchLookupEdit(SearchLookUpEdit lookUp, string display, string member, IList source = null, string nullText = "(Trống)")
+        {
+            if (lookUp == null)
+            {
+                return;
+            }
+            if (source is not null) lookUp.Properties.DataSource = source;
+            lookUp.Properties.DisplayMember = display;
+            lookUp.Properties.ValueMember = member;
+            lookUp.Properties.BestFitMode = BestFitMode.BestFit;
+            lookUp.Properties.AutoHeight = true;
+            lookUp.Properties.NullText = nullText;
+        }
+
+        public static void CreateComboboxEdit(ComboBoxEdit cbb, string[] lst, string nullText = "(Trống)", bool allowEdit = false, bool autoComplete = false)
+        {
+            cbb.Properties.Items.Clear();            
+            cbb.Properties.NullText = nullText;
+            cbb.Properties.TextEditStyle = allowEdit ? TextEditStyles.Standard : TextEditStyles.DisableTextEditor;
+            cbb.Properties.AutoComplete = autoComplete;
+
+            cbb.Properties.Items.AddRange(lst);
+        }
+        public static void CreateRepositoryItemLookUpEdit(GridView gridView, IList lst,string fieldName, string display, string value, string nullText = "(Trống)")
+        {
+            var col = gridView.Columns.ColumnByFieldName(fieldName);
+            if (col != null)
+            {
+                col.ColumnEdit = new RepositoryItemLookUpEdit()
+                {
+                    DataSource = lst,
+                    DisplayMember = display,
+                    ValueMember = value,
+                    NullText = nullText,                    
+                };
+            }
+        }
+
+        public static int GetVisibleToUsersColumnCount(GridView view)
+        {
+            GridViewInfo info = view.GetViewInfo() as GridViewInfo;
+            int result = 0;
+            for (int i = 0; i < view.VisibleColumns.Count; i++)
+                if (info.GetColumnLeftCoord(view.GetVisibleColumn(i)) < view.ViewRect.Width - info.ViewRects.IndicatorWidth)
+                    result++;
+            return result;
         }
     }
 

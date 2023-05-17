@@ -234,7 +234,7 @@ namespace QuanLyTuyenSinh
         {
             List<HoSoDuTuyenView> lst = new();
             lst = DSHoSoDT.Where(
-                hs => (DotTS == 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true)
+                hs => (DotTS <= 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true)
                 && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)) &&
                 (string.IsNullOrEmpty(IdNghe) ? true : hs.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(IdNghe)) is not null)
                 && (string.IsNullOrEmpty(IdDTUT) ? true : string.IsNullOrEmpty(hs.IdDTUT) ? false : hs.IdDTUT.Equals(IdDTUT))
@@ -250,15 +250,15 @@ namespace QuanLyTuyenSinh
         {
             List<HoSoTrungTuyen> lst = new();
             lst = DSHoSoTT.Where(
-                hs => (DotTS == 0 ? true : hs.DotTS == DotTS) && hs.TDHV.Equals(TDHV)
-                 && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)) &&
-                (string.IsNullOrEmpty(IdNghe) ? true : hs.IdNgheTrungTuyen.Equals(IdNghe))
+                hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(TDHV)
+                 && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong))
+                && (string.IsNullOrEmpty(IdNghe) ? true : hs.IdNgheTrungTuyen.Equals(IdNghe))
                 && (string.IsNullOrEmpty(IdDTUT) ? true : string.IsNullOrEmpty(hs.IdDTUT) ? false : hs.IdDTUT.Equals(IdDTUT))
                 && (string.IsNullOrEmpty(IdKVUT) ? true : string.IsNullOrEmpty(hs.IdKVUT) ? false : hs.IdKVUT.Equals(IdKVUT))
                 && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                 && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                 && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
-                ).OrderByDescending(x => x.DotTS).ToList();
+                ).OrderBy(hs => hs.MaHoSo).ToList();
 
             return lst;
         }
@@ -372,7 +372,7 @@ namespace QuanLyTuyenSinh
                 }
             }
 
-            return lstreturn.OrderBy(x => x.IdNgheTrungTuyen).ToList();
+            return lstreturn.OrderBy(x => x.MaHoSo).ToList();
         }
 
         #region Thống kê
