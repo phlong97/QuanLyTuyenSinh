@@ -679,10 +679,7 @@ namespace QuanLyTuyenSinh
         public string NamSinhMe { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public string NgheNghiepMe { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public string IdTruong { get; set; }
+        public string NgheNghiepMe { get; set; }        
 
         [Display(AutoGenerateField = false)]
         public int NamTS { get; set; }
@@ -698,11 +695,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+        [Display(Name = "Trường")]
+        public string IdTruong { get; set; }
 
-        [Display(AutoGenerateField = false)]
+        [Display(Name = "ĐTƯT")]
         public string IdDTUT { get; set; }
 
-        [Display(AutoGenerateField = false)]
+        [Display(Name = "KVƯT")]
         public string IdKVUT { get; set; }
     }
 

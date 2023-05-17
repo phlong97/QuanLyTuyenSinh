@@ -249,7 +249,7 @@ namespace QuanLyTuyenSinh.Form
                     advOptions.LayoutMode = DevExpress.Export.LayoutMode.Table;
                     advOptions.ShowGroupSummaries = DefaultBoolean.False;
                     advOptions.TextExportMode = TextExportMode.Text;
-                    advOptions.SheetName = "Sheet1";
+                    advOptions.SheetName = TenDm;                   
 
                     gridView.BestFitColumns(true);
                     gridControl.ExportToXlsx(saveFileDialog1.FileName, advOptions);
@@ -284,8 +284,6 @@ namespace QuanLyTuyenSinh.Form
             if (!TenDm.StartsWith("DM"))
             {
                 LoadComboBoxHTDT();
-                DevForm.CreateSearchLookupEdit(lookNghe, "Ten", "Id", DanhSach.DsNghe);
-                DevForm.CreateSearchLookupEdit(looktruong, "Ten", "Id", DanhSach.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList());
             }
 
             DanhSach.RefreshDS(TenDm);
@@ -312,9 +310,7 @@ namespace QuanLyTuyenSinh.Form
             string td = cbbTDHV.EditValue.ToString();
             if (string.IsNullOrEmpty(td))
                 return;
-            looktruong.Properties.DataSource = DanhSach.DsTruong
-                .Where(x => x.LoaiTruong.Equals(td))
-                .ToList();
+            
             if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
             {
                 if (lstHDTTTemp.Count > 0)
@@ -339,12 +335,6 @@ namespace QuanLyTuyenSinh.Form
             LoadbtnDSTT();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
-
-            DevForm.CreateSearchLookupEdit(lookNghe, "Ten", "Id", DanhSach.DsNghe);
-            DevForm.CreateSearchLookupEdit(looktruong, "Ten", "Id", DanhSach.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList());
-            DevForm.CreateSearchLookupEdit(lookDTUT, "Ma", "Id", DanhSach.DsDoiTuongUT);
-            DevForm.CreateSearchLookupEdit(lookKVUT, "Ma", "Id", DanhSach.DsKhuVucUT);
-
             lookTinh.EditValue = DanhSach.CurrSettings.MaTinh;
             lookQuanHuyen.EditValue = DanhSach.CurrSettings.MaHuyen;
             lstQuanHuyen = _Helper.getListDistrict(DanhSach.CurrSettings.MaTinh);
@@ -369,11 +359,7 @@ namespace QuanLyTuyenSinh.Form
             btnExel.Click += BtnExel_Click;
             btnLoadExel.Click += BtnLoadExel_Click;
             btnRefreshDTS.Click += BtnRefreshDTS_Click;
-
-            lookNghe.EditValueChanged += LookNghe_EditValueChanged;
-            looktruong.EditValueChanged += Looktruong_EditValueChanged;
-            lookDTUT.EditValueChanged += LookDTUT_EditValueChanged;
-            lookKVUT.EditValueChanged += LookKVUT_EditValueChanged;
+            
             cbbDTS.EditValueChanged += cbbDTS_EditValueChanged;
             cbbTDHV.EditValueChanged += CbbHTDT_EditValueChanged;
             lookTinh.TextChanged += LookTinh_TextChanged;
@@ -464,24 +450,7 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void LookKVUT_EditValueChanged(object? sender, EventArgs e)
-        {
-            if (cbbDTS.EditValue is null)
-                return;
-            if (_bindingSource is null)
-                return;
-            LoadDanhMuc();
-        }
-
-        private void LookDTUT_EditValueChanged(object? sender, EventArgs e)
-        {
-            if (cbbDTS.EditValue is null)
-                return;
-            if (_bindingSource is null)
-                return;
-            LoadDanhMuc();
-        }
-
+       
         private void LoadBackgound()
         {
             pnImg.SuspendLayout();
@@ -956,12 +925,11 @@ namespace QuanLyTuyenSinh.Form
                     break;
                 case TuDien.CategoryName.HoSoDuTuyen:
                     _bindingSource.DataSource = DanhSach.GetDSDuTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
-                    cbbTDHV.EditValue.ToString() : "THCS", (string)looktruong.EditValue, (string)lookNghe.EditValue, (string)lookDTUT.EditValue, (string)lookKVUT.EditValue);
+                    cbbTDHV.EditValue.ToString() : "THCS");
                     break;
                 case TuDien.CategoryName.HoSoTrungTuyen:
                     _bindingSource.DataSource = DanhSach.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
-                    cbbTDHV.EditValue.ToString() : "THCS", (string)looktruong.EditValue, (string)lookNghe.EditValue, (string)lookDTUT.EditValue, (string)lookKVUT.EditValue
-                    , (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue);
+                    cbbTDHV.EditValue.ToString() : "THCS",(string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue);
                     break;
                 case TuDien.CategoryName.ThongKeDiemDT:
                     _bindingSource.DataSource = DanhSach.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
@@ -1051,13 +1019,12 @@ namespace QuanLyTuyenSinh.Form
             }
 
             panelGrid.RowStyles[1].Height = TenDm.StartsWith("HS") || TenDm.StartsWith("TK") ? 40 : 0;
-            panelGrid.RowStyles[2].Height = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 40 : 0;
             btnAdd.Enabled = (TenDm.Equals(TuDien.CategoryName.ChiTieu) || TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen)) ? false : true;
             btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieu) ? 110 : 0;
             _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 220;
             panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 487 : 0;
-            panelFilter.Visible = TenDm.StartsWith("HS") ? true : false;
+            panelFilter.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
             btnThongKe.Visible = TenDm.StartsWith("TK") ? true : false;
             dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 185 : 0;
             btnLoadExel.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 236 : 0;
@@ -1106,23 +1073,7 @@ namespace QuanLyTuyenSinh.Form
             LoadDanhMuc();
         }
 
-        private void LookNghe_EditValueChanged(object? sender, EventArgs e)
-        {
-            if (cbbDTS.EditValue is null)
-                return;
-            if (_bindingSource is null)
-                return;
-            LoadDanhMuc();
-        }
-
-        private void Looktruong_EditValueChanged(object? sender, EventArgs e)
-        {
-            if (cbbDTS.EditValue is null)
-                return;
-            if (_bindingSource is null)
-                return;
-            LoadDanhMuc();
-        }
+        
 
         #region Xử lý GridControl
 

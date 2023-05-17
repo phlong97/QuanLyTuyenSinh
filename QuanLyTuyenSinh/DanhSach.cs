@@ -230,15 +230,11 @@ namespace QuanLyTuyenSinh
             return result;
         }
 
-        public static List<HoSoDuTuyenView> GetDSDuTuyen(int DotTS, string TDHV = "THCS", string? IdTruong = null, string? IdNghe = null, string? IdDTUT = null, string? IdKVUT = null)
+        public static List<HoSoDuTuyenView> GetDSDuTuyen(int DotTS, string TDHV = "THCS")
         {
             List<HoSoDuTuyenView> lst = new();
             lst = DSHoSoDT.Where(
-                hs => (DotTS <= 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true)
-                && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)) &&
-                (string.IsNullOrEmpty(IdNghe) ? true : hs.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(IdNghe)) is not null)
-                && (string.IsNullOrEmpty(IdDTUT) ? true : string.IsNullOrEmpty(hs.IdDTUT) ? false : hs.IdDTUT.Equals(IdDTUT))
-                && (string.IsNullOrEmpty(IdKVUT) ? true : string.IsNullOrEmpty(hs.IdKVUT) ? false : hs.IdKVUT.Equals(IdKVUT)))
+                hs => (DotTS <= 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true))
                 .Select(x => x.ToView())
                 .OrderByDescending(x => x.DotTS).ThenBy(x => x.MaHoSo)
                 .ToList();
@@ -246,15 +242,11 @@ namespace QuanLyTuyenSinh
             return lst;
         }
 
-        public static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? IdTruong = null, string? IdNghe = null, string? IdDTUT = null, string? IdKVUT = null, string? MaTinh = null, string? MaHuyen = null, string? MaXa = null)
+        public static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null)
         {
             List<HoSoTrungTuyen> lst = new();
             lst = DSHoSoTT.Where(
-                hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(TDHV)
-                 && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong))
-                && (string.IsNullOrEmpty(IdNghe) ? true : hs.IdNgheTrungTuyen.Equals(IdNghe))
-                && (string.IsNullOrEmpty(IdDTUT) ? true : string.IsNullOrEmpty(hs.IdDTUT) ? false : hs.IdDTUT.Equals(IdDTUT))
-                && (string.IsNullOrEmpty(IdKVUT) ? true : string.IsNullOrEmpty(hs.IdKVUT) ? false : hs.IdKVUT.Equals(IdKVUT))
+                hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(TDHV)                
                 && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                 && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                 && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))

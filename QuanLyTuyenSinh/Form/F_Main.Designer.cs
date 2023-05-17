@@ -57,7 +57,6 @@
             panelGrid = new TableLayoutPanel();
             gridControl = new DevExpress.XtraGrid.GridControl();
             gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
-            panelControl1 = new DevExpress.XtraEditors.PanelControl();
             lookXa = new DevExpress.XtraEditors.SearchLookUpEdit();
             gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             lookTinh = new DevExpress.XtraEditors.SearchLookUpEdit();
@@ -80,18 +79,6 @@
             btnAdd = new DevExpress.XtraEditors.SimpleButton();
             panelControl3 = new DevExpress.XtraEditors.PanelControl();
             panelFilter = new DevExpress.XtraEditors.PanelControl();
-            lookKVUT = new DevExpress.XtraEditors.SearchLookUpEdit();
-            gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            lookDTUT = new DevExpress.XtraEditors.SearchLookUpEdit();
-            gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            looktruong = new DevExpress.XtraEditors.SearchLookUpEdit();
-            gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            lookNghe = new DevExpress.XtraEditors.SearchLookUpEdit();
-            gridView11 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            labelControl4 = new DevExpress.XtraEditors.LabelControl();
             panelTS = new DevExpress.XtraEditors.PanelControl();
             btnRefreshDTS = new DevExpress.XtraEditors.SimpleButton();
             cbbTDHV = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -114,8 +101,6 @@
             panelGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
-            panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)lookXa.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lookTinh.Properties).BeginInit();
@@ -129,14 +114,6 @@
             panelControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelFilter).BeginInit();
             panelFilter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)lookKVUT.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)lookDTUT.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)looktruong.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)lookNghe.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelTS).BeginInit();
             panelTS.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cbbTDHV.Properties).BeginInit();
@@ -333,36 +310,34 @@
             pnMain.Dock = DockStyle.Fill;
             pnMain.Location = new Point(270, 20);
             pnMain.Name = "pnMain";
-            pnMain.Size = new Size(1650, 652);
+            pnMain.Size = new Size(1373, 652);
             pnMain.TabIndex = 10;
             // 
             // panelGrid
             // 
             panelGrid.ColumnCount = 1;
             panelGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            panelGrid.Controls.Add(gridControl, 0, 3);
-            panelGrid.Controls.Add(panelControl1, 0, 2);
+            panelGrid.Controls.Add(gridControl, 0, 2);
             panelGrid.Controls.Add(panelControl2, 0, 0);
             panelGrid.Controls.Add(panelControl3, 0, 1);
             panelGrid.Dock = DockStyle.Fill;
             panelGrid.Location = new Point(0, 0);
             panelGrid.Name = "panelGrid";
-            panelGrid.RowCount = 4;
+            panelGrid.RowCount = 3;
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             panelGrid.RowStyles.Add(new RowStyle());
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            panelGrid.Size = new Size(1650, 652);
+            panelGrid.Size = new Size(1373, 652);
             panelGrid.TabIndex = 19;
             // 
             // gridControl
             // 
             gridControl.Dock = DockStyle.Fill;
-            gridControl.Location = new Point(3, 113);
+            gridControl.Location = new Point(3, 73);
             gridControl.MainView = gridView;
             gridControl.Name = "gridControl";
-            gridControl.Size = new Size(1644, 536);
+            gridControl.Size = new Size(1367, 576);
             gridControl.TabIndex = 10;
             gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
             // 
@@ -370,29 +345,16 @@
             // 
             gridView.GridControl = gridControl;
             gridView.Name = "gridView";
-            // 
-            // panelControl1
-            // 
-            panelControl1.Controls.Add(lookXa);
-            panelControl1.Controls.Add(lookTinh);
-            panelControl1.Controls.Add(lookQuanHuyen);
-            panelControl1.Controls.Add(labelControl9);
-            panelControl1.Controls.Add(labelControl8);
-            panelControl1.Controls.Add(labelControl7);
-            panelControl1.Dock = DockStyle.Fill;
-            panelControl1.Location = new Point(3, 73);
-            panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(1644, 34);
-            panelControl1.TabIndex = 20;
+            gridView.OptionsView.ShowGroupPanel = false;
             // 
             // lookXa
             // 
-            lookXa.Location = new Point(1043, 6);
+            lookXa.Location = new Point(540, 4);
             lookXa.Name = "lookXa";
             lookXa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookXa.Properties.NullText = "(Trống)";
             lookXa.Properties.PopupView = gridView5;
-            lookXa.Size = new Size(150, 22);
+            lookXa.Size = new Size(158, 22);
             lookXa.TabIndex = 36;
             // 
             // gridView5
@@ -404,12 +366,12 @@
             // 
             // lookTinh
             // 
-            lookTinh.Location = new Point(545, 7);
+            lookTinh.Location = new Point(50, 5);
             lookTinh.Name = "lookTinh";
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
-            lookTinh.Size = new Size(148, 22);
+            lookTinh.Size = new Size(149, 22);
             lookTinh.TabIndex = 34;
             // 
             // gridView6
@@ -421,7 +383,7 @@
             // 
             // lookQuanHuyen
             // 
-            lookQuanHuyen.Location = new Point(786, 6);
+            lookQuanHuyen.Location = new Point(285, 3);
             lookQuanHuyen.Name = "lookQuanHuyen";
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";
@@ -438,7 +400,7 @@
             // 
             // labelControl9
             // 
-            labelControl9.Location = new Point(963, 9);
+            labelControl9.Location = new Point(468, 7);
             labelControl9.Name = "labelControl9";
             labelControl9.Size = new Size(66, 16);
             labelControl9.TabIndex = 31;
@@ -446,7 +408,7 @@
             // 
             // labelControl8
             // 
-            labelControl8.Location = new Point(699, 9);
+            labelControl8.Location = new Point(204, 7);
             labelControl8.Name = "labelControl8";
             labelControl8.Size = new Size(75, 16);
             labelControl8.TabIndex = 32;
@@ -454,7 +416,7 @@
             // 
             // labelControl7
             // 
-            labelControl7.Location = new Point(510, 10);
+            labelControl7.Location = new Point(15, 7);
             labelControl7.Name = "labelControl7";
             labelControl7.Size = new Size(26, 16);
             labelControl7.TabIndex = 33;
@@ -472,7 +434,7 @@
             panelControl2.Dock = DockStyle.Fill;
             panelControl2.Location = new Point(3, 3);
             panelControl2.Name = "panelControl2";
-            panelControl2.Size = new Size(1644, 24);
+            panelControl2.Size = new Size(1367, 24);
             panelControl2.TabIndex = 21;
             // 
             // btnExel
@@ -557,7 +519,7 @@
             btnClose.Appearance.Options.UseBorderColor = true;
             btnClose.Dock = DockStyle.Right;
             btnClose.ImageOptions.Image = (Image)resources.GetObject("btnClose.ImageOptions.Image");
-            btnClose.Location = new Point(1616, 2);
+            btnClose.Location = new Point(1339, 2);
             btnClose.Margin = new Padding(0);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(26, 20);
@@ -625,124 +587,22 @@
             panelControl3.Dock = DockStyle.Fill;
             panelControl3.Location = new Point(3, 33);
             panelControl3.Name = "panelControl3";
-            panelControl3.Size = new Size(1644, 34);
+            panelControl3.Size = new Size(1367, 34);
             panelControl3.TabIndex = 22;
             // 
             // panelFilter
             // 
-            panelFilter.Controls.Add(lookKVUT);
-            panelFilter.Controls.Add(labelControl6);
-            panelFilter.Controls.Add(lookDTUT);
-            panelFilter.Controls.Add(labelControl1);
-            panelFilter.Controls.Add(looktruong);
-            panelFilter.Controls.Add(labelControl5);
-            panelFilter.Controls.Add(lookNghe);
-            panelFilter.Controls.Add(labelControl4);
+            panelFilter.Controls.Add(lookXa);
+            panelFilter.Controls.Add(lookTinh);
+            panelFilter.Controls.Add(labelControl7);
+            panelFilter.Controls.Add(lookQuanHuyen);
+            panelFilter.Controls.Add(labelControl8);
+            panelFilter.Controls.Add(labelControl9);
             panelFilter.Dock = DockStyle.Left;
             panelFilter.Location = new Point(489, 2);
             panelFilter.Name = "panelFilter";
-            panelFilter.Size = new Size(947, 30);
+            panelFilter.Size = new Size(711, 30);
             panelFilter.TabIndex = 29;
-            // 
-            // lookKVUT
-            // 
-            lookKVUT.Location = new Point(774, 4);
-            lookKVUT.Name = "lookKVUT";
-            lookKVUT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            lookKVUT.Properties.NullText = "(Trống)";
-            lookKVUT.Properties.PopupView = gridView4;
-            lookKVUT.Size = new Size(159, 22);
-            lookKVUT.TabIndex = 32;
-            // 
-            // gridView4
-            // 
-            gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            gridView4.Name = "gridView4";
-            gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
-            gridView4.OptionsView.ShowGroupPanel = false;
-            // 
-            // labelControl6
-            // 
-            labelControl6.Location = new Point(728, 7);
-            labelControl6.Name = "labelControl6";
-            labelControl6.Size = new Size(36, 16);
-            labelControl6.TabIndex = 31;
-            labelControl6.Text = "KTƯT";
-            // 
-            // lookDTUT
-            // 
-            lookDTUT.Location = new Point(554, 4);
-            lookDTUT.Name = "lookDTUT";
-            lookDTUT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            lookDTUT.Properties.NullText = "(Trống)";
-            lookDTUT.Properties.PopupView = gridView3;
-            lookDTUT.Size = new Size(159, 22);
-            lookDTUT.TabIndex = 30;
-            // 
-            // gridView3
-            // 
-            gridView3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            gridView3.Name = "gridView3";
-            gridView3.OptionsSelection.EnableAppearanceFocusedCell = false;
-            gridView3.OptionsView.ShowGroupPanel = false;
-            // 
-            // labelControl1
-            // 
-            labelControl1.Location = new Point(509, 7);
-            labelControl1.Name = "labelControl1";
-            labelControl1.Size = new Size(37, 16);
-            labelControl1.TabIndex = 29;
-            labelControl1.Text = "ĐTƯT";
-            // 
-            // looktruong
-            // 
-            looktruong.Location = new Point(331, 4);
-            looktruong.Name = "looktruong";
-            looktruong.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            looktruong.Properties.NullText = "(Trống)";
-            looktruong.Properties.PopupView = gridView2;
-            looktruong.Size = new Size(159, 22);
-            looktruong.TabIndex = 28;
-            // 
-            // gridView2
-            // 
-            gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            gridView2.Name = "gridView2";
-            gridView2.OptionsSelection.EnableAppearanceFocusedCell = false;
-            gridView2.OptionsView.ShowGroupPanel = false;
-            // 
-            // labelControl5
-            // 
-            labelControl5.Location = new Point(277, 7);
-            labelControl5.Name = "labelControl5";
-            labelControl5.Size = new Size(43, 16);
-            labelControl5.TabIndex = 27;
-            labelControl5.Text = "Trường";
-            // 
-            // lookNghe
-            // 
-            lookNghe.Location = new Point(103, 4);
-            lookNghe.Name = "lookNghe";
-            lookNghe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            lookNghe.Properties.NullText = "(Trống)";
-            lookNghe.Properties.PopupView = gridView11;
-            lookNghe.Size = new Size(167, 22);
-            lookNghe.TabIndex = 26;
-            // 
-            // gridView11
-            // 
-            gridView11.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            gridView11.Name = "gridView11";
-            gridView11.OptionsSelection.EnableAppearanceFocusedCell = false;
-            gridView11.OptionsView.ShowGroupPanel = false;
-            // 
-            // labelControl4
-            // 
-            labelControl4.Location = new Point(15, 7);
-            labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(77, 16);
-            labelControl4.TabIndex = 25;
-            labelControl4.Text = "Nghề nghiệp";
             // 
             // panelTS
             // 
@@ -760,7 +620,7 @@
             // btnRefreshDTS
             // 
             btnRefreshDTS.ImageOptions.Image = (Image)resources.GetObject("btnRefreshDTS.ImageOptions.Image");
-            btnRefreshDTS.Location = new Point(153, 6);
+            btnRefreshDTS.Location = new Point(160, 5);
             btnRefreshDTS.Name = "btnRefreshDTS";
             btnRefreshDTS.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
             btnRefreshDTS.Size = new Size(85, 22);
@@ -769,7 +629,7 @@
             // 
             // cbbTDHV
             // 
-            cbbTDHV.Location = new Point(367, 6);
+            cbbTDHV.Location = new Point(364, 5);
             cbbTDHV.Name = "cbbTDHV";
             cbbTDHV.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbTDHV.Size = new Size(118, 22);
@@ -777,7 +637,7 @@
             // 
             // labelControl2
             // 
-            labelControl2.Location = new Point(245, 9);
+            labelControl2.Location = new Point(255, 8);
             labelControl2.Name = "labelControl2";
             labelControl2.Size = new Size(99, 16);
             labelControl2.TabIndex = 38;
@@ -785,7 +645,7 @@
             // 
             // cbbDTS
             // 
-            cbbDTS.Location = new Point(56, 6);
+            cbbDTS.Location = new Point(54, 5);
             cbbDTS.Name = "cbbDTS";
             cbbDTS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbDTS.Size = new Size(96, 22);
@@ -793,7 +653,7 @@
             // 
             // labelControl3
             // 
-            labelControl3.Location = new Point(3, 9);
+            labelControl3.Location = new Point(3, 7);
             labelControl3.Name = "labelControl3";
             labelControl3.Size = new Size(41, 16);
             labelControl3.TabIndex = 36;
@@ -805,9 +665,9 @@
             btnThongKe.Appearance.Options.UseBackColor = true;
             btnThongKe.Dock = DockStyle.Right;
             btnThongKe.ImageOptions.Image = (Image)resources.GetObject("btnThongKe.ImageOptions.Image");
-            btnThongKe.Location = new Point(1444, 2);
+            btnThongKe.Location = new Point(1224, 2);
             btnThongKe.Name = "btnThongKe";
-            btnThongKe.Size = new Size(198, 30);
+            btnThongKe.Size = new Size(141, 30);
             btnThongKe.TabIndex = 27;
             btnThongKe.Text = "Thống kê";
             // 
@@ -829,6 +689,7 @@
             barManager1.DockControls.Add(barDockControlBottom);
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
+            barManager1.DockWindowTabFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             barManager1.Form = this;
             barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { txtNamTS, txtUser });
             barManager1.MainMenu = bar2;
@@ -864,7 +725,7 @@
             barDockControlTop.Dock = DockStyle.Top;
             barDockControlTop.Location = new Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new Size(1920, 20);
+            barDockControlTop.Size = new Size(1643, 20);
             // 
             // barDockControlBottom
             // 
@@ -872,7 +733,7 @@
             barDockControlBottom.Dock = DockStyle.Bottom;
             barDockControlBottom.Location = new Point(0, 672);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new Size(1920, 0);
+            barDockControlBottom.Size = new Size(1643, 0);
             // 
             // barDockControlLeft
             // 
@@ -886,7 +747,7 @@
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = DockStyle.Right;
-            barDockControlRight.Location = new Point(1920, 20);
+            barDockControlRight.Location = new Point(1643, 20);
             barDockControlRight.Manager = barManager1;
             barDockControlRight.Size = new Size(0, 652);
             // 
@@ -894,13 +755,14 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1920, 672);
+            ClientSize = new Size(1643, 672);
             Controls.Add(pnMain);
             Controls.Add(accordionControl1);
             Controls.Add(barDockControlLeft);
             Controls.Add(barDockControlRight);
             Controls.Add(barDockControlBottom);
             Controls.Add(barDockControlTop);
+            Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             Margin = new Padding(5, 4, 5, 4);
             Name = "F_Main";
             StartPosition = FormStartPosition.CenterScreen;
@@ -912,9 +774,6 @@
             panelGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridControl).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
-            panelControl1.ResumeLayout(false);
-            panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)lookXa.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView5).EndInit();
             ((System.ComponentModel.ISupportInitialize)lookTinh.Properties).EndInit();
@@ -929,14 +788,6 @@
             ((System.ComponentModel.ISupportInitialize)panelFilter).EndInit();
             panelFilter.ResumeLayout(false);
             panelFilter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)lookKVUT.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)lookDTUT.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)looktruong.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)lookNghe.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView11).EndInit();
             ((System.ComponentModel.ISupportInitialize)panelTS).EndInit();
             panelTS.ResumeLayout(false);
             panelTS.PerformLayout();
@@ -977,7 +828,6 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnAccount;
         private DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnTKTT;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraEditors.SearchLookUpEdit lookXa;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
         private DevExpress.XtraEditors.SearchLookUpEdit lookTinh;
@@ -1008,18 +858,6 @@
         private DevExpress.XtraEditors.SimpleButton btnAdd;
         private DevExpress.XtraEditors.PanelControl panelControl3;
         private DevExpress.XtraEditors.PanelControl panelFilter;
-        private DevExpress.XtraEditors.SearchLookUpEdit lookKVUT;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
-        private DevExpress.XtraEditors.LabelControl labelControl6;
-        private DevExpress.XtraEditors.SearchLookUpEdit lookDTUT;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.SearchLookUpEdit looktruong;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
-        private DevExpress.XtraEditors.LabelControl labelControl5;
-        private DevExpress.XtraEditors.SearchLookUpEdit lookNghe;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView11;
-        private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.PanelControl panelTS;
         private DevExpress.XtraEditors.SimpleButton btnRefreshDTS;
         private DevExpress.XtraEditors.ComboBoxEdit cbbTDHV;
