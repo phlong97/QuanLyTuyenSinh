@@ -387,12 +387,12 @@
             // 
             // lookXa
             // 
-            lookXa.Location = new Point(1109, 7);
+            lookXa.Location = new Point(1043, 6);
             lookXa.Name = "lookXa";
             lookXa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookXa.Properties.NullText = "(Trống)";
             lookXa.Properties.PopupView = gridView5;
-            lookXa.Size = new Size(247, 22);
+            lookXa.Size = new Size(150, 22);
             lookXa.TabIndex = 36;
             // 
             // gridView5
@@ -404,12 +404,12 @@
             // 
             // lookTinh
             // 
-            lookTinh.Location = new Point(473, 5);
+            lookTinh.Location = new Point(545, 7);
             lookTinh.Name = "lookTinh";
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
-            lookTinh.Size = new Size(219, 22);
+            lookTinh.Size = new Size(148, 22);
             lookTinh.TabIndex = 34;
             // 
             // gridView6
@@ -426,7 +426,7 @@
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";
             lookQuanHuyen.Properties.PopupView = gridView7;
-            lookQuanHuyen.Size = new Size(225, 22);
+            lookQuanHuyen.Size = new Size(171, 22);
             lookQuanHuyen.TabIndex = 35;
             // 
             // gridView7
@@ -438,7 +438,7 @@
             // 
             // labelControl9
             // 
-            labelControl9.Location = new Point(1029, 10);
+            labelControl9.Location = new Point(963, 9);
             labelControl9.Name = "labelControl9";
             labelControl9.Size = new Size(66, 16);
             labelControl9.TabIndex = 31;
@@ -454,7 +454,7 @@
             // 
             // labelControl7
             // 
-            labelControl7.Location = new Point(438, 8);
+            labelControl7.Location = new Point(510, 10);
             labelControl7.Name = "labelControl7";
             labelControl7.Size = new Size(26, 16);
             labelControl7.TabIndex = 33;
