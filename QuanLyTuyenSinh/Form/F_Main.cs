@@ -112,6 +112,7 @@ namespace QuanLyTuyenSinh.Form
                     var qt = DanhSach.DsQuocTich.FirstOrDefault();
                     var tg = DanhSach.DsTonGiao.FirstOrDefault();
                     var tdvh = DanhSach.DsTrinhDo.FirstOrDefault();
+                    var kvut = DanhSach.DsKhuVucUT.FirstOrDefault(x => x.Ma == "KV2-NT");
                     try
                     {
                         F_HoSo f = new F_HoSo(
@@ -126,6 +127,7 @@ namespace QuanLyTuyenSinh.Form
                             IdDanToc = dt is not null ? dt.Id : string.Empty,
                             IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
                             IdTonGiao = tg is not null ? tg.Id : string.Empty,
+                            IdKVUT = kvut is not null ? kvut.Id : string.Empty,
                         });
                         f.ShowDialog(this);
                     }
@@ -1012,6 +1014,9 @@ namespace QuanLyTuyenSinh.Form
             }
             if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
             {
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsTruong, "IdTruong", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
                 gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen").Group();
                 var colGT = gridView.Columns.ColumnByFieldName("GioiTinh");

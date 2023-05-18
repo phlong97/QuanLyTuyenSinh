@@ -209,7 +209,7 @@ namespace QuanLyTuyenSinh.Form
             gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
 
             DevForm.CreateRepositoryItemLookUpEdit(gridView1, DanhSach.DsNghe, "IdNghe", "Ten", "Id");
-            
+
         }
 
         private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)

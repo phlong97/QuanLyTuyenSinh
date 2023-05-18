@@ -232,10 +232,10 @@
             tablePanelTT.Controls.Add(groupControl2);
             tablePanelTT.Controls.Add(panelControl1);
             tablePanelTT.Dock = DockStyle.Fill;
-            tablePanelTT.Location = new Point(0, 33);
+            tablePanelTT.Location = new Point(0, 30);
             tablePanelTT.Name = "tablePanelTT";
             tablePanelTT.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] { new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F) });
-            tablePanelTT.Size = new Size(1274, 588);
+            tablePanelTT.Size = new Size(1274, 591);
             tablePanelTT.TabIndex = 2;
             // 
             // groupControl2
@@ -300,10 +300,10 @@
             groupControl2.Controls.Add(txtNSCha);
             groupControl2.Controls.Add(txtNSMe);
             groupControl2.Dock = DockStyle.Fill;
-            groupControl2.Location = new Point(15, 14);
+            groupControl2.Location = new Point(3, 3);
             groupControl2.Name = "groupControl2";
             tablePanelTT.SetRow(groupControl2, 0);
-            groupControl2.Size = new Size(726, 559);
+            groupControl2.Size = new Size(724, 585);
             groupControl2.TabIndex = 4;
             groupControl2.Text = "Thông tin học sinh";
             // 
@@ -419,7 +419,7 @@
             barDockControlTop.Dock = DockStyle.Top;
             barDockControlTop.Location = new Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new Size(1274, 33);
+            barDockControlTop.Size = new Size(1274, 30);
             // 
             // barDockControlBottom
             // 
@@ -433,17 +433,17 @@
             // 
             barDockControlLeft.CausesValidation = false;
             barDockControlLeft.Dock = DockStyle.Left;
-            barDockControlLeft.Location = new Point(0, 33);
+            barDockControlLeft.Location = new Point(0, 30);
             barDockControlLeft.Manager = barManager1;
-            barDockControlLeft.Size = new Size(0, 588);
+            barDockControlLeft.Size = new Size(0, 591);
             // 
             // barDockControlRight
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = DockStyle.Right;
-            barDockControlRight.Location = new Point(1274, 33);
+            barDockControlRight.Location = new Point(1274, 30);
             barDockControlRight.Manager = barManager1;
-            barDockControlRight.Size = new Size(0, 588);
+            barDockControlRight.Size = new Size(0, 591);
             // 
             // labelControl32
             // 
@@ -995,10 +995,10 @@
             panelControl1.Controls.Add(panelControl2);
             panelControl1.Controls.Add(tabPane1);
             panelControl1.Dock = DockStyle.Fill;
-            panelControl1.Location = new Point(745, 14);
+            panelControl1.Location = new Point(733, 3);
             panelControl1.Name = "panelControl1";
             tablePanelTT.SetRow(panelControl1, 0);
-            panelControl1.Size = new Size(514, 559);
+            panelControl1.Size = new Size(538, 585);
             panelControl1.TabIndex = 3;
             // 
             // groupControl1
@@ -1035,7 +1035,7 @@
             chkCCCD.Location = new Point(204, 77);
             chkCCCD.Name = "chkCCCD";
             chkCCCD.Properties.Caption = "CCCD/CMND";
-            chkCCCD.Size = new Size(113, 21);
+            chkCCCD.Size = new Size(113, 24);
             chkCCCD.TabIndex = 5;
             // 
             // chkBangTN
@@ -1044,7 +1044,7 @@
             chkBangTN.Location = new Point(204, 131);
             chkBangTN.Name = "chkBangTN";
             chkBangTN.Properties.Caption = "Bằng tốt nghiệp";
-            chkBangTN.Size = new Size(125, 21);
+            chkBangTN.Size = new Size(125, 24);
             chkBangTN.TabIndex = 7;
             // 
             // chkGKS
@@ -1053,7 +1053,7 @@
             chkGKS.Location = new Point(204, 46);
             chkGKS.Name = "chkGKS";
             chkGKS.Properties.Caption = "Giấy khai sinh";
-            chkGKS.Size = new Size(109, 21);
+            chkGKS.Size = new Size(109, 24);
             chkGKS.TabIndex = 4;
             // 
             // chkAnh
@@ -1062,7 +1062,7 @@
             chkAnh.Location = new Point(204, 161);
             chkAnh.Name = "chkAnh";
             chkAnh.Properties.Caption = "Ảnh thẻ";
-            chkAnh.Size = new Size(83, 21);
+            chkAnh.Size = new Size(83, 24);
             chkAnh.TabIndex = 8;
             // 
             // chkHocBa
@@ -1071,7 +1071,7 @@
             chkHocBa.Location = new Point(204, 103);
             chkHocBa.Name = "chkHocBa";
             chkHocBa.Properties.Caption = "Học bạ";
-            chkHocBa.Size = new Size(83, 21);
+            chkHocBa.Size = new Size(83, 24);
             chkHocBa.TabIndex = 6;
             // 
             // txtGhiChu
@@ -1087,7 +1087,7 @@
             chkCNUT.Location = new Point(18, 140);
             chkCNUT.Name = "chkCNUT";
             chkCNUT.Properties.Caption = "Giấy chứng nhận ưu tiên";
-            chkCNUT.Size = new Size(166, 21);
+            chkCNUT.Size = new Size(166, 24);
             chkCNUT.TabIndex = 3;
             // 
             // chkGKSK
@@ -1095,7 +1095,7 @@
             chkGKSK.Location = new Point(18, 108);
             chkGKSK.Name = "chkGKSK";
             chkGKSK.Properties.Caption = "Giấy khám sức khỏe";
-            chkGKSK.Size = new Size(166, 21);
+            chkGKSK.Size = new Size(166, 24);
             chkGKSK.TabIndex = 2;
             // 
             // chkCNTN
@@ -1103,7 +1103,7 @@
             chkCNTN.Location = new Point(18, 77);
             chkCNTN.Name = "chkCNTN";
             chkCNTN.Properties.Caption = "Chứng nhận tốt nghiệp";
-            chkCNTN.Size = new Size(166, 21);
+            chkCNTN.Size = new Size(166, 24);
             chkCNTN.TabIndex = 1;
             // 
             // chkPhieuDKDT
@@ -1111,7 +1111,7 @@
             chkPhieuDKDT.Location = new Point(18, 46);
             chkPhieuDKDT.Name = "chkPhieuDKDT";
             chkPhieuDKDT.Properties.Caption = "Phiếu đăng ký đự tuyển";
-            chkPhieuDKDT.Size = new Size(166, 21);
+            chkPhieuDKDT.Size = new Size(166, 24);
             chkPhieuDKDT.TabIndex = 0;
             // 
             // gridControl1
@@ -1144,12 +1144,12 @@
             // labelControl33
             // 
             labelControl33.AllowHtmlString = true;
-            labelControl33.Appearance.Font = new Font("Tahoma", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl33.Appearance.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
             labelControl33.Appearance.Options.UseFont = true;
             labelControl33.Dock = DockStyle.Left;
             labelControl33.Location = new Point(2, 2);
             labelControl33.Name = "labelControl33";
-            labelControl33.Size = new Size(218, 22);
+            labelControl33.Size = new Size(174, 18);
             labelControl33.TabIndex = 86;
             labelControl33.Text = "Danh sách nguyện vọng";
             // 
@@ -1215,7 +1215,7 @@
             tabNavigationPage1.Name = "tabNavigationPage1";
             tabNavigationPage1.Properties.AppearanceCaption.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
             tabNavigationPage1.Properties.AppearanceCaption.Options.UseFont = true;
-            tabNavigationPage1.Size = new Size(507, 107);
+            tabNavigationPage1.Size = new Size(507, 112);
             // 
             // labelControl23
             // 
@@ -1338,6 +1338,7 @@
             AutoScaleMode = AutoScaleMode.None;
             ChildControls.Add(directxFormContainerControl1);
             ClientSize = new Size(1276, 661);
+            Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             Name = "F_HoSo";

@@ -100,13 +100,13 @@ namespace QuanLyTuyenSinh
         public string NamSinhMe { get; set; }
 
         [Display(Name = "Hạnh kiểm")]
-        public string HanhKiem { get; set; } = "Trung bình";
+        public string HanhKiem { get; set; }
 
         [Display(Name = "Xếp loại HT")]
-        public string XLHocTap { get; set; } = "Trung bình";
+        public string XLHocTap { get; set; }
 
         [Display(Name = "Xếp loại TN")]
-        public string XLTN { get; set; } = "Trung bình";
+        public string XLTN { get; set; }
 
         [Display(Name = "Đối tượng ưu tiên")]
         public string IdDTUT { get; set; }
