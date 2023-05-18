@@ -8,8 +8,6 @@ namespace QuanLyTuyenSinh.Form
 {
     public partial class F_Login : DevExpress.XtraEditors.XtraForm
     {
-        private F_Main mainForm;
-
         public F_Login()
         {
             InitializeComponent();
@@ -60,13 +58,11 @@ namespace QuanLyTuyenSinh.Form
                 Properties.Settings.Default.Save();
                 Task.Run(() =>
                 {
-                    DanhSach.LoadStaticList();
-                    //_Generator.RandomDsHSDT(Properties.Settings.Default.NamTS, "1", 250);
-                    //DanhSach.LoadStaticList();
+                    DanhSach.LoadStaticList();                   
                 });
-                mainForm = new F_Main();
-                mainForm.Closed += MainForm_Closed;
-                mainForm.Show();
+                MainWorkspace.FormMain = new F_Main();
+                MainWorkspace.FormMain.Closed += MainForm_Closed;
+                MainWorkspace.FormMain.Show();
 
                 splashScreenManager1.CloseWaitForm();
             }

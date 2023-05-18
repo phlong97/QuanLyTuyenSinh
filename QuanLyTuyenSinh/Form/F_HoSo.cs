@@ -79,8 +79,12 @@ namespace QuanLyTuyenSinh.Form
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
-
+            FormClosing += new FormClosingEventHandler(HS_FormClosing);
             ActiveControl = txtHo;
+        }
+        private void HS_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            MainWorkspace.FormMain.Refresh();
         }
 
         private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)

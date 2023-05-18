@@ -31,7 +31,7 @@ namespace QuanLyTuyenSinh.Form
 {
     public partial class F_Main : DevExpress.XtraEditors.XtraForm
     {
-        private BindingSource _bindingSource { get; set; }
+        private BindingSource _bindingSource;
         private bool _EditMode;
 
         public bool EditMode
@@ -43,7 +43,16 @@ namespace QuanLyTuyenSinh.Form
                 btnEdit.Text = value ? "Lưu" : "Sửa";
             }
         }
+        public void Refresh()
+        {
+            if (!TenDm.StartsWith("DM"))
+            {
+                LoadComboBoxHTDT();
+            }
 
+            DanhSach.RefreshDS(TenDm);
+            LoadDanhMuc();
+        }
         private int _NamTS { get; set; }
         private string TenDm { get; set; }
         private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
