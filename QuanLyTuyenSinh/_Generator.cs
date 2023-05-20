@@ -46,21 +46,21 @@ namespace QuanLyTuyenSinh
             {
                 for (int i = 0; i < soluong; i++)
                 {
-                    var truong = DanhSach.DsTruong[_random.Next(DanhSach.DsTruong.Count)];
+                    var truong = Data.DsTruong[_random.Next(Data.DsTruong.Count)];
                     List<_Helper.Adress> lstXa = _Helper.getListWards("51103");
                     var maxa = lstXa[_random.Next(lstXa.Count)];
-                    string IdNV1 = DanhSach.DsNghe[_random.Next(DanhSach.DsNghe.Count)].Id;
-                    var dsNgheNV2 = DanhSach.DsNghe.Where(x => !x.Id.Equals(IdNV1)).ToList();
+                    string IdNV1 = Data.DsNghe[_random.Next(Data.DsNghe.Count)].Id;
+                    var dsNgheNV2 = Data.DsNghe.Where(x => !x.Id.Equals(IdNV1)).ToList();
                     string IdNV2 = dsNgheNV2[_random.Next(dsNgheNV2.Count)].Id;
 
                     HoSoDuTuyen hsdt = new HoSoDuTuyen
                     {
                         NamTS = namTS,
                         DotTS = int.Parse(d),
-                        IdQuocTich = DanhSach.DsQuocTich.First().Id,
-                        IdDanToc = DanhSach.DsDanToc[_random.Next(DanhSach.DsDanToc.Count)].Id,
-                        IdTrinhDoVH = DanhSach.DsTrinhDo[_random.Next(DanhSach.DsTrinhDo.Count)].Id,
-                        IdTonGiao = DanhSach.DsTonGiao[_random.Next(DanhSach.DsTonGiao.Count)].Id,
+                        IdQuocTich = Data.DsQuocTich.First().Id,
+                        IdDanToc = Data.DsDanToc[_random.Next(Data.DsDanToc.Count)].Id,
+                        IdTrinhDoVH = Data.DsTrinhDo[_random.Next(Data.DsTrinhDo.Count)].Id,
+                        IdTonGiao = Data.DsTonGiao[_random.Next(Data.DsTonGiao.Count)].Id,
                         IdTruong = truong.Id,
                         TDHV = truong.LoaiTruong,
                         HTDT = "Chính quy",
@@ -89,8 +89,8 @@ namespace QuanLyTuyenSinh
                         HanhKiem = lstHanhKiem[_random.Next(lstHanhKiem.Length)],
                         XLHocTap = truong.LoaiTruong == "THPT" ? lstXepLoaiHocTap[_random.Next(lstXepLoaiHocTap.Length)] : string.Empty,
                         XLTN = lstXepLoaiTotNghiep[_random.Next(lstXepLoaiTotNghiep.Length)],
-                        IdDTUT = _random.NextDouble() > 0.5 ? null : DanhSach.DsDoiTuongUT[_random.Next(DanhSach.DsDoiTuongUT.Count)].Id,
-                        IdKVUT = _random.NextDouble() > 0.5 ? null : DanhSach.DsKhuVucUT[_random.Next(DanhSach.DsKhuVucUT.Count)].Id,
+                        IdDTUT = _random.NextDouble() > 0.5 ? null : Data.DsDoiTuongUT[_random.Next(Data.DsDoiTuongUT.Count)].Id,
+                        IdKVUT = _random.NextDouble() > 0.5 ? null : Data.DsKhuVucUT[_random.Next(Data.DsKhuVucUT.Count)].Id,
                         KiemTraHS = new()
                         {
                             BangTN = _random.NextDouble() > 0.5,
@@ -105,7 +105,7 @@ namespace QuanLyTuyenSinh
                     };
                     if (_random.NextDouble() > 0.5)
                         hsdt.DsNguyenVong.Add(new NguyenVong { IdNghe = IdNV2, NV = 2 });
-                    var nv1 = DanhSach.DsNghe.First(x => x.Id == hsdt.DsNguyenVong.First().IdNghe);
+                    var nv1 = Data.DsNghe.First(x => x.Id == hsdt.DsNguyenVong.First().IdNghe);
                     int maxCount = lstDuTuyen.Where(x => x.DotTS == hsdt.DotTS && x.MaHoSo.Substring(4, 2).Equals(nv1.Ma2)).Count();
                     hsdt.MaHoSo = $"{hsdt.NamTS}{nv1.Ma2}{(maxCount + 1).ToString("D3")}";
                     lstDuTuyen.Add(hsdt);

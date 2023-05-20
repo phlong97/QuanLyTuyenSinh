@@ -128,17 +128,17 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(539, 695);
+            panel1.Size = new Size(589, 614);
             panel1.TabIndex = 0;
             // 
             // lookQuanHuyen
             // 
-            lookQuanHuyen.Location = new Point(303, 86);
+            lookQuanHuyen.Location = new Point(346, 86);
             lookQuanHuyen.Name = "lookQuanHuyen";
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";
             lookQuanHuyen.Properties.PopupView = gridView7;
-            lookQuanHuyen.Size = new Size(191, 22);
+            lookQuanHuyen.Size = new Size(218, 22);
             lookQuanHuyen.TabIndex = 4;
             // 
             // gridView7
@@ -150,20 +150,20 @@
             // 
             // labelControl28
             // 
-            labelControl28.Location = new Point(227, 89);
+            labelControl28.Location = new Point(259, 89);
             labelControl28.Name = "labelControl28";
-            labelControl28.Size = new Size(70, 16);
+            labelControl28.Size = new Size(75, 16);
             labelControl28.TabIndex = 30;
             labelControl28.Text = "Quận/Huyện";
             // 
             // lookTinh
             // 
-            lookTinh.Location = new Point(303, 55);
+            lookTinh.Location = new Point(346, 55);
             lookTinh.Name = "lookTinh";
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
-            lookTinh.Size = new Size(192, 22);
+            lookTinh.Size = new Size(219, 22);
             lookTinh.TabIndex = 2;
             // 
             // gridView6
@@ -175,9 +175,9 @@
             // 
             // labelControl27
             // 
-            labelControl27.Location = new Point(272, 58);
+            labelControl27.Location = new Point(311, 58);
             labelControl27.Name = "labelControl27";
-            labelControl27.Size = new Size(25, 16);
+            labelControl27.Size = new Size(26, 16);
             labelControl27.TabIndex = 28;
             labelControl27.Text = "Tỉnh";
             // 
@@ -221,9 +221,9 @@
             groupControl1.Controls.Add(labelControl2);
             groupControl1.Controls.Add(spinHKTHCS_TB);
             groupControl1.Dock = DockStyle.Bottom;
-            groupControl1.Location = new Point(0, 134);
+            groupControl1.Location = new Point(0, 131);
             groupControl1.Name = "groupControl1";
-            groupControl1.Size = new Size(539, 508);
+            groupControl1.Size = new Size(589, 430);
             groupControl1.TabIndex = 11;
             groupControl1.Text = "Điểm xét tuyển";
             // 
@@ -231,7 +231,7 @@
             // 
             labelControl10.Appearance.Font = new Font("Tahoma", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
             labelControl10.Appearance.Options.UseFont = true;
-            labelControl10.Location = new Point(22, 200);
+            labelControl10.Location = new Point(25, 224);
             labelControl10.Name = "labelControl10";
             labelControl10.Size = new Size(45, 21);
             labelControl10.TabIndex = 11;
@@ -241,7 +241,7 @@
             // 
             labelControl9.Appearance.Font = new Font("Tahoma", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
             labelControl9.Appearance.Options.UseFont = true;
-            labelControl9.Location = new Point(22, 31);
+            labelControl9.Location = new Point(25, 31);
             labelControl9.Name = "labelControl9";
             labelControl9.Size = new Size(45, 21);
             labelControl9.TabIndex = 11;
@@ -249,159 +249,159 @@
             // 
             // labelControl8
             // 
-            labelControl8.Location = new Point(30, 368);
+            labelControl8.Location = new Point(38, 354);
             labelControl8.Name = "labelControl8";
-            labelControl8.Size = new Size(71, 16);
+            labelControl8.Size = new Size(74, 16);
             labelControl8.TabIndex = 4;
             labelControl8.Text = "Xếp loại TN:";
             // 
             // labelControl7
             // 
-            labelControl7.Location = new Point(282, 228);
+            labelControl7.Location = new Point(38, 298);
             labelControl7.Name = "labelControl7";
-            labelControl7.Size = new Size(71, 16);
+            labelControl7.Size = new Size(74, 16);
             labelControl7.TabIndex = 4;
             labelControl7.Text = "Xếp loại HT:";
             // 
             // labelControl6
             // 
-            labelControl6.Location = new Point(36, 228);
+            labelControl6.Location = new Point(38, 252);
             labelControl6.Name = "labelControl6";
-            labelControl6.Size = new Size(65, 16);
+            labelControl6.Size = new Size(67, 16);
             labelControl6.TabIndex = 4;
             labelControl6.Text = "Hạnh kiểm:";
             // 
             // labelControl5
             // 
-            labelControl5.Location = new Point(282, 64);
+            labelControl5.Location = new Point(38, 126);
             labelControl5.Name = "labelControl5";
-            labelControl5.Size = new Size(71, 16);
+            labelControl5.Size = new Size(74, 16);
             labelControl5.TabIndex = 4;
             labelControl5.Text = "Xếp loại TN:";
             // 
             // spinXLHTTHPT_Gioi
             // 
             spinXLHTTHPT_Gioi.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_Gioi.Location = new Point(427, 327);
+            spinXLHTTHPT_Gioi.Location = new Point(488, 319);
             spinXLHTTHPT_Gioi.Name = "spinXLHTTHPT_Gioi";
             spinXLHTTHPT_Gioi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLHTTHPT_Gioi.Properties.MaskSettings.Set("mask", "f");
-            spinXLHTTHPT_Gioi.Size = new Size(53, 24);
+            spinXLHTTHPT_Gioi.Size = new Size(61, 24);
             spinXLHTTHPT_Gioi.TabIndex = 12;
             // 
             // spinXLTNTHPT_Gioi
             // 
             spinXLTNTHPT_Gioi.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHPT_Gioi.Location = new Point(154, 469);
+            spinXLTNTHPT_Gioi.Location = new Point(488, 378);
             spinXLTNTHPT_Gioi.Name = "spinXLTNTHPT_Gioi";
             spinXLTNTHPT_Gioi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHPT_Gioi.Properties.MaskSettings.Set("mask", "f");
-            spinXLTNTHPT_Gioi.Size = new Size(53, 24);
+            spinXLTNTHPT_Gioi.Size = new Size(61, 24);
             spinXLTNTHPT_Gioi.TabIndex = 15;
             // 
             // labelControl25
             // 
-            labelControl25.Location = new Point(331, 331);
+            labelControl25.Location = new Point(435, 327);
             labelControl25.Name = "labelControl25";
-            labelControl25.Size = new Size(30, 16);
+            labelControl25.Size = new Size(31, 16);
             labelControl25.TabIndex = 4;
             labelControl25.Text = "- Giỏi";
             // 
             // spinXLTNTHCS_Gioi
             // 
             spinXLTNTHCS_Gioi.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHCS_Gioi.Location = new Point(428, 163);
+            spinXLTNTHCS_Gioi.Location = new Point(488, 159);
             spinXLTNTHCS_Gioi.Name = "spinXLTNTHCS_Gioi";
             spinXLTNTHCS_Gioi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHCS_Gioi.Properties.MaskSettings.Set("mask", "f");
-            spinXLTNTHCS_Gioi.Size = new Size(53, 24);
+            spinXLTNTHCS_Gioi.Size = new Size(61, 24);
             spinXLTNTHCS_Gioi.TabIndex = 5;
             // 
             // labelControl22
             // 
-            labelControl22.Location = new Point(68, 473);
+            labelControl22.Location = new Point(435, 382);
             labelControl22.Name = "labelControl22";
-            labelControl22.Size = new Size(30, 16);
+            labelControl22.Size = new Size(31, 16);
             labelControl22.TabIndex = 4;
             labelControl22.Text = "- Giỏi";
             // 
             // labelControl16
             // 
-            labelControl16.Location = new Point(332, 167);
+            labelControl16.Location = new Point(435, 163);
             labelControl16.Name = "labelControl16";
-            labelControl16.Size = new Size(30, 16);
+            labelControl16.Size = new Size(31, 16);
             labelControl16.TabIndex = 4;
             labelControl16.Text = "- Giỏi";
             // 
             // spinHKTHPT_Tot
             // 
             spinHKTHPT_Tot.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinHKTHPT_Tot.Location = new Point(154, 328);
+            spinHKTHPT_Tot.Location = new Point(488, 267);
             spinHKTHPT_Tot.Name = "spinHKTHPT_Tot";
             spinHKTHPT_Tot.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinHKTHPT_Tot.Properties.MaskSettings.Set("mask", "f");
-            spinHKTHPT_Tot.Size = new Size(53, 24);
+            spinHKTHPT_Tot.Size = new Size(61, 24);
             spinHKTHPT_Tot.TabIndex = 8;
             // 
             // spinHKTHCS_Tot
             // 
             spinHKTHCS_Tot.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinHKTHCS_Tot.Location = new Point(153, 163);
+            spinHKTHCS_Tot.Location = new Point(488, 78);
             spinHKTHCS_Tot.Name = "spinHKTHCS_Tot";
             spinHKTHCS_Tot.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinHKTHCS_Tot.Properties.MaskSettings.Set("mask", "f");
-            spinHKTHCS_Tot.Size = new Size(53, 24);
+            spinHKTHCS_Tot.Size = new Size(61, 24);
             spinHKTHCS_Tot.TabIndex = 2;
             // 
             // spinXLHTTHPT_Kha
             // 
             spinXLHTTHPT_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_Kha.Location = new Point(427, 287);
+            spinXLHTTHPT_Kha.Location = new Point(335, 323);
             spinXLHTTHPT_Kha.Name = "spinXLHTTHPT_Kha";
             spinXLHTTHPT_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLHTTHPT_Kha.Properties.MaskSettings.Set("mask", "f");
-            spinXLHTTHPT_Kha.Size = new Size(53, 24);
+            spinXLHTTHPT_Kha.Size = new Size(61, 24);
             spinXLHTTHPT_Kha.TabIndex = 11;
             // 
             // labelControl19
             // 
-            labelControl19.Location = new Point(68, 332);
+            labelControl19.Location = new Point(435, 275);
             labelControl19.Name = "labelControl19";
-            labelControl19.Size = new Size(28, 16);
+            labelControl19.Size = new Size(27, 16);
             labelControl19.TabIndex = 4;
             labelControl19.Text = "- Tốt";
             // 
             // spinXLTNTHPT_Kha
             // 
             spinXLTNTHPT_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHPT_Kha.Location = new Point(154, 433);
+            spinXLTNTHPT_Kha.Location = new Point(335, 378);
             spinXLTNTHPT_Kha.Name = "spinXLTNTHPT_Kha";
             spinXLTNTHPT_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHPT_Kha.Properties.MaskSettings.Set("mask", "f");
-            spinXLTNTHPT_Kha.Size = new Size(53, 24);
+            spinXLTNTHPT_Kha.Size = new Size(61, 24);
             spinXLTNTHPT_Kha.TabIndex = 14;
             // 
             // spinXLTNTHCS_Kha
             // 
             spinXLTNTHCS_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHCS_Kha.Location = new Point(428, 122);
+            spinXLTNTHCS_Kha.Location = new Point(335, 155);
             spinXLTNTHCS_Kha.Name = "spinXLTNTHCS_Kha";
             spinXLTNTHCS_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHCS_Kha.Properties.MaskSettings.Set("mask", "f");
-            spinXLTNTHCS_Kha.Size = new Size(53, 24);
+            spinXLTNTHCS_Kha.Size = new Size(61, 24);
             spinXLTNTHCS_Kha.TabIndex = 4;
             // 
             // labelControl13
             // 
-            labelControl13.Location = new Point(68, 167);
+            labelControl13.Location = new Point(435, 82);
             labelControl13.Name = "labelControl13";
-            labelControl13.Size = new Size(28, 16);
+            labelControl13.Size = new Size(27, 16);
             labelControl13.TabIndex = 4;
             labelControl13.Text = "- Tốt";
             // 
             // labelControl24
             // 
-            labelControl24.Location = new Point(331, 291);
+            labelControl24.Location = new Point(274, 327);
             labelControl24.Name = "labelControl24";
             labelControl24.Size = new Size(30, 16);
             labelControl24.TabIndex = 4;
@@ -410,16 +410,16 @@
             // spinHKTHPT_Kha
             // 
             spinHKTHPT_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinHKTHPT_Kha.Location = new Point(154, 287);
+            spinHKTHPT_Kha.Location = new Point(335, 271);
             spinHKTHPT_Kha.Name = "spinHKTHPT_Kha";
             spinHKTHPT_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinHKTHPT_Kha.Properties.MaskSettings.Set("mask", "f");
-            spinHKTHPT_Kha.Size = new Size(53, 24);
+            spinHKTHPT_Kha.Size = new Size(61, 24);
             spinHKTHPT_Kha.TabIndex = 7;
             // 
             // labelControl21
             // 
-            labelControl21.Location = new Point(68, 437);
+            labelControl21.Location = new Point(274, 382);
             labelControl21.Name = "labelControl21";
             labelControl21.Size = new Size(30, 16);
             labelControl21.TabIndex = 4;
@@ -427,7 +427,7 @@
             // 
             // labelControl15
             // 
-            labelControl15.Location = new Point(332, 126);
+            labelControl15.Location = new Point(274, 163);
             labelControl15.Name = "labelControl15";
             labelControl15.Size = new Size(30, 16);
             labelControl15.TabIndex = 4;
@@ -436,24 +436,24 @@
             // spinHKTHCS_Kha
             // 
             spinHKTHCS_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinHKTHCS_Kha.Location = new Point(153, 122);
+            spinHKTHCS_Kha.Location = new Point(335, 78);
             spinHKTHCS_Kha.Name = "spinHKTHCS_Kha";
             spinHKTHCS_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinHKTHCS_Kha.Properties.MaskSettings.Set("mask", "f");
-            spinHKTHCS_Kha.Size = new Size(53, 24);
+            spinHKTHCS_Kha.Size = new Size(61, 24);
             spinHKTHCS_Kha.TabIndex = 1;
             // 
             // labelControl23
             // 
-            labelControl23.Location = new Point(331, 250);
+            labelControl23.Location = new Point(78, 327);
             labelControl23.Name = "labelControl23";
-            labelControl23.Size = new Size(71, 16);
+            labelControl23.Size = new Size(70, 16);
             labelControl23.TabIndex = 4;
             labelControl23.Text = "- Trung bình";
             // 
             // labelControl18
             // 
-            labelControl18.Location = new Point(68, 291);
+            labelControl18.Location = new Point(274, 279);
             labelControl18.Name = "labelControl18";
             labelControl18.Size = new Size(30, 16);
             labelControl18.TabIndex = 4;
@@ -461,31 +461,31 @@
             // 
             // labelControl20
             // 
-            labelControl20.Location = new Point(68, 402);
+            labelControl20.Location = new Point(78, 382);
             labelControl20.Name = "labelControl20";
-            labelControl20.Size = new Size(71, 16);
+            labelControl20.Size = new Size(70, 16);
             labelControl20.TabIndex = 4;
             labelControl20.Text = "- Trung bình";
             // 
             // labelControl14
             // 
-            labelControl14.Location = new Point(332, 86);
+            labelControl14.Location = new Point(78, 163);
             labelControl14.Name = "labelControl14";
-            labelControl14.Size = new Size(71, 16);
+            labelControl14.Size = new Size(70, 16);
             labelControl14.TabIndex = 4;
             labelControl14.Text = "- Trung bình";
             // 
             // labelControl17
             // 
-            labelControl17.Location = new Point(68, 251);
+            labelControl17.Location = new Point(78, 275);
             labelControl17.Name = "labelControl17";
-            labelControl17.Size = new Size(71, 16);
+            labelControl17.Size = new Size(70, 16);
             labelControl17.TabIndex = 4;
             labelControl17.Text = "- Trung bình";
             // 
             // labelControl12
             // 
-            labelControl12.Location = new Point(68, 126);
+            labelControl12.Location = new Point(274, 86);
             labelControl12.Name = "labelControl12";
             labelControl12.Size = new Size(30, 16);
             labelControl12.TabIndex = 4;
@@ -494,67 +494,67 @@
             // spinXLHTTHPT_TB
             // 
             spinXLHTTHPT_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLHTTHPT_TB.Location = new Point(427, 246);
+            spinXLHTTHPT_TB.Location = new Point(175, 323);
             spinXLHTTHPT_TB.Name = "spinXLHTTHPT_TB";
             spinXLHTTHPT_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLHTTHPT_TB.Properties.MaskSettings.Set("mask", "f");
-            spinXLHTTHPT_TB.Size = new Size(53, 24);
+            spinXLHTTHPT_TB.Size = new Size(61, 24);
             spinXLHTTHPT_TB.TabIndex = 10;
             // 
             // labelControl11
             // 
-            labelControl11.Location = new Point(68, 86);
+            labelControl11.Location = new Point(78, 86);
             labelControl11.Name = "labelControl11";
-            labelControl11.Size = new Size(71, 16);
+            labelControl11.Size = new Size(70, 16);
             labelControl11.TabIndex = 4;
             labelControl11.Text = "- Trung bình";
             // 
             // spinXLTNTHPT_TB
             // 
             spinXLTNTHPT_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHPT_TB.Location = new Point(153, 398);
+            spinXLTNTHPT_TB.Location = new Point(175, 378);
             spinXLTNTHPT_TB.Name = "spinXLTNTHPT_TB";
             spinXLTNTHPT_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHPT_TB.Properties.MaskSettings.Set("mask", "f");
-            spinXLTNTHPT_TB.Size = new Size(53, 24);
+            spinXLTNTHPT_TB.Size = new Size(61, 24);
             spinXLTNTHPT_TB.TabIndex = 13;
             // 
             // spinXLTNTHCS_TB
             // 
             spinXLTNTHCS_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHCS_TB.Location = new Point(427, 82);
+            spinXLTNTHCS_TB.Location = new Point(175, 159);
             spinXLTNTHCS_TB.Name = "spinXLTNTHCS_TB";
             spinXLTNTHCS_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHCS_TB.Properties.MaskSettings.Set("mask", "f");
-            spinXLTNTHCS_TB.Size = new Size(53, 24);
+            spinXLTNTHCS_TB.Size = new Size(61, 24);
             spinXLTNTHCS_TB.TabIndex = 3;
             // 
             // spinHKTHPT_TB
             // 
             spinHKTHPT_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinHKTHPT_TB.Location = new Point(153, 247);
+            spinHKTHPT_TB.Location = new Point(175, 271);
             spinHKTHPT_TB.Name = "spinHKTHPT_TB";
             spinHKTHPT_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinHKTHPT_TB.Properties.MaskSettings.Set("mask", "f");
-            spinHKTHPT_TB.Size = new Size(53, 24);
+            spinHKTHPT_TB.Size = new Size(61, 24);
             spinHKTHPT_TB.TabIndex = 6;
             // 
             // labelControl2
             // 
-            labelControl2.Location = new Point(33, 64);
+            labelControl2.Location = new Point(38, 64);
             labelControl2.Name = "labelControl2";
-            labelControl2.Size = new Size(69, 16);
+            labelControl2.Size = new Size(70, 16);
             labelControl2.TabIndex = 4;
             labelControl2.Text = "Hạnh kiểm :";
             // 
             // spinHKTHCS_TB
             // 
             spinHKTHCS_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinHKTHCS_TB.Location = new Point(153, 82);
+            spinHKTHCS_TB.Location = new Point(175, 82);
             spinHKTHCS_TB.Name = "spinHKTHCS_TB";
             spinHKTHCS_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinHKTHCS_TB.Properties.MaskSettings.Set("mask", "f");
-            spinHKTHCS_TB.Size = new Size(53, 24);
+            spinHKTHCS_TB.Size = new Size(61, 24);
             spinHKTHCS_TB.TabIndex = 0;
             // 
             // panel2
@@ -562,17 +562,17 @@
             panel2.Controls.Add(btnCancel);
             panel2.Controls.Add(btnSave);
             panel2.Dock = DockStyle.Bottom;
-            panel2.Location = new Point(0, 642);
+            panel2.Location = new Point(0, 561);
             panel2.Name = "panel2";
-            panel2.Size = new Size(539, 53);
+            panel2.Size = new Size(589, 53);
             panel2.TabIndex = 12;
             // 
             // btnCancel
             // 
             btnCancel.ImageOptions.Image = (Image)resources.GetObject("btnCancel.ImageOptions.Image");
-            btnCancel.Location = new Point(282, 11);
+            btnCancel.Location = new Point(322, 11);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(80, 23);
+            btnCancel.Size = new Size(91, 23);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Hủy";
             btnCancel.Click += btnCancel_Click;
@@ -580,9 +580,9 @@
             // btnSave
             // 
             btnSave.ImageOptions.Image = (Image)resources.GetObject("btnSave.ImageOptions.Image");
-            btnSave.Location = new Point(153, 11);
+            btnSave.Location = new Point(175, 11);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(80, 23);
+            btnSave.Size = new Size(91, 23);
             btnSave.TabIndex = 0;
             btnSave.Text = "Lưu";
             btnSave.Click += btnSave_Click;
@@ -590,50 +590,50 @@
             // spinCTVM
             // 
             spinCTVM.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinCTVM.Location = new Point(153, 84);
+            spinCTVM.Location = new Point(176, 84);
             spinCTVM.Name = "spinCTVM";
             spinCTVM.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinCTVM.Properties.MaxValue = new decimal(new int[] { 1, 0, 0, 0 });
-            spinCTVM.Size = new Size(53, 24);
+            spinCTVM.Size = new Size(61, 24);
             spinCTVM.TabIndex = 3;
             // 
             // spinCTMD
             // 
             spinCTMD.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinCTMD.Location = new Point(154, 53);
+            spinCTMD.Location = new Point(176, 53);
             spinCTMD.Name = "spinCTMD";
             spinCTMD.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinCTMD.Properties.IsFloatValue = false;
             spinCTMD.Properties.MaskSettings.Set("mask", "N00");
-            spinCTMD.Size = new Size(52, 24);
+            spinCTMD.Size = new Size(59, 24);
             spinCTMD.TabIndex = 1;
             // 
             // labelControl4
             // 
-            labelControl4.Location = new Point(31, 88);
+            labelControl4.Location = new Point(35, 88);
             labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(101, 16);
+            labelControl4.Size = new Size(99, 16);
             labelControl4.TabIndex = 3;
             labelControl4.Text = "Chỉ tiêu vượt mức";
             // 
             // labelControl3
             // 
-            labelControl3.Location = new Point(33, 58);
+            labelControl3.Location = new Point(38, 58);
             labelControl3.Name = "labelControl3";
-            labelControl3.Size = new Size(99, 16);
+            labelControl3.Size = new Size(100, 16);
             labelControl3.TabIndex = 4;
             labelControl3.Text = "Chỉ tiêu mặc định";
             // 
             // txtTenTruong
             // 
-            txtTenTruong.Location = new Point(154, 25);
+            txtTenTruong.Location = new Point(176, 25);
             txtTenTruong.Name = "txtTenTruong";
-            txtTenTruong.Size = new Size(340, 22);
+            txtTenTruong.Size = new Size(389, 22);
             txtTenTruong.TabIndex = 0;
             // 
             // labelControl1
             // 
-            labelControl1.Location = new Point(68, 31);
+            labelControl1.Location = new Point(78, 31);
             labelControl1.Name = "labelControl1";
             labelControl1.Size = new Size(64, 16);
             labelControl1.TabIndex = 6;
@@ -641,10 +641,11 @@
             // 
             // F_Setting
             // 
-            AutoScaleDimensions = new SizeF(7F, 16F);
+            AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(539, 695);
+            ClientSize = new Size(589, 614);
             Controls.Add(panel1);
+            Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "F_Setting";
             StartPosition = FormStartPosition.CenterScreen;

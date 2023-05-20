@@ -40,6 +40,7 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
             tablePanelTT = new DevExpress.Utils.Layout.TablePanel();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
             labelControl36 = new DevExpress.XtraEditors.LabelControl();
@@ -119,6 +120,7 @@
             txtNSMe = new DevExpress.XtraEditors.TextEdit();
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            Anh = new DevExpress.XtraEditors.PictureEdit();
             labelControl31 = new DevExpress.XtraEditors.LabelControl();
             chkCCCD = new DevExpress.XtraEditors.CheckEdit();
             chkBangTN = new DevExpress.XtraEditors.CheckEdit();
@@ -199,6 +201,7 @@
             panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Anh.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkCCCD.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkBangTN.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkGKS.Properties).BeginInit();
@@ -1003,6 +1006,7 @@
             // 
             // groupControl1
             // 
+            groupControl1.Controls.Add(Anh);
             groupControl1.Controls.Add(labelControl31);
             groupControl1.Controls.Add(chkCCCD);
             groupControl1.Controls.Add(chkBangTN);
@@ -1016,14 +1020,33 @@
             groupControl1.Controls.Add(chkPhieuDKDT);
             groupControl1.Location = new Point(2, 0);
             groupControl1.Name = "groupControl1";
-            groupControl1.Size = new Size(512, 254);
+            groupControl1.Size = new Size(512, 278);
             groupControl1.TabIndex = 20;
             groupControl1.Text = "Kiểm tra hồ sơ";
+            // 
+            // Anh
+            // 
+            Anh.Location = new Point(339, 31);
+            Anh.MenuManager = barManager1;
+            Anh.Name = "Anh";
+            Anh.Properties.Appearance.BackColor = Color.WhiteSmoke;
+            Anh.Properties.Appearance.Options.UseBackColor = true;
+            Anh.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            contextButton1.AlignmentOptions.Position = DevExpress.Utils.ContextItemPosition.Far;
+            contextButton1.Caption = "Chọn ảnh";
+            contextButton1.Id = new Guid("f6c7d667-1afe-4998-b8a3-eb442133b31c");
+            contextButton1.ImageOptionsCollection.ItemNormal.Image = (Image)resources.GetObject("resource.Image");
+            contextButton1.Name = "btnAddImg";
+            Anh.Properties.ContextButtons.Add(contextButton1);
+            Anh.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            Anh.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+            Anh.Size = new Size(166, 187);
+            Anh.TabIndex = 97;
             // 
             // labelControl31
             // 
             labelControl31.AllowHtmlString = true;
-            labelControl31.Location = new Point(11, 180);
+            labelControl31.Location = new Point(13, 202);
             labelControl31.Name = "labelControl31";
             labelControl31.Size = new Size(44, 16);
             labelControl31.TabIndex = 96;
@@ -1077,9 +1100,9 @@
             // txtGhiChu
             // 
             txtGhiChu.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtGhiChu.Location = new Point(13, 202);
+            txtGhiChu.Location = new Point(13, 224);
             txtGhiChu.Name = "txtGhiChu";
-            txtGhiChu.Size = new Size(494, 47);
+            txtGhiChu.Size = new Size(494, 49);
             txtGhiChu.TabIndex = 9;
             // 
             // chkCNUT
@@ -1116,11 +1139,11 @@
             // 
             // gridControl1
             // 
-            gridControl1.Location = new Point(2, 444);
+            gridControl1.Location = new Point(2, 464);
             gridControl1.MainView = gridView1;
             gridControl1.MenuManager = barManager1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new Size(505, 111);
+            gridControl1.Size = new Size(505, 122);
             gridControl1.TabIndex = 0;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -1136,7 +1159,7 @@
             panelControl2.Controls.Add(btnAdd);
             panelControl2.Controls.Add(btnEdit);
             panelControl2.Controls.Add(btnDelete);
-            panelControl2.Location = new Point(2, 419);
+            panelControl2.Location = new Point(2, 436);
             panelControl2.Name = "panelControl2";
             panelControl2.Size = new Size(507, 24);
             panelControl2.TabIndex = 19;
@@ -1189,7 +1212,7 @@
             // tabPane1
             // 
             tabPane1.Controls.Add(tabNavigationPage1);
-            tabPane1.Location = new Point(2, 260);
+            tabPane1.Location = new Point(2, 279);
             tabPane1.Name = "tabPane1";
             tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] { tabNavigationPage1 });
             tabPane1.RegularSize = new Size(507, 153);
@@ -1393,6 +1416,7 @@
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
             groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)Anh.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkCCCD.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkBangTN.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkGKS.Properties).EndInit();
@@ -1540,5 +1564,6 @@
         private DevExpress.XtraEditors.CheckEdit chkGKSK;
         private DevExpress.XtraEditors.CheckEdit chkCNTN;
         private DevExpress.XtraEditors.CheckEdit chkPhieuDKDT;
+        private DevExpress.XtraEditors.PictureEdit Anh;
     }
 }

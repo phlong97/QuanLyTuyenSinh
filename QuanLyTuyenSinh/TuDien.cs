@@ -5,6 +5,7 @@ namespace QuanLyTuyenSinh
     internal static class TuDien
     {
         public const string JSON_FOLDER_PATH = "Data";
+        public static string IMG_FOLDER = Path.Combine(Application.StartupPath, JSON_FOLDER_PATH, "Img");
 
         public static class CategoryName
         {
@@ -42,7 +43,8 @@ namespace QuanLyTuyenSinh
                 JSON_FOLDER_PATH,
                 "HSTT"),
                 User = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "USER"), Settings = Path.Combine(Environment.CurrentDirectory,
-                JSON_FOLDER_PATH, "Settings")
+                JSON_FOLDER_PATH, "Settings"),
+                Img = Path.Combine(Environment.CurrentDirectory, TuDien.JSON_FOLDER_PATH,"Img")
                 ;
         }
     }

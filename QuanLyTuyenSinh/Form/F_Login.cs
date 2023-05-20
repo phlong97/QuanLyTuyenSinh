@@ -45,20 +45,20 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            DanhSach.CheckUsers();
+            Data.CheckUsers();
             string username = txtName.Text;
             string password = txtPass.Text;
-            var user = DanhSach.GetUser(username, password);
+            var user = Data.GetUser(username, password);
             if (user != null)
             {
                 this.Hide();
                 splashScreenManager1.ShowWaitForm();
-                DanhSach.CurrUser = user;
+                Data.CurrUser = user;
                 Properties.Settings.Default.NamTS = (int)spinNam.Value;
                 Properties.Settings.Default.Save();
                 Task.Run(() =>
                 {
-                    DanhSach.LoadStaticList();                   
+                    Data.LoadStaticList();
                 });
                 MainWorkspace.FormMain = new F_Main();
                 MainWorkspace.FormMain.Closed += MainForm_Closed;

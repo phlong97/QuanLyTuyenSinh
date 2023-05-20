@@ -58,7 +58,7 @@
             spinXLTNTHPT_Kha.DataBindings.Add("EditValue", source, "XLTN_THPT.KHA", true, DataSourceUpdateMode.OnPropertyChanged);
             spinXLTNTHPT_Gioi.DataBindings.Clear();
             spinXLTNTHPT_Gioi.DataBindings.Add("EditValue", source, "XLTN_THPT.GIOI", true, DataSourceUpdateMode.OnPropertyChanged);
-            
+
             spinXLHTTHPT_TB.DataBindings.Clear();
             spinXLHTTHPT_TB.DataBindings.Add("EditValue", source, "XLHT_THPT.TRUNG_BINH", true, DataSourceUpdateMode.OnPropertyChanged);
             spinXLHTTHPT_Kha.DataBindings.Clear();
@@ -69,7 +69,7 @@
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            DanhSach.CurrSettings = _setting;
+            Data.CurrSettings = _setting;
             _Helper.SaveToJson(new List<CaiDat> { _setting }, TuDien.DbName.Settings);
             Close();
         }

@@ -1,10 +1,11 @@
 ﻿using DevExpress.Mvvm.Native;
 using System.Data;
 using System.Dynamic;
+using System.Net;
 
 namespace QuanLyTuyenSinh
 {
-    public static class DanhSach
+    public static class Data
     {
         public static int _NamTS;
         public static User CurrUser { get; set; }
@@ -242,16 +243,37 @@ namespace QuanLyTuyenSinh
             return lst;
         }
 
-        public static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null)
+        public static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null,bool KhongTT = true)
         {
             List<HoSoTrungTuyen> lst = new();
-            lst = DSHoSoTT.Where(
-                hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(TDHV)                
-                && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
-                && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
-                && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
-                ).OrderBy(hs => hs.MaHoSo).ToList();
-
+            if (KhongTT)
+            {
+                var lstHSDT = Data.DSHoSoDT.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
+                        && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
+                        && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
+                        && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa)))
+                        .Select(x => x.Id).ToList();
+                var lstHSTT = Data.DSHoSoTT.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
+                        && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
+                        && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
+                        && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa)))
+                        .Select(x => x.IdHSDT).ToList();
+                var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
+                foreach (var id in lstHSKhongTT)
+                {
+                    var hs = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == DotTS && x.Id == id);
+                    if (hs != null)
+                        lst.Add(hs.ToHSTT());
+                }
+            }
+            else
+                lst = DSHoSoTT.Where(
+                        hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(TDHV)
+                        && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
+                        && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
+                        && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
+                        ).OrderBy(hs => hs.MaHoSo).ToList();
+            
             return lst;
         }
 
@@ -315,18 +337,18 @@ namespace QuanLyTuyenSinh
         {
             List<TongHopDiemXetTuyen> lst;
             lst = DSHoSoDT.Where(
-                hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(htdt)).OrderBy(x => x.MaHoSo).Select(x => x.ToTHDXT())
+                hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(htdt)).OrderBy(x => x.MaHoSo).Select(x => x.ToTHDXT()).OrderByDescending(x => x.Tong)
                 .ToList();
 
             return lst;
         }
 
-        public static List<HoSoTrungTuyen> LapDSTrungTuyen(int DotTS)
-        {
-            List<HoSoTrungTuyen> lstreturn = new();
+        public static void LapDSTrungTuyen(int DotTS,List<HoSoTrungTuyen> DsTT, List<HoSoTrungTuyen> DsKhongTT)
+        {            
             if (DotTS <= 0)
-                return lstreturn;
-
+                return;
+            DsTT.Clear();
+            DsKhongTT.Clear();
             List<HoSoDuTuyen> HSDT_THCS = DSHoSoDT.Where(
                 hs => (DotTS == 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals("THCS")).OrderBy(x => x.MaHoSo)
                 .ToList();
@@ -334,13 +356,13 @@ namespace QuanLyTuyenSinh
                 hs => (DotTS == 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals("THPT")).OrderBy(x => x.MaHoSo)
                 .ToList();
 
-            foreach (var item in DsChiTieu)
+            foreach (var ct in DsChiTieu)
             {
-                var THCS_Nghe = HSDT_THCS.Where(x => x.DsNguyenVong.First().IdNghe.Equals(item.IdNghe)).ToList();
-                var THPT_Nghe = HSDT_THPT.Where(x => x.DsNguyenVong.First().IdNghe.Equals(item.IdNghe)).ToList();
+                var THCS_Nghe = HSDT_THCS.Where(x => x.DsNguyenVong.First().IdNghe.Equals(ct.IdNghe) && x.TinhDiemXT() >= ct.DiemTTTHCS).ToList();
+                var THPT_Nghe = HSDT_THPT.Where(x => x.DsNguyenVong.First().IdNghe.Equals(ct.IdNghe) && x.TinhDiemXT() >= ct.DiemTTTHPT).ToList();
 
-                int ctmax = (int)(item.ChiTieu + (item.ChiTieu * CurrSettings.CHITIEUVUOTMUC));
-                int sl = DSHoSoTT.Where(x => !x.DotTS.Equals(DotTS) && x.IdNgheTrungTuyen.Equals(item.IdNghe)).Count();
+                int ctmax = (int)(ct.ChiTieu + (ct.ChiTieu * CurrSettings.CHITIEUVUOTMUC));
+                int sl = DSHoSoTT.Where(x => !x.DotTS.Equals(DotTS) && x.IdNgheTrungTuyen.Equals(ct.IdNghe)).Count();
 
                 if (sl < ctmax)
                 {
@@ -349,27 +371,31 @@ namespace QuanLyTuyenSinh
 
                     if (sl + lstHSTT_THCS.Count() <= ctmax)
                     {
-                        lstreturn.AddRange(lstHSTT_THCS);
+                        DsTT.AddRange(lstHSTT_THCS);
                         if (sl + lstHSTT_THCS.Count() + lstHSTT_THPT.Count() <= ctmax)
                         {
-                            lstreturn.AddRange(lstHSTT_THPT);
+                            DsTT.AddRange(lstHSTT_THPT);
                         }
                         else
                         {
-                            lstreturn.AddRange(lstHSTT_THPT.GetRange(0, ctmax - sl - lstHSTT_THCS.Count()));
+                            DsTT.AddRange(lstHSTT_THPT.GetRange(0, ctmax - sl - lstHSTT_THCS.Count()));
+                            DsKhongTT.AddRange(lstHSTT_THPT.GetRange(ctmax - sl - lstHSTT_THCS.Count(), lstHSTT_THPT.Count() - 1));
                         }
                     }
                     else
-                        lstreturn.AddRange(lstHSTT_THCS.GetRange(0, ctmax - sl));
+                    {
+                        DsTT.AddRange(lstHSTT_THCS.GetRange(0, ctmax - sl));
+                        DsKhongTT.AddRange(lstHSTT_THPT.GetRange(ctmax - sl, lstHSTT_THPT.Count() - 1));
+
+                    }
                 }
             }
 
-            return lstreturn.OrderBy(x => x.MaHoSo).ToList();
         }
 
         #region Thống kê
 
-        public static DataTable THSLNgheTheoTruong(int madot = 0)
+        public static DataTable THSLNgheTheoTruong(int madot = 0, bool ToTal = true)
         {
             List<IDictionary<string, object>> DsThongKe = new();
             var dstruongTHCS = DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
@@ -390,7 +416,7 @@ namespace QuanLyTuyenSinh
                     tongTHCS += sldt;
                     dynamicObj.Add(DsNghe[j].Ten, sldt);
                 }
-                dynamicObj.Add("Tổng", tongTHCS);
+                if(ToTal) dynamicObj.Add("Tổng", tongTHCS);
                 DsThongKe.Add(dynamicObj);
             }
 
@@ -410,7 +436,7 @@ namespace QuanLyTuyenSinh
                 tongTHPT += sldt;
                 objTHPT.Add(DsNghe[j].Ten, sldt);
             }
-            objTHPT.Add("Tổng", tongTHPT);
+            if (ToTal) objTHPT.Add("Tổng", tongTHPT);
             DsThongKe.Add(objTHPT);
 
             //Thêm 1 dòng tổng cộng
@@ -424,13 +450,14 @@ namespace QuanLyTuyenSinh
                 tongcong += sum;
                 objTongCong.Add(DsNghe[i].Ten, sum);
             }
+            
             objTongCong.Add("Tổng", tongcong);
-            DsThongKe.Add(objTongCong);
+            if (ToTal) DsThongKe.Add(objTongCong);
 
             return DsThongKe.ToDataTable();
         }
 
-        public static DataTable THSLTTNgheTheoTruong(int dotts = 0)
+        public static DataTable THSLTTNgheTheoTruong(int dotts = 0, bool Total = true)
         {
             List<IDictionary<string, object>> DsThongKe = new();
             var dstruongTHCS = DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
@@ -450,7 +477,7 @@ namespace QuanLyTuyenSinh
                     tongTHCS += sltt;
                     dynamicObj.Add(DsNghe[j].Ten, sltt);
                 }
-                dynamicObj.Add("Tổng", tongTHCS);
+                if(Total) dynamicObj.Add("Tổng", tongTHCS);
                 DsThongKe.Add(dynamicObj);
             }
 
@@ -470,13 +497,17 @@ namespace QuanLyTuyenSinh
                 tongTHPT += sldt;
                 objTHPT.Add(DsNghe[j].Ten, sldt);
             }
-            objTHPT.Add("Tổng", tongTHPT);
+            if (Total) objTHPT.Add("Tổng", tongTHPT);
             DsThongKe.Add(objTHPT);
 
             //Thêm 1 dòng tổng cộng
             var objTongCong = new ExpandoObject() as IDictionary<string, object>;
-            objTongCong.Add("STT", string.Empty);
-            objTongCong.Add("Trường", "Tổng cộng");
+            if (Total) 
+            {
+                objTongCong.Add("STT", string.Empty);
+                objTongCong.Add("Trường", "Tổng cộng");
+            }
+            
             int tongcong = 0;
             for (int i = 0; i < DsNghe.Count; i++)
             {
@@ -485,7 +516,7 @@ namespace QuanLyTuyenSinh
                 objTongCong.Add(DsNghe[i].Ten, sum);
             }
             objTongCong.Add("Tổng", tongcong);
-            DsThongKe.Add(objTongCong);
+            if (Total) DsThongKe.Add(objTongCong);
 
             return DsThongKe.ToDataTable();
         }

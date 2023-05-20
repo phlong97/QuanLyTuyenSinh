@@ -43,43 +43,27 @@ namespace QuanLyTuyenSinh.Form
                 btnEdit.Text = value ? "Lưu" : "Sửa";
             }
         }
-        public void Refresh()
+        public void RefreshForm()
         {
             if (!TenDm.StartsWith("DM"))
             {
                 LoadComboBoxHTDT();
             }
 
-            DanhSach.RefreshDS(TenDm);
-            LoadDanhMuc();
+            Data.RefreshDS(TenDm);
+            LoadData();
         }
         private int _NamTS { get; set; }
         private string TenDm { get; set; }
         private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
         private List<_Helper.Adress> lstQuanHuyen;
         private List<_Helper.Adress> lstPhuongXa;
-
-        private bool _FormatLastColumn
-        {
-            set
-            {
-                if (gridView.Columns is null || gridView.Columns.Count <= 0)
-                    return;
-                var lastColumn = gridView.Columns[gridView.Columns.Count - 1];
-                lastColumn.AppearanceCell.Options.UseTextOptions = value;
-                lastColumn.AppearanceCell.Font = new Font(lastColumn.AppearanceCell.Font, FontStyle.Bold);
-
-                lastColumn.AppearanceHeader.Font = new Font(lastColumn.AppearanceCell.Font, FontStyle.Bold);
-                lastColumn.AppearanceHeader.BackColor = Color.Yellow;
-            }
-        }
-
         public F_Main()
         {
             InitializeComponent();
             _NamTS = Properties.Settings.Default.NamTS;
             txtNamTS.Caption = $"Năm tuyển sinh : <b>{_NamTS}</b>";
-            txtUser.Caption = $"Xin chào : <b>{DanhSach.CurrUser.UserName}</b>";
+            txtUser.Caption = $"Xin chào : <b>{Data.CurrUser.UserName}</b>";
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -94,7 +78,7 @@ namespace QuanLyTuyenSinh.Form
                     if (!int.TryParse(cbbDTS.SelectedItem.ToString(), out dts))
                         return;
                     int nts = _NamTS;
-                    var dxt = DanhSach.DsDotXetTuyen.FirstOrDefault(x => x.NamTS == _NamTS && x.DotTS == dts);
+                    var dxt = Data.DsDotXetTuyen.FirstOrDefault(x => x.NamTS == _NamTS && x.DotTS == dts);
                     if (dxt is null)
                         XtraMessageBox.Show(this, "Đợt xét tuyển không tồn tại", "Lỗi");
                     if (dxt is not null && dxt.DenNgay < DateTime.Today)
@@ -108,11 +92,11 @@ namespace QuanLyTuyenSinh.Form
                             return;
                     }
 
-                    var dt = DanhSach.DsDanToc.FirstOrDefault();
-                    var qt = DanhSach.DsQuocTich.FirstOrDefault();
-                    var tg = DanhSach.DsTonGiao.FirstOrDefault();
-                    var tdvh = DanhSach.DsTrinhDo.FirstOrDefault();
-                    var kvut = DanhSach.DsKhuVucUT.FirstOrDefault(x => x.Ma == "KV2-NT");
+                    var dt = Data.DsDanToc.FirstOrDefault();
+                    var qt = Data.DsQuocTich.FirstOrDefault();
+                    var tg = Data.DsTonGiao.FirstOrDefault();
+                    var tdvh = Data.DsTrinhDo.FirstOrDefault();
+                    var kvut = Data.DsKhuVucUT.FirstOrDefault(x => x.Ma == "KV2-NT");
                     try
                     {
                         F_HoSo f = new F_HoSo(
@@ -129,7 +113,7 @@ namespace QuanLyTuyenSinh.Form
                             IdTonGiao = tg is not null ? tg.Id : string.Empty,
                             IdKVUT = kvut is not null ? kvut.Id : string.Empty,
                         });
-                        f.ShowDialog(this);
+                        f.Show(this);
                     }
                     finally
                     {
@@ -168,18 +152,18 @@ namespace QuanLyTuyenSinh.Form
                             {
                                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
                                 {
-                                    var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.Id == r.Id);
+                                    var hs = Data.DSHoSoDT.FirstOrDefault(x => x.Id == r.Id);
                                     if (hs != null)
                                     {
-                                        DanhSach.DSHoSoDT.Remove(hs);
+                                        Data.DSHoSoDT.Remove(hs);
                                     }
                                 }
                                 else if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
                                 {
-                                    var hs = DanhSach.DSHoSoTT.FirstOrDefault(x => x.Id == r.Id);
+                                    var hs = Data.DSHoSoTT.FirstOrDefault(x => x.Id == r.Id);
                                     if (hs != null)
                                     {
-                                        DanhSach.DSHoSoTT.Remove(hs);
+                                        Data.DSHoSoTT.Remove(hs);
                                     }
                                 }
                                 else
@@ -191,8 +175,8 @@ namespace QuanLyTuyenSinh.Form
                     }
                     finally
                     {
-                        DanhSach.SaveDS(TenDm);
-                        LoadDanhMuc();
+                        Data.SaveDS(TenDm);
+                        LoadData();
                     }
                 }
             }
@@ -207,7 +191,7 @@ namespace QuanLyTuyenSinh.Form
                     var r = gridView.GetFocusedRow() as BaseClass;
                     if (r is not null)
                     {
-                        var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.Id));
+                        var hs = Data.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.Id));
                         if (hs is not null)
                         {
                             F_HoSo f = new(hs.CloneJson());
@@ -260,7 +244,9 @@ namespace QuanLyTuyenSinh.Form
                     advOptions.LayoutMode = DevExpress.Export.LayoutMode.Table;
                     advOptions.ShowGroupSummaries = DefaultBoolean.False;
                     advOptions.TextExportMode = TextExportMode.Text;
-                    advOptions.SheetName = TenDm;                   
+                    advOptions.SheetName = TenDm;
+                    if (!TenDm.StartsWith("TK"))
+                        gridView.VisibleColumns[0].OptionsColumn.Printable = DevExpress.Utils.DefaultBoolean.False;
 
                     gridView.BestFitColumns(true);
                     gridControl.ExportToXlsx(saveFileDialog1.FileName, advOptions);
@@ -275,17 +261,17 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnLapChiTieu_Click(object sender, EventArgs e)
         {
-            if (DanhSach.DsChiTieu.Where(x => x.Nam == _NamTS).Count() < DanhSach.DsNghe.Count())
+            if (Data.DsChiTieu.Where(x => x.Nam == _NamTS).Count() < Data.DsNghe.Count())
             {
-                foreach (var nghe in DanhSach.DsNghe)
+                foreach (var nghe in Data.DsNghe)
                 {
-                    if (DanhSach.DsChiTieu.FirstOrDefault(x => x.IdNghe.Equals(nghe.Id)) is null)
+                    if (Data.DsChiTieu.FirstOrDefault(x => x.IdNghe.Equals(nghe.Id)) is null)
                     {
-                        ChiTieuXetTuyen ct = new() { IdNghe = nghe.Id, Nam = _NamTS, ChiTieu = DanhSach.CurrSettings.CHITIEUMACDINH };
+                        ChiTieuXetTuyen ct = new() { IdNghe = nghe.Id, Nam = _NamTS, ChiTieu = Data.CurrSettings.CHITIEUMACDINH };
                         _bindingSource.Add(ct);
                     }
                 }
-                DanhSach.SaveDS(TenDm);
+                Data.SaveDS(TenDm);
                 gridView.ExpandAllGroups();
             }
         }
@@ -297,8 +283,8 @@ namespace QuanLyTuyenSinh.Form
                 LoadComboBoxHTDT();
             }
 
-            DanhSach.RefreshDS(TenDm);
-            LoadDanhMuc();
+            Data.RefreshDS(TenDm);
+            LoadData();
         }
 
         private void cbbDTS_EditValueChanged(object sender, EventArgs e)
@@ -308,7 +294,7 @@ namespace QuanLyTuyenSinh.Form
             if (_bindingSource is null)
                 return;
 
-            LoadDanhMuc();
+            LoadData();
             gridView.ExpandAllGroups();
         }
 
@@ -321,18 +307,8 @@ namespace QuanLyTuyenSinh.Form
             string td = cbbTDHV.EditValue.ToString();
             if (string.IsNullOrEmpty(td))
                 return;
-            
-            if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
-            {
-                if (lstHDTTTemp.Count > 0)
-                {
-                    _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(td));
-                    gridView.RefreshData();
-                    gridView.ExpandAllGroups();
-                    return;
-                }
-            }
-            LoadDanhMuc();
+
+            LoadData();
         }
 
         private void F_Main_Load(object sender, EventArgs e)
@@ -346,10 +322,10 @@ namespace QuanLyTuyenSinh.Form
             LoadbtnDSTT();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
-            lookTinh.EditValue = DanhSach.CurrSettings.MaTinh;
-            lookQuanHuyen.EditValue = DanhSach.CurrSettings.MaHuyen;
-            lstQuanHuyen = _Helper.getListDistrict(DanhSach.CurrSettings.MaTinh);
-            lstPhuongXa = _Helper.getListWards(DanhSach.CurrSettings.MaHuyen);
+            lookTinh.EditValue = Data.CurrSettings.MaTinh;
+            lookQuanHuyen.EditValue = Data.CurrSettings.MaHuyen;
+            lstQuanHuyen = _Helper.getListDistrict(Data.CurrSettings.MaTinh);
+            lstPhuongXa = _Helper.getListWards(Data.CurrSettings.MaHuyen);
 
             DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
@@ -370,13 +346,24 @@ namespace QuanLyTuyenSinh.Form
             btnExel.Click += BtnExel_Click;
             btnLoadExel.Click += BtnLoadExel_Click;
             btnRefreshDTS.Click += BtnRefreshDTS_Click;
-            
+            btnThongKe.Click += (sender, e) =>
+            {
+                F_TK f = new();
+                f.Show();
+            };
+
             cbbDTS.EditValueChanged += cbbDTS_EditValueChanged;
             cbbTDHV.EditValueChanged += CbbHTDT_EditValueChanged;
             lookTinh.TextChanged += LookTinh_TextChanged;
             lookQuanHuyen.TextChanged += LookQuanHuyen_TextChanged;
             lookXa.TextChanged += LookXa_TextChanged;
+            chkKhongTT.CheckedChanged += ChkKhongTT_CheckedChanged;
             ResumeLayout(true);
+        }
+
+        private void ChkKhongTT_CheckedChanged(object? sender, EventArgs e)
+        {
+            LoadData();
         }
 
         private void BtnRefreshDTS_Click(object? sender, EventArgs e)
@@ -425,7 +412,7 @@ namespace QuanLyTuyenSinh.Form
                         using (OleDbCommand comm = new OleDbCommand())
                         {
                             DataTable dt = new DataTable();
-                            comm.CommandText = @"SELECT [Mã HS] FROM [Sheet1$]";
+                            comm.CommandText = $@"SELECT [Mã HS] FROM [{TenDm}$]";
                             comm.Connection = conn;
                             using (OleDbDataAdapter da = new OleDbDataAdapter())
                             {
@@ -433,7 +420,7 @@ namespace QuanLyTuyenSinh.Form
                                 da.Fill(dt);
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    var hsdt = DanhSach.DSHoSoDT.FirstOrDefault(x => x.MaHoSo == row[0].ToString());
+                                    var hsdt = Data.DSHoSoDT.FirstOrDefault(x => x.MaHoSo == row[0].ToString());
                                     if (hsdt != null)
                                     {
                                         lstHSTT.Add(hsdt.ToHSTT());
@@ -461,7 +448,7 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-       
+
         private void LoadBackgound()
         {
             pnImg.SuspendLayout();
@@ -475,7 +462,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void LoadComboBoxDTS()
         {
-            var ds = DanhSach.DsDotXetTuyen.Where(x => x.NamTS == _NamTS).OrderBy(x => x.DotTS).ToList();
+            var ds = Data.DsDotXetTuyen.Where(x => x.NamTS == _NamTS).OrderBy(x => x.DotTS).ToList();
             if (ds.Count == 0)
             {
                 cbbDTS.SelectedItem = null;
@@ -495,46 +482,11 @@ namespace QuanLyTuyenSinh.Form
             cbbTDHV.SelectedIndex = 0;
         }
 
-        private PopupMenu popupMenu;
 
-        private void LoadbtnThongKe()
-        {
-            popupMenu = new PopupMenu(barManager1);
-            popupMenu.AutoFillEditorWidth = true;
-            if (TenDm.StartsWith("TK"))
-            {
-                var btnRp1 = new BarButtonItem(barManager1, "Số lượng theo từng trường");
-                var btnRp2 = new BarButtonItem(barManager1, "Số lượng theo từng nghề");
-
-                btnRp1.ItemClick += BtnThongKeTheoTruong_ItemClick;
-                btnRp2.ItemClick += BtnThongKeTheoNghe_ItemClick;
-
-                popupMenu.AddItem(btnRp1);
-                popupMenu.AddItem(btnRp2);
-            }
-            if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
-            {
-                var btnRp3 = new BarButtonItem(barManager1, "Số lượng theo từng Xã (Vạn Ninh)");
-                btnRp3.ItemClick += BtnThongKeTheoXa_ItemClick;
-                popupMenu.AddItem(btnRp3);
-            }
-
-            btnThongKe.DropDownControl = popupMenu;
-        }
-
-        private void BtnThongKeTheoXa_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            gridView.Columns.Clear();
-            gridView.CustomDrawCell += HighlightTotal;
-            _bindingSource.DataSource = DanhSach.THSLTTTheoXa(cbbDTS.SelectedIndex);
-            _FormatLastColumn = true;
-            gridView.BestFitColumns(true);
-        }
 
         private PopupMenu popupMenu1;
         private BarButtonItem btnSaveDSTT;
         private BarButtonItem btnExportXls;
-        private BarButtonItem btnDsKhongTT;
         private BarButtonItem btnDanhLaiMa;
 
         private void LoadbtnDSTT()
@@ -545,16 +497,14 @@ namespace QuanLyTuyenSinh.Form
             popupMenu1.AutoFillEditorWidth = true;
             btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
             btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu");
-            btnDsKhongTT = new BarButtonItem(barManager1, "Xem danh sách không trúng tuyển");
             btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
 
             btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
             btnExportXls.ItemClick += BtnExportXls_ItemClick;
-            btnDsKhongTT.ItemClick += btnDsKhongTT_ItemClick;
             btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
+
             popupMenu1.AddItem(btnSaveDSTT);
             popupMenu1.AddItem(btnExportXls);
-            popupMenu1.AddItem(btnDsKhongTT);
             popupMenu1.AddItem(btnDanhLaiMa);
 
             dropbtnDSTT.DropDownControl = popupMenu1;
@@ -569,13 +519,13 @@ namespace QuanLyTuyenSinh.Form
                 return;
             }
 
-            var ds = DanhSach.DSHoSoTT.Where(x => x.DotTS == dts);
+            var ds = Data.DSHoSoTT.Where(x => x.DotTS == dts);
             if (ds.Count() > 0)
             {
                 if (XtraMessageBox.Show($"Bạn xác nhận muốn lập lại mã đợt {dts}",
                     "Lập mã hồ sơ", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    foreach (var nghe in DanhSach.DsNghe)
+                    foreach (var nghe in Data.DsNghe)
                     {
                         var dstheonghe = ds.Where(x => x.IdNgheTrungTuyen == nghe.Id).OrderBy(x => x.Ten);
                         int i = 1;
@@ -585,16 +535,16 @@ namespace QuanLyTuyenSinh.Form
                             i++;
                         }
                     }
-                    DanhSach.SaveDS(TenDm);
+                    Data.SaveDS(TenDm);
                     BtnRefresh_Click(this, null);
                 }
             }
 
         }
-
+        List<HoSoTrungTuyen> lstHsKhongTT = new();
         private void btnDsKhongTT_ItemClick(object sender, ItemClickEventArgs e)
         {
-            List<HoSoTrungTuyen> lstHsKhongTT = new();
+
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
             {
@@ -602,22 +552,32 @@ namespace QuanLyTuyenSinh.Form
                 return;
             }
 
-            if (DanhSach.DSHoSoTT.Count(x => x.DotTS.Equals(dts)) > 0)
+            if (lstHsKhongTT.Count == 0)
             {
-                lstHsKhongTT.Clear();
-                var lstHSDT = DanhSach.DSHoSoDT.Where(x => x.DotTS == dts).Select(x => x.Id).ToList();
-                var lstHSTT = DanhSach.DSHoSoTT.Where(x => x.DotTS == dts).Select(x => x.IdHSDT).ToList();
+                var lstHSDT = Data.DSHoSoDT.Where(x => x.DotTS == dts).Select(x => x.Id).ToList();
+                var lstHSTT = Data.DSHoSoTT.Where(x => x.DotTS == dts).Select(x => x.IdHSDT).ToList();
                 var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
                 foreach (var id in lstHSKhongTT)
                 {
-                    var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.DotTS == dts && x.Id == id);
+                    var hs = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == dts && x.Id == id);
                     if (hs != null)
                         lstHsKhongTT.Add(hs.ToHSTT());
                 }
-
                 _bindingSource.DataSource = lstHsKhongTT;
                 gridView.RefreshData();
                 gridView.ExpandAllGroups();
+            }
+            else if (lstHDTTTemp.Count(x => x.DotTS == dts) > 0)
+            {
+                var lstHSDT = Data.DSHoSoDT.Where(x => x.DotTS == dts).Select(x => x.Id).ToList();
+                var lstHSTT = lstHDTTTemp.Where(x => x.DotTS == dts).Select(x => x.Id).ToList(); ;
+                var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
+                foreach (var id in lstHSKhongTT)
+                {
+                    var hs = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == dts && x.Id == id);
+                    if (hs != null)
+                        lstHsKhongTT.Add(hs.ToHSTT());
+                }
             }
 
         }
@@ -672,15 +632,15 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 13] = lstxa.First(x => x.AdressCode.Equals(lstHSTT[i].MaXa)).AdressName;
                             export[i, 14] = string.Empty;
                             export[i, 15] = lstHSTT[i].CCCD;
-                            export[i, 16] = DanhSach.DsDanToc.First(x => x.Id.Equals(lstHSTT[i].IdDanToc)).Ten;
+                            export[i, 16] = Data.DsDanToc.First(x => x.Id.Equals(lstHSTT[i].IdDanToc)).Ten;
                             export[i, 17] = string.Empty;
-                            export[i, 18] = DanhSach.DsTonGiao.First(x => x.Id.Equals(lstHSTT[i].IdTonGiao)).Ten;
+                            export[i, 18] = Data.DsTonGiao.First(x => x.Id.Equals(lstHSTT[i].IdTonGiao)).Ten;
                             export[i, 19] = string.Empty;
-                            export[i, 20] = DanhSach.DsQuocTich.First(x => x.Id.Equals(lstHSTT[i].IdQuocTich)).Ten;
+                            export[i, 20] = Data.DsQuocTich.First(x => x.Id.Equals(lstHSTT[i].IdQuocTich)).Ten;
                             export[i, 21] = string.Empty;
                             export[i, 22] = lstHSTT[i].SDT;
                             export[i, 23] = lstHSTT[i].Email;
-                            export[i, 24] = DanhSach.DsTrinhDo.First(x => x.Id == lstHSTT[i].IdTrinhDoVH).Ten;
+                            export[i, 24] = Data.DsTrinhDo.First(x => x.Id == lstHSTT[i].IdTrinhDoVH).Ten;
                             export[i, 25] = string.Empty;
                             export[i, 26] = lstHSTT[i].HTDT;
                         }
@@ -726,33 +686,34 @@ namespace QuanLyTuyenSinh.Form
                 return;
             }
 
-            if (DanhSach.DSHoSoTT.Where(x => x.DotTS == dts).Count() > 0)
+            if (Data.DSHoSoTT.Where(x => x.DotTS == dts).Count() > 0)
             {
                 if (lstHDTTTemp.Count() > 0)
                 {
                     if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lưu lại?",
                     "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        DanhSach.DSHoSoTT.RemoveAll(x => x.DotTS == dts);
-                        DanhSach.DSHoSoTT.AddRange(lstHDTTTemp);
+                        Data.DSHoSoTT.RemoveAll(x => x.DotTS == dts);
+                        Data.DSHoSoTT.AddRange(lstHDTTTemp);
                         lstHDTTTemp = new();
-                        DanhSach.SaveDS(TenDm);
-                        LoadDanhMuc();
+                        Data.SaveDS(TenDm);
+                        XtraMessageBox.Show("Đã lưu lại danh sách!");
+                        LoadData();
                     }
                 }
             }
             else if (lstHDTTTemp.Count() > 0)
             {
-                DanhSach.DSHoSoTT.AddRange(lstHDTTTemp);
+                Data.DSHoSoTT.AddRange(lstHDTTTemp);
                 lstHDTTTemp = new();
-                _Helper.SaveToJson(DanhSach.DSHoSoTT, TuDien.DbName.HoSoTrungTuyen);
+                Data.SaveDS(TenDm);
                 XtraMessageBox.Show("Đã lưu lại danh sách!");
-                LoadDanhMuc();
+                LoadData();
             }
         }
 
         private List<HoSoTrungTuyen> lstHDTTTemp = new();
-
+        private List<HoSoTrungTuyen> lstHSKhongTT = new();
         private void DropbtnDSTT_Click(object? sender, EventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
@@ -761,12 +722,12 @@ namespace QuanLyTuyenSinh.Form
                 XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
                 return;
             }
-            if (DanhSach.DSHoSoTT.Count(x => x.DotTS.Equals(dts)) > 0)
+            if (Data.DSHoSoTT.Count(x => x.DotTS.Equals(dts)) > 0)
             {
                 if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lập lại danh sách?",
                     "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    lstHDTTTemp = DanhSach.LapDSTrungTuyen(cbbDTS.SelectedIndex);
+                    Data.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHDTTTemp, lstHSKhongTT);
                     _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
                     gridView.RefreshData();
                     gridView.ExpandAllGroups();
@@ -774,183 +735,75 @@ namespace QuanLyTuyenSinh.Form
             }
             else
             {
-                lstHDTTTemp = DanhSach.LapDSTrungTuyen(cbbDTS.SelectedIndex);
+                Data.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHDTTTemp, lstHSKhongTT);
                 _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
                 gridView.RefreshData();
                 gridView.ExpandAllGroups();
             }
         }
-
-        private void BtnThongKeTheoNghe_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
-            {
-                gridView.Columns.Clear();
-                List<THSLTheoNghe> lstReport = new();
-
-                List<NguyenVong> lstNV1 = new();
-                List<NguyenVong> lstNV2 = new();
-                var hsdt = DanhSach.DSHoSoDT.Where(x => (cbbDTS.SelectedIndex == 0 ? true : x.DotTS == cbbDTS.SelectedIndex));
-                foreach (var hs in hsdt)
-                {
-                    var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                    if (nv1 != null) lstNV1.Add(nv1);
-                    var nv2 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 2);
-                    if (nv2 != null) lstNV2.Add(nv2);
-                }
-
-                for (int i = 0; i < DanhSach.DsNghe.Count; i++)
-                {
-                    lstReport.Add(new THSLTheoNghe
-                    {
-                        STT = (i + 1).ToString(),
-                        MaNghe = DanhSach.DsNghe[i].Ma,
-                        TenNghe = DanhSach.DsNghe[i].Ten,
-                        SLNV1 = lstNV1.Where(x => x.IdNghe.Equals(DanhSach.DsNghe[i].Id)).Count(),
-                        SLNV2 = lstNV2.Where(x => x.IdNghe.Equals(DanhSach.DsNghe[i].Id)).Count(),
-                    });
-                }
-                lstReport.Add(new THSLTheoNghe
-                {
-                    TenNghe = "Tổng cộng",
-                    SLNV1 = lstNV1.Count(),
-                    SLNV2 = lstNV2.Count(),
-                });
-                gridView.CustomDrawCell += HighlightTotal;
-                _bindingSource.DataSource = lstReport;
-                gridView.BestFitColumns(true);
-            }
-            else if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
-            {
-                gridView.Columns.Clear();
-                List<THSLTTTheoNghe> lstReport = new();
-
-                for (int i = 0; i < DanhSach.DsNghe.Count; i++)
-                {
-                    var lstHDTTNghe = DanhSach.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(DanhSach.DsNghe[i].Id)
-                    && (cbbDTS.SelectedIndex == 0 ? true : x.DotTS == cbbDTS.SelectedIndex));
-                    lstReport.Add(new THSLTTTheoNghe
-                    {
-                        STT = (i + 1).ToString(),
-                        MaNghe = DanhSach.DsNghe[i].Ma,
-                        TenNghe = DanhSach.DsNghe[i].Ten,
-                        SLHS = lstHDTTNghe.Count(),
-                        SLHSNu = lstHDTTNghe.Where(x => !x.GioiTinh).Count(),
-                        SLDTUUT = lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
-                        SLTNTHCS = lstHDTTNghe.Where(x => x.TDHV.Equals("THCS")).Count(),
-                        SLTNTHPTT = lstHDTTNghe.Where(x => x.TDHV.Equals("THPT")).Count(),
-                    });
-                }
-                lstReport.Add(new THSLTTTheoNghe
-                {
-                    TenNghe = "Tổng cộng",
-                    SLHS = lstReport.Sum(x => x.SLHS),
-                    SLHSNu = lstReport.Sum(x => x.SLHSNu),
-                    SLDTUUT = lstReport.Sum(x => x.SLDTUUT),
-                    SLTNTHCS = lstReport.Sum(x => x.SLTNTHCS),
-                    SLTNTHPTT = lstReport.Sum(x => x.SLTNTHPTT),
-                });
-                gridView.CustomDrawCell += HighlightTotal;
-                _bindingSource.DataSource = lstReport;
-                gridView.BestFitColumns(true);
-            }
-        }
-
-        private void HighlightTotal(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
-        {
-            DevExpress.XtraGrid.Views.Grid.GridView gridView = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-
-            if (gridView != null && e.RowHandle == gridView.RowCount - 1)
-            {
-                e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, FontStyle.Bold);
-                e.Appearance.BackColor = Color.Yellow;
-                e.Appearance.ForeColor = Color.Red;
-            }
-        }
-
-        private void BtnThongKeTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            gridView.Columns.Clear();
-            gridView.CustomDrawCell += HighlightTotal;
-            if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
-            {
-                _bindingSource.DataSource = DanhSach.THSLNgheTheoTruong(cbbDTS.SelectedIndex);
-            }
-            else if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
-            {
-                _bindingSource.DataSource = DanhSach.THSLTTNgheTheoTruong(cbbDTS.SelectedIndex);
-            }
-            _FormatLastColumn = true;
-            gridView.BestFitColumns(true);
-        }
-
         private void ShowTotalFooter()
         {
             if (gridView.Columns["MaHoSo"] is not null)
             {
                 GridColumnSummaryItem siTotal = new GridColumnSummaryItem();
                 siTotal.SummaryType = SummaryItemType.Count;
-                siTotal.DisplayFormat = "Tổng số: {0} thí sinh";
+                siTotal.DisplayFormat = "Tổng số: {0}";
                 gridView.Columns["MaHoSo"].Summary.Add(siTotal);
             }
         }
 
-        private void LoadDanhMuc()
+        private void LoadData()
         {
             EditMode = false;
             gridView.Columns.Clear();
-            gridView.CustomDrawCell -= HighlightTotal;
-            _FormatLastColumn = false;
             _bindingSource = new BindingSource();
             switch (TenDm)
             {
                 case TuDien.CategoryName.TruongHoc:
-                    _bindingSource.DataSource = DanhSach.DsTruong;
+                    _bindingSource.DataSource = Data.DsTruong;
                     break;
                 case TuDien.CategoryName.NganhNghe:
-                    _bindingSource.DataSource = DanhSach.DsNghe;
+                    _bindingSource.DataSource = Data.DsNghe;
                     break;
                 case TuDien.CategoryName.DoiTuongUuTien:
-                    _bindingSource.DataSource = DanhSach.DsDoiTuongUT;
+                    _bindingSource.DataSource = Data.DsDoiTuongUT;
                     break;
                 case TuDien.CategoryName.KhuVucUuTien:
-                    _bindingSource.DataSource = DanhSach.DsKhuVucUT;
+                    _bindingSource.DataSource = Data.DsKhuVucUT;
                     break;
                 case TuDien.CategoryName.DanToc:
-                    _bindingSource.DataSource = DanhSach.DsDanToc;
+                    _bindingSource.DataSource = Data.DsDanToc;
                     break;
                 case TuDien.CategoryName.TonGiao:
-                    _bindingSource.DataSource = DanhSach.DsTonGiao;
+                    _bindingSource.DataSource = Data.DsTonGiao;
                     break;
                 case TuDien.CategoryName.TrinhDo:
-                    _bindingSource.DataSource = DanhSach.DsTrinhDo;
+                    _bindingSource.DataSource = Data.DsTrinhDo;
                     break;
                 case TuDien.CategoryName.QuocTich:
-                    _bindingSource.DataSource = DanhSach.DsQuocTich;
+                    _bindingSource.DataSource = Data.DsQuocTich;
                     break;
                 case TuDien.CategoryName.DotXetTuyen:
-                    _bindingSource.DataSource = DanhSach.DsDotXetTuyen;
+                    _bindingSource.DataSource = Data.DsDotXetTuyen;
                     break;
                 case TuDien.CategoryName.ChiTieu:
-                    _bindingSource.DataSource = DanhSach.DsChiTieu;
+                    _bindingSource.DataSource = Data.DsChiTieu;
                     break;
                 case TuDien.CategoryName.HoSoDuTuyen:
-                    _bindingSource.DataSource = DanhSach.GetDSDuTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
+                    _bindingSource.DataSource = Data.GetDSDuTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
                     break;
                 case TuDien.CategoryName.HoSoTrungTuyen:
-                    _bindingSource.DataSource = DanhSach.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
-                    cbbTDHV.EditValue.ToString() : "THCS",(string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue);
+                    _bindingSource.DataSource = Data.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
+                    cbbTDHV.EditValue.ToString() : "THCS", (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue, chkKhongTT.Checked);
                     break;
                 case TuDien.CategoryName.ThongKeDiemDT:
-                    _bindingSource.DataSource = DanhSach.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
+                    _bindingSource.DataSource = Data.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
-                    LoadbtnThongKe();
                     break;
                 case TuDien.CategoryName.ThongKeTT:
-                    _bindingSource.DataSource = DanhSach.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
+                    _bindingSource.DataSource = Data.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
-                    LoadbtnThongKe();
                     break;
                 default: break;
             }
@@ -988,12 +841,12 @@ namespace QuanLyTuyenSinh.Form
                     RepositoryItemTextEdit riComboBox = new RepositoryItemTextEdit();
                     colGT.ColumnEdit = riComboBox;
                 }
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsTruong, "IdTruong", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheDT1", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheDT2", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsTruong, "IdTruong", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheDT1", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheDT2", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
                 var colXLHT = gridView.Columns.ColumnByFieldName("XLHT");
                 if (colXLHT != null) { colXLHT.Visible = ((string)cbbTDHV.EditValue != "THCS"); }
                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
@@ -1008,16 +861,16 @@ namespace QuanLyTuyenSinh.Form
             }
             if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
             {
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheNV1", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheNV1", "Ten", "Id");
                 gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdDTUT", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdDTUT", "Ten", "Id");
             }
             if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
             {
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsTruong, "IdTruong", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DanhSach.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsTruong, "IdTruong", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
                 gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen").Group();
                 var colGT = gridView.Columns.ColumnByFieldName("GioiTinh");
                 if (colGT != null)
@@ -1037,7 +890,9 @@ namespace QuanLyTuyenSinh.Form
             btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieu) ? 110 : 0;
             _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 220;
-            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 487 : 0;
+            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 180 : 0;
+            panelTDHV.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT) ? 155 : 0;
+            chkKhongTT.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
             panelFilter.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
             btnThongKe.Visible = TenDm.StartsWith("TK") ? true : false;
             dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 185 : 0;
@@ -1066,7 +921,7 @@ namespace QuanLyTuyenSinh.Form
                 lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue.ToString());
                 lookXa.Properties.DataSource = lstPhuongXa;
                 lookXa.EditValue = null;
-                LoadDanhMuc();
+                LoadData();
             }
         }
 
@@ -1078,16 +933,16 @@ namespace QuanLyTuyenSinh.Form
                 lookQuanHuyen.Properties.DataSource = lstQuanHuyen;
                 lookXa.EditValue = null;
                 lookQuanHuyen.EditValue = null;
-                LoadDanhMuc();
+                LoadData();
             }
         }
 
         private void LookXa_TextChanged(object? sender, EventArgs e)
         {
-            LoadDanhMuc();
+            LoadData();
         }
 
-        
+
 
         #region Xử lý GridControl
 
@@ -1100,7 +955,7 @@ namespace QuanLyTuyenSinh.Form
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (DanhSach.CheckDupCode(value, TenDm))
+                    if (Data.CheckDupCode(value, TenDm))
                     {
                         MessageBox.Show(this, "Trùng mã!");
                         gridView.SetFocusedRowCellValue("Ma", string.Empty);
@@ -1111,7 +966,7 @@ namespace QuanLyTuyenSinh.Form
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (DanhSach.CheckDupCode(value, TenDm))
+                    if (Data.CheckDupCode(value, TenDm))
                     {
                         MessageBox.Show(this, "Trùng mã!");
                         gridView.SetFocusedRowCellValue("Ma", string.Empty);
@@ -1138,11 +993,11 @@ namespace QuanLyTuyenSinh.Form
                     var r = gridView.GetFocusedRow() as BaseClass;
                     if (r is not null)
                     {
-                        var hs = DanhSach.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.Id));
+                        var hs = Data.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.Id));
                         if (hs is not null)
                         {
                             F_HoSo f = new(hs.CloneJson());
-                            f.ShowDialog(this);
+                            f.Show(this);
                         }
                     }
                 }
@@ -1158,7 +1013,7 @@ namespace QuanLyTuyenSinh.Form
             var r = e.Row;
             if (r != null && !TenDm.StartsWith("HS"))
             {
-                DanhSach.SaveDS(TenDm);
+                Data.SaveDS(TenDm);
             }
         }
 
@@ -1214,97 +1069,97 @@ namespace QuanLyTuyenSinh.Form
         private void btnChiTieu_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.ChiTieu;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnDanToc_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DanToc;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnDotTS_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DotXetTuyen;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnDTUT_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DoiTuongUuTien;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnHoSoDuTuyen_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.HoSoDuTuyen;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnKVUT_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.KhuVucUuTien;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnNghe_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.NganhNghe;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnQuocTich_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.QuocTich;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnTDHV_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TrinhDo;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnTHDTD_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.ThongKeDiemDT;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnTonGiao_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TonGiao;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnTruong_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TruongHoc;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnHSTT_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.HoSoTrungTuyen;
-            LoadDanhMuc();
+            LoadData();
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
-            Form.F_Setting f = new(DanhSach.CurrSettings.CloneJson());
+            Form.F_Setting f = new(Data.CurrSettings.CloneJson());
             f.Show();
         }
 
         private void btnAccount_Click(object sender, EventArgs e)
         {
-            F_Account f = new(DanhSach.CurrUser.CloneJson());
+            F_Account f = new(Data.CurrUser.CloneJson());
             f.Show();
         }
 
         private void btnTKTT_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.ThongKeTT;
-            LoadDanhMuc();
+            LoadData();
         }
 
         #endregion MenuSelect

@@ -4,6 +4,7 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 
 namespace QuanLyTuyenSinh.Form
 {
@@ -30,7 +31,7 @@ namespace QuanLyTuyenSinh.Form
             MaximizeBox = false;
 
             _hoSo = hoSo;
-            Text = DanhSach.CurrSettings.TENTRUONG;
+            Text = Data.CurrSettings.TENTRUONG;
             if (!string.IsNullOrEmpty(_hoSo.MaTinh))
             {
                 lstQuanHuyen = _Helper.getListDistrict(_hoSo.MaTinh);
@@ -58,6 +59,7 @@ namespace QuanLyTuyenSinh.Form
             CreateBinding();
             InitGridView();
             TxtTenAutoComplete();
+            LoadAnh();
             Shown += F_HoSo_Shown;
         }
 
@@ -79,12 +81,54 @@ namespace QuanLyTuyenSinh.Form
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
-            FormClosing += new FormClosingEventHandler(HS_FormClosing);
+            Anh.ContextButtonClick += Anh_ContextButtonClick;
+            FormClosing += HS_FormClosing;
             ActiveControl = txtHo;
         }
+
+        private void Anh_ImageChanged(object? sender, EventArgs e)
+        {
+
+        }
+
+        private void Anh_ContextButtonClick(object sender, DevExpress.Utils.ContextItemClickEventArgs e)
+        {
+            Anh.LoadImage();
+        }
+
+        private void LoadAnh()
+        {
+            if (!string.IsNullOrEmpty(_hoSo.Anh))
+            {
+                try
+                {
+                    Image img = Image.FromStream(new MemoryStream(File.ReadAllBytes(Path.Combine(TuDien.IMG_FOLDER, _hoSo.Anh))));
+                    Anh.EditValue = img;
+                }
+                catch { }
+            }
+        }
+        private void SaveAnh()
+        {
+            if (string.IsNullOrEmpty(Anh.GetLoadedImageLocation()))
+            {
+                File.Delete(Path.Combine(TuDien.IMG_FOLDER, _hoSo.Anh));
+                _hoSo.Anh = string.Empty;
+                return;
+            }
+            else
+            {
+                string path = Path.Combine(TuDien.IMG_FOLDER, _hoSo.NamTS.ToString(), _hoSo.DotTS.ToString());
+                Directory.CreateDirectory(path);
+                string filePath = Path.Combine(path, _hoSo.MaHoSo);
+                Anh.Image.Save(filePath);
+                _hoSo.Anh = $"{_hoSo.NamTS}/" + $"{_hoSo.DotTS}/" + _hoSo.MaHoSo;
+            }
+        }
+
         private void HS_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MainWorkspace.FormMain.Refresh();
+            MainWorkspace.FormMain.RefreshForm();
         }
 
         private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -95,11 +139,11 @@ namespace QuanLyTuyenSinh.Form
                 if (nv == null) return;
                 if (nv.NV != 1 || nv.IdNghe == null)
                     return;
-                var nv1 = DanhSach.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
+                var nv1 = Data.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
                 if (nv1 == null)
                     return;
                 string manghe = nv1.Ma2;
-                var max = DanhSach.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                var max = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
                 if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
                 else
                 {
@@ -126,7 +170,7 @@ namespace QuanLyTuyenSinh.Form
         private void TxtTenAutoComplete()
         {
             var collection = new AutoCompleteStringCollection();
-            collection.AddRange(DanhSach.DSHoSoDT.Select(x => x.Ten).Distinct().ToArray());
+            collection.AddRange(Data.DSHoSoDT.Select(x => x.Ten).Distinct().ToArray());
             txtTen.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -169,11 +213,11 @@ namespace QuanLyTuyenSinh.Form
                 if (nv == null) return;
                 if (nv.NV != 1 || nv.IdNghe == null)
                     return;
-                var nv1 = DanhSach.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
+                var nv1 = Data.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
                 if (nv1 == null)
                     return;
                 string manghe = nv1.Ma2;
-                var max = DanhSach.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                var max = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
                 if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
                 else
                 {
@@ -208,7 +252,7 @@ namespace QuanLyTuyenSinh.Form
             gridView1.ShowingEditor += GridView_ShowingEditor;
             gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
 
-            DevForm.CreateRepositoryItemLookUpEdit(gridView1, DanhSach.DsNghe, "IdNghe", "Ten", "Id");
+            DevForm.CreateRepositoryItemLookUpEdit(gridView1, Data.DsNghe, "IdNghe", "Ten", "Id");
 
         }
 
@@ -236,9 +280,9 @@ namespace QuanLyTuyenSinh.Form
                         XtraMessageBox.Show(this, "Đã tồn tại nghề");
                         gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
                     }
-                    int SLdutuyen = DanhSach.DSHoSoDT.Where(hs => hs.NamTS == _hoSo.NamTS &&
+                    int SLdutuyen = Data.DSHoSoDT.Where(hs => hs.NamTS == _hoSo.NamTS &&
                     hs.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(value)) is not null).Count();
-                    ChiTieuXetTuyen? chitieu = DanhSach.DsChiTieu.FirstOrDefault(x => x.Nam == _hoSo.NamTS && x.IdNghe == value);
+                    ChiTieuXetTuyen? chitieu = Data.DsChiTieu.FirstOrDefault(x => x.Nam == _hoSo.NamTS && x.IdNghe == value);
                     if (chitieu is null)
                     {
                         XtraMessageBox.Show(this, "Chưa lập chỉ tiêu ngành nghề này!");
@@ -246,9 +290,9 @@ namespace QuanLyTuyenSinh.Form
                         return;
                     }
                     int sl = chitieu.ChiTieu;
-                    double chitieutoida = Math.Floor(sl + sl * DanhSach.CurrSettings.CHITIEUVUOTMUC);
-                    int sltt = DanhSach.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(value)).Count();
-                    if (SLdutuyen + sltt >= sl + (sl * DanhSach.CurrSettings.CHITIEUVUOTMUC))
+                    double chitieutoida = Math.Floor(sl + sl * Data.CurrSettings.CHITIEUVUOTMUC);
+                    int sltt = Data.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(value)).Count();
+                    if (SLdutuyen + sltt >= sl + (sl * Data.CurrSettings.CHITIEUVUOTMUC))
                     {
                         XtraMessageBox.Show(this, $"Đã vượt mức chỉ tiêu tối đa!\n" +
                             $" SL xét tuyển: {SLdutuyen} SL trúng tuyển: {sltt} Chỉ tiêu tối đa: {chitieutoida}");
@@ -388,13 +432,13 @@ namespace QuanLyTuyenSinh.Form
 
         private void InitLookupEdits()
         {
-            DevForm.CreateSearchLookupEdit(lookDanToc, "Ten", "Id", DanhSach.DsDanToc);
-            DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", DanhSach.DsQuocTich);
-            DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", DanhSach.DsTonGiao);
-            DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", DanhSach.DsTrinhDo);
-            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DanhSach.DsDoiTuongUT);
-            DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", DanhSach.DsKhuVucUT);
-            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DanhSach.DsTruong);
+            DevForm.CreateSearchLookupEdit(lookDanToc, "Ten", "Id", Data.DsDanToc);
+            DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", Data.DsQuocTich);
+            DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", Data.DsTonGiao);
+            DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", Data.DsTrinhDo);
+            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", Data.DsDoiTuongUT);
+            DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", Data.DsKhuVucUT);
+            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong);
             DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode");
             DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode");
@@ -446,22 +490,23 @@ namespace QuanLyTuyenSinh.Form
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
             {
-                var index = DanhSach.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
+                var index = Data.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
                 if (index >= 0)
                 {
-                    DanhSach.DSHoSoDT[index] = _hoSo;
+                    Data.DSHoSoDT[index] = _hoSo;
                 }
                 else
                 {
-                    DanhSach.DSHoSoDT.Add(_hoSo);
+                    Data.DSHoSoDT.Add(_hoSo);
                 }
-                DanhSach.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
+                SaveAnh();
+                Data.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
                 int dts = _hoSo.DotTS, nts = _hoSo.NamTS;
-                var dsdt = DanhSach.DSHoSoDT.Where(x => x.NamTS == nts && x.DotTS == dts);
-                var dt = DanhSach.DsDanToc.FirstOrDefault();
-                var qt = DanhSach.DsQuocTich.FirstOrDefault();
-                var tg = DanhSach.DsTonGiao.FirstOrDefault();
-                var tdvh = DanhSach.DsTrinhDo.FirstOrDefault();
+                var dsdt = Data.DSHoSoDT.Where(x => x.NamTS == nts && x.DotTS == dts);
+                var dt = Data.DsDanToc.FirstOrDefault();
+                var qt = Data.DsQuocTich.FirstOrDefault();
+                var tg = Data.DsTonGiao.FirstOrDefault();
+                var tdvh = Data.DsTrinhDo.FirstOrDefault();
                 _hoSo = new HoSoDuTuyen
                 {
                     NamTS = nts,
@@ -484,17 +529,18 @@ namespace QuanLyTuyenSinh.Form
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
             {
-                var index = DanhSach.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
+                var index = Data.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
                 if (index >= 0)
                 {
-                    DanhSach.DSHoSoDT[index] = _hoSo;
+                    Data.DSHoSoDT[index] = _hoSo;
                 }
                 else
                 {
-                    DanhSach.DSHoSoDT.Add(_hoSo);
+                    Data.DSHoSoDT.Add(_hoSo);
                 }
-                DanhSach.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
-                DanhSach.RefreshDS(TuDien.CategoryName.HoSoDuTuyen);
+                SaveAnh();
+                Data.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
+                Data.RefreshDS(TuDien.CategoryName.HoSoDuTuyen);
                 Close();
             }
             else { XtraMessageBox.Show(this, errs, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error); }
@@ -502,7 +548,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void lookTruong_EditValueChanged(object sender, EventArgs e)
         {
-            var truong = DanhSach.DsTruong.FirstOrDefault(x => x.Id.Equals(lookTruong.EditValue.ToString()));
+            var truong = Data.DsTruong.FirstOrDefault(x => x.Id.Equals(lookTruong.EditValue.ToString()));
             if (truong is null)
             {
                 return;
