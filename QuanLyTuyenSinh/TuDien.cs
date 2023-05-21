@@ -12,7 +12,7 @@ namespace QuanLyTuyenSinh
             public const string TruongHoc = "DMTH", NganhNghe = "DMNN",
                 DoiTuongUuTien = "DMDTUT", KhuVucUuTien = "DMKVUT", DotXetTuyen = "DXT", DanToc = "DMDT",
                 TonGiao = "DMTG", QuocTich = "DMQT", TrinhDo = "DMTDVH", ChiTieu = "CT",
-                HoSoDuTuyen = "HSDT", HoSoTrungTuyen = "HSTT", ThongKeDiemDT = "TKDT", ThongKeTT = "TKTT";
+                HoSoDuTuyen = "HSDT", HoSoTrungTuyen = "HSTT", DiemXetTuyen = "DiemXT", ThongKe = "TK";
         }
 
         public static class DbName
@@ -44,7 +44,7 @@ namespace QuanLyTuyenSinh
                 "HSTT"),
                 User = Path.Combine(Environment.CurrentDirectory, JSON_FOLDER_PATH, "USER"), Settings = Path.Combine(Environment.CurrentDirectory,
                 JSON_FOLDER_PATH, "Settings"),
-                Img = Path.Combine(Environment.CurrentDirectory, TuDien.JSON_FOLDER_PATH,"Img")
+                Img = Path.Combine(Environment.CurrentDirectory, TuDien.JSON_FOLDER_PATH, "Img")
                 ;
         }
     }

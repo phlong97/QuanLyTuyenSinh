@@ -112,7 +112,7 @@
       <Item Value="0###201###20117###Huyện Xín Mần" />
       <Item Value="0###201###20118###Huyện Quang Bình" />
       <Item Value="0###201###20119###Huyện Bắc Quang" />
-	  
+
       <Item Value="0###203###20301###Thành phố Cao Bằng" />
       <Item Value="0###203###20303###Huyện Bảo Lạc" />
       <Item Value="0###203###20305###Huyện Hà Quảng" />
@@ -125,7 +125,7 @@
       <Item Value="0###203###20318###Huyện Phục Hoà (hết hiệu lực)" />
       <Item Value="0###203###20319###Huyện Hạ Lang" />
       <Item Value="0###203###20321###Huyện Thạch An" />
-      <Item Value="0###203###20323###Huyện Bảo Lâm" />	  
+      <Item Value="0###203###20323###Huyện Bảo Lâm" />
       <Item Value="0###205###20501###Thành phố Lào Cai" />
       <Item Value="0###205###20505###Huyện Mường Khương" />
       <Item Value="0###205###20507###Huyện Bát Xát" />
@@ -274,7 +274,7 @@
       <Item Value="0###305###30515###Huyện Lạc Sơn" />
       <Item Value="0###305###30517###Huyện Lạc Thuỷ" />
       <Item Value="0###305###30519###Huyện Yên Thuỷ" />
-	  
+
       <Item Value="0###401###40101###Thành phố Thanh Hoá" />
       <Item Value="0###401###40103###Thị xã Bỉm Sơn" />
       <Item Value="0###401###40105###Thành phố Sầm Sơn" />
@@ -302,7 +302,7 @@
       <Item Value="0###401###40149###Huyện Quảng Xương" />
       <Item Value="0###401###40151###Huyện Nông Cống" />
       <Item Value="0###401###40153###Thị xã Nghi Sơn" />
-	  
+
       <Item Value="0###403###40301###Thành phố Vinh" />
       <Item Value="0###403###40303###Thị xã Cửa Lò" />
       <Item Value="0###403###40305###Huyện Quế Phong" />
@@ -390,7 +390,7 @@
       <Item Value="0###503###50325###Huyện Núi Thành" />
       <Item Value="0###503###50327###Huyện Bắc Trà My" />
       <Item Value="0###503###50329###Huyện Nam Trà My" />
-	  
+
       <Item Value="0###505###50501###Thành phố Quảng Ngãi" />
       <Item Value="0###505###50503###Huyện Lý Sơn" />
       <Item Value="0###505###50505###Huyện Bình Sơn" />
@@ -404,7 +404,7 @@
       <Item Value="0###505###50519###Huyện MInh Long" />
       <Item Value="0###505###50521###Huyện Mộ Đức" />
       <Item Value="0###505###50523###Thị xã Đức Phổ" />
-      <Item Value="0###505###50525###Huyện Ba Tơ" />		  
+      <Item Value="0###505###50525###Huyện Ba Tơ" />
       <Item Value="0###507###50701###Thành phố Quy Nhơn" />
       <Item Value="0###507###50703###Huyện An Lão" />
       <Item Value="0###507###50705###Thị xã Hoài Nhơn" />
@@ -415,7 +415,7 @@
       <Item Value="0###507###50715###Huyện Tây Sơn" />
       <Item Value="0###507###50717###Thị xã An Nhơn" />
       <Item Value="0###507###50719###Huyện Tuy Phước" />
-      <Item Value="0###507###50721###Huyện Vân Canh" />	 	  
+      <Item Value="0###507###50721###Huyện Vân Canh" />
       <Item Value="0###509###50901###TP Tuy Hoà" />
       <Item Value="0###509###50903###Huyện Đồng Xuân" />
       <Item Value="0###509###50905###Thị xã Sông Cầu" />
@@ -424,7 +424,7 @@
       <Item Value="0###509###50911###Thị xã Đông Hòa" />
       <Item Value="0###509###50912###Huyện  Tây  Hoà" />
       <Item Value="0###509###50913###Huyện Sông Hinh" />
-      <Item Value="0###509###50915###Huyện Phú Hoà" />	  
+      <Item Value="0###509###50915###Huyện Phú Hoà" />
       <Item Value="0###511###51101###Thành phố Nha Trang" />
       <Item Value="0###511###51103###Huyện Vạn Ninh" />
       <Item Value="0###511###51105###Thị xã Ninh Hoà" />
@@ -475,7 +475,7 @@
       <Item Value="0###605###60525###Huyện Krông Bông" />
       <Item Value="0###605###60531###Huyện Lắk" />
       <Item Value="0###605###60537###Huyện Cư Kuin" />
-      <Item Value="0###605###60539###Huyện Krông Búk" />	  
+      <Item Value="0###605###60539###Huyện Krông Búk" />
       <Item Value="0###606###60603###Huyện Cư Jút" />
       <Item Value="0###606###60605###Huyện Krông Nô" />
       <Item Value="0###606###60607###Huyện Đắk Mil" />
@@ -483,8 +483,8 @@
       <Item Value="0###606###60611###Huyện Đắk R'Lấp" />
 	  <Item Value ="0###606###60613###Thành phố Gia Nghĩa" />
       <Item Value="0###606###60615###Huyện Đắk Glong" />
-      <Item Value="0###606###60617###Huyện Tuy Đức" />	 
-       
+      <Item Value="0###606###60617###Huyện Tuy Đức" />
+
 		<Item Value ="0###701###70101###Quận 1" />
 		<Item Value ="0###701###70103###Quận 2 (hết hiệu lực)" />
 		<Item Value ="0###701###70105###Quận 3" />
@@ -510,7 +510,7 @@
 		<Item Value ="0###701###70141###Huyện Nhà Bè" />
 		<Item Value ="0###701###70143###Huyện Cần Giờ" />
 		<Item Value ="0###701###70145###Thành phố Thủ Đức" />
-      
+
       <Item Value="0###703###70301###Thành phố Đà Lạt" />
       <Item Value="0###703###70303###Thành phố Bảo Lộc" />
       <Item Value="0###703###70305###Huyện Lạc Dương" />
@@ -540,7 +540,7 @@
       <Item Value="0###707###70711###Thành phố Đồng Xoài" />
       <Item Value="0###707###70713###Huyện Hớn Quản" />
       <Item Value="0###707###70715###Huyện Bù Gia Mập" />
-      <Item Value="0###707###70716###Huyện Phú Riềng" />	  
+      <Item Value="0###707###70716###Huyện Phú Riềng" />
       <Item Value="0###709###70901###Thành phố Tây Ninh" />
       <Item Value="0###709###70903###Huyện Tân Biên" />
       <Item Value="0###709###70905###Huyện Tân Châu" />
@@ -549,7 +549,7 @@
       <Item Value="0###709###70911###Thị xã Hoà Thành" />
       <Item Value="0###709###70913###Huyện Bến Cầu" />
       <Item Value="0###709###70915###Huyện Gò Dầu" />
-      <Item Value="0###709###70917###Thị xã Trảng Bàng" />	  
+      <Item Value="0###709###70917###Thị xã Trảng Bàng" />
       <Item Value="0###711###71101###Thành phố Thủ Dầu Một" />
       <Item Value="0###711###71103###Thị Xã  Bến Cát" />
       <Item Value="0###711###71105###Thành phố Tân Uyên" />
@@ -558,7 +558,7 @@
       <Item Value="0###711###71111###Huyện Phú Giáo" />
       <Item Value="0###711###71113###Huyện Dầu tiếng" />
       <Item Value="0###711###71115###Huyện Bàu Bàng" />
-      <Item Value="0###711###71117###Huyện Bắc Tân Uyên" /> 
+      <Item Value="0###711###71117###Huyện Bắc Tân Uyên" />
       <Item Value="0###713###71301###Thành phố Biên Hoà" />
       <Item Value="0###713###71302###Thành phố Long Khánh" />
       <Item Value="0###713###71303###Huyện Tân Phú" />
@@ -602,7 +602,7 @@
       <Item Value="0###801###80123###Huyện Tân Trụ" />
       <Item Value="0###801###80125###Huyện Cần Đước" />
       <Item Value="0###801###80127###Huyện Cần Giuộc" />
-      <Item Value="0###801###80129###Thị xã Kiến Tường" />      
+      <Item Value="0###801###80129###Thị xã Kiến Tường" />
       <Item Value="0###803###80301###Thành phố Cao Lãnh" />
       <Item Value="0###803###80303###Thành phố Sa Đéc" />
       <Item Value="0###803###80305###Huyện Tân Hồng" />
@@ -614,7 +614,7 @@
       <Item Value="0###803###80317###Huyện Lấp Vò" />
       <Item Value="0###803###80319###Huyện Lai Vung" />
       <Item Value="0###803###80321###Huyện Châu Thành" />
-      <Item Value="0###803###80323###Thành phố Hồng Ngự" />      
+      <Item Value="0###803###80323###Thành phố Hồng Ngự" />
       <Item Value="0###805###80501###Thành phố Long Xuyên" />
       <Item Value="0###805###80503###Thành phố Châu Đốc" />
       <Item Value="0###805###80505###Huyện An Phú" />
@@ -677,7 +677,7 @@
       <Item Value="0###815###81525###Huyện Vĩnh Thạnh" />
       <Item Value="0###815###81527###Huyện Cờ Đỏ" />
       <Item Value="0###815###81529###Huyện Phong Điền" />
-      <Item Value="0###815###81531###Huyện Thới Lai" />	  
+      <Item Value="0###815###81531###Huyện Thới Lai" />
       <Item Value="0###816###81601###Tp Vị Thanh" />
       <Item Value="0###816###81603###Huyện Châu Thành A" />
       <Item Value="0###816###81605###Huyện Châu Thành" />
@@ -685,7 +685,7 @@
       <Item Value="0###816###81608###Huyện Phụng Hiệp" />
       <Item Value="0###816###81609###Huyện Vị Thủy" />
       <Item Value="0###816###81611###Huyện Long Mỹ" />
-      <Item Value="0###816###81612###Thị Xã Long Mỹ" />	  
+      <Item Value="0###816###81612###Thị Xã Long Mỹ" />
       <Item Value="0###817###81701###Thành phố Trà Vinh" />
       <Item Value="0###817###81703###Huyện Càng Long" />
       <Item Value="0###817###81705###Huyện Châu Thành" />
@@ -724,5 +724,5 @@
       <Item Value="0###823###82313###Huyện Ngọc Hiển" />
       <Item Value ="1###999###99999###Khác" />
      </Items>
-  </Section>	
+  </Section>
 </Sections>

@@ -171,8 +171,6 @@ namespace QuanLyTuyenSinh
 
         #endregion Addresss
 
-       
-
         public static string ToTitleCase(this string title)
         {
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
@@ -219,14 +217,15 @@ namespace QuanLyTuyenSinh
 
         public static void CreateComboboxEdit(ComboBoxEdit cbb, string[] lst, string nullText = "(Trống)", bool allowEdit = false, bool autoComplete = false)
         {
-            cbb.Properties.Items.Clear();            
+            cbb.Properties.Items.Clear();
             cbb.Properties.NullText = nullText;
             cbb.Properties.TextEditStyle = allowEdit ? TextEditStyles.Standard : TextEditStyles.DisableTextEditor;
             cbb.Properties.AutoComplete = autoComplete;
 
             cbb.Properties.Items.AddRange(lst);
         }
-        public static void CreateRepositoryItemLookUpEdit(GridView gridView, IList lst,string fieldName, string display, string value, string nullText = "(Trống)")
+
+        public static void CreateRepositoryItemLookUpEdit(GridView gridView, IList lst, string fieldName, string display, string value, string nullText = "(Trống)")
         {
             var col = gridView.Columns.ColumnByFieldName(fieldName);
             if (col != null)
@@ -236,7 +235,7 @@ namespace QuanLyTuyenSinh
                     DataSource = lst,
                     DisplayMember = display,
                     ValueMember = value,
-                    NullText = nullText,                    
+                    NullText = nullText,
                 };
             }
         }

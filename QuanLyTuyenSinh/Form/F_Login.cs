@@ -1,7 +1,6 @@
-﻿using DevExpress.DataProcessing;
-using DevExpress.XtraEditors;
-using DevExpress.XtraWaitForm;
-using System.Windows.Media;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraSplashScreen;
+using System.Windows;
 using Color = System.Drawing.Color;
 
 namespace QuanLyTuyenSinh.Form
@@ -40,7 +39,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void lblExit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Close();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -51,8 +50,8 @@ namespace QuanLyTuyenSinh.Form
             var user = Data.GetUser(username, password);
             if (user != null)
             {
-                this.Hide();
-                splashScreenManager1.ShowWaitForm();
+                Hide();
+                SplashScreenManager.ShowForm(typeof(F_Wait));   
                 Data.CurrUser = user;
                 Properties.Settings.Default.NamTS = (int)spinNam.Value;
                 Properties.Settings.Default.Save();
@@ -64,7 +63,7 @@ namespace QuanLyTuyenSinh.Form
                 MainWorkspace.FormMain.Closed += MainForm_Closed;
                 MainWorkspace.FormMain.Show();
 
-                splashScreenManager1.CloseWaitForm();
+                SplashScreenManager.CloseForm();
             }
             else
             {

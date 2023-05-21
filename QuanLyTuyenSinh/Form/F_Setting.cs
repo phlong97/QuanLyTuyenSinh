@@ -86,15 +86,15 @@
             source = new BindingSource();
             source.DataSource = _setting;
             CreateBinding();
-            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
-            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
+            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh,"(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen, "(Tất cả)");
 
             Shown += F_Setting_Shown;
         }
 
         private void F_Setting_Shown(object? sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(100);
             lookTinh.TextChanged += LookTinh_TextChanged;
         }
 

@@ -1,30 +1,24 @@
 ﻿using DevExpress.Export;
 using DevExpress.Mvvm.Native;
-using DevExpress.Pdf.Native.BouncyCastle.Utilities;
 using DevExpress.Spreadsheet;
 using DevExpress.Utils;
-using DevExpress.Utils.Extensions;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraExport.Helpers;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraPrinting;
-using DevExpress.XtraSpreadsheet.Model;
+using DevExpress.XtraSplashScreen;
 using LiteDB;
 using QuanLyTuyenSinh.Properties;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows.Controls;
 using DataTable = System.Data.DataTable;
 using Excel = Microsoft.Office.Interop.Excel;
-using Font = System.Drawing.Font;
 using SummaryItemType = DevExpress.Data.SummaryItemType;
 
 namespace QuanLyTuyenSinh.Form
@@ -43,21 +37,19 @@ namespace QuanLyTuyenSinh.Form
                 btnEdit.Text = value ? "Lưu" : "Sửa";
             }
         }
-        public void RefreshForm()
-        {
-            if (!TenDm.StartsWith("DM"))
-            {
-                LoadComboBoxHTDT();
-            }
 
+        public void RefreshData()
+        {
             Data.RefreshDS(TenDm);
             LoadData();
         }
+
         private int _NamTS { get; set; }
         private string TenDm { get; set; }
         private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
         private List<_Helper.Adress> lstQuanHuyen;
         private List<_Helper.Adress> lstPhuongXa;
+
         public F_Main()
         {
             InitializeComponent();
@@ -72,56 +64,54 @@ namespace QuanLyTuyenSinh.Form
 
             if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
             {
-                if (cbbDTS.SelectedIndex != -1)
-                {
-                    int dts;
-                    if (!int.TryParse(cbbDTS.SelectedItem.ToString(), out dts))
-                        return;
-                    int nts = _NamTS;
-                    var dxt = Data.DsDotXetTuyen.FirstOrDefault(x => x.NamTS == _NamTS && x.DotTS == dts);
-                    if (dxt is null)
-                        XtraMessageBox.Show(this, "Đợt xét tuyển không tồn tại", "Lỗi");
-                    if (dxt is not null && dxt.DenNgay < DateTime.Today)
-                    {
-                        if (XtraMessageBox.Show(
-                                this,
-                                $"Đã hết thời hạn xét tuyển đợt {dts} năm {nts}, bạn vẫn muốn nhập hồ sơ?",
-                                "Cảnh báo",
-                                MessageBoxButtons.YesNo) ==
-                            DialogResult.No)
-                            return;
-                    }
-
-                    var dt = Data.DsDanToc.FirstOrDefault();
-                    var qt = Data.DsQuocTich.FirstOrDefault();
-                    var tg = Data.DsTonGiao.FirstOrDefault();
-                    var tdvh = Data.DsTrinhDo.FirstOrDefault();
-                    var kvut = Data.DsKhuVucUT.FirstOrDefault(x => x.Ma == "KV2-NT");
-                    try
-                    {
-                        F_HoSo f = new F_HoSo(
-                        new HoSoDuTuyen
-                        {
-                            NamTS = nts,
-                            DotTS = dts,
-                            HTDT = "Chính quy",
-                            MaTinh = "511",
-                            MaHuyen = "51103",
-                            IdQuocTich = qt is not null ? qt.Id : string.Empty,
-                            IdDanToc = dt is not null ? dt.Id : string.Empty,
-                            IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
-                            IdTonGiao = tg is not null ? tg.Id : string.Empty,
-                            IdKVUT = kvut is not null ? kvut.Id : string.Empty,
-                        });
-                        f.Show(this);
-                    }
-                    finally
-                    {
-                    }
-                }
-                else
+                if (cbbDTS.SelectedIndex <= 0)
                 {
                     XtraMessageBox.Show(this, "Chưa chọn đợt xét tuyển?", "Lỗi");
+                    return;
+                }
+                int dts;
+                if (!int.TryParse(cbbDTS.SelectedItem.ToString(), out dts))
+                    return;
+                int nts = _NamTS;
+                var dxt = Data.DsDotXetTuyen.FirstOrDefault(x => x.NamTS == _NamTS && x.DotTS == dts);
+                if (dxt is null)
+                    XtraMessageBox.Show(this, "Đợt xét tuyển không tồn tại", "Lỗi");
+                if (dxt is not null && dxt.DenNgay < DateTime.Today)
+                {
+                    if (XtraMessageBox.Show(
+                            this,
+                            $"Đã hết thời hạn xét tuyển đợt {dts} năm {nts}, bạn vẫn muốn nhập hồ sơ?",
+                            "Cảnh báo",
+                            MessageBoxButtons.YesNo) ==
+                        DialogResult.No)
+                        return;
+                }
+
+                var dt = Data.DsDanToc.FirstOrDefault();
+                var qt = Data.DsQuocTich.FirstOrDefault();
+                var tg = Data.DsTonGiao.FirstOrDefault();
+                var tdvh = Data.DsTrinhDo.FirstOrDefault();
+                var kvut = Data.DsKhuVucUT.FirstOrDefault(x => x.Ma == "KV2-NT");
+                try
+                {
+                    F_HoSo f = new F_HoSo(
+                    new HoSoDuTuyen
+                    {
+                        NamTS = nts,
+                        DotTS = dts,
+                        HTDT = "Chính quy",
+                        MaTinh = "511",
+                        MaHuyen = "51103",
+                        IdQuocTich = qt is not null ? qt.Id : string.Empty,
+                        IdDanToc = dt is not null ? dt.Id : string.Empty,
+                        IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
+                        IdTonGiao = tg is not null ? tg.Id : string.Empty,
+                        IdKVUT = kvut is not null ? kvut.Id : string.Empty,
+                    });
+                    f.Show(this);
+                }
+                finally
+                {
                 }
             }
             else
@@ -322,16 +312,21 @@ namespace QuanLyTuyenSinh.Form
             LoadbtnDSTT();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
+            LoadLookupAddress();
+
+            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode", lstPhuongXa, "(Tất cả)");
+
+            Shown += F_Main_Shown;
+        }
+
+        private void LoadLookupAddress()
+        {
             lookTinh.EditValue = Data.CurrSettings.MaTinh;
             lookQuanHuyen.EditValue = Data.CurrSettings.MaHuyen;
             lstQuanHuyen = _Helper.getListDistrict(Data.CurrSettings.MaTinh);
             lstPhuongXa = _Helper.getListWards(Data.CurrSettings.MaHuyen);
-
-            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
-            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen);
-            DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode", lstPhuongXa);
-
-            Shown += F_Main_Shown;
         }
 
         private void F_Main_Shown(object? sender, EventArgs e)
@@ -344,13 +339,8 @@ namespace QuanLyTuyenSinh.Form
             btnLapChiTieu.Click += btnLapChiTieu_Click;
             btnClose.Click += btnClose_Click;
             btnExel.Click += BtnExel_Click;
-            btnLoadExel.Click += BtnLoadExel_Click;
+
             btnRefreshDTS.Click += BtnRefreshDTS_Click;
-            btnThongKe.Click += (sender, e) =>
-            {
-                F_TK f = new();
-                f.Show();
-            };
 
             cbbDTS.EditValueChanged += cbbDTS_EditValueChanged;
             cbbTDHV.EditValueChanged += CbbHTDT_EditValueChanged;
@@ -377,6 +367,11 @@ namespace QuanLyTuyenSinh.Form
 
         private void BtnLoadExel_Click(object? sender, EventArgs e)
         {
+            if (cbbDTS.SelectedIndex <= 0)
+            {
+                XtraMessageBox.Show("Chưa chọn đọt tuyển sinh");
+                return;
+            }
             lstHSTT = new();
             using (var fDlg = new OpenFileDialog
             {
@@ -404,7 +399,7 @@ namespace QuanLyTuyenSinh.Form
                     }
                     try
                     {
-                        splashScreenManager1.ShowWaitForm();
+                        SplashScreenManager.ShowForm(typeof(F_Wait));
 
                         conn = new OleDbConnection(connString);
                         if (conn.State == ConnectionState.Closed)
@@ -420,7 +415,7 @@ namespace QuanLyTuyenSinh.Form
                                 da.Fill(dt);
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    var hsdt = Data.DSHoSoDT.FirstOrDefault(x => x.MaHoSo == row[0].ToString());
+                                    var hsdt = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == cbbDTS.SelectedIndex && x.TDHV.Equals(cbbTDHV.EditValue.ToString()) && x.MaHoSo.Equals(row[0].ToString()));
                                     if (hsdt != null)
                                     {
                                         lstHSTT.Add(hsdt.ToHSTT());
@@ -428,13 +423,14 @@ namespace QuanLyTuyenSinh.Form
                                 }
                             }
                         }
-                        splashScreenManager1.CloseWaitForm();
+                        SplashScreenManager.CloseForm();
+                        gridView.ExpandAllGroups();
                     }
                     catch
                     {
                         conn.Close();
                         conn.Dispose();
-                        splashScreenManager1.CloseWaitForm();
+                        SplashScreenManager.CloseForm();
                         XtraMessageBox.Show("Có lỗi khi mở tệp Exel. Nếu bạn đang mở tệp này trên Exel hãy đóng nó");
                     }
 
@@ -447,7 +443,6 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-
 
         private void LoadBackgound()
         {
@@ -482,11 +477,10 @@ namespace QuanLyTuyenSinh.Form
             cbbTDHV.SelectedIndex = 0;
         }
 
-
-
         private PopupMenu popupMenu1;
         private BarButtonItem btnSaveDSTT;
         private BarButtonItem btnExportXls;
+        private BarButtonItem btnImportXls;
         private BarButtonItem btnDanhLaiMa;
 
         private void LoadbtnDSTT()
@@ -496,14 +490,17 @@ namespace QuanLyTuyenSinh.Form
             popupMenu1 = new PopupMenu(barManager1);
             popupMenu1.AutoFillEditorWidth = true;
             btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
-            btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu");
+            btnImportXls = new BarButtonItem(barManager1, "Nhập dannh sách từ file Exel");
             btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
+            btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu");
 
             btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
+            btnImportXls.ItemClick += BtnLoadExel_Click;
             btnExportXls.ItemClick += BtnExportXls_ItemClick;
             btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
 
             popupMenu1.AddItem(btnSaveDSTT);
+            popupMenu1.AddItem(btnImportXls);
             popupMenu1.AddItem(btnExportXls);
             popupMenu1.AddItem(btnDanhLaiMa);
 
@@ -539,49 +536,7 @@ namespace QuanLyTuyenSinh.Form
                     BtnRefresh_Click(this, null);
                 }
             }
-
         }
-        List<HoSoTrungTuyen> lstHsKhongTT = new();
-        private void btnDsKhongTT_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-            int dts = cbbDTS.SelectedIndex;
-            if (dts <= 0)
-            {
-                XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
-                return;
-            }
-
-            if (lstHsKhongTT.Count == 0)
-            {
-                var lstHSDT = Data.DSHoSoDT.Where(x => x.DotTS == dts).Select(x => x.Id).ToList();
-                var lstHSTT = Data.DSHoSoTT.Where(x => x.DotTS == dts).Select(x => x.IdHSDT).ToList();
-                var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
-                foreach (var id in lstHSKhongTT)
-                {
-                    var hs = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == dts && x.Id == id);
-                    if (hs != null)
-                        lstHsKhongTT.Add(hs.ToHSTT());
-                }
-                _bindingSource.DataSource = lstHsKhongTT;
-                gridView.RefreshData();
-                gridView.ExpandAllGroups();
-            }
-            else if (lstHDTTTemp.Count(x => x.DotTS == dts) > 0)
-            {
-                var lstHSDT = Data.DSHoSoDT.Where(x => x.DotTS == dts).Select(x => x.Id).ToList();
-                var lstHSTT = lstHDTTTemp.Where(x => x.DotTS == dts).Select(x => x.Id).ToList(); ;
-                var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
-                foreach (var id in lstHSKhongTT)
-                {
-                    var hs = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == dts && x.Id == id);
-                    if (hs != null)
-                        lstHsKhongTT.Add(hs.ToHSTT());
-                }
-            }
-
-        }
-
         private void BtnExportXls_ItemClick(object sender, ItemClickEventArgs e)
         {
             Excel.Application app = null;
@@ -600,7 +555,8 @@ namespace QuanLyTuyenSinh.Form
 
                 if (sfd.ShowDialog() == true)
                 {
-                    splashScreenManager1.ShowWaitForm();
+                    SplashScreenManager.ShowForm(typeof(F_Wait));
+
                     app = new Excel.Application();
                     book = app.Workbooks.Open(filePath);
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
@@ -650,13 +606,13 @@ namespace QuanLyTuyenSinh.Form
                         range = null;
                     }
                     book.Save();
-                    splashScreenManager1.CloseWaitForm();
+                    SplashScreenManager.CloseForm();
                     XtraMessageBox.Show("Xuất file thành công!");
                 }
             }
             catch
             {
-                splashScreenManager1.CloseWaitForm();
+                SplashScreenManager.CloseForm();
                 if (book != null)
                 {
                     book.Close();
@@ -694,10 +650,9 @@ namespace QuanLyTuyenSinh.Form
                     "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         Data.DSHoSoTT.RemoveAll(x => x.DotTS == dts);
-                        Data.DSHoSoTT.AddRange(lstHDTTTemp);
+                        Data.DSHoSoTT.AddRange(lstHDTTTemp.ToList());
                         lstHDTTTemp = new();
                         Data.SaveDS(TenDm);
-                        XtraMessageBox.Show("Đã lưu lại danh sách!");
                         LoadData();
                     }
                 }
@@ -714,6 +669,7 @@ namespace QuanLyTuyenSinh.Form
 
         private List<HoSoTrungTuyen> lstHDTTTemp = new();
         private List<HoSoTrungTuyen> lstHSKhongTT = new();
+
         private void DropbtnDSTT_Click(object? sender, EventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
@@ -729,18 +685,19 @@ namespace QuanLyTuyenSinh.Form
                 {
                     Data.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHDTTTemp, lstHSKhongTT);
                     _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
-                    gridView.RefreshData();
-                    gridView.ExpandAllGroups();
+
                 }
             }
             else
             {
                 Data.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHDTTTemp, lstHSKhongTT);
                 _bindingSource.DataSource = lstHDTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
-                gridView.RefreshData();
-                gridView.ExpandAllGroups();
             }
+            gridView.RefreshData();
+            gridView.ExpandAllGroups();
+            gridView.BestFitColumns(true);
         }
+
         private void ShowTotalFooter()
         {
             if (gridView.Columns["MaHoSo"] is not null)
@@ -762,49 +719,58 @@ namespace QuanLyTuyenSinh.Form
                 case TuDien.CategoryName.TruongHoc:
                     _bindingSource.DataSource = Data.DsTruong;
                     break;
+
                 case TuDien.CategoryName.NganhNghe:
                     _bindingSource.DataSource = Data.DsNghe;
                     break;
+
                 case TuDien.CategoryName.DoiTuongUuTien:
                     _bindingSource.DataSource = Data.DsDoiTuongUT;
                     break;
+
                 case TuDien.CategoryName.KhuVucUuTien:
                     _bindingSource.DataSource = Data.DsKhuVucUT;
                     break;
+
                 case TuDien.CategoryName.DanToc:
                     _bindingSource.DataSource = Data.DsDanToc;
                     break;
+
                 case TuDien.CategoryName.TonGiao:
                     _bindingSource.DataSource = Data.DsTonGiao;
                     break;
+
                 case TuDien.CategoryName.TrinhDo:
                     _bindingSource.DataSource = Data.DsTrinhDo;
                     break;
+
                 case TuDien.CategoryName.QuocTich:
                     _bindingSource.DataSource = Data.DsQuocTich;
                     break;
+
                 case TuDien.CategoryName.DotXetTuyen:
                     _bindingSource.DataSource = Data.DsDotXetTuyen;
                     break;
+
                 case TuDien.CategoryName.ChiTieu:
                     _bindingSource.DataSource = Data.DsChiTieu;
                     break;
+
                 case TuDien.CategoryName.HoSoDuTuyen:
                     _bindingSource.DataSource = Data.GetDSDuTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
                     break;
+
                 case TuDien.CategoryName.HoSoTrungTuyen:
                     _bindingSource.DataSource = Data.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS", (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue, chkKhongTT.Checked);
                     break;
-                case TuDien.CategoryName.ThongKeDiemDT:
+
+                case TuDien.CategoryName.DiemXetTuyen:
                     _bindingSource.DataSource = Data.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
                     break;
-                case TuDien.CategoryName.ThongKeTT:
-                    _bindingSource.DataSource = Data.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
-                    cbbTDHV.EditValue.ToString() : "THCS");
-                    break;
+
                 default: break;
             }
             gridControl.DataSource = _bindingSource;
@@ -859,51 +825,29 @@ namespace QuanLyTuyenSinh.Form
                 var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
                 if (colDotTS != null) colDotTS.Group();
             }
-            if (TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT))
+            if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyen))
             {
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheNV1", "Ten", "Id");
+
                 gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdDTUT", "Ten", "Id");
             }
-            if (TenDm.Equals(TuDien.CategoryName.ThongKeTT))
-            {
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsTruong, "IdTruong", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
-                gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen").Group();
-                var colGT = gridView.Columns.ColumnByFieldName("GioiTinh");
-                if (colGT != null)
-                {
-                    RepositoryItemTextEdit riComboBox = new RepositoryItemTextEdit();
-                    colGT.ColumnEdit = riComboBox;
-                }
-                var colDTS = gridView.Columns.ColumnByFieldName("DotTS");
-                if (colDTS != null)
-                {
-                    colDTS.Visible = false;
-                }
-            }
 
-            panelGrid.RowStyles[1].Height = TenDm.StartsWith("HS") || TenDm.StartsWith("TK") ? 40 : 0;
+            panelGrid.RowStyles[1].Height = TenDm.StartsWith("HS") || TenDm.StartsWith("TK") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 40 : 0;
             btnAdd.Enabled = (TenDm.Equals(TuDien.CategoryName.ChiTieu) || TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen)) ? false : true;
             btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieu) ? 110 : 0;
             _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 220;
-            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) ? 180 : 0;
-            panelTDHV.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.ThongKeDiemDT) ? 155 : 0;
+            panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 180 : 0;
+            panelTDHV.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 155 : 0;
             chkKhongTT.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
             panelFilter.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
-            btnThongKe.Visible = TenDm.StartsWith("TK") ? true : false;
             dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 185 : 0;
-            btnLoadExel.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 236 : 0;
-
             FocusRowGrid();
             ShowTotalFooter();
             panelGrid.BringToFront();
             gridView.ExpandAllGroups();
             gridView.BestFitColumns(true);
-
         }
 
         private void FocusRowGrid()
@@ -941,8 +885,6 @@ namespace QuanLyTuyenSinh.Form
         {
             LoadData();
         }
-
-
 
         #region Xử lý GridControl
 
@@ -997,13 +939,35 @@ namespace QuanLyTuyenSinh.Form
                         if (hs is not null)
                         {
                             F_HoSo f = new(hs.CloneJson());
-                            f.Show(this);
+                            f.Show();
                         }
                     }
                 }
                 catch
                 {
-
+                }
+            }
+            else if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
+            {
+                try
+                {
+                    var r = gridView.GetFocusedRow() as HoSoTrungTuyen;
+                    if (r is not null)
+                    {
+                        var hs = Data.DSHoSoDT.FirstOrDefault(x => x.Id.Equals(r.IdHSDT));
+                        if (hs is not null)
+                        {
+                            F_HoSo f = new(hs.CloneJson());
+                            f.Show();
+                        }
+                        else
+                        {
+                            XtraMessageBox.Show("Hồ sơ xét tuyển không tồn tại trong hệ thống");
+                        }
+                    }
+                }
+                catch
+                {
                 }
             }
         }
@@ -1120,12 +1084,6 @@ namespace QuanLyTuyenSinh.Form
             LoadData();
         }
 
-        private void btnTHDTD_Click(object sender, EventArgs e)
-        {
-            TenDm = TuDien.CategoryName.ThongKeDiemDT;
-            LoadData();
-        }
-
         private void btnTonGiao_Click(object sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TonGiao;
@@ -1158,7 +1116,12 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnTKTT_Click(object sender, EventArgs e)
         {
-            TenDm = TuDien.CategoryName.ThongKeTT;
+            Form.F_TK.GetForm.Show();
+        }
+
+        private void btnDiemXetTuyen_Click(object sender, EventArgs e)
+        {
+            TenDm = TuDien.CategoryName.DiemXetTuyen;
             LoadData();
         }
 

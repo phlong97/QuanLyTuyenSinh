@@ -41,7 +41,6 @@
             labelControl3 = new DevExpress.XtraEditors.LabelControl();
             spinNam = new DevExpress.XtraEditors.SpinEdit();
             txtPass = new DevExpress.XtraEditors.TextEdit();
-            splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(F_Wait), true, true, true);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureEdit1.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureEdit2.Properties).BeginInit();
@@ -56,9 +55,10 @@
             labelControl1.Appearance.ForeColor = Color.DodgerBlue;
             labelControl1.Appearance.Options.UseFont = true;
             labelControl1.Appearance.Options.UseForeColor = true;
-            labelControl1.Location = new Point(129, 267);
+            labelControl1.Location = new Point(103, 214);
+            labelControl1.Margin = new Padding(2);
             labelControl1.Name = "labelControl1";
-            labelControl1.Size = new Size(141, 48);
+            labelControl1.Size = new Size(111, 39);
             labelControl1.TabIndex = 1;
             labelControl1.Text = "Đăng nhập";
             // 
@@ -67,9 +67,10 @@
             pictureBox1.BackColor = Color.White;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.InitialImage = null;
-            pictureBox1.Location = new Point(118, 78);
+            pictureBox1.Location = new Point(94, 62);
+            pictureBox1.Margin = new Padding(2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(195, 168);
+            pictureBox1.Size = new Size(156, 134);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
@@ -77,39 +78,43 @@
             // panel1
             // 
             panel1.BackColor = Color.CornflowerBlue;
-            panel1.Location = new Point(50, 426);
+            panel1.Location = new Point(40, 341);
+            panel1.Margin = new Padding(2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(321, 1);
+            panel1.Size = new Size(257, 1);
             panel1.TabIndex = 4;
             // 
             // pictureEdit1
             // 
             pictureEdit1.EditValue = resources.GetObject("pictureEdit1.EditValue");
-            pictureEdit1.Location = new Point(50, 381);
+            pictureEdit1.Location = new Point(40, 305);
+            pictureEdit1.Margin = new Padding(2);
             pictureEdit1.Name = "pictureEdit1";
             pictureEdit1.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             pictureEdit1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
-            pictureEdit1.Size = new Size(39, 39);
+            pictureEdit1.Size = new Size(31, 31);
             pictureEdit1.TabIndex = 5;
             // 
             // panel2
             // 
             panel2.BackColor = Color.CornflowerBlue;
-            panel2.Location = new Point(51, 480);
+            panel2.Location = new Point(41, 384);
+            panel2.Margin = new Padding(2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(321, 1);
+            panel2.Size = new Size(257, 1);
             panel2.TabIndex = 4;
             // 
             // pictureEdit2
             // 
             pictureEdit2.EditValue = resources.GetObject("pictureEdit2.EditValue");
-            pictureEdit2.Location = new Point(51, 435);
+            pictureEdit2.Location = new Point(41, 348);
+            pictureEdit2.Margin = new Padding(2);
             pictureEdit2.Name = "pictureEdit2";
             pictureEdit2.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             pictureEdit2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             pictureEdit2.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
-            pictureEdit2.Size = new Size(39, 39);
+            pictureEdit2.Size = new Size(31, 31);
             pictureEdit2.TabIndex = 5;
             // 
             // btnLogin
@@ -118,9 +123,10 @@
             btnLogin.Appearance.Font = new Font("Berlin Sans FB Demi", 12F, FontStyle.Bold, GraphicsUnit.Point);
             btnLogin.Appearance.Options.UseBackColor = true;
             btnLogin.Appearance.Options.UseFont = true;
-            btnLogin.Location = new Point(51, 508);
+            btnLogin.Location = new Point(41, 406);
+            btnLogin.Margin = new Padding(2);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(321, 36);
+            btnLogin.Size = new Size(257, 29);
             btnLogin.TabIndex = 6;
             btnLogin.Text = "Đăng nhập";
             btnLogin.Click += btnLogin_Click;
@@ -131,9 +137,10 @@
             lblExit.Appearance.ForeColor = Color.DodgerBlue;
             lblExit.Appearance.Options.UseFont = true;
             lblExit.Appearance.Options.UseForeColor = true;
-            lblExit.Location = new Point(181, 580);
+            lblExit.Location = new Point(145, 464);
+            lblExit.Margin = new Padding(2);
             lblExit.Name = "lblExit";
-            lblExit.Size = new Size(50, 24);
+            lblExit.Size = new Size(40, 19);
             lblExit.TabIndex = 7;
             lblExit.Text = "Thoát";
             lblExit.Click += lblExit_Click;
@@ -141,12 +148,13 @@
             // txtName
             // 
             txtName.EditValue = "admin";
-            txtName.Location = new Point(96, 389);
+            txtName.Location = new Point(77, 311);
+            txtName.Margin = new Padding(2);
             txtName.Name = "txtName";
             txtName.Properties.Appearance.Font = new Font("Bahnschrift Light", 12F, FontStyle.Regular, GraphicsUnit.Point);
             txtName.Properties.Appearance.Options.UseFont = true;
             txtName.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            txtName.Size = new Size(262, 28);
+            txtName.Size = new Size(210, 24);
             txtName.TabIndex = 8;
             // 
             // labelControl3
@@ -155,16 +163,18 @@
             labelControl3.Appearance.ForeColor = Color.DodgerBlue;
             labelControl3.Appearance.Options.UseFont = true;
             labelControl3.Appearance.Options.UseForeColor = true;
-            labelControl3.Location = new Point(82, 338);
+            labelControl3.Location = new Point(66, 270);
+            labelControl3.Margin = new Padding(2);
             labelControl3.Name = "labelControl3";
-            labelControl3.Size = new Size(118, 21);
+            labelControl3.Size = new Size(100, 17);
             labelControl3.TabIndex = 7;
             labelControl3.Text = "Năm tuyển sinh";
             // 
             // spinNam
             // 
             spinNam.EditValue = new decimal(new int[] { 2023, 0, 0, 0 });
-            spinNam.Location = new Point(235, 335);
+            spinNam.Location = new Point(188, 268);
+            spinNam.Margin = new Padding(2);
             spinNam.Name = "spinNam";
             spinNam.Properties.Appearance.Font = new Font("Bahnschrift SemiBold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
             spinNam.Properties.Appearance.ForeColor = Color.DimGray;
@@ -176,31 +186,31 @@
             spinNam.Properties.MaskSettings.Set("mask", "d");
             spinNam.Properties.MaxValue = new decimal(new int[] { 2099, 0, 0, 0 });
             spinNam.Properties.MinValue = new decimal(new int[] { 2000, 0, 0, 0 });
-            spinNam.Size = new Size(95, 26);
+            spinNam.Size = new Size(76, 22);
             spinNam.TabIndex = 9;
             // 
             // txtPass
             // 
             txtPass.EditValue = "1";
-            txtPass.Location = new Point(96, 446);
+            txtPass.Location = new Point(77, 357);
+            txtPass.Margin = new Padding(2);
             txtPass.Name = "txtPass";
             txtPass.Properties.Appearance.Font = new Font("Bahnschrift Light", 12F, FontStyle.Regular, GraphicsUnit.Point);
             txtPass.Properties.Appearance.Options.UseFont = true;
             txtPass.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             txtPass.Properties.UseSystemPasswordChar = true;
-            txtPass.Size = new Size(262, 28);
+            txtPass.Size = new Size(210, 24);
             txtPass.TabIndex = 8;
-            // 
-            // splashScreenManager1
-            // 
-            splashScreenManager1.ClosingDelay = 500;
             // 
             // F_Login
             // 
+            AcceptButton = btnLogin;
             Appearance.BackColor = Color.White;
             Appearance.Options.UseBackColor = true;
-            AutoScaleMode = AutoScaleMode.None;
-            ClientSize = new Size(426, 616);
+            Appearance.Options.UseFont = true;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(341, 493);
             Controls.Add(spinNam);
             Controls.Add(txtPass);
             Controls.Add(txtName);
@@ -213,7 +223,9 @@
             Controls.Add(panel1);
             Controls.Add(pictureBox1);
             Controls.Add(labelControl1);
+            Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Margin = new Padding(2);
             Name = "F_Login";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý tuyển sinh";
@@ -242,6 +254,5 @@
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.SpinEdit spinNam;
         private DevExpress.XtraEditors.TextEdit txtPass;
-        private DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1;
     }
 }

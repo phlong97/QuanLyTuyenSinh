@@ -1,20 +1,30 @@
-﻿using DevExpress.Charts.Native;
-using DevExpress.LookAndFeel;
+﻿using DevExpress.LookAndFeel;
 using DevExpress.XtraBars;
 using DevExpress.XtraCharts;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting;
 using System.Data;
-using System.Dynamic;
-using System.Windows.Media;
+using ChartTitle = DevExpress.XtraCharts.ChartTitle;
 
 namespace QuanLyTuyenSinh.Form
 {
     public partial class F_TK : DevExpress.XtraEditors.DirectXForm
     {
-        int dts = -1;
-        public F_TK()
+        private int dts = -1;
+        private static F_TK inst;
+
+        public static F_TK GetForm
+        {
+            get
+            {
+                if (inst == null || inst.IsDisposed)
+                    inst = new F_TK();
+                return inst;
+            }
+        }
+
+        private F_TK()
         {
             InitializeComponent();
         }
@@ -41,6 +51,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             };
         }
+
         private void LoadMenuTK()
         {
             barSubItemTK.ClearLinks();
@@ -70,35 +81,34 @@ namespace QuanLyTuyenSinh.Form
                 return;
             }
             gridView.Columns.Clear();
-            gridView.CustomDrawCell += HighlightTotal;
             gridControl1.DataSource = Data.THSLTTTheoXa(dts);
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
-            chart.BeginInit();
+            panelchart.Controls.Clear();
+            ChartControl chart = new ChartControl();
+            ChartSetting(chart);
 
-            DataTable table = new DataTable();
-            table.Columns.AddRange(new DataColumn[] { new DataColumn("tenxa", typeof(string)), new DataColumn("tennghe", typeof(string)), new DataColumn("sl", typeof(int)) });
             var lstTT = Data.DSHoSoTT.Where(x => (dts == 0 ? true : x.DotTS == dts));
             var lstXa = _Helper.getListWards(mahuyen);
 
             for (int i = 0; i < Data.DsNghe.Count; i++)
             {
+                Series series = new Series(Data.DsNghe[i].Ten, ViewType.Bar);
+                series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
                 for (int j = 0; j < lstXa.Count; j++)
                 {
                     int sl = lstTT.Where(x => x.MaXa == lstXa[j].AdressCode && x.IdNgheTrungTuyen.Equals(Data.DsNghe[i].Id)).Count();
-                    table.Rows.Add(lstXa[j].AdressName, Data.DsNghe[i].Ten, sl);
+                    series.Points.Add(new SeriesPoint(lstXa[j].AdressName, sl));
                 }
 
+                chart.Series.Add(series);
             }
-            chart.DataSource = table;
-            chart.SeriesTemplate.ChangeView(ViewType.StackedBar);
-            chart.SeriesTemplate.SeriesDataMember = "tenxa";
-            chart.SeriesTemplate.SetDataMembers("tennghe", "sl");
             ChartTitle chartTitle1 = new ChartTitle();
             chartTitle1.Text = "Số lượng trúng tuyển theo từng xã huyện Vạn Ninh";
             chart.Titles.Add(chartTitle1);
-            chart.EndInit();
+            chart.SeriesTemplate.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            chart.Dock = DockStyle.Fill;
+            panelchart.Controls.Add(chart);
         }
 
         private void ButtonTKTheoNghe_ItemClick(object sender, ItemClickEventArgs e)
@@ -109,11 +119,11 @@ namespace QuanLyTuyenSinh.Form
                 return;
             }
             gridView.Columns.Clear();
-            gridView.CustomDrawCell += HighlightTotal;
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
-            chart.BeginInit();
+
+            panelchart.Controls.Clear();
+            ChartControl chart = new ChartControl();
+            ChartSetting(chart);
+
             if (chkXetTuyen.Checked)
             {
                 List<THSLTheoNghe> lstReport = new();
@@ -131,6 +141,8 @@ namespace QuanLyTuyenSinh.Form
 
                 Series series1 = new Series("Nguyện vọng 1", ViewType.Bar);
                 Series series2 = new Series("Nguyện vọng 2", ViewType.Bar);
+                series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
 
                 for (int i = 0; i < Data.DsNghe.Count; i++)
                 {
@@ -167,6 +179,13 @@ namespace QuanLyTuyenSinh.Form
                 Series series3 = new Series("Đối tượng ưu tiên", ViewType.Bar);
                 Series series4 = new Series("Tốt nghiệp THCS", ViewType.Bar);
                 Series series5 = new Series("Tốt nghiệp THPT", ViewType.Bar);
+
+                series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                series4.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                series5.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
                 for (int i = 0; i < Data.DsNghe.Count; i++)
                 {
                     var lstHDTTNghe = Data.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(Data.DsNghe[i].Id)
@@ -205,8 +224,8 @@ namespace QuanLyTuyenSinh.Form
                 chart.Titles.Add(chartTitle1);
             }
 
-            chart.EndInit();
-
+            chart.Dock = DockStyle.Fill;
+            panelchart.Controls.Add(chart);
         }
 
         private void ButtonTKTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
@@ -219,102 +238,95 @@ namespace QuanLyTuyenSinh.Form
             gridView.Columns.Clear();
             gridView.CustomDrawCell += HighlightTotal;
             gridControl1.DataSource = chkXetTuyen.Checked ? Data.THSLNgheTheoTruong(dts) : Data.THSLTTNgheTheoTruong(dts);
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
-            chart.BeginInit();
 
             if (chkXetTuyen.Checked) LoadThongKeDTTheoTruong();
             else
                 LoadThongKeTTTheoTruong();
-            chart.EndInit();
             gridView.BestFitColumns(true);
+        }
+
+        private void ChartSetting(ChartControl chart)
+        {
+            chart.Name = "chart";
+            chart.SelectionMode = ElementSelectionMode.Single;
+            chart.SeriesSelectionMode = SeriesSelectionMode.Series;
+            chart.AnimationStartMode = ChartAnimationMode.OnLoad;
         }
 
         private void LoadThongKeTTTheoTruong()
         {
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
-            //Load biểu đồ            
-            //Lay du lieu
-            DataTable table = new DataTable();
-            table.Columns.AddRange(new DataColumn[] { new DataColumn("tentruong", typeof(string)), new DataColumn("tennghe", typeof(string)), new DataColumn("sl", typeof(int)) });
+            panelchart.Controls.Clear();
+            ChartControl chart = new ChartControl();
+            ChartSetting(chart);
             var dstruongTHCS = Data.DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
             var dstruongTHPT = Data.DsTruong.Where(x => x.LoaiTruong == "THPT").ToList();
-
-            //Thêm các dòng TK trường THCS
-            for (int i = 0; i < dstruongTHCS.Count; i++)
-            {
-                for (int j = 0; j < Data.DsNghe.Count; j++)
-                {
-                    int sldt = Data.DSHoSoTT.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
-                    x.IdNgheTrungTuyen.Equals(Data.DsNghe[j].Id) && (dts == 0 ? true : x.DotTS == dts)).Count();
-                    table.Rows.Add(Data.DsTruong[i].Ten, Data.DsNghe[j].Ten, sldt);
-                }
-            }
             var HSTHPT = Data.DSHoSoTT.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
             {
                 return hs;
             }).ToList();
-            //Thêm 1 dòng TK trường THPT
-            for (int j = 0; j < Data.DsNghe.Count; j++)
+            //Thêm các dòng TK trường THCS
+            for (int i = 0; i < Data.DsNghe.Count; i++)
             {
-                int sldt = HSTHPT.Where(x => x.IdNgheTrungTuyen.Equals(Data.DsNghe[j].Id)
+                Series series = new Series(Data.DsNghe[i].Ten, ViewType.Bar);
+                series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                for (int j = 0; j < dstruongTHCS.Count; j++)
+                {
+                    int sldt = Data.DSHoSoTT.Where(x => x.IdTruong.Equals(dstruongTHCS[j].Id) &&
+                    x.IdNgheTrungTuyen.Equals(Data.DsNghe[i].Id) && (dts == 0 ? true : x.DotTS == dts)).Count();
+                    series.Points.Add(new SeriesPoint(dstruongTHCS[j].Ten, sldt));
+                }
+                int sldtTHPT = HSTHPT.Where(x => x.IdNgheTrungTuyen.Equals(Data.DsNghe[i].Id)
                 && (dts == 0 ? true : x.DotTS == dts)).Count();
-                table.Rows.Add("Trường THPT", Data.DsNghe[j].Ten, sldt);
+                series.Points.Add(new SeriesPoint("THPT", sldtTHPT));
+                chart.Series.Add(series);
             }
 
-            chart.DataSource = table;
-            chart.SeriesTemplate.ChangeView(ViewType.StackedBar);
-            chart.SeriesTemplate.SeriesDataMember = "tentruong";
-            chart.SeriesTemplate.SetDataMembers("tennghe", "sl");
-
+            chart.SeriesTemplate.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
             ChartTitle chartTitle1 = new ChartTitle();
             chartTitle1.Text = "Số lượng trúng tuyển theo từng trường";
             chart.Titles.Add(chartTitle1);
 
+            chart.Dock = DockStyle.Fill;
+            panelchart.Controls.Add(chart);
         }
 
         private void LoadThongKeDTTheoTruong()
         {
-            //Load biểu đồ            
-            //Lay du lieu
-            DataTable table = new DataTable();
-            table.Columns.AddRange(new DataColumn[] { new DataColumn("tentruong", typeof(string)), new DataColumn("tennghe", typeof(string)), new DataColumn("sl", typeof(int)) });
+            panelchart.Controls.Clear();
+            ChartControl chart = new ChartControl();
+            ChartSetting(chart);
+
             var dstruongTHCS = Data.DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
             var dstruongTHPT = Data.DsTruong.Where(x => x.LoaiTruong == "THPT").ToList();
-
-            //Thêm các dòng TK trường THCS
-            for (int i = 0; i < dstruongTHCS.Count; i++)
-            {
-                for (int j = 0; j < Data.DsNghe.Count; j++)
-                {
-                    int sldt = Data.DSHoSoDT.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
-                    x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(Data.DsNghe[j].Id)) is not null
-                    && (dts == 0 ? true : x.DotTS == dts)).Count();
-                    table.Rows.Add(Data.DsTruong[i].Ten, Data.DsNghe[j].Ten, sldt);
-                }
-            }
             var HSTHPT = Data.DSHoSoDT.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
             {
                 return hs;
             }).ToList();
-            //Thêm 1 dòng TK trường THPT
-            for (int j = 0; j < Data.DsNghe.Count; j++)
+            //Thêm các dòng TK trường THCS
+            for (int i = 0; i < Data.DsNghe.Count; i++)
             {
-                int sldt = HSTHPT.Where(x => x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(Data.DsNghe[j].Id)) is not null
-                && (dts == 0 ? true : x.DotTS == dts)).Count();
-                table.Rows.Add("Trường THPT", Data.DsNghe[j].Ten, sldt);
-            }
+                Series series = new Series(Data.DsNghe[i].Ten, ViewType.Bar);
+                series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                for (int j = 0; j < dstruongTHCS.Count; j++)
+                {
+                    int sldt = Data.DSHoSoDT.Where(x => x.IdTruong.Equals(dstruongTHCS[j].Id) &&
+                    x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(Data.DsNghe[i].Id)) is not null
+                    && (dts == 0 ? true : x.DotTS == dts)).Count();
 
-            chart.DataSource = table;
-            chart.SeriesTemplate.ChangeView(ViewType.StackedBar);
-            chart.SeriesTemplate.SeriesDataMember = "tentruong";
-            chart.SeriesTemplate.SetDataMembers("tennghe", "sl");
+                    series.Points.Add(new SeriesPoint(dstruongTHCS[j].Ten, sldt));
+                    int sldtTHPT = HSTHPT.Where(x => x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(Data.DsNghe[i].Id)) is not null
+                    && (dts == 0 ? true : x.DotTS == dts)).Count();
+
+                    series.Points.Add(new SeriesPoint("THPT", sldtTHPT));
+                }
+                chart.Series.Add(series);
+            }
             ChartTitle chartTitle1 = new ChartTitle();
             chartTitle1.Text = "Số lượng dự tuyển theo từng trường";
             chart.Titles.Add(chartTitle1);
+
+            chart.Dock = DockStyle.Fill;
+            panelchart.Controls.Add(chart);
         }
 
         private void HighlightTotal(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
@@ -334,7 +346,6 @@ namespace QuanLyTuyenSinh.Form
             LoadMenuTK();
             LoadComboBoxDTS();
             gridView.CustomDrawCell += HighlightTotal;
-
         }
 
         private void chkXetTuyen_CheckedChanged(object sender, ItemClickEventArgs e)
@@ -342,10 +353,7 @@ namespace QuanLyTuyenSinh.Form
             LoadMenuTK();
             gridControl1.DataSource = null;
             gridView.Columns.Clear();
-            chart = new ChartControl();
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
+            panelchart.Controls.Clear();
         }
 
         private void chkTrungTuyen_CheckedChanged(object sender, ItemClickEventArgs e)
@@ -353,19 +361,14 @@ namespace QuanLyTuyenSinh.Form
             LoadMenuTK();
             gridControl1.DataSource = null;
             gridView.Columns.Clear();
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
-
+            panelchart.Controls.Clear();
         }
 
         private void barCbbDTS_EditValueChanged(object sender, EventArgs e)
         {
             gridControl1.DataSource = null;
             gridView.Columns.Clear();
-            chart.DataSource = null;
-            chart.Series.Clear();
-            chart.Titles.Clear();
+            panelchart.Controls.Clear();
         }
 
         private void btnPrint_ItemClick(object sender, ItemClickEventArgs e)
@@ -389,8 +392,10 @@ namespace QuanLyTuyenSinh.Form
                     }
                     else XtraMessageBox.Show("Chưa có dữ liệu");
                     break;
+
                 case 1:
-                    if (chart.DataSource != null)
+                    ChartControl chart = panelchart.Controls.Find("chart", true).FirstOrDefault() as ChartControl;
+                    if (chart != null)
                     {
                         PrintableComponentLink link = new PrintableComponentLink(new PrintingSystem());
                         link.Component = chart;
@@ -400,11 +405,12 @@ namespace QuanLyTuyenSinh.Form
                         link.PrintingSystem.Document.AutoFitToPagesWidth = 1;
                         link.ShowRibbonPreviewDialog(UserLookAndFeel.Default);
                     }
-                    else XtraMessageBox.Show("Chưa có dữ liệu");
-                    break;
-                default:
+                    else
+                        XtraMessageBox.Show("Chưa chọn thống kê");
                     break;
 
+                default:
+                    break;
             }
         }
     }

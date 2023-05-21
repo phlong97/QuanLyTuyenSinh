@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace QuanLyTuyenSinh
 {
@@ -77,6 +78,7 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string Lop { get; set; }
+
         [Display(AutoGenerateField = false)]
         public string NamTN { get; set; }
 
@@ -88,14 +90,16 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string NgheNghiepCha { get; set; }
+
         [Display(AutoGenerateField = false)]
-        public string NamSinhCha { get; set; }  
+        public string NamSinhCha { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string HoTenMe { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string NgheNghiepMe { get; set; }
+
         [Display(AutoGenerateField = false)]
         public string NamSinhMe { get; set; }
 
@@ -127,7 +131,8 @@ namespace QuanLyTuyenSinh
         public KiemTraHoSo KiemTraHS { get; set; } = new();
 
         [Display(AutoGenerateField = false)]
-        public List<NguyenVong> DsNguyenVong { get; set; } = new(); 
+        public List<NguyenVong> DsNguyenVong { get; set; } = new();
+
         [Display(AutoGenerateField = false)]
         public string Anh { get; set; }
 
@@ -137,9 +142,9 @@ namespace QuanLyTuyenSinh
         public string CheckError()
         {
             string errs = string.Empty;
-            if (string.IsNullOrEmpty(MaHoSo) || Data.DSHoSoDT.Where(x => x.MaHoSo.Equals(MaHoSo)).Count() >= 2)
+            if (string.IsNullOrEmpty(MaHoSo))
                 errs += "Chưa nhập mã hồ sơ\n";
-            if (Data.DSHoSoDT.Where(x => x.MaHoSo.Equals(MaHoSo)).Count() >= 2)
+            if (Data.DSHoSoDT.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) >= 2)
                 errs += "Trùng mã hồ sơ\n";
             if (string.IsNullOrEmpty(Ho))
                 errs += "Chưa nhập họ học sinh \n";
@@ -149,7 +154,7 @@ namespace QuanLyTuyenSinh
             {
                 if (CCCD.Length > 0 && CCCD.Length == 11)
                     errs += "Nhập sai CCCD/CMND! \n";
-                if (Data.DSHoSoDT.FirstOrDefault(x => x.CCCD == CCCD) is not null)
+                if (Data.DSHoSoDT.Count(x => x.CCCD == CCCD) >= 2)
                     errs += "Đã tồn tại CCCD/CMND!\n";
             }
             if (NgaySinh == DateTime.MinValue)
@@ -176,7 +181,9 @@ namespace QuanLyTuyenSinh
                 errs += "Chưa chọn trường\n";
             if (DsNguyenVong.Count() == 0)
                 errs += "Chưa chọn nguyện vọng\n";
-            if (DsNguyenVong.Where(x => x.IdNghe == null).Count() > 0)
+            if (DsNguyenVong.Count(x => x.NV == 1) == 0)
+                errs += "Chưa chọn nguyện vọng 1\n";
+            if (DsNguyenVong.Count(x => x.IdNghe == null) > 0)
                 errs += "Chưa chọn nghề cho nguyện vọng\n";
             return errs;
         }
@@ -192,6 +199,8 @@ namespace QuanLyTuyenSinh
                         tong += Data.CurrSettings.HANH_KIEM_THCS.TOT; break;
                     case "Khá":
                         tong += Data.CurrSettings.HANH_KIEM_THCS.KHA; break;
+                    case "Trung bình":
+                        tong += Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                     default:
                         tong += Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                 }
@@ -201,6 +210,8 @@ namespace QuanLyTuyenSinh
                         tong += Data.CurrSettings.XLTN_THCS.GIOI; break;
                     case "Khá":
                         tong += Data.CurrSettings.XLTN_THCS.KHA; break;
+                    case "Trung bình":
+                        tong += Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                     default:
                         tong += Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                 }
@@ -225,7 +236,7 @@ namespace QuanLyTuyenSinh
                     case "Khá":
                         tong += Data.CurrSettings.XLHT_THPT.KHA; break;
                     case "Trung bình":
-                        tong += Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;                    
+                        tong += Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                     default:
                         tong += Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                 }
@@ -241,7 +252,22 @@ namespace QuanLyTuyenSinh
                         tong += Data.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
                 }
             }
-
+            if (!string.IsNullOrEmpty(IdKVUT))
+            {
+                var kv = Data.DsKhuVucUT.FirstOrDefault(kv => kv.Id.Equals(IdKVUT));
+                if (kv != null)
+                {
+                    tong += kv.Diem;
+                }
+            }
+            if (!string.IsNullOrEmpty(IdDTUT))
+            {
+                var dt = Data.DsDoiTuongUT.FirstOrDefault(dt => dt.Id.Equals(IdDTUT));
+                if (dt != null)
+                {
+                    tong += dt.Diem;
+                }
+            }
             return tong;
         }
 
@@ -278,6 +304,8 @@ namespace QuanLyTuyenSinh
                         th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.TOT; break;
                     case "Khá":
                         th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.KHA; break;
+                    case "Trung bình":
+                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                     default:
                         th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                 }
@@ -287,6 +315,8 @@ namespace QuanLyTuyenSinh
                         th.XLTN = Data.CurrSettings.XLTN_THCS.GIOI; break;
                     case "Khá":
                         th.XLTN = Data.CurrSettings.XLTN_THCS.KHA; break;
+                    case "Trung bình":
+                        th.XLTN = Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                     default:
                         th.XLTN = Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                 }
@@ -311,7 +341,7 @@ namespace QuanLyTuyenSinh
                     case "Khá":
                         th.XLHT = Data.CurrSettings.XLHT_THPT.KHA; break;
                     case "Trung bình":
-                        th.XLHT = Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;                    
+                        th.XLHT = Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                     default:
                         th.XLHT = Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                 }
@@ -341,7 +371,7 @@ namespace QuanLyTuyenSinh
                 Ten = Ten,
                 DotTS = DotTS,
                 CCCD = CCCD,
-                TongDXT = ToTHDXT().Tong,
+                TongDXT = TinhDiemXT(),
                 Email = Email,
                 GhiChu = GhiChu,
                 GioiTinh = GioiTinh,
@@ -468,23 +498,28 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+
         [Display(Name = "CCCD")]
         public string CCCD { get; set; }
 
         [Display(Name = "Trường")]
         public string IdTruong { get; set; }
+
         [Display(Name = "Lớp")]
         public string Lop { get; set; }
+
         [Display(Name = "Năm TN")]
         public string NamTN { get; set; }
 
         [Display(Name = "Họ tên cha")]
         public string HoTenCha { get; set; }
+
         [Display(Name = "Năm sinh cha")]
         public string NamSinhCha { get; set; }
 
         [Display(Name = "Họ tên mẹ")]
         public string HoTenMe { get; set; }
+
         [Display(Name = "Năm sinh mẹ")]
         public string NamSinhMe { get; set; }
 
@@ -511,6 +546,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Giấy khai sinh")]
         public string GiayKhaiSinh { get; set; }
+
         [Display(Name = "CCCD")]
         public string CCCDX { get; set; }
 
@@ -534,6 +570,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Họ")]
         public string Ho { get; set; }
+
         [Display(Name = "Tên học sinh")]
         public string Ten { get; set; }
 
@@ -554,6 +591,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Xếp loại HT")]
         public double XLHT { get; set; }
+
         [Display(Name = "Ưu tiên đối tượng")]
         public double UTDT { get; set; }
 
@@ -564,13 +602,18 @@ namespace QuanLyTuyenSinh
         public double Tong => XLTN + XLHT + HanhKiem + UTDT + UTKV;
 
         [Display(Name = "Nghề")]
-        public string IdNgheNV1 { get; set; }       
+        public string IdNgheNV1 { get; set; }
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
         [Display(AutoGenerateField = false)]
         public string IdDTUT { get; set; }
+        public HoSoTrungTuyen ToHSTT()
+        {
+            var hsdt = Data.DSHoSoDT.First(x => x.Id.Equals(IdHoSo));
+            return hsdt.ToHSTT();
+        }
     }
 
     public class THSLTheoNghe
@@ -598,6 +641,7 @@ namespace QuanLyTuyenSinh
     {
         [Display(AutoGenerateField = false)]
         public string IdHSDT { get; set; }
+
         [Display(Name = "Mã HS")]
         [Required(ErrorMessage = "Chưa nhập mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -663,6 +707,7 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string Lop { get; set; }
+
         [Display(AutoGenerateField = false)]
         public string NamTN { get; set; }
 
@@ -677,11 +722,12 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string HoTenMe { get; set; }
+
         [Display(AutoGenerateField = false)]
         public string NamSinhMe { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public string NgheNghiepMe { get; set; }        
+        public string NgheNghiepMe { get; set; }
 
         [Display(AutoGenerateField = false)]
         public int NamTS { get; set; }
@@ -697,6 +743,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+
         [Display(Name = "Trường")]
         public string IdTruong { get; set; }
 
@@ -814,8 +861,10 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Chỉ tiêu")]
         public int ChiTieu { get; set; }
+
         [Display(Name = "Điểm trúng tuyển THCS")]
         public double DiemTTTHCS { get; set; } = 5;
+
         [Display(Name = "Điểm trúng tuyển THPT")]
         public double DiemTTTHPT { get; set; } = 5;
     }
@@ -1005,7 +1054,7 @@ namespace QuanLyTuyenSinh
     }
 
     public class XLHT_THPT
-    {        
+    {
         public double TRUNG_BINH { get; set; } = 2;
         public double KHA { get; set; } = 3;
         public double GIOI { get; set; } = 4;

@@ -32,10 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_Main));
             accordionControl1 = new DevExpress.XtraBars.Navigation.AccordionControl();
             accordionControlElement4 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            btnDiemDT = new DevExpress.XtraBars.Navigation.AccordionControlElement();
-            btnTKTT = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            btnTK = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             accordionControlElement3 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnHoSoDuTuyen = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            btnDiemXetTuyen = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnHSTT = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             accordionControlElement1 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             btnDotTS = new DevExpress.XtraBars.Navigation.AccordionControlElement();
@@ -59,7 +59,6 @@
             gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
             btnExel = new DevExpress.XtraEditors.SimpleButton();
-            btnLoadExel = new DevExpress.XtraEditors.SimpleButton();
             dropbtnDSTT = new DevExpress.XtraEditors.DropDownButton();
             btnLapChiTieu = new DevExpress.XtraEditors.SimpleButton();
             btnRefresh = new DevExpress.XtraEditors.SimpleButton();
@@ -88,7 +87,6 @@
             barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            btnThongKe = new DevExpress.XtraEditors.SimpleButton();
             panelTDHV = new DevExpress.XtraEditors.PanelControl();
             cbbTDHV = new DevExpress.XtraEditors.ComboBoxEdit();
             labelControl2 = new DevExpress.XtraEditors.LabelControl();
@@ -97,7 +95,6 @@
             cbbDTS = new DevExpress.XtraEditors.ComboBoxEdit();
             labelControl3 = new DevExpress.XtraEditors.LabelControl();
             pnImg = new Panel();
-            splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(F_Wait), true, true, true);
             ((System.ComponentModel.ISupportInitialize)accordionControl1).BeginInit();
             pnMain.SuspendLayout();
             panelGrid.SuspendLayout();
@@ -128,42 +125,35 @@
             // 
             // accordionControl1
             // 
+            accordionControl1.AnimationType = DevExpress.XtraBars.Navigation.AnimationType.Spline;
             accordionControl1.Dock = DockStyle.Left;
             accordionControl1.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { accordionControlElement4, accordionControlElement3, accordionControlElement1, Nooi6, accordionControlElement2, accordionControlElement5 });
             accordionControl1.Location = new Point(0, 20);
             accordionControl1.Name = "accordionControl1";
             accordionControl1.OptionsMinimizing.AllowMinimizeMode = DevExpress.Utils.DefaultBoolean.True;
-            accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Auto;
-            accordionControl1.Size = new Size(270, 652);
+            accordionControl1.ScrollBarMode = DevExpress.XtraBars.Navigation.ScrollBarMode.Fluent;
+            accordionControl1.Size = new Size(160, 652);
             accordionControl1.TabIndex = 4;
             accordionControl1.ViewType = DevExpress.XtraBars.Navigation.AccordionControlViewType.HamburgerMenu;
             // 
             // accordionControlElement4
             // 
-            accordionControlElement4.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnDiemDT, btnTKTT });
+            accordionControlElement4.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnTK });
             accordionControlElement4.Expanded = true;
             accordionControlElement4.Name = "accordionControlElement4";
             accordionControlElement4.Text = "Thống kê";
             // 
-            // btnDiemDT
+            // btnTK
             // 
-            btnDiemDT.ImageOptions.Image = (Image)resources.GetObject("btnDiemDT.ImageOptions.Image");
-            btnDiemDT.Name = "btnDiemDT";
-            btnDiemDT.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            btnDiemDT.Text = "Điểm xét tuyển";
-            btnDiemDT.Click += btnTHDTD_Click;
-            // 
-            // btnTKTT
-            // 
-            btnTKTT.ImageOptions.Image = (Image)resources.GetObject("btnTKTT.ImageOptions.Image");
-            btnTKTT.Name = "btnTKTT";
-            btnTKTT.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
-            btnTKTT.Text = "Học sinh trúng tuyển";
-            btnTKTT.Click += btnTKTT_Click;
+            btnTK.ImageOptions.Image = (Image)resources.GetObject("btnTK.ImageOptions.Image");
+            btnTK.Name = "btnTK";
+            btnTK.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            btnTK.Text = "Thống kê";
+            btnTK.Click += btnTKTT_Click;
             // 
             // accordionControlElement3
             // 
-            accordionControlElement3.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnHoSoDuTuyen, btnHSTT });
+            accordionControlElement3.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] { btnHoSoDuTuyen, btnDiemXetTuyen, btnHSTT });
             accordionControlElement3.Expanded = true;
             accordionControlElement3.Name = "accordionControlElement3";
             accordionControlElement3.Text = "Hồ sơ";
@@ -175,6 +165,14 @@
             btnHoSoDuTuyen.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             btnHoSoDuTuyen.Text = "Hồ sơ xét tuyển";
             btnHoSoDuTuyen.Click += btnHoSoDuTuyen_Click;
+            // 
+            // btnDiemXetTuyen
+            // 
+            btnDiemXetTuyen.ImageOptions.Image = (Image)resources.GetObject("btnDiemXetTuyen.ImageOptions.Image");
+            btnDiemXetTuyen.Name = "btnDiemXetTuyen";
+            btnDiemXetTuyen.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
+            btnDiemXetTuyen.Text = "Điểm xét tuyển";
+            btnDiemXetTuyen.Click += btnDiemXetTuyen_Click;
             // 
             // btnHSTT
             // 
@@ -313,9 +311,9 @@
             pnMain.Controls.Add(panelGrid);
             pnMain.Controls.Add(pnImg);
             pnMain.Dock = DockStyle.Fill;
-            pnMain.Location = new Point(270, 20);
+            pnMain.Location = new Point(160, 20);
             pnMain.Name = "pnMain";
-            pnMain.Size = new Size(1373, 652);
+            pnMain.Size = new Size(1224, 652);
             pnMain.TabIndex = 10;
             // 
             // panelGrid
@@ -333,7 +331,7 @@
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             panelGrid.RowStyles.Add(new RowStyle());
             panelGrid.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            panelGrid.Size = new Size(1373, 652);
+            panelGrid.Size = new Size(1224, 652);
             panelGrid.TabIndex = 19;
             // 
             // gridControl
@@ -342,7 +340,7 @@
             gridControl.Location = new Point(3, 73);
             gridControl.MainView = gridView;
             gridControl.Name = "gridControl";
-            gridControl.Size = new Size(1367, 576);
+            gridControl.Size = new Size(1218, 576);
             gridControl.TabIndex = 10;
             gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
             // 
@@ -355,7 +353,6 @@
             // panelControl2
             // 
             panelControl2.Controls.Add(btnExel);
-            panelControl2.Controls.Add(btnLoadExel);
             panelControl2.Controls.Add(dropbtnDSTT);
             panelControl2.Controls.Add(btnLapChiTieu);
             panelControl2.Controls.Add(btnRefresh);
@@ -364,7 +361,7 @@
             panelControl2.Dock = DockStyle.Fill;
             panelControl2.Location = new Point(3, 3);
             panelControl2.Name = "panelControl2";
-            panelControl2.Size = new Size(1367, 24);
+            panelControl2.Size = new Size(1218, 24);
             panelControl2.TabIndex = 21;
             // 
             // btnExel
@@ -375,27 +372,12 @@
             btnExel.Appearance.Options.UseFont = true;
             btnExel.Dock = DockStyle.Left;
             btnExel.ImageOptions.Image = (Image)resources.GetObject("btnExel.ImageOptions.Image");
-            btnExel.Location = new Point(921, 2);
+            btnExel.Location = new Point(651, 2);
             btnExel.Margin = new Padding(0);
             btnExel.Name = "btnExel";
             btnExel.Size = new Size(137, 20);
             btnExel.TabIndex = 31;
             btnExel.Text = "Xuất file Exel";
-            // 
-            // btnLoadExel
-            // 
-            btnLoadExel.Appearance.BackColor = Color.WhiteSmoke;
-            btnLoadExel.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
-            btnLoadExel.Appearance.Options.UseBackColor = true;
-            btnLoadExel.Appearance.Options.UseFont = true;
-            btnLoadExel.Dock = DockStyle.Left;
-            btnLoadExel.ImageOptions.Image = (Image)resources.GetObject("btnLoadExel.ImageOptions.Image");
-            btnLoadExel.Location = new Point(651, 2);
-            btnLoadExel.Margin = new Padding(0);
-            btnLoadExel.Name = "btnLoadExel";
-            btnLoadExel.Size = new Size(270, 20);
-            btnLoadExel.TabIndex = 32;
-            btnLoadExel.Text = "Nhập DS trúng tuyển từ file Exel";
             // 
             // dropbtnDSTT
             // 
@@ -449,7 +431,7 @@
             btnClose.Appearance.Options.UseBorderColor = true;
             btnClose.Dock = DockStyle.Right;
             btnClose.ImageOptions.Image = (Image)resources.GetObject("btnClose.ImageOptions.Image");
-            btnClose.Location = new Point(1339, 2);
+            btnClose.Location = new Point(1190, 2);
             btnClose.Margin = new Padding(0);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(26, 20);
@@ -513,13 +495,12 @@
             // 
             panelControl3.Controls.Add(panelFilter);
             panelControl3.Controls.Add(chkKhongTT);
-            panelControl3.Controls.Add(btnThongKe);
             panelControl3.Controls.Add(panelTDHV);
             panelControl3.Controls.Add(panelTS);
             panelControl3.Dock = DockStyle.Fill;
             panelControl3.Location = new Point(3, 33);
             panelControl3.Name = "panelControl3";
-            panelControl3.Size = new Size(1367, 34);
+            panelControl3.Size = new Size(1218, 34);
             panelControl3.TabIndex = 22;
             // 
             // panelFilter
@@ -543,7 +524,7 @@
             lookXa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookXa.Properties.NullText = "(Trống)";
             lookXa.Properties.PopupView = gridView5;
-            lookXa.Size = new Size(158, 22);
+            lookXa.Size = new Size(158, 20);
             lookXa.TabIndex = 36;
             // 
             // gridView5
@@ -560,7 +541,7 @@
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
-            lookTinh.Size = new Size(149, 22);
+            lookTinh.Size = new Size(149, 20);
             lookTinh.TabIndex = 34;
             // 
             // gridView6
@@ -574,7 +555,7 @@
             // 
             labelControl7.Location = new Point(15, 7);
             labelControl7.Name = "labelControl7";
-            labelControl7.Size = new Size(26, 16);
+            labelControl7.Size = new Size(21, 13);
             labelControl7.TabIndex = 33;
             labelControl7.Text = "Tỉnh";
             // 
@@ -585,7 +566,7 @@
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";
             lookQuanHuyen.Properties.PopupView = gridView7;
-            lookQuanHuyen.Size = new Size(171, 22);
+            lookQuanHuyen.Size = new Size(171, 20);
             lookQuanHuyen.TabIndex = 35;
             // 
             // gridView7
@@ -599,7 +580,7 @@
             // 
             labelControl8.Location = new Point(204, 7);
             labelControl8.Name = "labelControl8";
-            labelControl8.Size = new Size(75, 16);
+            labelControl8.Size = new Size(62, 13);
             labelControl8.TabIndex = 32;
             labelControl8.Text = "Quận/Huyện";
             // 
@@ -607,7 +588,7 @@
             // 
             labelControl9.Location = new Point(468, 7);
             labelControl9.Name = "labelControl9";
-            labelControl9.Size = new Size(66, 16);
+            labelControl9.Size = new Size(55, 13);
             labelControl9.TabIndex = 31;
             labelControl9.Text = "Xã/Phường";
             // 
@@ -664,7 +645,7 @@
             barDockControlTop.Dock = DockStyle.Top;
             barDockControlTop.Location = new Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new Size(1643, 20);
+            barDockControlTop.Size = new Size(1384, 20);
             // 
             // barDockControlBottom
             // 
@@ -672,7 +653,7 @@
             barDockControlBottom.Dock = DockStyle.Bottom;
             barDockControlBottom.Location = new Point(0, 672);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new Size(1643, 0);
+            barDockControlBottom.Size = new Size(1384, 0);
             // 
             // barDockControlLeft
             // 
@@ -686,24 +667,9 @@
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = DockStyle.Right;
-            barDockControlRight.Location = new Point(1643, 20);
+            barDockControlRight.Location = new Point(1384, 20);
             barDockControlRight.Manager = barManager1;
             barDockControlRight.Size = new Size(0, 652);
-            // 
-            // btnThongKe
-            // 
-            btnThongKe.Appearance.BackColor = Color.WhiteSmoke;
-            btnThongKe.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
-            btnThongKe.Appearance.Options.UseBackColor = true;
-            btnThongKe.Appearance.Options.UseFont = true;
-            btnThongKe.Dock = DockStyle.Right;
-            btnThongKe.ImageOptions.Image = (Image)resources.GetObject("btnThongKe.ImageOptions.Image");
-            btnThongKe.Location = new Point(1265, 2);
-            btnThongKe.Margin = new Padding(0);
-            btnThongKe.Name = "btnThongKe";
-            btnThongKe.Size = new Size(100, 30);
-            btnThongKe.TabIndex = 32;
-            btnThongKe.Text = "Thống kê";
             // 
             // panelTDHV
             // 
@@ -720,14 +686,14 @@
             cbbTDHV.Location = new Point(69, 4);
             cbbTDHV.Name = "cbbTDHV";
             cbbTDHV.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbTDHV.Size = new Size(75, 22);
+            cbbTDHV.Size = new Size(75, 20);
             cbbTDHV.TabIndex = 41;
             // 
             // labelControl2
             // 
             labelControl2.Location = new Point(10, 8);
             labelControl2.Name = "labelControl2";
-            labelControl2.Size = new Size(49, 16);
+            labelControl2.Size = new Size(40, 13);
             labelControl2.TabIndex = 40;
             labelControl2.Text = "Trình độ";
             // 
@@ -756,14 +722,14 @@
             cbbDTS.Location = new Point(54, 5);
             cbbDTS.Name = "cbbDTS";
             cbbDTS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbDTS.Size = new Size(89, 22);
+            cbbDTS.Size = new Size(89, 20);
             cbbDTS.TabIndex = 37;
             // 
             // labelControl3
             // 
             labelControl3.Location = new Point(3, 7);
             labelControl3.Name = "labelControl3";
-            labelControl3.Size = new Size(41, 16);
+            labelControl3.Size = new Size(34, 13);
             labelControl3.TabIndex = 36;
             labelControl3.Text = "Đợt TS";
             // 
@@ -774,15 +740,12 @@
             pnImg.Size = new Size(11, 11);
             pnImg.TabIndex = 0;
             // 
-            // splashScreenManager1
-            // 
-            splashScreenManager1.ClosingDelay = 500;
-            // 
             // F_Main
             // 
             Appearance.Options.UseFont = true;
-            AutoScaleMode = AutoScaleMode.None;
-            ClientSize = new Size(1643, 672);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(1384, 672);
             Controls.Add(pnMain);
             Controls.Add(accordionControl1);
             Controls.Add(barDockControlLeft);
@@ -857,8 +820,7 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement5;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnSetting;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnAccount;
-        private DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1;
-        private DevExpress.XtraBars.Navigation.AccordionControlElement btnTKTT;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement btnTK;
         private DevExpress.XtraEditors.SearchLookUpEdit lookXa;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
         private DevExpress.XtraEditors.SearchLookUpEdit lookTinh;
@@ -878,7 +840,6 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraEditors.SimpleButton btnExel;
-        private DevExpress.XtraEditors.SimpleButton btnLoadExel;
         private DevExpress.XtraEditors.DropDownButton dropbtnDSTT;
         private DevExpress.XtraEditors.SimpleButton btnLapChiTieu;
         private DevExpress.XtraEditors.SimpleButton btnRefresh;
@@ -896,7 +857,7 @@
         private DevExpress.XtraEditors.PanelControl panelTDHV;
         private DevExpress.XtraEditors.ComboBoxEdit cbbTDHV;
         private DevExpress.XtraEditors.LabelControl labelControl2;
-        private DevExpress.XtraEditors.SimpleButton btnThongKe;
         private DevExpress.XtraEditors.CheckEdit chkKhongTT;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement btnDiemXetTuyen;
     }
 }

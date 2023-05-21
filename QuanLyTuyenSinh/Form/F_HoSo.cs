@@ -1,5 +1,4 @@
 ﻿using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using System.ComponentModel;
@@ -10,15 +9,15 @@ namespace QuanLyTuyenSinh.Form
 {
     public partial class F_HoSo : DirectXForm
     {
-        HoSoDuTuyen _hoSo;
-        BindingSource _sourceHS;
-        BindingSource _sourceNV;
+        private HoSoDuTuyen _hoSo;
+        private BindingSource _sourceHS;
+        private BindingSource _sourceNV;
 
-        bool EditMode;
-        string Diachi = string.Empty;
-        List<_Helper.Adress> lstTinh = _Helper.getListProvince();
-        List<_Helper.Adress> lstQuanHuyen;
-        List<_Helper.Adress> lstPhuongXa;
+        private bool EditMode;
+        private string Diachi = string.Empty;
+        private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
+        private List<_Helper.Adress> lstQuanHuyen;
+        private List<_Helper.Adress> lstPhuongXa;
 
         public F_HoSo(HoSoDuTuyen hoSo)
         {
@@ -32,6 +31,7 @@ namespace QuanLyTuyenSinh.Form
 
             _hoSo = hoSo;
             Text = Data.CurrSettings.TENTRUONG;
+            HeaderText.Caption = $"Hồ sơ dự tuyển - Đợt {_hoSo.DotTS}";
             if (!string.IsNullOrEmpty(_hoSo.MaTinh))
             {
                 lstQuanHuyen = _Helper.getListDistrict(_hoSo.MaTinh);
@@ -86,11 +86,6 @@ namespace QuanLyTuyenSinh.Form
             ActiveControl = txtHo;
         }
 
-        private void Anh_ImageChanged(object? sender, EventArgs e)
-        {
-
-        }
-
         private void Anh_ContextButtonClick(object sender, DevExpress.Utils.ContextItemClickEventArgs e)
         {
             Anh.LoadImage();
@@ -108,15 +103,16 @@ namespace QuanLyTuyenSinh.Form
                 catch { }
             }
         }
+
         private void SaveAnh()
         {
-            if (string.IsNullOrEmpty(Anh.GetLoadedImageLocation()))
+            if (string.IsNullOrEmpty(Anh.GetLoadedImageLocation()) && !string.IsNullOrEmpty(_hoSo.Anh))
             {
                 File.Delete(Path.Combine(TuDien.IMG_FOLDER, _hoSo.Anh));
                 _hoSo.Anh = string.Empty;
                 return;
             }
-            else
+            else if (!string.IsNullOrEmpty(Anh.GetLoadedImageLocation()))
             {
                 string path = Path.Combine(TuDien.IMG_FOLDER, _hoSo.NamTS.ToString(), _hoSo.DotTS.ToString());
                 Directory.CreateDirectory(path);
@@ -128,16 +124,18 @@ namespace QuanLyTuyenSinh.Form
 
         private void HS_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MainWorkspace.FormMain.RefreshForm();
+            MainWorkspace.FormMain.RefreshData();
         }
 
         private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             if (_hoSo.DsNguyenVong.Count >= 1)
             {
-                var nv = _hoSo.DsNguyenVong.FirstOrDefault();
+                var nv = _hoSo.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
                 if (nv == null) return;
-                if (nv.NV != 1 || nv.IdNghe == null)
+                if (string.IsNullOrEmpty(nv.IdNghe))
+                    return;
+                if (!string.IsNullOrEmpty(_hoSo.MaHoSo) && !string.IsNullOrEmpty(nv.IdNghe))
                     return;
                 var nv1 = Data.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
                 if (nv1 == null)
@@ -207,22 +205,35 @@ namespace QuanLyTuyenSinh.Form
 
         private void GridView1_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
-            if (_hoSo.DsNguyenVong.Count >= 1 && e.Column.FieldName.Equals("IdNghe"))
+            if (e.Column.FieldName.Equals("IdNghe"))
             {
-                var nv = _hoSo.DsNguyenVong.FirstOrDefault();
-                if (nv == null) return;
-                if (nv.NV != 1 || nv.IdNghe == null)
-                    return;
-                var nv1 = Data.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
-                if (nv1 == null)
-                    return;
-                string manghe = nv1.Ma2;
-                var max = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
-                if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
-                else
+                var r = gridView1.GetFocusedRow() as NguyenVong;
+                if (r == null) return;
+
+                if (!string.IsNullOrEmpty(r.IdNghe))
                 {
-                    int maxstt = int.Parse(max.MaHoSo.Substring(6, 3)) + 1;
-                    txtMaHS.Text = $"{_hoSo.NamTS}{manghe}{maxstt.ToString("D3")}";
+                    var ct = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == r.IdNghe);
+                    if (ct == null)
+                    {
+                        XtraMessageBox.Show("Chưa lập chỉ tiêu cho nghành nghề này");
+                        gridView1.CellValueChanged -= GridView1_CellValueChanged;
+                        gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
+                        gridView1.CellValueChanged += GridView1_CellValueChanged;
+                    }
+                    else
+                    {
+                        int sl = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(r.IdNghe)) != null).Count();
+                        //XtraMessageBox.Show($"Chỉ tiêu xét tuyển\n\t{ct.TenNghe}:{ct.ChiTieu}-Số lượng:{sl}");
+                        if (sl >= ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC)
+                        {
+                            XtraMessageBox.Show($"Đã vượt quá chỉ tiêu tối đa!\n\t{ct.TenNghe}:{ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC}");
+                            gridView1.CellValueChanged -= GridView1_CellValueChanged;
+                            gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
+                            gridView1.CellValueChanged += GridView1_CellValueChanged;
+                        }
+                    }
+
+
                 }
             }
         }
@@ -248,12 +259,10 @@ namespace QuanLyTuyenSinh.Form
             gridView1.IndicatorWidth = 35;
             gridView1.OptionsCustomization.AllowColumnMoving = false;
             gridView1.HideFindPanel();
-            gridView1.CellValueChanged += GridView_CellValueChanged;
             gridView1.ShowingEditor += GridView_ShowingEditor;
             gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
 
             DevForm.CreateRepositoryItemLookUpEdit(gridView1, Data.DsNghe, "IdNghe", "Ten", "Id");
-
         }
 
         private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
@@ -265,74 +274,6 @@ namespace QuanLyTuyenSinh.Form
         private void GridView_ShowingEditor(object? sender, CancelEventArgs e)
         {
             e.Cancel = EditMode ^ (gridView1.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
-        }
-
-        private void GridView_CellValueChanged(object sender, CellValueChangedEventArgs e)
-        {
-            gridView1.CellValueChanged -= GridView_CellValueChanged;
-            if (e.Column.FieldName.Equals("IdNghe"))
-            {
-                string? value = e.Value.ToString();
-                if (!string.IsNullOrEmpty(value))
-                {
-                    if (CheckDuplicateId(value))
-                    {
-                        XtraMessageBox.Show(this, "Đã tồn tại nghề");
-                        gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-                    }
-                    int SLdutuyen = Data.DSHoSoDT.Where(hs => hs.NamTS == _hoSo.NamTS &&
-                    hs.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(value)) is not null).Count();
-                    ChiTieuXetTuyen? chitieu = Data.DsChiTieu.FirstOrDefault(x => x.Nam == _hoSo.NamTS && x.IdNghe == value);
-                    if (chitieu is null)
-                    {
-                        XtraMessageBox.Show(this, "Chưa lập chỉ tiêu ngành nghề này!");
-                        gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-                        return;
-                    }
-                    int sl = chitieu.ChiTieu;
-                    double chitieutoida = Math.Floor(sl + sl * Data.CurrSettings.CHITIEUVUOTMUC);
-                    int sltt = Data.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(value)).Count();
-                    if (SLdutuyen + sltt >= sl + (sl * Data.CurrSettings.CHITIEUVUOTMUC))
-                    {
-                        XtraMessageBox.Show(this, $"Đã vượt mức chỉ tiêu tối đa!\n" +
-                            $" SL xét tuyển: {SLdutuyen} SL trúng tuyển: {sltt} Chỉ tiêu tối đa: {chitieutoida}");
-                        gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-                        txtMaHS.Text = string.Empty;
-                    }
-                }
-            }
-            else if (e.Column.FieldName.Equals("NV"))
-            {
-                int value;
-                if (!int.TryParse(e.Value.ToString(), out value))
-                    return;
-                if (CheckDuplicateNV(value))
-                {
-                    XtraMessageBox.Show(this, "Dã tồn tại nguyện vọng");
-                    gridView1.SetFocusedRowCellValue("NV", string.Empty);
-                }
-            }
-            gridView1.CellValueChanged += GridView_CellValueChanged;
-        }
-
-        private bool CheckDuplicateId(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            return _hoSo.DsNguyenVong.Count(x => x.IdNghe.Equals(value)) >= 2;
-        }
-
-        private bool CheckDuplicateNV(int NV)
-        {
-            if (NV <= 0)
-            {
-                return false;
-            }
-
-            return _hoSo.DsNguyenVong.Where(x => x.NV.Equals(NV)).Count() >= 2;
         }
 
         private void CreateBinding()
@@ -462,14 +403,17 @@ namespace QuanLyTuyenSinh.Form
         {
             if (EditMode)
                 EditMode = !EditMode;
+            gridView1.CellValueChanged -= GridView1_CellValueChanged;
             gridView1.AddNewRow();
             int nvmax = _hoSo.DsNguyenVong.Count();
             gridView1.SetFocusedRowCellValue("NV", nvmax);
+            gridView1.CellValueChanged += GridView1_CellValueChanged;
+
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            btnEdit.Text = EditMode ? "Lưu" : "Sửa";
+            btnEdit.Text = EditMode ? "Sửa" : "Lưu";
             EditMode = !EditMode;
         }
 
