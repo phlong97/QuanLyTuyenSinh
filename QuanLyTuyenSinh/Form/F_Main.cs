@@ -17,6 +17,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Controls;
 using DataTable = System.Data.DataTable;
 using Excel = Microsoft.Office.Interop.Excel;
 using SummaryItemType = DevExpress.Data.SummaryItemType;
@@ -774,8 +775,7 @@ namespace QuanLyTuyenSinh.Form
                 default: break;
             }
             gridControl.DataSource = _bindingSource;
-            gridView.OptionsSelection.MultiSelect = !TenDm.StartsWith("TK");
-            gridView.OptionsSelection.MultiSelectMode = !TenDm.StartsWith("TK") ? GridMultiSelectMode.CheckBoxRowSelect : GridMultiSelectMode.RowSelect;
+
             if (TenDm.Equals(TuDien.CategoryName.TruongHoc))
             {
                 var colLoaiTruong = gridView.Columns.ColumnByFieldName("LoaiTruong");
@@ -1012,6 +1012,11 @@ namespace QuanLyTuyenSinh.Form
             gridView.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
             gridView.OptionsView.ShowAutoFilterRow = true;
             gridView.OptionsView.ShowGroupPanel = false;
+            gridView.OptionsView.BestFitMode = GridBestFitMode.Fast;
+
+            gridView.OptionsSelection.MultiSelect = true;
+            gridView.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
+            gridView.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
 
             GridGroupSummaryItem gscCount = new GridGroupSummaryItem();
             gscCount.SummaryType = SummaryItemType.Count;

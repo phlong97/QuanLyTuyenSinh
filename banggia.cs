@@ -21,7 +21,10 @@ public class CTBangGia
 
 public class BangGiaApDung
 {
-	int ApDung { get; set; } // 0: Tất cả, 2: 1 khách, 2: Nhóm khách
-	string Ma { get; set; } // Dựa vào ApDung
+    /// <summary>
+	/// 0: Tất cả khách hàng, 1:khách hàng, 2: Nhóm khách hàng, ...
+	/// </summary>
+    int ApDung { get; set; } 
+	string List<string> DsApDung { get; set; } // Dựa vào ApDung
 	string IdBangGia { get; set; }
 }

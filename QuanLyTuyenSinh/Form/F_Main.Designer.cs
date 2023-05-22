@@ -512,14 +512,14 @@
             panelFilter.Controls.Add(labelControl8);
             panelFilter.Controls.Add(labelControl9);
             panelFilter.Dock = DockStyle.Left;
-            panelFilter.Location = new Point(470, 2);
+            panelFilter.Location = new Point(454, 2);
             panelFilter.Name = "panelFilter";
             panelFilter.Size = new Size(711, 30);
             panelFilter.TabIndex = 29;
             // 
             // lookXa
             // 
-            lookXa.Location = new Point(540, 4);
+            lookXa.Location = new Point(538, 6);
             lookXa.Name = "lookXa";
             lookXa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookXa.Properties.NullText = "(Trống)";
@@ -536,7 +536,7 @@
             // 
             // lookTinh
             // 
-            lookTinh.Location = new Point(50, 5);
+            lookTinh.Location = new Point(44, 5);
             lookTinh.Name = "lookTinh";
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
@@ -553,7 +553,7 @@
             // 
             // labelControl7
             // 
-            labelControl7.Location = new Point(15, 7);
+            labelControl7.Location = new Point(15, 9);
             labelControl7.Name = "labelControl7";
             labelControl7.Size = new Size(21, 13);
             labelControl7.TabIndex = 33;
@@ -561,7 +561,7 @@
             // 
             // lookQuanHuyen
             // 
-            lookQuanHuyen.Location = new Point(285, 3);
+            lookQuanHuyen.Location = new Point(282, 5);
             lookQuanHuyen.Name = "lookQuanHuyen";
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";
@@ -578,7 +578,7 @@
             // 
             // labelControl8
             // 
-            labelControl8.Location = new Point(204, 7);
+            labelControl8.Location = new Point(209, 9);
             labelControl8.Name = "labelControl8";
             labelControl8.Size = new Size(62, 13);
             labelControl8.TabIndex = 32;
@@ -586,7 +586,7 @@
             // 
             // labelControl9
             // 
-            labelControl9.Location = new Point(468, 7);
+            labelControl9.Location = new Point(471, 9);
             labelControl9.Name = "labelControl9";
             labelControl9.Size = new Size(55, 13);
             labelControl9.TabIndex = 31;
@@ -599,7 +599,8 @@
             chkKhongTT.MenuManager = barManager1;
             chkKhongTT.Name = "chkKhongTT";
             chkKhongTT.Properties.Caption = "Không trúng tuyển";
-            chkKhongTT.Size = new Size(133, 30);
+            chkKhongTT.Properties.ContentAlignment = DevExpress.Utils.HorzAlignment.Center;
+            chkKhongTT.Size = new Size(117, 30);
             chkKhongTT.TabIndex = 34;
             // 
             // barManager1
@@ -673,6 +674,7 @@
             // 
             // panelTDHV
             // 
+            panelTDHV.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             panelTDHV.Controls.Add(cbbTDHV);
             panelTDHV.Controls.Add(labelControl2);
             panelTDHV.Dock = DockStyle.Left;
@@ -683,7 +685,7 @@
             // 
             // cbbTDHV
             // 
-            cbbTDHV.Location = new Point(69, 4);
+            cbbTDHV.Location = new Point(67, 5);
             cbbTDHV.Name = "cbbTDHV";
             cbbTDHV.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbTDHV.Size = new Size(75, 20);
@@ -699,6 +701,7 @@
             // 
             // panelTS
             // 
+            panelTS.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             panelTS.Controls.Add(btnRefreshDTS);
             panelTS.Controls.Add(cbbDTS);
             panelTS.Controls.Add(labelControl3);
@@ -727,7 +730,7 @@
             // 
             // labelControl3
             // 
-            labelControl3.Location = new Point(3, 7);
+            labelControl3.Location = new Point(11, 8);
             labelControl3.Name = "labelControl3";
             labelControl3.Size = new Size(34, 13);
             labelControl3.TabIndex = 36;

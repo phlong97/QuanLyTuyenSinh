@@ -13,8 +13,8 @@ namespace QuanLyTuyenSinh.Form
             Bitmap bitmap0 = new Bitmap(pictureBox1.Image);
             var bt = MakeTransparent(bitmap0, Color.Transparent, 50);
             pictureBox1.Image = bt;
-
             spinNam.Value = Properties.Settings.Default.NamTS;
+            txtName.Text = Properties.Settings.Default.UserName;
         }
 
         private Bitmap MakeTransparent(Bitmap bitmap, Color color, int tolerance)
@@ -51,29 +51,24 @@ namespace QuanLyTuyenSinh.Form
             if (user != null)
             {
                 Hide();
-                SplashScreenManager.ShowForm(typeof(F_Wait));   
+                SplashScreenManager.ShowForm(typeof(F_Wait));
                 Data.CurrUser = user;
                 Properties.Settings.Default.NamTS = (int)spinNam.Value;
+                Properties.Settings.Default.UserName = txtName.Text;
                 Properties.Settings.Default.Save();
                 Task.Run(() =>
                 {
                     Data.LoadStaticList();
                 });
                 MainWorkspace.FormMain = new F_Main();
-                MainWorkspace.FormMain.Closed += MainForm_Closed;
-                MainWorkspace.FormMain.Show();
-
+                MainWorkspace.FormMain.ShowDialog();
+                Close();
                 SplashScreenManager.CloseForm();
             }
             else
             {
                 XtraMessageBox.Show(this, "Sai tên đăng nhập hoặc mật khẩu", "Đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void MainForm_Closed(object sender, EventArgs e)
-        {
-            this.Show();
         }
     }
 }
