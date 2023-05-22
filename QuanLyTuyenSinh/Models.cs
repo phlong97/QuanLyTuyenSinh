@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using DevExpress.Data.Linq.Helpers;
+using LiteDB;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -185,6 +186,25 @@ namespace QuanLyTuyenSinh
                 errs += "Chưa chọn nguyện vọng 1\n";
             if (DsNguyenVong.Count(x => x.IdNghe == null) > 0)
                 errs += "Chưa chọn nghề cho nguyện vọng\n";
+            if (DsNguyenVong.Count(x => x.NV == 1) == 1)
+            {
+                int sltt = 0;
+                var nv1 = DsNguyenVong.First(x => x.NV == 1);
+                int sldt = Data.DSHoSoDT.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
+                var ctnv1 = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
+                if (ctnv1 != null)
+                {
+                    for (int i = 1; i <= DotTS; i++)
+                    {
+                        sltt += Data.DSHoSoTT.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
+                    }
+                    double ctmax = ctnv1.ChiTieu + ctnv1.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC;
+                    if (sldt + sltt >= ctmax)
+                    {
+                        errs += $"Nguyện vọng 1 đã vượt chỉ tiêu tối đa! Chỉ tiêu tối đa: {ctmax}\n";
+                    }
+                }
+            }
             return errs;
         }
 
@@ -1007,12 +1027,9 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ngày tạo")]
         public DateTime DateCreated { get; set; } = DateTime.Now;
-
         public string PasswordHash { get; set; }
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string Salt { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public string Permissons { get; set; } = "Create/Read/Update/Delete";
+        public string Permissons { get; set; }
     }
 
     #region Settings
@@ -1020,7 +1037,6 @@ namespace QuanLyTuyenSinh
     public class CaiDat
     {
         public string TENTRUONG { get; set; } = "Trường trung cấp nghề Vạn Ninh";
-        public int CHITIEUMACDINH { get; set; } = 50;
         public double CHITIEUVUOTMUC { get; set; } = 0.1;
         public double DIEMTRUNGTUYEN { get; set; } = 5;
         public HANH_KIEM_THCS HANH_KIEM_THCS { get; set; } = new();

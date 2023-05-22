@@ -205,37 +205,37 @@ namespace QuanLyTuyenSinh.Form
 
         private void GridView1_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
-            if (e.Column.FieldName.Equals("IdNghe"))
-            {
-                var r = gridView1.GetFocusedRow() as NguyenVong;
-                if (r == null) return;
+            //if (e.Column.FieldName.Equals("IdNghe"))
+            //{
+            //    var r = gridView1.GetFocusedRow() as NguyenVong;
+            //    if (r == null) return;
 
-                if (!string.IsNullOrEmpty(r.IdNghe))
-                {
-                    var ct = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == r.IdNghe);
-                    if (ct == null)
-                    {
-                        XtraMessageBox.Show("Chưa lập chỉ tiêu cho nghành nghề này");
-                        gridView1.CellValueChanged -= GridView1_CellValueChanged;
-                        gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-                        gridView1.CellValueChanged += GridView1_CellValueChanged;
-                    }
-                    else
-                    {
-                        int sl = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(r.IdNghe)) != null).Count();
-                        //XtraMessageBox.Show($"Chỉ tiêu xét tuyển\n\t{ct.TenNghe}:{ct.ChiTieu}-Số lượng:{sl}");
-                        if (sl >= ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC)
-                        {
-                            XtraMessageBox.Show($"Đã vượt quá chỉ tiêu tối đa!\n\t{ct.TenNghe}:{ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC}");
-                            gridView1.CellValueChanged -= GridView1_CellValueChanged;
-                            gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-                            gridView1.CellValueChanged += GridView1_CellValueChanged;
-                        }
-                    }
+            //    if (!string.IsNullOrEmpty(r.IdNghe))
+            //    {
+            //        var ct = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == r.IdNghe);
+            //        if (ct == null)
+            //        {
+            //            XtraMessageBox.Show("Chưa lập chỉ tiêu cho nghành nghề này");
+            //            gridView1.CellValueChanged -= GridView1_CellValueChanged;
+            //            gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
+            //            gridView1.CellValueChanged += GridView1_CellValueChanged;
+            //        }
+            //        else
+            //        {
+            //            int sl = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(r.IdNghe)) != null).Count();
+            //            //XtraMessageBox.Show($"Chỉ tiêu xét tuyển\n\t{ct.TenNghe}:{ct.ChiTieu}-Số lượng:{sl}");
+            //            if (sl >= ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC)
+            //            {
+            //                XtraMessageBox.Show($"Đã vượt quá chỉ tiêu tối đa!\n\t{ct.TenNghe}:{ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC}");
+            //                gridView1.CellValueChanged -= GridView1_CellValueChanged;
+            //                gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
+            //                gridView1.CellValueChanged += GridView1_CellValueChanged;
+            //            }
+            //        }
 
 
-                }
-            }
+            //    }
+            //}
         }
 
         private void TxtTen_TextChanged(object? sender, EventArgs e)
@@ -330,7 +330,7 @@ namespace QuanLyTuyenSinh.Form
             txtEmail.DataBindings.Clear();
             txtEmail.DataBindings.Add("Text", _sourceHS, "Email", true, DataSourceUpdateMode.OnPropertyChanged);
             cbbHTDT.DataBindings.Clear();
-            cbbHTDT.DataBindings.Add("SelectedItem", _sourceHS, "HTDT", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHTDT.DataBindings.Add("EditValue", _sourceHS, "HTDT", true, DataSourceUpdateMode.OnPropertyChanged);
             txtHSGhiChu.DataBindings.Clear();
             txtHSGhiChu.DataBindings.Add("Text", _sourceHS, "GhiChu", true, DataSourceUpdateMode.OnPropertyChanged);
             txtNSCha.DataBindings.Clear();
@@ -360,11 +360,11 @@ namespace QuanLyTuyenSinh.Form
             txtGhiChu.DataBindings.Add("Text", _sourceHS, "KiemTraHS.GhiChu", true, DataSourceUpdateMode.OnPropertyChanged);
             //Điểm xét tuyển
             cbbHanhKiem.DataBindings.Clear();
-            cbbHanhKiem.DataBindings.Add("SelectedItem", _sourceHS, "HanhKiem", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHanhKiem.DataBindings.Add("EditValue", _sourceHS, "HanhKiem", true, DataSourceUpdateMode.OnPropertyChanged);
             cbbXLHT.DataBindings.Clear();
-            cbbXLHT.DataBindings.Add("SelectedItem", _sourceHS, "XLHocTap", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbXLHT.DataBindings.Add("EditValue", _sourceHS, "XLHocTap", true, DataSourceUpdateMode.OnPropertyChanged);
             cbbXLTN.DataBindings.Clear();
-            cbbXLTN.DataBindings.Add("SelectedItem", _sourceHS, "XLTN", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbXLTN.DataBindings.Add("EditValue", _sourceHS, "XLTN", true, DataSourceUpdateMode.OnPropertyChanged);
             lookDTUT.DataBindings.Clear();
             lookDTUT.DataBindings.Add("EditValue", _sourceHS, "IdDTUT", true, DataSourceUpdateMode.OnPropertyChanged);
             lookKVUT.DataBindings.Clear();
@@ -403,12 +403,8 @@ namespace QuanLyTuyenSinh.Form
         {
             if (EditMode)
                 EditMode = !EditMode;
-            gridView1.CellValueChanged -= GridView1_CellValueChanged;
             gridView1.AddNewRow();
-            int nvmax = _hoSo.DsNguyenVong.Count();
-            gridView1.SetFocusedRowCellValue("NV", nvmax);
-            gridView1.CellValueChanged += GridView1_CellValueChanged;
-
+            gridView1.SetFocusedRowCellValue("NV", _hoSo.DsNguyenVong.Count());
         }
 
         private void btnEdit_Click(object sender, EventArgs e)

@@ -20,9 +20,6 @@
             txtTenTruong.DataBindings.Clear();
             txtTenTruong.DataBindings.Add("Text", source, "TENTRUONG", true, DataSourceUpdateMode.OnPropertyChanged);
 
-            spinCTMD.DataBindings.Clear();
-            spinCTMD.DataBindings.Add("EditValue", source, "CHITIEUMACDINH", true, DataSourceUpdateMode.OnPropertyChanged);
-
             spinCTVM.DataBindings.Clear();
             spinCTVM.DataBindings.Add("EditValue", source, "CHITIEUVUOTMUC", true, DataSourceUpdateMode.OnPropertyChanged);
 
@@ -86,7 +83,7 @@
             source = new BindingSource();
             source.DataSource = _setting;
             CreateBinding();
-            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh,"(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh, "(Tất cả)");
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen, "(Tất cả)");
 
             Shown += F_Setting_Shown;

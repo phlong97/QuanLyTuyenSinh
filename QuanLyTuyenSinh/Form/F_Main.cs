@@ -258,7 +258,7 @@ namespace QuanLyTuyenSinh.Form
                 {
                     if (Data.DsChiTieu.FirstOrDefault(x => x.IdNghe.Equals(nghe.Id)) is null)
                     {
-                        ChiTieuXetTuyen ct = new() { IdNghe = nghe.Id, Nam = _NamTS, ChiTieu = Data.CurrSettings.CHITIEUMACDINH };
+                        ChiTieuXetTuyen ct = new() { IdNghe = nghe.Id, Nam = _NamTS, ChiTieu = 50 };
                         _bindingSource.Add(ct);
                     }
                 }
