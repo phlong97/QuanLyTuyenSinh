@@ -51,7 +51,7 @@ namespace QuanLyTuyenSinh.Form
             if (user != null)
             {
                 Hide();
-                SplashScreenManager.ShowForm(typeof(F_Wait));
+                SplashScreenManager.ShowForm(this,typeof(F_Wait));
                 Data.CurrUser = user;
                 Properties.Settings.Default.NamTS = (int)spinNam.Value;
                 Properties.Settings.Default.UserName = txtName.Text;
@@ -61,14 +61,20 @@ namespace QuanLyTuyenSinh.Form
                     Data.LoadStaticList();
                 });
                 MainWorkspace.FormMain = new F_Main();
-                MainWorkspace.FormMain.ShowDialog();
-                Close();
+                MainWorkspace.FormMain.FormClosed += FormMain_FormClosed;
+                MainWorkspace.FormMain.Show();
                 SplashScreenManager.CloseForm();
+                Hide();
             }
             else
             {
                 XtraMessageBox.Show(this, "Sai tên đăng nhập hoặc mật khẩu", "Đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void FormMain_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            Close();
         }
     }
 }

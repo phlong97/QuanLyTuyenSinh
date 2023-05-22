@@ -1121,7 +1121,8 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnTKTT_Click(object sender, EventArgs e)
         {
-            Form.F_TK.GetForm.Show();
+            if (!F_TK.GetForm.Visible) F_TK.GetForm.Show(this);
+            F_TK.GetForm.BringToFront();
         }
 
         private void btnDiemXetTuyen_Click(object sender, EventArgs e)
