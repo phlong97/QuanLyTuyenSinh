@@ -302,7 +302,7 @@ namespace QuanLyTuyenSinh.Form
             string td = cbbTDHV.EditValue.ToString();
             if (string.IsNullOrEmpty(td))
                 return;
-
+            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList(), "(Tất cả)");
             LoadData();
         }
 
@@ -321,6 +321,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh, "(Tất cả)");
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen, "(Tất cả)");
             DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode", lstPhuongXa, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong.Where(x => x.LoaiTruong.Equals("THCS")).ToList(), "(Tất cả)");
 
             Shown += F_Main_Shown;
         }
@@ -351,8 +352,14 @@ namespace QuanLyTuyenSinh.Form
             lookTinh.TextChanged += LookTinh_TextChanged;
             lookQuanHuyen.TextChanged += LookQuanHuyen_TextChanged;
             lookXa.TextChanged += LookXa_TextChanged;
+            lookTruong.TextChanged += LookTruong_TextChanged;
             chkKhongTT.CheckedChanged += ChkKhongTT_CheckedChanged;
             ResumeLayout(true);
+        }
+
+        private void LookTruong_TextChanged(object? sender, EventArgs e)
+        {
+            LoadData();
         }
 
         private void ChkKhongTT_CheckedChanged(object? sender, EventArgs e)
@@ -515,8 +522,10 @@ namespace QuanLyTuyenSinh.Form
                 var btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
                 var btnImportXls = new BarButtonItem(barManager1, "Nhập dannh sách từ file Exel");
                 var btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
-                var btnExportXls2 = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu DSTT");
                 var btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu CSGDNN");
+                var btnExportXls2 = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu DSTT");
+                var btnExportXls3 = new BarButtonItem(barManager1, "Xuất DS học sinh thuộc xã theo mẫu");
+                var btnExportXls4 = new BarButtonItem(barManager1, "Xuất DS học sinh thuộc trường theo mẫu");
 
                 btnLapDSTT.ItemClick += DropbtnDSTT_Click;
                 btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
@@ -524,16 +533,220 @@ namespace QuanLyTuyenSinh.Form
                 btnExportXls2.ItemClick += XuatExelTheoMauDSTT_ItemClick; ;
                 btnExportXls.ItemClick += XuatDsTTTheoMauCSGDNN_ItemClick;
                 btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
+                btnExportXls3.ItemClick += XuatDSTheoXa_ItemClick;
+                btnExportXls4.ItemClick += XuatDSTheoTruong_ItemClick;
 
                 popupMenuHoSo.AddItem(btnLapDSTT);
                 popupMenuHoSo.AddItem(btnSaveDSTT);
                 popupMenuHoSo.AddItem(btnImportXls);
                 popupMenuHoSo.AddItem(btnExportXls2);
+                popupMenuHoSo.AddItem(btnExportXls3);
+                popupMenuHoSo.AddItem(btnExportXls4);
                 popupMenuHoSo.AddItem(btnExportXls);
                 popupMenuHoSo.AddItem(btnDanhLaiMa);
             }
 
             dropbtnHoSo.DropDownControl = popupMenuHoSo;
+        }
+
+        private void XuatDSTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (lookTruong.EditValue == null)
+            {
+                XtraMessageBox.Show($"Chưa chọn trường!");
+                return;
+            }
+            Excel.Application app = null;
+            Excel.Workbook book = null;
+            Excel.Worksheet sheet = null;
+            Directory.CreateDirectory(TuDien.EXEL_FOLDER);
+            string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSTRUONG.xlsx");
+            if (!File.Exists(filePath))
+            {
+                XtraMessageBox.Show($"Chưa có file mẫu!\n {filePath}");
+                return;
+            }
+
+            try
+            {
+                Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+                sfd.FileName = $"Danh sách theo trường {lookTruong.Text}.xlsx";
+                sfd.DefaultExt = "xlsx";
+                sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
+                sfd.AddExtension = true;
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                sfd.CheckPathExists = true;
+
+                if (sfd.ShowDialog() == true)
+                {
+                    SplashScreenManager.ShowForm(typeof(F_Wait));
+                    app = new Excel.Application();
+                    book = app.Workbooks.Open(filePath);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.SaveAs(sfd.FileName);
+                    book = app.Workbooks.Open(sfd.FileName);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    string Truong = lookTruong.Text.ToUpper();
+                    sheet.Cells[4, 1] = $"DANH SÁCH HỌC SINH TRƯỜNG {cbbTDHV.Text.ToUpper()} {lookTruong.Text.ToUpper()} ĐANG THEO HỌC TẠI TRƯỜNG";
+                    sheet.Cells[5, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {Data._NamTS}-{Data._NamTS + 1}.";
+
+                    var lst = (List<HoSoTrungTuyen>)_bindingSource.DataSource;
+                    if (lst != null && lst.Count > 0)
+                    {
+                        object[,] export = new object[lst.Count, 9];
+                        for (int i = 0; i < lst.Count(); i++)
+                        {
+                            export[i, 0] = i + 1;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GioiTinh ? "Nam" : "Nữ";
+                            export[i, 6] = lst[i].DiaChi;
+                            export[i, 7] = Data.DsNghe.First(x => x.Id.Equals(lst[i].IdNgheTrungTuyen)).Ten;
+                            export[i, 8] = lst[i].GhiChu;
+                        }
+                        Excel.Range range = sheet.get_Range(sheet.Cells[8, 1], sheet.Cells[lst.Count + 7, 9]);
+                        range.set_Value(Missing.Value, export);
+                        range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                        Marshal.ReleaseComObject(range);
+                        range = null;
+
+                        sheet.Cells[lst.Count + 8, 1] = $"Tổng số: {lst.Count} thí sinh";
+                        Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + 8, 1], sheet.Cells[lst.Count + 8, 5]);
+                        range2.Merge();
+                        range2.Cells.Font.Bold = true;
+                        range2.Cells.Font.Italic = true;
+
+                        sheet.Columns.AutoFit();
+                    }
+
+                    book.Save();
+                    SplashScreenManager.CloseForm();
+                    XtraMessageBox.Show("Xuất file thành công!");
+                }
+            }
+            catch
+            {
+                SplashScreenManager.CloseForm();
+                if (book != null)
+                {
+                    book.Close();
+                    Marshal.ReleaseComObject(book);
+                }
+                if (app != null)
+                {
+                    app.Quit();
+                }
+                XtraMessageBox.Show("Có lỗi xảy ra!");
+            }
+            finally
+            {
+                if (app != null)
+                {
+                    app.Visible = true;
+                }
+            }
+        }
+
+        private void XuatDSTheoXa_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (lookXa.EditValue == null)
+            {
+                XtraMessageBox.Show($"Chưa chọn xã!");
+                return;
+            }
+            Excel.Application app = null;
+            Excel.Workbook book = null;
+            Excel.Worksheet sheet = null;
+            Directory.CreateDirectory(TuDien.EXEL_FOLDER);
+            string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSXA.xlsx");
+            if (!File.Exists(filePath))
+            {
+                XtraMessageBox.Show($"Chưa có file mẫu!\n {filePath}");
+                return;
+            }
+
+            try
+            {
+                Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+                sfd.FileName = $"Danh sách theo xã {lookXa.Text}.xlsx";
+                sfd.DefaultExt = "xlsx";
+                sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
+                sfd.AddExtension = true;
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                sfd.CheckPathExists = true;
+
+                if (sfd.ShowDialog() == true)
+                {
+                    SplashScreenManager.ShowForm(typeof(F_Wait));
+                    app = new Excel.Application();
+                    book = app.Workbooks.Open(filePath);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.SaveAs(sfd.FileName);
+                    book = app.Workbooks.Open(sfd.FileName);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    string XA = lookXa.Text.ToUpper();
+                    sheet.Cells[4, 1] = $"DANH SÁCH HỌC SINH {XA} ĐANG THEO HỌC TẠI TRƯỜNG";
+                    sheet.Cells[5, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {Data._NamTS}-{Data._NamTS + 1}.";
+
+                    var lst = (List<HoSoTrungTuyen>)_bindingSource.DataSource;
+                    if (lst != null && lst.Count > 0)
+                    {
+                        object[,] export = new object[lst.Count, 9];
+                        for (int i = 0; i < lst.Count(); i++)
+                        {
+                            export[i, 0] = i + 1;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GioiTinh ? "Nam" : "Nữ";
+                            export[i, 6] = lst[i].DiaChi;
+                            export[i, 7] = Data.DsNghe.First(x => x.Id.Equals(lst[i].IdNgheTrungTuyen)).Ten;
+                            export[i, 8] = lst[i].GhiChu;
+                        }
+                        Excel.Range range = sheet.get_Range(sheet.Cells[8, 1], sheet.Cells[lst.Count + 7, 9]);
+                        range.set_Value(Missing.Value, export);
+                        range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                        Marshal.ReleaseComObject(range);
+                        range = null;
+
+                        sheet.Cells[lst.Count + 8, 1] = $"Tổng số: {lst.Count} thí sinh";
+                        Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + 8, 1], sheet.Cells[lst.Count + 8, 5]);
+                        range2.Merge();
+                        range2.Cells.Font.Bold = true;
+                        range2.Cells.Font.Italic = true;
+
+                        sheet.Columns.AutoFit();
+                    }
+
+                    book.Save();
+                    SplashScreenManager.CloseForm();
+                    XtraMessageBox.Show("Xuất file thành công!");
+                }
+            }
+            catch
+            {
+                SplashScreenManager.CloseForm();
+                if (book != null)
+                {
+                    book.Close();
+                    Marshal.ReleaseComObject(book);
+                }
+                if (app != null)
+                {
+                    app.Quit();
+                }
+                XtraMessageBox.Show("Có lỗi xảy ra!");
+            }
+            finally
+            {
+                if (app != null)
+                {
+                    app.Visible = true;
+                }
+            }
         }
 
         private void XuatExelTheoMauDSTT_ItemClick(object sender, ItemClickEventArgs e)
@@ -1134,7 +1347,7 @@ namespace QuanLyTuyenSinh.Form
 
                 case TuDien.CategoryName.HoSoTrungTuyen:
                     _bindingSource.DataSource = Data.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
-                    cbbTDHV.EditValue.ToString() : "THCS", (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue, chkKhongTT.Checked);
+                    cbbTDHV.EditValue.ToString() : "THCS", (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue, (string)lookTruong.EditValue, chkKhongTT.Checked);
                     break;
 
                 case TuDien.CategoryName.DiemXetTuyen:

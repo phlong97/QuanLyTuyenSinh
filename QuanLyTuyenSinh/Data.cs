@@ -243,7 +243,7 @@ namespace QuanLyTuyenSinh
             return lst;
         }
 
-        public static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null, bool KhongTT = true)
+        public static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null, string? IdTruong = null, bool KhongTT = true)
         {
             List<HoSoTrungTuyen> lst = new();
             if (KhongTT)
@@ -256,7 +256,8 @@ namespace QuanLyTuyenSinh
                 var lstHSTT = Data.DSHoSoTT.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
                         && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
-                        && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa)))
+                        && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
+                        && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)))
                         .Select(x => x.IdHSDT).ToList();
                 var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
                 foreach (var id in lstHSKhongTT)
@@ -272,7 +273,8 @@ namespace QuanLyTuyenSinh
                         && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                         && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
-                        ).ToList();
+                        && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)))
+                    .ToList();
 
             return lst.OrderBy(hs => hs.MaHoSo).ToList();
         }
