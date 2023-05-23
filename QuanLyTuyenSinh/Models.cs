@@ -194,11 +194,11 @@ namespace QuanLyTuyenSinh
                 var ctnv1 = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
                 if (ctnv1 != null)
                 {
-                    for (int i = 1; i <= DotTS; i++)
+                    for (int i = 1; i < DotTS; i++)
                     {
                         sltt += Data.DSHoSoTT.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
                     }
-                    double ctmax = ctnv1.ChiTieu + ctnv1.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC;
+                    int ctmax = (int)(ctnv1.ChiTieu + ctnv1.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC);
                     if (sldt + sltt >= ctmax)
                     {
                         errs += $"Nguyện vọng 1 đã vượt chỉ tiêu tối đa! Chỉ tiêu tối đa: {ctmax}\n";

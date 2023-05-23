@@ -1,4 +1,5 @@
-﻿using DevExpress.Export;
+﻿using DevExpress.CodeParser;
+using DevExpress.Export;
 using DevExpress.Mvvm.Native;
 using DevExpress.Spreadsheet;
 using DevExpress.Utils;
@@ -8,9 +9,12 @@ using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraPrinting;
+using DevExpress.XtraRichEdit.Model;
 using DevExpress.XtraSplashScreen;
 using LiteDB;
+using Microsoft.Office.Interop.Excel;
 using QuanLyTuyenSinh.Properties;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
@@ -310,7 +314,6 @@ namespace QuanLyTuyenSinh.Form
             MaximumSize = this.Size;
             GridViewInit();
             LoadBackgound();
-            LoadbtnDSTT();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
             LoadLookupAddress();
@@ -478,34 +481,285 @@ namespace QuanLyTuyenSinh.Form
             cbbTDHV.SelectedIndex = 0;
         }
 
-        private PopupMenu popupMenu1;
-        private BarButtonItem btnSaveDSTT;
-        private BarButtonItem btnExportXls;
-        private BarButtonItem btnImportXls;
-        private BarButtonItem btnDanhLaiMa;
+        private PopupMenu popupMenuHoSo;
 
-        private void LoadbtnDSTT()
+
+        private void LoadbtnDropDS()
         {
-            dropbtnDSTT.Click += DropbtnDSTT_Click;
+            popupMenuHoSo = new PopupMenu(barManager1);
+            popupMenuHoSo.AutoFillEditorWidth = true;
 
-            popupMenu1 = new PopupMenu(barManager1);
-            popupMenu1.AutoFillEditorWidth = true;
-            btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
-            btnImportXls = new BarButtonItem(barManager1, "Nhập dannh sách từ file Exel");
-            btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
-            btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu");
+            if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
+            {
+                dropbtnHoSo.Text = "Hồ sơ dự tuyển";
+                var btnExportXls1 = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu DSDT");
 
-            btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
-            btnImportXls.ItemClick += BtnLoadExel_Click;
-            btnExportXls.ItemClick += BtnExportXls_ItemClick;
-            btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
+                btnExportXls1.ItemClick += XuatDSXTTheoMauDSDT_ItemClick;
 
-            popupMenu1.AddItem(btnSaveDSTT);
-            popupMenu1.AddItem(btnImportXls);
-            popupMenu1.AddItem(btnExportXls);
-            popupMenu1.AddItem(btnDanhLaiMa);
+                popupMenuHoSo.AddItem(btnExportXls1);
+            }
+            else if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyen))
+            {
+                dropbtnHoSo.Text = "Điểm dự tuyển";
+                var btnExportXls1 = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu KQXT");
 
-            dropbtnDSTT.DropDownControl = popupMenu1;
+                btnExportXls1.ItemClick += XuatDSXTTheoMauKQXT_ItemClick;
+
+                popupMenuHoSo.AddItem(btnExportXls1);
+            }
+            else if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen))
+            {
+                dropbtnHoSo.Text = "Hồ sơ trúng tuyển";
+
+                var btnLapDSTT = new BarButtonItem(barManager1, "Lập danh sách trúng tuyển");
+                var btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
+                var btnImportXls = new BarButtonItem(barManager1, "Nhập dannh sách từ file Exel");
+                var btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
+                var btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu CSGDNN");
+
+                btnLapDSTT.ItemClick += DropbtnDSTT_Click;
+                btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
+                btnImportXls.ItemClick += BtnLoadExel_Click;
+                btnExportXls.ItemClick += XuatDsTTTheoMauCSGDNN_ItemClick;
+                btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
+
+                popupMenuHoSo.AddItem(btnLapDSTT);
+                popupMenuHoSo.AddItem(btnSaveDSTT);
+                popupMenuHoSo.AddItem(btnImportXls);
+                popupMenuHoSo.AddItem(btnExportXls);
+                popupMenuHoSo.AddItem(btnDanhLaiMa);
+            }
+
+            dropbtnHoSo.DropDownControl = popupMenuHoSo;
+        }
+
+        private void XuatDSXTTheoMauDSDT_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
+            {
+                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
+                return;
+            }
+            Excel.Application app = null;
+            Excel.Workbook book = null;
+            Excel.Worksheet sheet = null;
+            Directory.CreateDirectory(TuDien.EXEL_FOLDER);
+            string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSDT.xlsx");
+            if (!File.Exists(filePath))
+            {
+                XtraMessageBox.Show($"Chưa có file mẫu!\n {filePath}");
+                return;
+            }
+
+            try
+            {
+                Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+                sfd.FileName = $"Danh sách dự tuyển đợt {dts}.xlsx";
+                sfd.DefaultExt = "xlsx";
+                sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
+                sfd.AddExtension = true;
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                sfd.CheckPathExists = true;
+
+                if (sfd.ShowDialog() == true)
+                {
+                    SplashScreenManager.ShowForm(typeof(F_Wait));
+                    app = new Excel.Application();
+                    book = app.Workbooks.Open(filePath);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.SaveAs(sfd.FileName);
+                    book = app.Workbooks.Open(sfd.FileName);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.Cells[5, 1] = $"DANH SÁCH HỌC SINH ĐĂNG KÝ DỰ TUYỂN ĐỢT {_Helper.ToIIVX(dts)}";
+                    sheet.Cells[6, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {Data._NamTS}-{Data._NamTS + 1}.";
+
+                    var lst = (List<HoSoDuTuyenView>)_bindingSource.DataSource;
+                    if (lst != null && lst.Count > 0)
+                    {
+                        object[,] export = new object[lst.Count, 13];
+                        for (int i = 0; i < lst.Count(); i++)
+                        {
+                            export[i, 0] = i + 1;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GT;
+                            export[i, 6] = lst[i].DiaChi;
+                            export[i, 7] = lst[i].HanhKiem == "Trung bình" ? "TB" : lst[i].HanhKiem;
+                            export[i, 8] = lst[i].XLTN == "Trung bình" ? "TB" : lst[i].XLTN;
+                            export[i, 9] = string.IsNullOrEmpty(lst[i].IdDTUT) ? string.Empty : Data.DsDoiTuongUT.First(x => x.Id.Equals(lst[i].IdDTUT)).Ma;
+                            export[i, 10] = string.IsNullOrEmpty(lst[i].IdKVUT) ? string.Empty : Data.DsKhuVucUT.First(x => x.Id.Equals(lst[i].IdKVUT)).Ma;
+                            export[i, 11] = Data.DsNghe.First(x => x.Id.Equals(lst[i].IdNgheDT1)).Ten;
+                            export[i, 12] = lst[i].GhiChu;
+                        }
+                        Excel.Range range = sheet.get_Range(sheet.Cells[9, 1], sheet.Cells[lst.Count + 8, 13]);
+                        range.set_Value(Missing.Value, export);
+                        range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                        Marshal.ReleaseComObject(range);
+                        range = null;
+
+                        sheet.Cells[lst.Count + 9, 1] = $"Tổng số: {lst.Count} thí sinh";
+                        Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + 9, 1], sheet.Cells[lst.Count + 9, 5]);
+                        range2.Merge();
+                        range2.Cells.Font.Bold = true;
+                        range2.Cells.Font.Italic = true;
+
+                        sheet.Columns.AutoFit();
+                    }
+
+                    book.Save();
+                    SplashScreenManager.CloseForm();
+                    XtraMessageBox.Show("Xuất file thành công!");
+                }
+            }
+            catch
+            {
+                SplashScreenManager.CloseForm();
+                if (book != null)
+                {
+                    book.Close();
+                    Marshal.ReleaseComObject(book);
+                }
+                if (app != null)
+                {
+                    app.Quit();
+                }
+                XtraMessageBox.Show("Có lỗi xảy ra!");
+            }
+            finally
+            {
+                if (app != null)
+                {
+                    app.Visible = true;
+                }
+            }
+        }
+        private void XuatDSXTTheoMauKQXT_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
+            {
+                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
+                return;
+            }
+            Excel.Application app = null;
+            Excel.Workbook book = null;
+            Excel.Worksheet sheet = null;
+            Directory.CreateDirectory(TuDien.EXEL_FOLDER);
+            string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "KQXT.xlsx");
+            if (!File.Exists(filePath))
+            {
+                XtraMessageBox.Show($"Chưa có file mẫu!\n {filePath}");
+                return;
+            }
+
+            try
+            {
+                Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+                sfd.FileName = $"Kết quả xét tuyển đợt {dts}.xlsx";
+                sfd.DefaultExt = "xlsx";
+                sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
+                sfd.AddExtension = true;
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                sfd.CheckPathExists = true;
+
+                if (sfd.ShowDialog() == true)
+                {
+                    SplashScreenManager.ShowForm(typeof(F_Wait));
+                    app = new Excel.Application();
+                    app.DisplayAlerts = false;
+                    book = app.Workbooks.Open(filePath);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.SaveAs(sfd.FileName);
+                    book = app.Workbooks.Open(sfd.FileName);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.Cells[5, 1] = $"DANH SÁCH HỌC SINH ĐĂNG KÝ DỰ TUYỂN ĐỢT {_Helper.ToIIVX(dts)}";
+                    sheet.Cells[6, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {Data._NamTS}-{Data._NamTS + 1}.";
+
+                    var lst = ((List<TongHopDiemXetTuyen>)_bindingSource.DataSource).OrderBy(x => x.MaHoSo).ToList();
+                    int slnghe = lst.DistinctBy(x => x.IdNgheNV1).Count();
+                    List<int> RowIndexs = new();
+                    if (lst != null && lst.Count() > 0)
+                    {
+                        object[,] export = new object[lst.Count() + slnghe, 13];
+                        string Last = string.Empty, Current = string.Empty;
+                        int sttnghe = 1, Index = 0, lstIndex = 0;
+                        while (lstIndex < lst.Count())
+                        {
+                            Current = Data.DsNghe.First(x => x.Id.Equals(lst[lstIndex].IdNgheNV1)).Ten;
+                            if (!Current.Equals(Last))
+                            {
+                                export[Index, 0] = $"        {_Helper.ToIIVX(sttnghe)}.Nghề: {Current}";
+                                RowIndexs.Add(Index + 1); sttnghe++; Index++;
+                            }
+                            else
+                            {
+                                export[Index, 0] = lstIndex + 1;
+                                export[Index, 1] = lst[lstIndex].MaHoSo;
+                                export[Index, 2] = lst[lstIndex].Ho;
+                                export[Index, 3] = lst[lstIndex].Ten;
+                                export[Index, 4] = lst[lstIndex].NgaySinh;
+                                export[Index, 5] = lst[lstIndex].GT;
+                                export[Index, 6] = lst[lstIndex].DiaChi;
+                                export[Index, 7] = lst[lstIndex].HanhKiem;
+                                export[Index, 8] = lst[lstIndex].XLTN;
+                                export[Index, 9] = lst[lstIndex].UTDT;
+                                export[Index, 10] = lst[lstIndex].UTKV;
+                                export[Index, 11] = lst[lstIndex].Tong;
+                                export[Index, 12] = lst[lstIndex].GhiChu;
+                                lstIndex++;
+                                Index++;
+                            }
+                            Last = Current;
+                        }
+                        Excel.Range range = sheet.get_Range(sheet.Cells[9, 1], sheet.Cells[lst.Count + slnghe + 8, 13]);
+                        range.set_Value(Missing.Value, export);
+                        range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+
+                        Marshal.ReleaseComObject(range);
+                        range = null;
+
+                        sheet.Cells[lst.Count + slnghe + 9, 1] = $"Tổng số: {lst.Count} thí sinh";
+                        Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + slnghe + 9, 1], sheet.Cells[lst.Count + slnghe + 9, 5]);
+                        range2.Merge();
+                        range2.Cells.Font.Bold = true;
+                        range2.Cells.Font.Italic = true;
+
+                        foreach (var r in RowIndexs)
+                        {
+                            sheet.get_Range(sheet.Cells[r + 8, 1], sheet.Cells[r + 8, 13]).Merge();
+                            sheet.get_Range(sheet.Cells[r + 8, 1], sheet.Cells[r + 8, 13]).Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+                        }
+                        sheet.Columns.AutoFit();
+                    }
+                    book.Save();
+                    SplashScreenManager.CloseForm();
+                    XtraMessageBox.Show("Xuất file thành công!");
+                }
+            }
+            catch
+            {
+                SplashScreenManager.CloseForm();
+                if (book != null)
+                {
+                    book.Close();
+                    Marshal.ReleaseComObject(book);
+                }
+                if (app != null)
+                {
+                    app.Quit();
+                }
+                XtraMessageBox.Show("Có lỗi xảy ra!");
+            }
+            finally
+            {
+                if (app != null)
+                {
+                    app.Visible = true;
+                }
+            }
         }
 
         private void BtnDanhLaiMa_ItemClick(object sender, ItemClickEventArgs e)
@@ -538,14 +792,21 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void BtnExportXls_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatDsTTTheoMauCSGDNN_ItemClick(object sender, ItemClickEventArgs e)
         {
             Excel.Application app = null;
             Excel.Workbook book = null;
             Excel.Worksheet sheet = null;
             try
             {
-                string filePath = System.IO.Path.Combine(Environment.CurrentDirectory, "SLTT.xlsx");
+
+                Directory.CreateDirectory(TuDien.EXEL_FOLDER);
+                string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "SLTT.xlsx");
+                if (!File.Exists(filePath))
+                {
+                    XtraMessageBox.Show($"Chưa có file mẫu!\n {filePath}");
+                    return;
+                }
                 Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
                 sfd.FileName = "Số_liệu_thí_sinh_trúng_tuyển.xlsx";
                 sfd.DefaultExt = "xlsx";
@@ -557,51 +818,50 @@ namespace QuanLyTuyenSinh.Form
                 if (sfd.ShowDialog() == true)
                 {
                     SplashScreenManager.ShowForm(typeof(F_Wait));
-
                     app = new Excel.Application();
                     book = app.Workbooks.Open(filePath);
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
                     sheet.SaveAs(sfd.FileName);
                     book = app.Workbooks.Open(sfd.FileName);
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
-                    var lstHSTT = (List<HoSoTrungTuyen>)_bindingSource.DataSource;
+                    var lst = (List<HoSoTrungTuyen>)_bindingSource.DataSource;
                     var lstTinh = _Helper.getListProvince();
-                    if (lstHSTT != null && lstHSTT.Count > 0)
+                    if (lst != null && lst.Count > 0)
                     {
-                        object[,] export = new object[lstHSTT.Count, 27];
-                        for (int i = 0; i < lstHSTT.Count; i++)
+                        object[,] export = new object[lst.Count, 27];
+                        for (int i = 0; i < lst.Count; i++)
                         {
                             export[i, 0] = i + 1;
-                            export[i, 1] = lstHSTT[i].MaHoSo;
-                            export[i, 2] = $"{lstHSTT[i].Ho} {lstHSTT[i].Ten}";
-                            export[i, 3] = lstHSTT[i].NgaySinh;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = $"{lst[i].Ho} {lst[i].Ten}";
+                            export[i, 3] = lst[i].NgaySinh;
                             export[i, 4] = string.Empty;
-                            export[i, 5] = lstHSTT[i].GioiTinh ? "Nam" : "Nữ";
-                            export[i, 6] = lstHSTT[i].NoiSinh;
+                            export[i, 5] = lst[i].GioiTinh ? "Nam" : "Nữ";
+                            export[i, 6] = lst[i].NoiSinh;
                             export[i, 7] = string.Empty;
-                            export[i, 8] = lstHSTT[i].DiaChi;
-                            export[i, 9] = lstTinh.First(x => x.AdressCode.Equals(lstHSTT[i].MaTinh)).AdressName;
+                            export[i, 8] = lst[i].DiaChi;
+                            export[i, 9] = lstTinh.First(x => x.AdressCode.Equals(lst[i].MaTinh)).AdressName;
                             export[i, 10] = string.Empty;
-                            var lsthuyen = _Helper.getListDistrict(lstHSTT[i].MaTinh);
-                            export[i, 11] = lsthuyen.First(x => x.AdressCode.Equals(lstHSTT[i].MaHuyen)).AdressName;
+                            var lsthuyen = _Helper.getListDistrict(lst[i].MaTinh);
+                            export[i, 11] = lsthuyen.First(x => x.AdressCode.Equals(lst[i].MaHuyen)).AdressName;
                             export[i, 12] = string.Empty;
-                            var lstxa = _Helper.getListWards(lstHSTT[i].MaHuyen);
-                            export[i, 13] = lstxa.First(x => x.AdressCode.Equals(lstHSTT[i].MaXa)).AdressName;
+                            var lstxa = _Helper.getListWards(lst[i].MaHuyen);
+                            export[i, 13] = lstxa.First(x => x.AdressCode.Equals(lst[i].MaXa)).AdressName;
                             export[i, 14] = string.Empty;
-                            export[i, 15] = lstHSTT[i].CCCD;
-                            export[i, 16] = Data.DsDanToc.First(x => x.Id.Equals(lstHSTT[i].IdDanToc)).Ten;
+                            export[i, 15] = lst[i].CCCD;
+                            export[i, 16] = Data.DsDanToc.First(x => x.Id.Equals(lst[i].IdDanToc)).Ten;
                             export[i, 17] = string.Empty;
-                            export[i, 18] = Data.DsTonGiao.First(x => x.Id.Equals(lstHSTT[i].IdTonGiao)).Ten;
+                            export[i, 18] = Data.DsTonGiao.First(x => x.Id.Equals(lst[i].IdTonGiao)).Ten;
                             export[i, 19] = string.Empty;
-                            export[i, 20] = Data.DsQuocTich.First(x => x.Id.Equals(lstHSTT[i].IdQuocTich)).Ten;
+                            export[i, 20] = Data.DsQuocTich.First(x => x.Id.Equals(lst[i].IdQuocTich)).Ten;
                             export[i, 21] = string.Empty;
-                            export[i, 22] = lstHSTT[i].SDT;
-                            export[i, 23] = lstHSTT[i].Email;
-                            export[i, 24] = Data.DsTrinhDo.First(x => x.Id == lstHSTT[i].IdTrinhDoVH).Ten;
+                            export[i, 22] = lst[i].SDT;
+                            export[i, 23] = lst[i].Email;
+                            export[i, 24] = Data.DsTrinhDo.First(x => x.Id == lst[i].IdTrinhDoVH).Ten;
                             export[i, 25] = string.Empty;
-                            export[i, 26] = lstHSTT[i].HTDT;
+                            export[i, 26] = lst[i].HTDT;
                         }
-                        Excel.Range range = sheet.get_Range(sheet.Cells[4, 1], sheet.Cells[lstHSTT.Count + 4, 27]);
+                        Excel.Range range = sheet.get_Range(sheet.Cells[4, 1], sheet.Cells[lst.Count + 4, 27]);
                         range.set_Value(Missing.Value, export);
                         Marshal.ReleaseComObject(range);
                         range = null;
@@ -775,7 +1035,7 @@ namespace QuanLyTuyenSinh.Form
                 default: break;
             }
             gridControl.DataSource = _bindingSource;
-
+            LoadbtnDropDS();
             if (TenDm.Equals(TuDien.CategoryName.TruongHoc))
             {
                 var colLoaiTruong = gridView.Columns.ColumnByFieldName("LoaiTruong");
@@ -824,6 +1084,8 @@ namespace QuanLyTuyenSinh.Form
                 }
                 var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
                 if (colDotTS != null) colDotTS.Group();
+                var colNghe = TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen) ? gridView.Columns.ColumnByFieldName("IdNgheDT1") : gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen");
+                if (colNghe != null) colNghe.Group();
             }
             if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyen))
             {
@@ -842,7 +1104,7 @@ namespace QuanLyTuyenSinh.Form
             panelTDHV.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 155 : 0;
             chkKhongTT.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
             panelFilter.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
-            dropbtnDSTT.Width = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? 185 : 0;
+            dropbtnHoSo.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 145 : 0;
             FocusRowGrid();
             ShowTotalFooter();
             panelGrid.BringToFront();

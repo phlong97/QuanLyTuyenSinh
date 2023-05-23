@@ -147,7 +147,7 @@ namespace QuanLyTuyenSinh
             {
                 newUser.Permissons = userPer;
             }
-            Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory,TuDien.JSON_FOLDER_PATH));
+            Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, TuDien.JSON_FOLDER_PATH));
             _Helper.SaveToJson(DsUser, TuDien.DbName.User);
 
             return true;
@@ -352,10 +352,10 @@ namespace QuanLyTuyenSinh
             DsTT.Clear();
             DsKhongTT.Clear();
             var HSDT_THCS = DSHoSoDT.Where(
-                hs => (DotTS == 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals("THCS")).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
+                hs => hs.DotTS.Equals(DotTS) && hs.TDHV.Equals("THCS")).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
                 .ToList();
             var HSDT_THPT = DSHoSoDT.Where(
-                hs => (DotTS == 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals("THPT")).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
+                hs => hs.DotTS.Equals(DotTS) && hs.TDHV.Equals("THPT")).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
                 .ToList();
 
             foreach (var ct in DsChiTieu)
@@ -380,14 +380,20 @@ namespace QuanLyTuyenSinh
                         }
                         else
                         {
-                            DsTT.AddRange(lstHSTT_THPT.GetRange(0, ctmax - sl - lstHSTT_THCS.Count()));
-                            DsKhongTT.AddRange(lstHSTT_THPT.GetRange(ctmax - sl - lstHSTT_THCS.Count(), lstHSTT_THPT.Count() - 1));
+                            if (ctmax - sl - lstHSTT_THCS.Count() > 0)
+                            {
+                                DsTT.AddRange(lstHSTT_THPT.GetRange(0, ctmax - sl - lstHSTT_THCS.Count()));
+                                if (lstHSTT_THPT.Count() > 0)
+                                    DsKhongTT.AddRange(lstHSTT_THPT.GetRange(ctmax - sl - lstHSTT_THCS.Count(), lstHSTT_THPT.Count() - 1));
+                            }
+
                         }
                     }
                     else
                     {
                         DsTT.AddRange(lstHSTT_THCS.GetRange(0, ctmax - sl));
-                        DsKhongTT.AddRange(lstHSTT_THPT.GetRange(ctmax - sl, lstHSTT_THPT.Count() - 1));
+                        if (lstHSTT_THPT.Count() > 0)
+                            DsKhongTT.AddRange(lstHSTT_THPT.GetRange(ctmax - sl, lstHSTT_THPT.Count() - 1));
                     }
                 }
             }

@@ -59,7 +59,7 @@
             gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
             btnExel = new DevExpress.XtraEditors.SimpleButton();
-            dropbtnDSTT = new DevExpress.XtraEditors.DropDownButton();
+            dropbtnHoSo = new DevExpress.XtraEditors.DropDownButton();
             btnLapChiTieu = new DevExpress.XtraEditors.SimpleButton();
             btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             btnClose = new DevExpress.XtraEditors.SimpleButton();
@@ -353,7 +353,7 @@
             // panelControl2
             // 
             panelControl2.Controls.Add(btnExel);
-            panelControl2.Controls.Add(dropbtnDSTT);
+            panelControl2.Controls.Add(dropbtnHoSo);
             panelControl2.Controls.Add(btnLapChiTieu);
             panelControl2.Controls.Add(btnRefresh);
             panelControl2.Controls.Add(btnClose);
@@ -372,26 +372,26 @@
             btnExel.Appearance.Options.UseFont = true;
             btnExel.Dock = DockStyle.Left;
             btnExel.ImageOptions.Image = (Image)resources.GetObject("btnExel.ImageOptions.Image");
-            btnExel.Location = new Point(651, 2);
+            btnExel.Location = new Point(585, 2);
             btnExel.Margin = new Padding(0);
             btnExel.Name = "btnExel";
             btnExel.Size = new Size(137, 20);
             btnExel.TabIndex = 31;
             btnExel.Text = "Xuất file Exel";
             // 
-            // dropbtnDSTT
+            // dropbtnHoSo
             // 
-            dropbtnDSTT.Appearance.BackColor = Color.WhiteSmoke;
-            dropbtnDSTT.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
-            dropbtnDSTT.Appearance.Options.UseBackColor = true;
-            dropbtnDSTT.Appearance.Options.UseFont = true;
-            dropbtnDSTT.Dock = DockStyle.Left;
-            dropbtnDSTT.ImageOptions.Image = (Image)resources.GetObject("dropbtnDSTT.ImageOptions.Image");
-            dropbtnDSTT.Location = new Point(440, 2);
-            dropbtnDSTT.Name = "dropbtnDSTT";
-            dropbtnDSTT.Size = new Size(211, 20);
-            dropbtnDSTT.TabIndex = 33;
-            dropbtnDSTT.Text = "Lập DS trúng tuyển";
+            dropbtnHoSo.Appearance.BackColor = Color.WhiteSmoke;
+            dropbtnHoSo.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            dropbtnHoSo.Appearance.Options.UseBackColor = true;
+            dropbtnHoSo.Appearance.Options.UseFont = true;
+            dropbtnHoSo.Dock = DockStyle.Left;
+            dropbtnHoSo.ImageOptions.Image = (Image)resources.GetObject("dropbtnHoSo.ImageOptions.Image");
+            dropbtnHoSo.Location = new Point(440, 2);
+            dropbtnHoSo.Name = "dropbtnHoSo";
+            dropbtnHoSo.Size = new Size(145, 20);
+            dropbtnHoSo.TabIndex = 33;
+            dropbtnHoSo.Text = "Xử lý hồ sơ";
             // 
             // btnLapChiTieu
             // 
@@ -843,7 +843,7 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraEditors.SimpleButton btnExel;
-        private DevExpress.XtraEditors.DropDownButton dropbtnDSTT;
+        private DevExpress.XtraEditors.DropDownButton dropbtnHoSo;
         private DevExpress.XtraEditors.SimpleButton btnLapChiTieu;
         private DevExpress.XtraEditors.SimpleButton btnRefresh;
         private DevExpress.XtraEditors.SimpleButton btnClose;

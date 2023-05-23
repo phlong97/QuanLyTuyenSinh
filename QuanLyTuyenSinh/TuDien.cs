@@ -6,6 +6,7 @@ namespace QuanLyTuyenSinh
     {
         public const string JSON_FOLDER_PATH = "Data";
         public static string IMG_FOLDER = Path.Combine(Application.StartupPath, JSON_FOLDER_PATH, "Img");
+        public static string EXEL_FOLDER = Path.Combine(Application.StartupPath, "Mau_Exel");
 
         public static class CategoryName
         {
