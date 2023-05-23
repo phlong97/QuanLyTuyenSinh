@@ -343,6 +343,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void F_TK_Load(object sender, EventArgs e)
         {
+            MinimumSize = Size;
             LoadMenuTK();
             LoadComboBoxDTS();
             gridView.CustomDrawCell += HighlightTotal;

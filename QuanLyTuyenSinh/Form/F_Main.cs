@@ -515,22 +515,126 @@ namespace QuanLyTuyenSinh.Form
                 var btnSaveDSTT = new BarButtonItem(barManager1, "Lưu lại ds trúng tuyển");
                 var btnImportXls = new BarButtonItem(barManager1, "Nhập dannh sách từ file Exel");
                 var btnDanhLaiMa = new BarButtonItem(barManager1, "Lập lại mã hồ sơ");
+                var btnExportXls2 = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu DSTT");
                 var btnExportXls = new BarButtonItem(barManager1, "Xuất file Exel theo mẫu CSGDNN");
 
                 btnLapDSTT.ItemClick += DropbtnDSTT_Click;
                 btnSaveDSTT.ItemClick += BtnSaveDSTT_ItemClick;
                 btnImportXls.ItemClick += BtnLoadExel_Click;
+                btnExportXls2.ItemClick += XuatExelTheoMauDSTT_ItemClick; ;
                 btnExportXls.ItemClick += XuatDsTTTheoMauCSGDNN_ItemClick;
                 btnDanhLaiMa.ItemClick += BtnDanhLaiMa_ItemClick;
 
                 popupMenuHoSo.AddItem(btnLapDSTT);
                 popupMenuHoSo.AddItem(btnSaveDSTT);
                 popupMenuHoSo.AddItem(btnImportXls);
+                popupMenuHoSo.AddItem(btnExportXls2);
                 popupMenuHoSo.AddItem(btnExportXls);
                 popupMenuHoSo.AddItem(btnDanhLaiMa);
             }
 
             dropbtnHoSo.DropDownControl = popupMenuHoSo;
+        }
+
+        private void XuatExelTheoMauDSTT_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
+            {
+                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
+                return;
+            }
+            Excel.Application app = null;
+            Excel.Workbook book = null;
+            Excel.Worksheet sheet = null;
+            Directory.CreateDirectory(TuDien.EXEL_FOLDER);
+            string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSTT.xlsx");
+            if (!File.Exists(filePath))
+            {
+                XtraMessageBox.Show($"Chưa có file mẫu!\n {filePath}");
+                return;
+            }
+
+            try
+            {
+                Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+                sfd.FileName = $"Danh sách trúng tuyển đợt {dts}.xlsx";
+                sfd.DefaultExt = "xlsx";
+                sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
+                sfd.AddExtension = true;
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                sfd.CheckPathExists = true;
+
+                if (sfd.ShowDialog() == true)
+                {
+                    SplashScreenManager.ShowForm(typeof(F_Wait));
+                    app = new Excel.Application();
+                    book = app.Workbooks.Open(filePath);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.SaveAs(sfd.FileName);
+                    book = app.Workbooks.Open(sfd.FileName);
+                    sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
+                    sheet.Cells[4, 1] = $"DANH SÁCH HỌC SINH TRÚNG TUYỂN ĐỢT {_Helper.ToIIVX(dts)}";
+                    sheet.Cells[5, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {Data._NamTS}-{Data._NamTS + 1}.";
+
+                    var lst = (List<HoSoTrungTuyen>)_bindingSource.DataSource;
+                    if (lst != null && lst.Count > 0)
+                    {
+                        object[,] export = new object[lst.Count, 10];
+                        for (int i = 0; i < lst.Count(); i++)
+                        {
+                            export[i, 0] = i + 1;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GioiTinh ? "Nam" : "Nữ";
+                            export[i, 6] = lst[i].DiaChi;
+                            export[i, 7] = lst[i].TongDXT;
+                            export[i, 8] = Data.DsNghe.First(x => x.Id.Equals(lst[i].IdNgheTrungTuyen)).Ten;
+                            export[i, 9] = lst[i].GhiChu;
+                        }
+                        Excel.Range range = sheet.get_Range(sheet.Cells[9, 1], sheet.Cells[lst.Count + 8, 10]);
+                        range.set_Value(Missing.Value, export);
+                        range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                        Marshal.ReleaseComObject(range);
+                        range = null;
+
+                        sheet.Cells[lst.Count + 9, 1] = $"Tổng số: {lst.Count} thí sinh";
+                        Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + 9, 1], sheet.Cells[lst.Count + 9, 5]);
+                        range2.Merge();
+                        range2.Cells.Font.Bold = true;
+                        range2.Cells.Font.Italic = true;
+
+                        sheet.Columns.AutoFit();
+                    }
+
+                    book.Save();
+                    SplashScreenManager.CloseForm();
+                    XtraMessageBox.Show("Xuất file thành công!");
+                }
+            }
+            catch
+            {
+                SplashScreenManager.CloseForm();
+                if (book != null)
+                {
+                    book.Close();
+                    Marshal.ReleaseComObject(book);
+                }
+                if (app != null)
+                {
+                    app.Quit();
+                }
+                XtraMessageBox.Show("Có lỗi xảy ra!");
+            }
+            finally
+            {
+                if (app != null)
+                {
+                    app.Visible = true;
+                }
+            }
         }
 
         private void XuatDSXTTheoMauDSDT_ItemClick(object sender, ItemClickEventArgs e)
@@ -794,6 +898,12 @@ namespace QuanLyTuyenSinh.Form
         }
         private void XuatDsTTTheoMauCSGDNN_ItemClick(object sender, ItemClickEventArgs e)
         {
+            int dts = cbbDTS.SelectedIndex;
+            if (dts <= 0)
+            {
+                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
+                return;
+            }
             Excel.Application app = null;
             Excel.Workbook book = null;
             Excel.Worksheet sheet = null;
@@ -1096,8 +1206,9 @@ namespace QuanLyTuyenSinh.Form
             }
 
             panelGrid.RowStyles[1].Height = TenDm.StartsWith("HS") || TenDm.StartsWith("TK") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 40 : 0;
-            btnAdd.Enabled = (TenDm.Equals(TuDien.CategoryName.ChiTieu) || TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen)) ? false : true;
-            btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? false : true;
+            btnAdd.Enabled = (TenDm.Equals(TuDien.CategoryName.ChiTieu) || TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen)) || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? false : true;
+            btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? false : true;
+            btnDelete.Enabled = TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieu) ? 110 : 0;
             _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 220;
             panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 180 : 0;
@@ -1263,7 +1374,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void GridViewInit()
         {
-            gridView.IndicatorWidth = 55;
+            gridView.IndicatorWidth = 35;
             gridView.OptionsCustomization.AllowColumnMoving = false;
             gridView.OptionsCustomization.AllowMergedGrouping = DevExpress.Utils.DefaultBoolean.True;
             gridView.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.False;
