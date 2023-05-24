@@ -66,6 +66,7 @@ namespace QuanLyTuyenSinh.Form
         private void F_HoSo_Shown(object? sender, EventArgs e)
         {
             Thread.Sleep(100);
+
             gridView1.CellValueChanged += GridView1_CellValueChanged;
             btnSaveAndClose.ItemClick += btnSaveCloseHS_Click;
             btnSaveAndNew.ItemClick += btnSaveNewHS_Click;
@@ -102,6 +103,12 @@ namespace QuanLyTuyenSinh.Form
                 }
                 catch { }
             }
+            else
+            {
+                Anh.Image = null;
+                Anh.EditValue = null;
+            }
+
         }
 
         private void SaveAnh()
@@ -112,8 +119,9 @@ namespace QuanLyTuyenSinh.Form
                 _hoSo.Anh = string.Empty;
                 return;
             }
-            else if (!string.IsNullOrEmpty(Anh.GetLoadedImageLocation()))
+            else if (!string.IsNullOrEmpty(Anh.GetLoadedImageLocation()) && Anh.Image != null)
             {
+
                 string path = Path.Combine(TuDien.IMG_FOLDER, _hoSo.NamTS.ToString(), _hoSo.DotTS.ToString());
                 Directory.CreateDirectory(path);
                 string filePath = Path.Combine(path, _hoSo.MaHoSo);
