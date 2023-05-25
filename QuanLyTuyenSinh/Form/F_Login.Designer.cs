@@ -147,7 +147,7 @@
             // 
             // txtName
             // 
-            txtName.EditValue = "admin";
+            txtName.EditValue = "";
             txtName.Location = new Point(77, 311);
             txtName.Margin = new Padding(2);
             txtName.Name = "txtName";
@@ -191,8 +191,8 @@
             // 
             // txtPass
             // 
-            txtPass.EditValue = "1";
-            txtPass.Location = new Point(77, 357);
+            txtPass.EditValue = "";
+            txtPass.Location = new Point(77, 353);
             txtPass.Margin = new Padding(2);
             txtPass.Name = "txtPass";
             txtPass.Properties.Appearance.Font = new Font("Bahnschrift Light", 12F, FontStyle.Regular, GraphicsUnit.Point);

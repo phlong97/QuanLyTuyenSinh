@@ -46,5 +46,14 @@ namespace QuanLyTuyenSinh.Properties {
                 this["UserName"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DbDirectory {
+            get {
+                return ((string)(this["DbDirectory"]));
+            }
+        }
     }
 }

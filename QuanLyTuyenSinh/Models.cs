@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace QuanLyTuyenSinh
 {
-    public class BaseClass
+    public abstract class BaseClass
     {
         [Display(AutoGenerateField = false)]
         public string Id { get; set; }
@@ -15,9 +15,15 @@ namespace QuanLyTuyenSinh
         {
             Id = ObjectId.NewObjectId().ToString();
         }
+
+    }
+    public abstract class DBClass : BaseClass
+    {
+        public abstract bool Save();
+        public abstract bool Delete();
     }
 
-    public class HoSoDuTuyen : BaseClass
+    public class HoSoDuTuyen : DBClass
     {
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -427,48 +433,49 @@ namespace QuanLyTuyenSinh
             return hs;
         }
 
-        public HoSoDuTuyenView ToView()
+        public HoSoDuTuyenView ToView() => new HoSoDuTuyenView
         {
-            return new HoSoDuTuyenView
-            {
-                Id = Id,
-                MaHoSo = MaHoSo,
-                Ho = Ho,
-                Ten = Ten,
-                NgaySinh = NgaySinh,
-                GT = GioiTinh ? "Nam" : "Nữ",
-                HanhKiem = HanhKiem,
-                XLTN = XLTN,
-                XLHT = XLHocTap,
-                IdDTUT = IdDTUT,
-                IdKVUT = IdKVUT,
-                IdNgheDT1 = DsNguyenVong.First().IdNghe,
-                IdNgheDT2 = DsNguyenVong.FirstOrDefault(x => x.NV == 2) != null ? DsNguyenVong.First(x => x.NV == 2).IdNghe : string.Empty,
-                GhiChu = GhiChu,
-                IdTruong = IdTruong,
-                Lop = Lop,
-                NamTN = NamTN,
-                HoTenCha = HoTenCha,
-                NamSinhCha = NamSinhCha,
-                HoTenMe = HoTenMe,
-                NamSinhMe = NamSinhMe,
-                NoiSinh = NoiSinh,
-                DiaChi = DiaChi,
-                CCCD = CCCD,
-                BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
-                GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
-                GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
-                GiayKhaiSinh = KiemTraHS.GiayKhaiSinh ? "X" : string.Empty,
-                GKSK = KiemTraHS.GKSK ? "X" : string.Empty,
-                HinhThe = KiemTraHS.HinhThe ? "X" : string.Empty,
-                HocBa = KiemTraHS.HocBa ? "X" : string.Empty,
-                PhieuDKDT = KiemTraHS.PhieuDKDT ? "X" : string.Empty,
-                CCCDX = KiemTraHS.CCCD ? "X" : string.Empty,
-                SDT = SDT,
-                NamTS = NamTS,
-                DotTS = DotTS,
-            };
-        }
+            Id = Id,
+            MaHoSo = MaHoSo,
+            Ho = Ho,
+            Ten = Ten,
+            NgaySinh = NgaySinh,
+            GT = GioiTinh ? "Nam" : "Nữ",
+            HanhKiem = HanhKiem,
+            XLTN = XLTN,
+            XLHT = XLHocTap,
+            IdDTUT = IdDTUT,
+            IdKVUT = IdKVUT,
+            IdNgheDT1 = DsNguyenVong.First().IdNghe,
+            IdNgheDT2 = DsNguyenVong.FirstOrDefault(x => x.NV == 2) != null ? DsNguyenVong.First(x => x.NV == 2).IdNghe : string.Empty,
+            GhiChu = GhiChu,
+            IdTruong = IdTruong,
+            Lop = Lop,
+            NamTN = NamTN,
+            HoTenCha = HoTenCha,
+            NamSinhCha = NamSinhCha,
+            HoTenMe = HoTenMe,
+            NamSinhMe = NamSinhMe,
+            NoiSinh = NoiSinh,
+            DiaChi = DiaChi,
+            CCCD = CCCD,
+            BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
+            GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
+            GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
+            GiayKhaiSinh = KiemTraHS.GiayKhaiSinh ? "X" : string.Empty,
+            GKSK = KiemTraHS.GKSK ? "X" : string.Empty,
+            HinhThe = KiemTraHS.HinhThe ? "X" : string.Empty,
+            HocBa = KiemTraHS.HocBa ? "X" : string.Empty,
+            PhieuDKDT = KiemTraHS.PhieuDKDT ? "X" : string.Empty,
+            CCCDX = KiemTraHS.CCCD ? "X" : string.Empty,
+            SDT = SDT,
+            NamTS = NamTS,
+            DotTS = DotTS,
+        };
+
+        public override bool Save() => _LiteDb.Upsert(this);
+
+        public override bool Delete() => _LiteDb.Delete(this);
     }
 
     public class HoSoDuTuyenView : BaseClass
@@ -657,7 +664,7 @@ namespace QuanLyTuyenSinh
         public int Tong => SLNV1 + SLNV2;
     }
 
-    public class HoSoTrungTuyen : BaseClass
+    public class HoSoTrungTuyen : DBClass
     {
         [Display(AutoGenerateField = false)]
         public string IdHSDT { get; set; }
@@ -772,6 +779,10 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "KVƯT")]
         public string IdKVUT { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
     public class THSLTTTheoNghe
@@ -825,7 +836,7 @@ namespace QuanLyTuyenSinh
         public string GhiChu { get; set; }
     }
 
-    public class DotXetTuyen : BaseClass
+    public class DotXetTuyen : DBClass
     {
         [Display(Name = "Mã đọt")]
         [Required(ErrorMessage = "Chưa nhập mã")]
@@ -848,9 +859,13 @@ namespace QuanLyTuyenSinh
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "dd/MM/yyyy")]
         [Required(ErrorMessage = "Chưa nhập ngày kết thúc")]
         public DateTime DenNgay { get; set; } = new DateTime(Data._NamTS, 1, 30);
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class ChiTieuXetTuyen : BaseClass
+    public class ChiTieuXetTuyenView : DBClass
     {
         [Display(AutoGenerateField = false)]
         public int Nam { get; set; } = Data._NamTS;
@@ -887,9 +902,40 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Điểm trúng tuyển THPT")]
         public double DiemTTTHPT { get; set; } = 5;
+        public ChiTieuXetTuyen ToCTXT() => new ChiTieuXetTuyen
+        {
+            Id = Id,
+            Nam = Nam,
+            ChiTieu = ChiTieu,
+            DiemTTTHCS = DiemTTTHCS,
+            DiemTTTHPT = DiemTTTHPT,
+            IdNghe = IdNghe,
+        };
+
+        public override bool Save() => _LiteDb.Upsert(this.ToCTXT());
+
+        public override bool Delete() => _LiteDb.Delete(this.ToCTXT());
     }
 
-    public class Nghe : BaseClass
+    public class ChiTieuXetTuyen : BaseClass
+    {
+        public int Nam { get; set; } = Data._NamTS;
+        public string IdNghe { get; set; }
+        public int ChiTieu { get; set; }
+        public double DiemTTTHCS { get; set; } = 5;
+        public double DiemTTTHPT { get; set; } = 5;
+        public ChiTieuXetTuyenView ToCTXT() => new ChiTieuXetTuyenView
+        {
+            Id = Id,
+            Nam = Nam,
+            IdNghe = IdNghe,
+            ChiTieu = ChiTieu,
+            DiemTTTHCS = DiemTTTHCS,
+            DiemTTTHPT = DiemTTTHPT,
+        };
+    }
+
+    public class Nghe : DBClass
     {
         [Display(Name = "Mã nghề")]
         [Required(ErrorMessage = "Chưa nhập mã nghề nghiệp")]
@@ -906,9 +952,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class Truong : BaseClass
+    public class Truong : DBClass
     {
         [Display(Name = "Mã trường")]
         [Required(ErrorMessage = "Chưa nhập mã trường")]
@@ -924,9 +974,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class KhuVucUT : BaseClass
+    public class KhuVucUT : DBClass
     {
         [Display(Name = "Mã khu vực")]
         [Required(ErrorMessage = "Chưa nhập mã khu vực")]
@@ -941,9 +995,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class DoiTuongUT : BaseClass
+    public class DoiTuongUT : DBClass
     {
         [Display(Name = "Mã đối tượng")]
         [Required(ErrorMessage = "Chưa nhập mã đối tượng")]
@@ -958,9 +1016,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class DanToc : BaseClass
+    public class DanToc : DBClass
     {
         [Display(Name = "Mã dân tộc")]
         [Required(ErrorMessage = "Chưa nhập mã dân tộc")]
@@ -972,9 +1034,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class TonGiao : BaseClass
+    public class TonGiao : DBClass
     {
         [Display(Name = "Mã tôn giáo")]
         [Required(ErrorMessage = "Chưa nhập mã tôn giáo")]
@@ -986,9 +1052,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class QuocTich : BaseClass
+    public class QuocTich : DBClass
     {
         [Display(Name = "Mã quốc tịch")]
         [Required(ErrorMessage = "Chưa nhập mã quốc tịch")]
@@ -1000,9 +1070,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class TrinhDo : BaseClass
+    public class TrinhDo : DBClass
     {
         [Display(Name = "Mã trình độ")]
         [Required(ErrorMessage = "Chưa nhập mã trình độ")]
@@ -1014,9 +1088,13 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class User : BaseClass
+    public class User : DBClass
     {
         [Display(Name = "Tên đăng nhập")]
         [Required(ErrorMessage = "Chưa nhập tên đăng nhập")]
@@ -1030,11 +1108,15 @@ namespace QuanLyTuyenSinh
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
         public string Permissons { get; set; }
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
     #region Settings
 
-    public class CaiDat
+    public class CaiDat : DBClass
     {
         public string TENTRUONG { get; set; } = "Trường trung cấp nghề Vạn Ninh";
         public double CHITIEUVUOTMUC { get; set; } = 0.1;
@@ -1046,6 +1128,10 @@ namespace QuanLyTuyenSinh
         public XLHT_THPT XLHT_THPT { get; set; } = new();
         public string MaTinh { get; set; } = "511";
         public string MaHuyen { get; set; } = "51103";
+
+        public override bool Delete() => _LiteDb.Delete(this);
+
+        public override bool Save() => _LiteDb.Upsert(this);
     }
 
     public class HANH_KIEM_THCS

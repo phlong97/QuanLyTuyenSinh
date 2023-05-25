@@ -51,14 +51,14 @@ namespace QuanLyTuyenSinh.Form
             if (user != null)
             {
                 Hide();
-                SplashScreenManager.ShowForm(this,typeof(F_Wait));
+                SplashScreenManager.ShowForm(this, typeof(F_Wait));
                 Data.CurrUser = user;
                 Properties.Settings.Default.NamTS = (int)spinNam.Value;
                 Properties.Settings.Default.UserName = txtName.Text;
                 Properties.Settings.Default.Save();
                 Task.Run(() =>
                 {
-                    Data.LoadStaticList();
+                    Data.LoadStaticList2();
                 });
                 MainWorkspace.FormMain = new F_Main();
                 MainWorkspace.FormMain.FormClosed += FormMain_FormClosed;

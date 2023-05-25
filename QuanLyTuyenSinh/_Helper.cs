@@ -104,9 +104,11 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="ProvinceCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListDistrict(string ProvinceCode)
+        public static List<Adress> getListDistrict(object ProvinceCode)
         {
             List<Adress> lstReturn = new List<Adress>();
+            if (ProvinceCode == null) return lstReturn;
+            string code = ProvinceCode.ToString();
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Huyen);
             var nodes = doc.GetElementsByTagName("Item");
@@ -122,7 +124,7 @@ namespace QuanLyTuyenSinh
                     if (attribute != null)
                     {
                         string[] result = attribute.Value.Split("###");
-                        if (!string.IsNullOrEmpty(ProvinceCode) && result[2].StartsWith(ProvinceCode))
+                        if (!string.IsNullOrEmpty(code) && result[2].StartsWith(code))
                         {
                             lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
                         }
@@ -139,10 +141,11 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="DistrictCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListWards(string DistrictCode)
+        public static List<Adress> getListWards(object DistrictCode)
         {
             List<Adress> lstReturn = new List<Adress>();
-
+            if (DistrictCode == null) return lstReturn;
+            string code = DistrictCode.ToString();
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Xa);
             var nodes = doc.GetElementsByTagName("Item");
@@ -158,7 +161,7 @@ namespace QuanLyTuyenSinh
                     if (attribute != null)
                     {
                         string[] result = attribute.Value.Split("###");
-                        if (!string.IsNullOrEmpty(DistrictCode) && result[3].StartsWith(DistrictCode))
+                        if (!string.IsNullOrEmpty(code) && result[3].StartsWith(code))
                         {
                             lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
                         }

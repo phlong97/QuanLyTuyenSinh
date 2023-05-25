@@ -4,6 +4,7 @@ namespace QuanLyTuyenSinh
 {
     internal static class TuDien
     {
+        public const string LITEDB_DATABASE = "database.db";
         public const string JSON_FOLDER_PATH = "Data";
         public static string IMG_FOLDER = Path.Combine(Application.StartupPath, JSON_FOLDER_PATH, "Img");
         public static string EXEL_FOLDER = Path.Combine(Application.StartupPath, "Mau_Exel");

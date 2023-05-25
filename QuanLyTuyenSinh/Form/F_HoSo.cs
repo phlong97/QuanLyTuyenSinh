@@ -66,12 +66,12 @@ namespace QuanLyTuyenSinh.Form
         private void F_HoSo_Shown(object? sender, EventArgs e)
         {
             Thread.Sleep(100);
-
-            gridView1.CellValueChanged += GridView1_CellValueChanged;
             btnSaveAndClose.ItemClick += btnSaveCloseHS_Click;
             btnSaveAndNew.ItemClick += btnSaveNewHS_Click;
             txtHo.TextChanged += TxtHo_TextChanged;
             txtTen.TextChanged += TxtTen_TextChanged;
+            txtTenCha.TextChanged += TxtTenCha_TextChanged;
+            txtTenMe.TextChanged += TxtTenMe_TextChanged;
             dtNgaySinh.LostFocus += DtNgaySinh_LostFocus; ;
             lookQuanHuyen.TextChanged += LookQuanHuyen_TextChanged;
             lookTinh.TextChanged += LookTinh_TextChanged;
@@ -189,7 +189,7 @@ namespace QuanLyTuyenSinh.Form
         {
             if (lookQuanHuyen.EditValue != null)
             {
-                lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue.ToString());
+                lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue);
                 lookXa.Properties.DataSource = lstPhuongXa;
                 lookXa.EditValue = null;
             }
@@ -199,7 +199,7 @@ namespace QuanLyTuyenSinh.Form
         {
             if (lookTinh.EditValue != null)
             {
-                lstQuanHuyen = _Helper.getListDistrict(lookTinh.EditValue.ToString());
+                lstQuanHuyen = _Helper.getListDistrict(lookTinh.EditValue);
                 lookQuanHuyen.Properties.DataSource = lstQuanHuyen;
                 lookXa.EditValue = null;
                 lookQuanHuyen.EditValue = null;
@@ -211,47 +211,12 @@ namespace QuanLyTuyenSinh.Form
             CapNhatDiaChi();
         }
 
-        private void GridView1_CellValueChanged(object sender, CellValueChangedEventArgs e)
-        {
-            //if (e.Column.FieldName.Equals("IdNghe"))
-            //{
-            //    var r = gridView1.GetFocusedRow() as NguyenVong;
-            //    if (r == null) return;
-
-            //    if (!string.IsNullOrEmpty(r.IdNghe))
-            //    {
-            //        var ct = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == r.IdNghe);
-            //        if (ct == null)
-            //        {
-            //            XtraMessageBox.Show("Chưa lập chỉ tiêu cho nghành nghề này");
-            //            gridView1.CellValueChanged -= GridView1_CellValueChanged;
-            //            gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-            //            gridView1.CellValueChanged += GridView1_CellValueChanged;
-            //        }
-            //        else
-            //        {
-            //            int sl = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(r.IdNghe)) != null).Count();
-            //            //XtraMessageBox.Show($"Chỉ tiêu xét tuyển\n\t{ct.TenNghe}:{ct.ChiTieu}-Số lượng:{sl}");
-            //            if (sl >= ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC)
-            //            {
-            //                XtraMessageBox.Show($"Đã vượt quá chỉ tiêu tối đa!\n\t{ct.TenNghe}:{ct.ChiTieu + ct.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC}");
-            //                gridView1.CellValueChanged -= GridView1_CellValueChanged;
-            //                gridView1.SetFocusedRowCellValue("IdNghe", string.Empty);
-            //                gridView1.CellValueChanged += GridView1_CellValueChanged;
-            //            }
-            //        }
-
-
-            //    }
-            //}
-        }
-
         private void TxtTen_TextChanged(object? sender, EventArgs e)
         {
             string word = txtTen.Text;
             if (string.IsNullOrEmpty(word))
                 return;
-            txtTen.Text = word.ToTitleCase();
+            txtTen.EditValue = word.ToTitleCase();
         }
 
         private void TxtHo_TextChanged(object? sender, EventArgs e)
@@ -259,7 +224,22 @@ namespace QuanLyTuyenSinh.Form
             string word = txtHo.Text;
             if (string.IsNullOrEmpty(word))
                 return;
-            txtHo.Text = word.ToTitleCase();
+            txtHo.EditValue = word.ToTitleCase();
+        }
+        private void TxtTenMe_TextChanged(object? sender, EventArgs e)
+        {
+            string word = txtTenMe.Text;
+            if (string.IsNullOrEmpty(word))
+                return;
+            txtTenMe.EditValue = word.ToTitleCase();
+        }
+
+        private void TxtTenCha_TextChanged(object? sender, EventArgs e)
+        {
+            string word = txtTenCha.Text;
+            if (string.IsNullOrEmpty(word))
+                return;
+            txtTenCha.EditValue = word.ToTitleCase();
         }
 
         private void InitGridView()
@@ -290,9 +270,9 @@ namespace QuanLyTuyenSinh.Form
             txtMaHS.DataBindings.Clear();
             txtMaHS.DataBindings.Add("Text", _sourceHS, "MaHoSo", true, DataSourceUpdateMode.OnPropertyChanged);
             txtHo.DataBindings.Clear();
-            txtHo.DataBindings.Add("Text", _sourceHS, "Ho", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtHo.DataBindings.Add("EditValue", _sourceHS, "Ho", true, DataSourceUpdateMode.OnPropertyChanged);
             txtTen.DataBindings.Clear();
-            txtTen.DataBindings.Add("Text", _sourceHS, "Ten", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtTen.DataBindings.Add("EditValue", _sourceHS, "Ten", true, DataSourceUpdateMode.OnPropertyChanged);
             dtNgaySinh.DataBindings.Clear();
             dtNgaySinh.DataBindings.Add("EditValue", _sourceHS, "NgaySinh", true, DataSourceUpdateMode.OnPropertyChanged);
             rdGioiTinh.DataBindings.Clear();
@@ -304,15 +284,15 @@ namespace QuanLyTuyenSinh.Form
             txtCCCD.DataBindings.Clear();
             txtCCCD.DataBindings.Add("Text", _sourceHS, "CCCD", true, DataSourceUpdateMode.OnPropertyChanged);
             txtTenCha.DataBindings.Clear();
-            txtTenCha.DataBindings.Add("Text", _sourceHS, "HoTenCha", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtTenCha.DataBindings.Add("EditValue", _sourceHS, "HoTenCha", true, DataSourceUpdateMode.OnPropertyChanged);
             txtNNCha.DataBindings.Clear();
             txtNNCha.DataBindings.Add("Text", _sourceHS, "NgheNghiepCha", true, DataSourceUpdateMode.OnPropertyChanged);
             txtTenMe.DataBindings.Clear();
-            txtTenMe.DataBindings.Add("Text", _sourceHS, "HoTenMe", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtTenMe.DataBindings.Add("EditValue", _sourceHS, "HoTenMe", true, DataSourceUpdateMode.OnPropertyChanged);
             txtNNMe.DataBindings.Clear();
             txtNNMe.DataBindings.Add("Text", _sourceHS, "NgheNghiepMe", true, DataSourceUpdateMode.OnPropertyChanged);
             txtThonDuong.DataBindings.Clear();
-            txtThonDuong.DataBindings.Add("Text", _sourceHS, "ThonDuong", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtThonDuong.DataBindings.Add("EditValue", _sourceHS, "ThonDuong", true, DataSourceUpdateMode.OnPropertyChanged);
             txtLop.DataBindings.Clear();
             txtLop.DataBindings.Add("Text", _sourceHS, "Lop", true, DataSourceUpdateMode.OnPropertyChanged);
             txtDiaChi.DataBindings.Clear();
@@ -448,7 +428,7 @@ namespace QuanLyTuyenSinh.Form
                     Data.DSHoSoDT.Add(_hoSo);
                 }
                 SaveAnh();
-                Data.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
+                _hoSo.Save();
                 int dts = _hoSo.DotTS, nts = _hoSo.NamTS;
                 var dsdt = Data.DSHoSoDT.Where(x => x.NamTS == nts && x.DotTS == dts);
                 var dt = Data.DsDanToc.FirstOrDefault();
@@ -477,18 +457,8 @@ namespace QuanLyTuyenSinh.Form
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
             {
-                var index = Data.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
-                if (index >= 0)
-                {
-                    Data.DSHoSoDT[index] = _hoSo;
-                }
-                else
-                {
-                    Data.DSHoSoDT.Add(_hoSo);
-                }
                 SaveAnh();
-                Data.SaveDS(TuDien.CategoryName.HoSoDuTuyen);
-                Data.RefreshDS(TuDien.CategoryName.HoSoDuTuyen);
+                _hoSo.Save();
                 Close();
             }
             else { XtraMessageBox.Show(this, errs, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error); }
@@ -527,7 +497,7 @@ namespace QuanLyTuyenSinh.Form
             string word = txtThonDuong.Text;
             if (string.IsNullOrEmpty(word))
                 return;
-            txtThonDuong.Text = word.ToTitleCase();
+            txtThonDuong.EditValue = word.ToTitleCase();
         }
     }
 }
