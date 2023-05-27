@@ -11,7 +11,7 @@ namespace QuanLyTuyenSinh
             "Anh Khôi,Trung Kiên,Ðức Hải,Công Hiếu,Nhật Hùng,Tuấn Hùng,Minh Huy,Xuân Lộc,Trí Minh,Xuân Nam,Hữu Nghĩa,Bình " +
             "Nguyên,Hoài Phong,Ngọc Quang,Cao Tiến,Minh Toàn,Hữu Trác,Hữu Trí,Ðức Tuấn,Công Thành,Duy Thành,Gia Vinh,").Split(',');
 
-        private static List<_Helper.Adress> DsHuyenKH = _Helper.getListDistrict("511");
+        private static List<_Helper.Address> DsHuyenKH = _Helper.getListDistrict("511");
 
         private static string[] lstHanhKiem = { "Trung bình", "Khá", "Tốt" };
         private static string[] lstXepLoaiHocTap = { "Yếu", "Trung bình", "Khá", "Giỏi" };
@@ -47,7 +47,7 @@ namespace QuanLyTuyenSinh
                 for (int i = 0; i < soluong; i++)
                 {
                     var truong = Data.DsTruong[_random.Next(Data.DsTruong.Count)];
-                    List<_Helper.Adress> lstXa = _Helper.getListWards("51103");
+                    List<_Helper.Address> lstXa = _Helper.getListWards("51103");
                     var maxa = lstXa[_random.Next(lstXa.Count)];
                     string IdNV1 = Data.DsNghe[_random.Next(Data.DsNghe.Count)].Id;
                     var dsNgheNV2 = Data.DsNghe.Where(x => !x.Id.Equals(IdNV1)).ToList();
@@ -74,10 +74,10 @@ namespace QuanLyTuyenSinh
                         HoTenCha = DsHo[_random.Next(DsHo.Length)] + " " + DsTen[_random.Next(DsTen.Length)],
                         HoTenMe = DsHo[_random.Next(DsHo.Length)] + " " + DsTen[_random.Next(DsTen.Length)],
                         NoiSinh = "Khánh Hòa",
-                        DiaChi = $"{RandomNumberString(2)} đường {RandomString(5)} {maxa.AdressName}",
+                        DiaChi = $"{RandomNumberString(2)} đường {RandomString(5)} {maxa.AddressName}",
                         MaTinh = "511",
                         MaHuyen = "51103",
-                        MaXa = maxa.AdressCode,
+                        MaXa = maxa.AddressCode,
                         DsNguyenVong = new List<NguyenVong>
                             {
                                 new NguyenVong()

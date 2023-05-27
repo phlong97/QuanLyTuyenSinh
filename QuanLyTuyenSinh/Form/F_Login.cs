@@ -1,5 +1,7 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Xpo.Logger.Transport;
+using DevExpress.XtraEditors;
 using DevExpress.XtraSplashScreen;
+using System.IO;
 using System.Windows;
 using Color = System.Drawing.Color;
 
@@ -10,7 +12,14 @@ namespace QuanLyTuyenSinh.Form
         public F_Login()
         {
             InitializeComponent();
-            Bitmap bitmap0 = new Bitmap(pictureBox1.Image);
+            Bitmap bitmap0;
+            if (File.Exists(Path.Combine(TuDien.IMG_FOLDER, "logo.jpg")))
+            {
+                Image img = Image.FromStream(new MemoryStream(File.ReadAllBytes(Path.Combine(TuDien.IMG_FOLDER, "logo.jpg"))));
+                bitmap0 = new Bitmap(img);
+            }
+            else
+                bitmap0 = new Bitmap(pictureBox1.Image);
             var bt = MakeTransparent(bitmap0, Color.Transparent, 50);
             pictureBox1.Image = bt;
             spinNam.Value = Properties.Settings.Default.NamTS;

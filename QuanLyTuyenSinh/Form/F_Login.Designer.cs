@@ -228,7 +228,6 @@
             Margin = new Padding(2);
             Name = "F_Login";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Quản lý tuyển sinh";
             TopMost = true;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureEdit1.Properties).EndInit();

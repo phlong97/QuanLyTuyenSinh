@@ -1,4 +1,5 @@
-﻿using DevExpress.CodeParser;
+﻿using ClosedXML.Excel;
+using DevExpress.CodeParser;
 using DevExpress.Export;
 using DevExpress.Mvvm.Native;
 using DevExpress.Spreadsheet;
@@ -46,19 +47,20 @@ namespace QuanLyTuyenSinh.Form
         public void RefreshData()
         {
             Data.RefreshDS(TenDm);
-            LoadForm();
+            ReLoadDS();
         }
 
         private int _NamTS { get; set; }
         private string TenDm { get; set; }
-        private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
-        private List<_Helper.Adress> lstQuanHuyen;
-        private List<_Helper.Adress> lstPhuongXa;
+        private List<_Helper.Address> lstTinh = _Helper.getListProvince();
+        private List<_Helper.Address> lstQuanHuyen = _Helper.getListDistrict();
+        private List<_Helper.Address> lstPhuongXa = _Helper.getListWards();
 
         public F_Main()
         {
             InitializeComponent();
             _NamTS = Properties.Settings.Default.NamTS;
+            Text = "Quản lý xét tuyển - " + Data.CurrSettings.TENTRUONG;
             txtNamTS.Caption = $"Năm tuyển sinh : <b>{_NamTS}</b>";
             txtUser.Caption = $"Xin chào : <b>{Data.CurrUser.UserName}</b>";
         }
@@ -265,7 +267,7 @@ namespace QuanLyTuyenSinh.Form
                 return;
             if (_bindingSource is null)
                 return;
-            LoadForm();
+            RefreshData();
         }
 
         private void CbbHTDT_EditValueChanged(object? sender, EventArgs e)
@@ -278,7 +280,7 @@ namespace QuanLyTuyenSinh.Form
             if (string.IsNullOrEmpty(td))
                 return;
             DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList(), "(Tất cả)");
-            LoadForm();
+            RefreshData();
         }
 
         private void F_Main_Load(object sender, EventArgs e)
@@ -291,12 +293,12 @@ namespace QuanLyTuyenSinh.Form
             LoadBackgound();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
-            LoadLookupAddress();
 
-            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh, "(Tất cả)");
-            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen, "(Tất cả)");
-            DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode", lstPhuongXa, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode", null, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookXa, "AddressName", "AddressCode", null, "(Tất cả)");
             DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong.Where(x => x.LoaiTruong.Equals("THCS")).ToList(), "(Tất cả)");
+            LoadLookupAddress();
 
             Shown += F_Main_Shown;
         }
@@ -305,8 +307,8 @@ namespace QuanLyTuyenSinh.Form
         {
             lookTinh.EditValue = Data.CurrSettings.MaTinh;
             lookQuanHuyen.EditValue = Data.CurrSettings.MaHuyen;
-            lstQuanHuyen = _Helper.getListDistrict(Data.CurrSettings.MaTinh);
-            lstPhuongXa = _Helper.getListWards(Data.CurrSettings.MaHuyen);
+            lookQuanHuyen.Properties.DataSource = lstQuanHuyen.Where(x => x.AddressCode.StartsWith(Data.CurrSettings.MaTinh)).ToList();
+            lookXa.Properties.DataSource = lstPhuongXa.Where(x => x.AddressCode.StartsWith(Data.CurrSettings.MaHuyen)).ToList();
         }
 
         private void F_Main_Shown(object? sender, EventArgs e)
@@ -333,12 +335,12 @@ namespace QuanLyTuyenSinh.Form
 
         private void LookTruong_TextChanged(object? sender, EventArgs e)
         {
-            LoadForm();
+            RefreshData();
         }
 
         private void ChkKhongTT_CheckedChanged(object? sender, EventArgs e)
         {
-            LoadForm();
+            RefreshData();
         }
 
         private void BtnRefreshDTS_Click(object? sender, EventArgs e)
@@ -348,7 +350,7 @@ namespace QuanLyTuyenSinh.Form
 
         private string connString = "";
         private OleDbConnection conn;
-        private List<HoSoTrungTuyen> lstHSTT;
+        private List<HoSoTrungTuyen> lstHDTTTemp;
 
         private void BtnLoadExel_Click(object? sender, EventArgs e)
         {
@@ -357,7 +359,7 @@ namespace QuanLyTuyenSinh.Form
                 XtraMessageBox.Show("Chưa chọn đọt tuyển sinh");
                 return;
             }
-            lstHSTT = new();
+            List<HoSoTrungTuyen> lstHSTT = new List<HoSoTrungTuyen>();
             using (var fDlg = new OpenFileDialog
             {
                 Title = "Danh sách trúng tuyển",
@@ -372,59 +374,32 @@ namespace QuanLyTuyenSinh.Form
             {
                 if (fDlg.ShowDialog() == DialogResult.OK)
                 {
-                    string strFileType = Path.GetExtension(fDlg.FileName).ToLower();
-                    //Connection String to Excel Workbook
-                    if (strFileType.Trim() == ".xls")
-                    {
-                        connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fDlg.FileName + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
-                    }
-                    else if (strFileType.Trim() == ".xlsx")
-                    {
-                        connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fDlg.FileName + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-                    }
+
                     try
                     {
                         SplashScreenManager.ShowForm(typeof(F_Wait));
-
-                        conn = new OleDbConnection(connString);
-                        if (conn.State == ConnectionState.Closed)
-                            conn.Open();
-                        using (OleDbCommand comm = new OleDbCommand())
+                        using (var wb = new XLWorkbook(fDlg.FileName))
                         {
-                            DataTable dt = new DataTable();
-                            comm.CommandText = $@"SELECT [Mã HS] FROM [{TenDm}$]";
-                            comm.Connection = conn;
-                            using (OleDbDataAdapter da = new OleDbDataAdapter())
+                            var data = wb.Worksheet(1).Table(0).AsNativeDataTable();
+                            /* Process data table as you wish */
+                            foreach (DataRow row in data.Rows)
                             {
-                                da.SelectCommand = comm;
-                                da.Fill(dt);
-                                foreach (DataRow row in dt.Rows)
+                                var hsdt = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == cbbDTS.SelectedIndex && x.TDHV.Equals(cbbTDHV.EditValue.ToString()) && x.MaHoSo.Equals(row[0].ToString()));
+                                if (hsdt != null)
                                 {
-                                    var hsdt = Data.DSHoSoDT.FirstOrDefault(x => x.DotTS == cbbDTS.SelectedIndex && x.TDHV.Equals(cbbTDHV.EditValue.ToString()) && x.MaHoSo.Equals(row[0].ToString()));
-                                    if (hsdt != null)
-                                    {
-                                        lstHSTT.Add(hsdt.ToHSTT());
-                                    }
+                                    lstHSTT.Add(hsdt.ToHSTT());
                                 }
                             }
                         }
+                        lstHDTTTemp = new(lstHSTT);
+                        _bindingSource.DataSource = lstHDTTTemp;
                         SplashScreenManager.CloseForm();
                         gridView.ExpandAllGroups();
                     }
                     catch
                     {
-                        conn.Close();
-                        conn.Dispose();
                         SplashScreenManager.CloseForm();
-                        XtraMessageBox.Show("Có lỗi khi mở tệp Exel. Nếu bạn đang mở tệp này trên Exel hãy đóng nó");
                     }
-
-                    this.Cursor = Cursors.Default;
-                    conn.Close();
-                    conn.Dispose();
-
-                    lstHSTTTemp = new(lstHSTT);
-                    _bindingSource.DataSource = lstHSTTTemp;
                 }
             }
         }
@@ -640,7 +615,7 @@ namespace QuanLyTuyenSinh.Form
             try
             {
                 Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
-                sfd.FileName = $"Danh sách theo xã {lookXa.Text}.xlsx";
+                sfd.FileName = $"Danh sách theo {lookXa.Text}.xlsx";
                 sfd.DefaultExt = "xlsx";
                 sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
                 sfd.AddExtension = true;
@@ -1130,13 +1105,13 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 6] = lst[i].NoiSinh;
                             export[i, 7] = string.Empty;
                             export[i, 8] = lst[i].DiaChi;
-                            export[i, 9] = lstTinh.First(x => x.AdressCode.Equals(lst[i].MaTinh)).AdressName;
+                            export[i, 9] = lstTinh.First(x => x.AddressCode.Equals(lst[i].MaTinh)).AddressName;
                             export[i, 10] = string.Empty;
                             var lsthuyen = _Helper.getListDistrict(lst[i].MaTinh);
-                            export[i, 11] = lsthuyen.First(x => x.AdressCode.Equals(lst[i].MaHuyen)).AdressName;
+                            export[i, 11] = lsthuyen.First(x => x.AddressCode.Equals(lst[i].MaHuyen)).AddressName;
                             export[i, 12] = string.Empty;
                             var lstxa = _Helper.getListWards(lst[i].MaHuyen);
-                            export[i, 13] = lstxa.First(x => x.AdressCode.Equals(lst[i].MaXa)).AdressName;
+                            export[i, 13] = lstxa.First(x => x.AddressCode.Equals(lst[i].MaXa)).AddressName;
                             export[i, 14] = string.Empty;
                             export[i, 15] = lst[i].CCCD;
                             export[i, 16] = Data.DsDanToc.First(x => x.Id.Equals(lst[i].IdDanToc)).Ten;
@@ -1151,7 +1126,7 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 25] = string.Empty;
                             export[i, 26] = lst[i].HTDT;
                         }
-                        Excel.Range range = sheet.get_Range(sheet.Cells[4, 1], sheet.Cells[lst.Count + 4, 27]);
+                        Excel.Range range = sheet.get_Range(sheet.Cells[4, 1], sheet.Cells[lst.Count + 3, 27]);
                         range.set_Value(Missing.Value, export);
                         Marshal.ReleaseComObject(range);
                         range = null;
@@ -1233,7 +1208,6 @@ namespace QuanLyTuyenSinh.Form
                 {
                     Data.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHSTTTemp, lstHSKhongTT);
                     _bindingSource.DataSource = lstHSTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
-
                 }
             }
             else
@@ -1257,11 +1231,8 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void LoadForm()
+        private void ReLoadDS()
         {
-            EditMode = false;
-            gridView.Columns.Clear();
-            _bindingSource = new BindingSource();
             switch (TenDm)
             {
                 case TuDien.CategoryName.TruongHoc:
@@ -1321,7 +1292,18 @@ namespace QuanLyTuyenSinh.Form
 
                 default: break;
             }
+            gridView.ExpandAllGroups();
+            gridView.BestFitColumns(true);
+
+        }
+        private void LoadForm()
+        {
+            EditMode = false;
+            gridView.Columns.Clear();
+            _bindingSource = new BindingSource();
             gridControl.DataSource = _bindingSource;
+            ReLoadDS();
+
             LoadbtnDropDS();
             if (TenDm.Equals(TuDien.CategoryName.TruongHoc))
             {
@@ -1354,6 +1336,9 @@ namespace QuanLyTuyenSinh.Form
                     RepositoryItemTextEdit riComboBox = new RepositoryItemTextEdit();
                     colGT.ColumnEdit = riComboBox;
                 }
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, lstTinh, "MaTinh", "AddressName", "AddressCode");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, lstQuanHuyen, "MaHuyen", "AddressName", "AddressCode");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, lstPhuongXa, "MaXa", "AddressName", "AddressCode");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsTruong, "IdTruong", "Ten", "Id");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, Data.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
@@ -1364,7 +1349,7 @@ namespace QuanLyTuyenSinh.Form
                 if (colXLHT != null) { colXLHT.Visible = ((string)cbbTDHV.EditValue != "THCS"); }
                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyen))
                 {
-                    for (int i = 23; i <= 32; i++)
+                    for (int i = 27; i <= 36; i++)
                     {
                         gridView.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
                     }
@@ -1394,32 +1379,37 @@ namespace QuanLyTuyenSinh.Form
             panelFilter.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyen) ? true : false;
             dropbtnHoSo.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyen) ? 145 : 0;
 
+            gridView.OptionsBehavior.KeepFocusedRowOnUpdate = TenDm.StartsWith("HS");
+
             ShowTotalFooter();
-            panelGrid.BringToFront();
             gridView.ExpandAllGroups();
+            panelGrid.BringToFront();
             gridView.BestFitColumns(true);
         }
 
         private void LookQuanHuyen_TextChanged(object? sender, EventArgs e)
         {
-            lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue);
-            lookXa.Properties.DataSource = lstPhuongXa;
+            if (lookQuanHuyen.EditValue != null)
+                lookXa.Properties.DataSource = lstPhuongXa.Where(x => x.AddressCode.StartsWith(lookQuanHuyen.EditValue.ToString()));
             lookXa.EditValue = null;
-            LoadForm();
+            RefreshData();
+
         }
 
         private void LookTinh_TextChanged(object? sender, EventArgs e)
         {
-            lstQuanHuyen = _Helper.getListDistrict(lookTinh.EditValue);
-            lookQuanHuyen.Properties.DataSource = lstQuanHuyen;
+            if (lookTinh.EditValue != null)
+                lookQuanHuyen.Properties.DataSource = lstQuanHuyen.Where(x => x.AddressCode.StartsWith(lookTinh.EditValue.ToString()));
             lookXa.EditValue = null;
             lookQuanHuyen.EditValue = null;
-            LoadForm();
+            RefreshData();
+
         }
 
         private void LookXa_TextChanged(object? sender, EventArgs e)
         {
-            LoadForm();
+            RefreshData();
+
         }
 
         #region Xử lý GridControl
@@ -1556,6 +1546,8 @@ namespace QuanLyTuyenSinh.Form
             gridView.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
             gridView.OptionsSelection.EnableAppearanceFocusedCell = false;
             gridView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+
+            gridView.OptionsBehavior.KeepGroupExpandedOnSorting = true;
 
             GridGroupSummaryItem gscCount = new GridGroupSummaryItem();
             gscCount.SummaryType = SummaryItemType.Count;

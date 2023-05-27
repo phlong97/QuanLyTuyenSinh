@@ -96,8 +96,8 @@ namespace QuanLyTuyenSinh.Form
 
                 for (int j = 0; j < lstXa.Count; j++)
                 {
-                    int sl = lstTT.Where(x => x.MaXa == lstXa[j].AdressCode && x.IdNgheTrungTuyen.Equals(Data.DsNghe[i].Id)).Count();
-                    series.Points.Add(new SeriesPoint(lstXa[j].AdressName, sl));
+                    int sl = lstTT.Where(x => x.MaXa == lstXa[j].AddressCode && x.IdNgheTrungTuyen.Equals(Data.DsNghe[i].Id)).Count();
+                    series.Points.Add(new SeriesPoint(lstXa[j].AddressName, sl));
                 }
 
                 chart.Series.Add(series);

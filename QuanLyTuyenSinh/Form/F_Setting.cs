@@ -5,8 +5,8 @@
         private CaiDat _setting;
 
         private BindingSource source;
-        private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
-        private List<_Helper.Adress> lstQuanHuyen;
+        private List<_Helper.Address> lstTinh = _Helper.getListProvince();
+        private List<_Helper.Address> lstQuanHuyen;
 
         public F_Setting(CaiDat setting)
         {

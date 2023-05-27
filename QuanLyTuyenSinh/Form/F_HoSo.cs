@@ -15,9 +15,9 @@ namespace QuanLyTuyenSinh.Form
 
         private bool EditMode;
         private string Diachi = string.Empty;
-        private List<_Helper.Adress> lstTinh = _Helper.getListProvince();
-        private List<_Helper.Adress> lstQuanHuyen;
-        private List<_Helper.Adress> lstPhuongXa;
+        private List<_Helper.Address> lstTinh = _Helper.getListProvince();
+        private List<_Helper.Address> lstQuanHuyen;
+        private List<_Helper.Address> lstPhuongXa;
 
         public F_HoSo(HoSoDuTuyen hoSo)
         {
@@ -384,7 +384,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateComboboxEdit(cbbXLHT, lstXepLoaiHocTap);
             DevForm.CreateComboboxEdit(cbbXLTN, lstXepLoaiTotNghiep);
             DevForm.CreateComboboxEdit(cbbHTDT, lstHTDT);
-            DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AdressName).ToArray(), "", true, true);
+            DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AddressName).ToArray(), "", true, true);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -483,9 +483,9 @@ namespace QuanLyTuyenSinh.Form
             string maXa = lookXa.EditValue.ToString();
             if (!string.IsNullOrEmpty(maXa))
             {
-                string tenXa = lstPhuongXa.First(x => x.AdressCode == lookXa.EditValue.ToString()).AdressName;
-                string tenHuyen = lstQuanHuyen.First(x => x.AdressCode == lookQuanHuyen.EditValue.ToString()).AdressName;
-                string tenTinh = lstTinh.First(x => x.AdressCode == lookTinh.EditValue.ToString()).AdressName;
+                string tenXa = lstPhuongXa.First(x => x.AddressCode == lookXa.EditValue.ToString()).AddressName;
+                string tenHuyen = lstQuanHuyen.First(x => x.AddressCode == lookQuanHuyen.EditValue.ToString()).AddressName;
+                string tenTinh = lstTinh.First(x => x.AddressCode == lookTinh.EditValue.ToString()).AddressName;
                 Diachi += $"{txtThonDuong.Text}, {tenXa}, {tenHuyen}, {tenTinh}";
             }
 

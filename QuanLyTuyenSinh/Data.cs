@@ -298,61 +298,7 @@ namespace QuanLyTuyenSinh
             return lst.OrderBy(hs => hs.MaHoSo).ToList();
         }
 
-        //internal static void SaveDS(string Ten)
-        //{
-        //    switch (Ten)
-        //    {
-        //        case TuDien.CategoryName.TruongHoc:
-        //            _Helper.SaveToJson(DsTruong, TuDien.DbName.TruongHoc);
-        //            break;
 
-        //        case TuDien.CategoryName.NganhNghe:
-        //            _Helper.SaveToJson(DsNghe, TuDien.DbName.NganhNghe);
-        //            break;
-
-        //        case TuDien.CategoryName.DoiTuongUuTien:
-        //            _Helper.SaveToJson(DsDoiTuongUT, TuDien.DbName.DoiTuongUuTien);
-        //            break;
-
-        //        case TuDien.CategoryName.KhuVucUuTien:
-        //            _Helper.SaveToJson(DsKhuVucUT, TuDien.DbName.KhuVucUuTien);
-        //            break;
-
-        //        case TuDien.CategoryName.DanToc:
-        //            _Helper.SaveToJson(DsDanToc, TuDien.DbName.DanToc);
-        //            break;
-
-        //        case TuDien.CategoryName.TonGiao:
-        //            _Helper.SaveToJson(DsTonGiao, TuDien.DbName.TonGiao);
-        //            break;
-
-        //        case TuDien.CategoryName.TrinhDo:
-        //            _Helper.SaveToJson(DsTrinhDo, TuDien.DbName.TrinhDo);
-        //            break;
-
-        //        case TuDien.CategoryName.QuocTich:
-        //            _Helper.SaveToJson(DsQuocTich, TuDien.DbName.QuocTich);
-        //            break;
-
-        //        case TuDien.CategoryName.DotXetTuyen:
-        //            _Helper.SaveToJson(DsDotXetTuyen, TuDien.DbName.DotXetTuyen);
-        //            break;
-
-        //        case TuDien.CategoryName.ChiTieu:
-        //            _Helper.SaveToJson(DsChiTieu, TuDien.DbName.ChiTieu);
-        //            break;
-
-        //        case TuDien.CategoryName.HoSoDuTuyen:
-        //            _Helper.SaveToJson(DSHoSoDT, TuDien.DbName.HoSoDuTuyen);
-        //            break;
-
-        //        case TuDien.CategoryName.HoSoTrungTuyen:
-        //            _Helper.SaveToJson(DSHoSoTT, TuDien.DbName.HoSoTrungTuyen);
-        //            break;
-
-        //        default: break;
-        //    }
-        //}
 
         internal static List<TongHopDiemXetTuyen> THDiemXetTuyen(int DotTS, string htdt = "THCS")
         {
@@ -564,9 +510,9 @@ namespace QuanLyTuyenSinh
                 dynamicObj.Add("Tên nghề", DsNghe[i].Ten);
                 for (int j = 0; j < lstXa.Count; j++)
                 {
-                    int sl = lstTT.Where(x => x.MaXa == lstXa[j].AdressCode && x.IdNgheTrungTuyen.Equals(DsNghe[i].Id)).Count();
+                    int sl = lstTT.Where(x => x.MaXa == lstXa[j].AddressCode && x.IdNgheTrungTuyen.Equals(DsNghe[i].Id)).Count();
                     tongNghe += sl;
-                    dynamicObj.Add(lstXa[j].AdressName, sl);
+                    dynamicObj.Add(lstXa[j].AddressName, sl);
                 }
                 dynamicObj.Add("Tổng", tongNghe);
                 DsThongKe.Add(dynamicObj);
@@ -580,9 +526,9 @@ namespace QuanLyTuyenSinh
             tongObj.Add("Tên nghề", "Tổng cộng");
             for (int j = 0; j < lstXa.Count; j++)
             {
-                int sum = DsThongKe.Sum(x => (int)x[lstXa[j].AdressName]);
+                int sum = DsThongKe.Sum(x => (int)x[lstXa[j].AddressName]);
                 tongCong += sum;
-                tongObj.Add(lstXa[j].AdressName, sum);
+                tongObj.Add(lstXa[j].AddressName, sum);
             }
             tongObj.Add("Tổng", tongCong);
             DsThongKe.Add(tongObj);

@@ -450,6 +450,10 @@ namespace QuanLyTuyenSinh
             IdNgheDT2 = DsNguyenVong.FirstOrDefault(x => x.NV == 2) != null ? DsNguyenVong.First(x => x.NV == 2).IdNghe : string.Empty,
             GhiChu = GhiChu,
             IdTruong = IdTruong,
+            ThonDuong = ThonDuong,
+            MaTinh = MaTinh,
+            MaHuyen = MaHuyen,
+            MaXa = MaXa,
             Lop = Lop,
             NamTN = NamTN,
             HoTenCha = HoTenCha,
@@ -498,6 +502,16 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Nơi sinh")]
         public string NoiSinh { get; set; }
+        [Display(Name = "Thôn/đường")]
+        public string ThonDuong { get; set; }
+        [Display(Name = "Tỉnh")]
+        public string MaTinh { get; set; }
+
+        [Display(Name = "Huyện")]
+        public string MaHuyen { get; set; }
+
+        [Display(Name = "Xã")]
+        public string MaXa { get; set; }
 
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }

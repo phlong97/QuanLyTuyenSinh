@@ -58,13 +58,13 @@ namespace QuanLyTuyenSinh
 
         #region Addresss
 
-        public class Adress
+        public class Address
         {
             [Display(Name = "Mã địa chỉ")]
-            public string AdressCode { get; set; }
+            public string AddressCode { get; set; }
 
             [Display(Name = "Tên địa chỉ")]
-            public string AdressName { get; set; }
+            public string AddressName { get; set; }
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace QuanLyTuyenSinh
         /// từ tệp Catalogue_Dia_Ban_Tinh.xml
         /// </summary>
         /// <returns></returns>
-        public static List<Adress> getListProvince()
+        public static List<Address> getListProvince()
         {
-            List<Adress> lstReturn = new List<Adress>();
+            List<Address> lstReturn = new List<Address>();
             XmlDocument doc = new XmlDocument();
 
             doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Tinh);
@@ -91,7 +91,7 @@ namespace QuanLyTuyenSinh
                     if (attribute != null)
                     {
                         string[] result = attribute.Value.Split("###");
-                        lstReturn.Add(new Adress { AdressCode = result[1], AdressName = result[2], });
+                        lstReturn.Add(new Address { AddressCode = result[1], AddressName = result[2], });
                     }
                 }
             }
@@ -104,9 +104,9 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="ProvinceCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListDistrict(object ProvinceCode)
+        public static List<Address> getListDistrict(object ProvinceCode)
         {
-            List<Adress> lstReturn = new List<Adress>();
+            List<Address> lstReturn = new List<Address>();
             if (ProvinceCode == null) return lstReturn;
             string code = ProvinceCode.ToString();
             XmlDocument doc = new XmlDocument();
@@ -126,8 +126,39 @@ namespace QuanLyTuyenSinh
                         string[] result = attribute.Value.Split("###");
                         if (!string.IsNullOrEmpty(code) && result[2].StartsWith(code))
                         {
-                            lstReturn.Add(new Adress { AdressCode = result[2], AdressName = result[3], });
+                            lstReturn.Add(new Address { AddressCode = result[2], AddressName = result[3], });
                         }
+                    }
+                }
+            }
+
+            return lstReturn;
+        }
+        /// <summary>
+        /// Lấy danh sách huyện
+        /// từ tệp Catalogue_Dia_Ban_Huyen
+        /// </summary>
+        /// <param name="ProvinceCode"></param>
+        /// <returns></returns>
+        public static List<Address> getListDistrict()
+        {
+            List<Address> lstReturn = new List<Address>();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Huyen);
+            var nodes = doc.GetElementsByTagName("Item");
+            if (nodes is null)
+            {
+                return null;
+            }
+            foreach (System.Xml.XmlNode node in nodes)
+            {
+                if (node.Attributes != null)
+                {
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        lstReturn.Add(new Address { AddressCode = result[2], AddressName = result[3], });
                     }
                 }
             }
@@ -141,9 +172,9 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="DistrictCode"></param>
         /// <returns></returns>
-        public static List<Adress> getListWards(object DistrictCode)
+        public static List<Address> getListWards(object DistrictCode)
         {
-            List<Adress> lstReturn = new List<Adress>();
+            List<Address> lstReturn = new List<Address>();
             if (DistrictCode == null) return lstReturn;
             string code = DistrictCode.ToString();
             XmlDocument doc = new XmlDocument();
@@ -163,7 +194,7 @@ namespace QuanLyTuyenSinh
                         string[] result = attribute.Value.Split("###");
                         if (!string.IsNullOrEmpty(code) && result[3].StartsWith(code))
                         {
-                            lstReturn.Add(new Adress { AdressCode = result[3], AdressName = result[4], });
+                            lstReturn.Add(new Address { AddressCode = result[3], AddressName = result[4], });
                         }
                     }
                 }
@@ -171,6 +202,38 @@ namespace QuanLyTuyenSinh
 
             return lstReturn;
         }
+        /// <summary>
+        /// Lấy danh sách phường, xã theo mã huyện
+        /// từ tệp Catalogue_Dia_Ban_Xa
+        /// </summary>
+        /// <param name="DistrictCode"></param>
+        /// <returns></returns>
+        public static List<Address> getListWards()
+        {
+            List<Address> lstReturn = new List<Address>();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Xa);
+            var nodes = doc.GetElementsByTagName("Item");
+            if (nodes is null)
+            {
+                return null;
+            }
+            foreach (System.Xml.XmlNode node in nodes)
+            {
+                if (node.Attributes != null)
+                {
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        lstReturn.Add(new Address { AddressCode = result[3], AddressName = result[4], });
+                    }
+                }
+            }
+
+            return lstReturn;
+        }
+
 
         #endregion Addresss
 
@@ -223,7 +286,7 @@ namespace QuanLyTuyenSinh
 
     public static class DevForm
     {
-        public static void CreateSearchLookupEdit(SearchLookUpEdit lookUp, string display, string member, IList source = null, string nullText = "(Trống)")
+        public static void CreateSearchLookupEdit(SearchLookUpEdit lookUp, string display, string member, IList? source = null, string nullText = "(Trống)")
         {
             if (lookUp == null)
             {
