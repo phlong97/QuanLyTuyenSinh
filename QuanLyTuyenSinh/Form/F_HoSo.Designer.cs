@@ -548,7 +548,7 @@
             // labelControl12
             // 
             labelControl12.AllowHtmlString = true;
-            labelControl12.Location = new Point(435, 312);
+            labelControl12.Location = new Point(444, 312);
             labelControl12.Name = "labelControl12";
             labelControl12.Size = new Size(68, 13);
             labelControl12.TabIndex = 127;
@@ -557,7 +557,7 @@
             // labelControl11
             // 
             labelControl11.AllowHtmlString = true;
-            labelControl11.Location = new Point(187, 311);
+            labelControl11.Location = new Point(207, 311);
             labelControl11.Name = "labelControl11";
             labelControl11.Size = new Size(75, 13);
             labelControl11.TabIndex = 132;
@@ -893,7 +893,7 @@
             lookTinh.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookTinh.Properties.NullText = "(Trống)";
             lookTinh.Properties.PopupView = gridView6;
-            lookTinh.Size = new Size(92, 20);
+            lookTinh.Size = new Size(114, 20);
             lookTinh.TabIndex = 8;
             // 
             // gridView6
@@ -905,7 +905,7 @@
             // 
             // lookQuanHuyen
             // 
-            lookQuanHuyen.Location = new Point(268, 308);
+            lookQuanHuyen.Location = new Point(287, 308);
             lookQuanHuyen.Name = "lookQuanHuyen";
             lookQuanHuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookQuanHuyen.Properties.NullText = "(Trống)";

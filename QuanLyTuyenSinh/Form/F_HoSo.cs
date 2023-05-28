@@ -58,7 +58,7 @@ namespace QuanLyTuyenSinh.Form
             LoadComboBox();
             CreateBinding();
             InitGridView();
-            TxtTenAutoComplete();
+            TxtHoTenAutoComplete();
             LoadAnh();
             Shown += F_HoSo_Shown;
         }
@@ -173,37 +173,48 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void TxtTenAutoComplete()
+        private void TxtHoTenAutoComplete()
         {
             var collection = new AutoCompleteStringCollection();
-            collection.AddRange(Data.DSHoSoDT.Select(x => x.Ten).Distinct().ToArray());
+            collection.AddRange(Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ten).Distinct().ToArray());
             txtTen.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteSource =
                 AutoCompleteSource.CustomSource;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteCustomSource = collection;
+
+            var collection2 = new AutoCompleteStringCollection();
+            collection2.AddRange(Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ho).Distinct().ToArray());
+            txtHo.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            txtHo.Properties.AdvancedModeOptions.AutoCompleteMode =
+                TextEditAutoCompleteMode.SuggestAppend;
+            txtHo.Properties.AdvancedModeOptions.AutoCompleteSource =
+                AutoCompleteSource.CustomSource;
+            txtHo.Properties.AdvancedModeOptions.AutoCompleteCustomSource = collection2;
         }
 
         private void LookQuanHuyen_TextChanged(object? sender, EventArgs e)
         {
             if (lookQuanHuyen.EditValue != null)
             {
-                lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue);
-                lookXa.Properties.DataSource = lstPhuongXa;
-                lookXa.EditValue = null;
+                lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue.ToString());
             }
+            lookXa.Properties.DataSource = lstPhuongXa;
+            lookXa.EditValue = null;
+
+
         }
 
         private void LookTinh_TextChanged(object? sender, EventArgs e)
         {
             if (lookTinh.EditValue != null)
             {
-                lstQuanHuyen = _Helper.getListDistrict(lookTinh.EditValue);
-                lookQuanHuyen.Properties.DataSource = lstQuanHuyen;
-                lookXa.EditValue = null;
-                lookQuanHuyen.EditValue = null;
+                lstQuanHuyen = _Helper.getListDistrict(lookTinh.EditValue.ToString());
             }
+            lookQuanHuyen.Properties.DataSource = lstQuanHuyen;
+            lookXa.EditValue = null;
+            lookQuanHuyen.EditValue = null;
         }
 
         private void TxtDiaChi_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -280,7 +291,7 @@ namespace QuanLyTuyenSinh.Form
             dtNgaySinh.DataBindings.Clear();
             dtNgaySinh.DataBindings.Add("EditValue", _sourceHS, "NgaySinh", true, DataSourceUpdateMode.OnPropertyChanged);
             cbbNoiSinh.DataBindings.Clear();
-            cbbNoiSinh.DataBindings.Add("Text", _sourceHS, "NoiSinh", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbNoiSinh.DataBindings.Add("EditValue", _sourceHS, "NoiSinh", true, DataSourceUpdateMode.OnPropertyChanged);
             txtCCCD.DataBindings.Clear();
             txtCCCD.DataBindings.Add("Text", _sourceHS, "CCCD", true, DataSourceUpdateMode.OnPropertyChanged);
             txtTenCha.DataBindings.Clear();
@@ -368,9 +379,10 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", Data.DsDoiTuongUT);
             DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", Data.DsKhuVucUT);
             DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong);
-            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh);
-            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode");
-            DevForm.CreateSearchLookupEdit(lookXa, "AdressName", "AdressCode");
+            DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode");
+            DevForm.CreateSearchLookupEdit(lookXa, "AddressName", "AddressCode");
+
         }
 
         private void LoadComboBox()
@@ -384,7 +396,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateComboboxEdit(cbbXLHT, lstXepLoaiHocTap);
             DevForm.CreateComboboxEdit(cbbXLTN, lstXepLoaiTotNghiep);
             DevForm.CreateComboboxEdit(cbbHTDT, lstHTDT);
-            DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AddressName).ToArray(), "", true, true);
+            DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AddressName.Replace("Tỉnh ", "").Replace("Thành Phố", "TP")).ToArray(), "", true, true);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -442,6 +454,7 @@ namespace QuanLyTuyenSinh.Form
                     HTDT = "Chính quy",
                     MaTinh = "511",
                     MaHuyen = "51103",
+                    NoiSinh = "Khánh Hòa",
                     IdQuocTich = qt is not null ? qt.Id : string.Empty,
                     IdDanToc = dt is not null ? dt.Id : string.Empty,
                     IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,

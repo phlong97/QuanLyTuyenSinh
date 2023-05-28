@@ -109,6 +109,7 @@ namespace QuanLyTuyenSinh.Form
                         HTDT = "Chính quy",
                         MaTinh = "511",
                         MaHuyen = "51103",
+                        NoiSinh = "Khánh Hòa",
                         IdQuocTich = qt is not null ? qt.Id : string.Empty,
                         IdDanToc = dt is not null ? dt.Id : string.Empty,
                         IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
@@ -1145,7 +1146,7 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 5] = lst[i].GioiTinh ? "Nam" : "Nữ";
                             export[i, 6] = lst[i].NoiSinh;
                             export[i, 7] = string.Empty;
-                            export[i, 8] = lst[i].DiaChi;
+                            export[i, 8] = lst[i].ThonDuong;
                             export[i, 9] = lstTinh.First(x => x.AddressCode.Equals(lst[i].MaTinh)).AddressName;
                             export[i, 10] = string.Empty;
                             var lsthuyen = _Helper.getListDistrict(lst[i].MaTinh);
