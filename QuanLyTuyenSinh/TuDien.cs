@@ -12,9 +12,9 @@ namespace QuanLyTuyenSinh
         public static class CategoryName
         {
             public const string TruongHoc = "DMTH", NganhNghe = "DMNN",
-                DoiTuongUuTien = "DMDTUT", KhuVucUuTien = "DMKVUT", DotXetTuyen = "DXT", DanToc = "DMDT",
-                TonGiao = "DMTG", QuocTich = "DMQT", TrinhDo = "DMTDVH", ChiTieu = "CT",
-                HoSoDuTuyen = "HSDT", HoSoTrungTuyen = "HSTT", DiemXetTuyen = "DiemXT", ThongKe = "TK";
+                DoiTuongUuTienTC = "DMDTUTTC", KhuVucUuTien = "DMKVUT", DotXetTuyen = "DXT", DanToc = "DMDT",
+                TonGiao = "DMTG", QuocTich = "DMQT", TrinhDo = "DMTDVH", ChiTieuTC = "CTTC",
+                HoSoDuTuyenTC = "HSDTTC", HoSoTrungTuyenTC = "HSTTTC", DiemXetTuyenTC = "DiemXTTC", ThongKe = "TK", CaiDat = "Setting";
         }
 
         public static class DbName

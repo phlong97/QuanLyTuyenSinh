@@ -169,7 +169,7 @@
             btnHoSoDuTuyen.Name = "btnHoSoDuTuyen";
             btnHoSoDuTuyen.Style = DevExpress.XtraBars.Navigation.ElementStyle.Item;
             btnHoSoDuTuyen.Text = "Hồ sơ xét tuyển";
-            btnHoSoDuTuyen.Click += btnHoSoDuTuyen_Click;
+            btnHoSoDuTuyen.Click += btnHoSoDuTuyenTC_Click;
             // 
             // btnDiemXetTuyen
             // 

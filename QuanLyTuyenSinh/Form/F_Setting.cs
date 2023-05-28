@@ -13,6 +13,9 @@
             InitializeComponent();
             _setting = setting;
             lstQuanHuyen = _Helper.getListDistrict(_setting.MaTinh);
+            DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh, "(Tất cả)");
+            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode", lstQuanHuyen, "(Tất cả)");
+
         }
 
         public void CreateBinding()
@@ -83,9 +86,6 @@
             source = new BindingSource();
             source.DataSource = _setting;
             CreateBinding();
-            DevForm.CreateSearchLookupEdit(lookTinh, "AdressName", "AdressCode", lstTinh, "(Tất cả)");
-            DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AdressName", "AdressCode", lstQuanHuyen, "(Tất cả)");
-
             Shown += F_Setting_Shown;
         }
 

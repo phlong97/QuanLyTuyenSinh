@@ -66,7 +66,16 @@ namespace QuanLyTuyenSinh
             [Display(Name = "Tên địa chỉ")]
             public string AddressName { get; set; }
         }
+        public class Address2
+        {
+            [Display(Name = "Mã địa chỉ cha")]
+            public string AddressCodeParent { get; set; }
+            [Display(Name = "Mã địa chỉ")]
+            public string AddressCode { get; set; }
 
+            [Display(Name = "Tên địa chỉ")]
+            public string AddressName { get; set; }
+        }
         /// <summary>
         /// Lấy danh sách tỉnh
         /// từ tệp Catalogue_Dia_Ban_Tinh.xml
@@ -165,6 +174,31 @@ namespace QuanLyTuyenSinh
 
             return lstReturn;
         }
+        public static List<Address2> getListDistrict2()
+        {
+            List<Address2> lstReturn = new();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Huyen);
+            var nodes = doc.GetElementsByTagName("Item");
+            if (nodes is null)
+            {
+                return null;
+            }
+            foreach (System.Xml.XmlNode node in nodes)
+            {
+                if (node.Attributes != null)
+                {
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        lstReturn.Add(new Address2 { AddressCodeParent = result[1], AddressCode = result[2], AddressName = result[3], });
+                    }
+                }
+            }
+
+            return lstReturn;
+        }
 
         /// <summary>
         /// Lấy danh sách phường, xã theo mã huyện
@@ -203,7 +237,7 @@ namespace QuanLyTuyenSinh
             return lstReturn;
         }
         /// <summary>
-        /// Lấy danh sách phường, xã theo mã huyện
+        /// Lấy danh sách phường, xã
         /// từ tệp Catalogue_Dia_Ban_Xa
         /// </summary>
         /// <param name="DistrictCode"></param>
@@ -233,7 +267,31 @@ namespace QuanLyTuyenSinh
 
             return lstReturn;
         }
+        public static List<Address2> getListWards2()
+        {
+            List<Address2> lstReturn = new();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Xa);
+            var nodes = doc.GetElementsByTagName("Item");
+            if (nodes is null)
+            {
+                return null;
+            }
+            foreach (System.Xml.XmlNode node in nodes)
+            {
+                if (node.Attributes != null)
+                {
+                    var attribute = node.Attributes["Value"];
+                    if (attribute != null)
+                    {
+                        string[] result = attribute.Value.Split("###");
+                        lstReturn.Add(new Address2 { AddressCodeParent = result[2], AddressCode = result[3], AddressName = result[4], });
+                    }
+                }
+            }
 
+            return lstReturn;
+        }
 
         #endregion Addresss
 

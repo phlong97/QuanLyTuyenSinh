@@ -9,7 +9,7 @@ namespace QuanLyTuyenSinh.Form
 {
     public partial class F_HoSo : DirectXForm
     {
-        private HoSoDuTuyen _hoSo;
+        private HoSoDuTuyenTC _hoSo;
         private BindingSource _sourceHS;
         private BindingSource _sourceNV;
 
@@ -19,7 +19,7 @@ namespace QuanLyTuyenSinh.Form
         private List<_Helper.Address> lstQuanHuyen;
         private List<_Helper.Address> lstPhuongXa;
 
-        public F_HoSo(HoSoDuTuyen hoSo)
+        public F_HoSo(HoSoDuTuyenTC hoSo)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
@@ -435,7 +435,7 @@ namespace QuanLyTuyenSinh.Form
                 var qt = Data.DsQuocTich.FirstOrDefault();
                 var tg = Data.DsTonGiao.FirstOrDefault();
                 var tdvh = Data.DsTrinhDo.FirstOrDefault();
-                _hoSo = new HoSoDuTuyen
+                _hoSo = new HoSoDuTuyenTC
                 {
                     NamTS = nts,
                     DotTS = dts,

@@ -40,7 +40,7 @@ namespace QuanLyTuyenSinh
 
         public static void RandomDsHSDT(int namTS, string dotTS, int soluong)
         {
-            List<HoSoDuTuyen> lstDuTuyen = new();
+            List<HoSoDuTuyenTC> lstDuTuyen = new();
             var dst = dotTS.Split('/');
             foreach (var d in dst)
             {
@@ -53,7 +53,7 @@ namespace QuanLyTuyenSinh
                     var dsNgheNV2 = Data.DsNghe.Where(x => !x.Id.Equals(IdNV1)).ToList();
                     string IdNV2 = dsNgheNV2[_random.Next(dsNgheNV2.Count)].Id;
 
-                    HoSoDuTuyen hsdt = new HoSoDuTuyen
+                    HoSoDuTuyenTC hsdt = new HoSoDuTuyenTC
                     {
                         NamTS = namTS,
                         DotTS = int.Parse(d),

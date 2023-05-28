@@ -11,43 +11,28 @@ namespace QuanLyTuyenSinh
         public static int _NamTS;
         public static User CurrUser { get; set; }
         public static CaiDat CurrSettings { get; set; }
-
-        //public static void LoadStaticList()
-        //{
-        //    System.IO.Directory.CreateDirectory(TuDien.JSON_FOLDER_PATH);
-        //    _NamTS = Properties.Settings.Default.NamTS;
-        //    CurrSettings = _Helper.LoadFromJson<CaiDat>(TuDien.DbName.Settings).FirstOrDefault();
-        //    if (CurrSettings == null) { CurrSettings = new(); }
-        //    DsTrinhDo = _Helper.LoadFromJson<TrinhDo>(TuDien.DbName.TrinhDo);
-        //    DsTonGiao = _Helper.LoadFromJson<TonGiao>(TuDien.DbName.TonGiao);
-        //    DsQuocTich = _Helper.LoadFromJson<QuocTich>(TuDien.DbName.QuocTich);
-        //    DsNghe = _Helper.LoadFromJson<Nghe>(TuDien.DbName.NganhNghe);
-        //    DsDanToc = _Helper.LoadFromJson<DanToc>(TuDien.DbName.DanToc);
-        //    DsDoiTuongUT = _Helper.LoadFromJson<DoiTuongUT>(TuDien.DbName.DoiTuongUuTien);
-        //    DsKhuVucUT = _Helper.LoadFromJson<KhuVucUT>(TuDien.DbName.KhuVucUuTien);
-        //    DsTruong = _Helper.LoadFromJson<Truong>(TuDien.DbName.TruongHoc);
-        //    DsDotXetTuyen = _Helper.LoadFromJson<DotXetTuyen>(TuDien.DbName.DotXetTuyen).Where(x => x.NamTS == _NamTS).ToList();
-        //    DSHoSoDT = _Helper.LoadFromJson<HoSoDuTuyen>(TuDien.DbName.HoSoDuTuyen).Where(x => x.NamTS == _NamTS).ToList();
-        //    DSHoSoTT = _Helper.LoadFromJson<HoSoTrungTuyen>(TuDien.DbName.HoSoTrungTuyen).Where(x => x.NamTS == _NamTS).ToList();
-        //    DsChiTieu = _Helper.LoadFromJson<ChiTieuXetTuyenView>(TuDien.DbName.ChiTieu).Where(x => x.Nam == _NamTS).Select(x => x.ToCTXT()).ToList();
-        //}
-        public static void LoadStaticList2()
+        public static void LoadStaticList()
         {
             _NamTS = Properties.Settings.Default.NamTS;
-            CurrSettings = _LiteDb.GetColletion<CaiDat>().FindOne(x => true);
-            if (CurrSettings == null) CurrSettings = new();
-            DsTrinhDo = _LiteDb.GetColletion<TrinhDo>().FindAll().ToList();
-            DsTonGiao = _LiteDb.GetColletion<TonGiao>().FindAll().ToList();
-            DsQuocTich = _LiteDb.GetColletion<QuocTich>().FindAll().ToList();
-            DsNghe = _LiteDb.GetColletion<Nghe>().FindAll().ToList();
-            DsDanToc = _LiteDb.GetColletion<DanToc>().FindAll().ToList();
-            DsDoiTuongUT = _LiteDb.GetColletion<DoiTuongUT>().FindAll().ToList();
-            DsKhuVucUT = _LiteDb.GetColletion<KhuVucUT>().FindAll().ToList();
-            DsTruong = _LiteDb.GetColletion<Truong>().FindAll().ToList();
-            DsDotXetTuyen = _LiteDb.GetColletion<DotXetTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
-            DSHoSoDT = _LiteDb.GetColletion<HoSoDuTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
-            DSHoSoTT = _LiteDb.GetColletion<HoSoTrungTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
-            DsChiTieu = _LiteDb.GetColletion<ChiTieuXetTuyen>().Find(Query.EQ("Nam", _NamTS)).ToList();
+
+            using (var db = _LiteDb.GetDatabase())
+            {
+                CurrSettings = db.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).FindOne(x => true);
+                if (CurrSettings == null) CurrSettings = new();
+                DsTrinhDo = db.GetCollection<TrinhDo>().FindAll().ToList();
+                DsTonGiao = db.GetCollection<TonGiao>().FindAll().ToList();
+                DsQuocTich = db.GetCollection<QuocTich>().FindAll().ToList();
+                DsNghe = db.GetCollection<Nghe>().FindAll().ToList();
+                DsDanToc = db.GetCollection<DanToc>().FindAll().ToList();
+                DsTruong = db.GetCollection<Truong>().FindAll().ToList();
+                DsKhuVucUT = db.GetCollection<KhuVucUT>().FindAll().ToList();
+                DsDoiTuongUT = db.GetCollection<DoiTuongUTTC>(TuDien.CategoryName.DoiTuongUuTienTC).FindAll().ToList();
+                DsDotXetTuyen = db.GetCollection<DotXetTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
+                DsChiTieu = db.GetCollection<ChiTieuXetTuyenTC>(TuDien.CategoryName.ChiTieuTC).Find(Query.EQ("Nam", _NamTS)).ToList();
+                DSHoSoDT = db.GetCollection<HoSoDuTuyenTC>(TuDien.CategoryName.HoSoDuTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
+                DSHoSoTT = db.GetCollection<HoSoTrungTuyenTC>(TuDien.CategoryName.HoSoTrungTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
+            }
+
         }
 
         internal static void RefreshDS(string Ten)
@@ -55,51 +40,51 @@ namespace QuanLyTuyenSinh
             switch (Ten)
             {
                 case TuDien.CategoryName.TruongHoc:
-                    DsTruong = _LiteDb.GetColletion<Truong>().FindAll().ToList();
+                    DsTruong = _LiteDb.GetDatabase().GetCollection<Truong>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.NganhNghe:
-                    DsNghe = _LiteDb.GetColletion<Nghe>().FindAll().ToList();
+                    DsNghe = _LiteDb.GetDatabase().GetCollection<Nghe>().FindAll().ToList();
                     break;
 
-                case TuDien.CategoryName.DoiTuongUuTien:
-                    DsDoiTuongUT = _LiteDb.GetColletion<DoiTuongUT>().FindAll().ToList();
+                case TuDien.CategoryName.DoiTuongUuTienTC:
+                    DsDoiTuongUT = _LiteDb.GetDatabase().GetCollection<DoiTuongUTTC>(TuDien.CategoryName.DoiTuongUuTienTC).FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.KhuVucUuTien:
-                    DsKhuVucUT = _LiteDb.GetColletion<KhuVucUT>().FindAll().ToList();
+                    DsKhuVucUT = _LiteDb.GetDatabase().GetCollection<KhuVucUT>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.DanToc:
-                    DsDanToc = _LiteDb.GetColletion<DanToc>().FindAll().ToList();
+                    DsDanToc = _LiteDb.GetDatabase().GetCollection<DanToc>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.TonGiao:
-                    DsTonGiao = _LiteDb.GetColletion<TonGiao>().FindAll().ToList();
+                    DsTonGiao = _LiteDb.GetDatabase().GetCollection<TonGiao>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.TrinhDo:
-                    DsTrinhDo = _LiteDb.GetColletion<TrinhDo>().FindAll().ToList();
+                    DsTrinhDo = _LiteDb.GetDatabase().GetCollection<TrinhDo>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.QuocTich:
-                    DsQuocTich = _LiteDb.GetColletion<QuocTich>().FindAll().ToList();
+                    DsQuocTich = _LiteDb.GetDatabase().GetCollection<QuocTich>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.DotXetTuyen:
-                    DsDotXetTuyen = _LiteDb.GetColletion<DotXetTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
+                    DsDotXetTuyen = _LiteDb.GetDatabase().GetCollection<DotXetTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
                     break;
 
-                case TuDien.CategoryName.ChiTieu:
-                    DsChiTieu = _LiteDb.GetColletion<ChiTieuXetTuyen>().Find(Query.EQ("Nam", _NamTS)).ToList();
+                case TuDien.CategoryName.ChiTieuTC:
+                    DsChiTieu = _LiteDb.GetDatabase().GetCollection<ChiTieuXetTuyenTC>(TuDien.CategoryName.ChiTieuTC).Find(Query.EQ("Nam", _NamTS)).ToList();
                     break;
 
-                case TuDien.CategoryName.HoSoDuTuyen:
-                    DSHoSoDT = _LiteDb.GetColletion<HoSoDuTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
+                case TuDien.CategoryName.HoSoDuTuyenTC:
+                    DSHoSoDT = _LiteDb.GetDatabase().GetCollection<HoSoDuTuyenTC>(TuDien.CategoryName.HoSoDuTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
                     break;
 
-                case TuDien.CategoryName.HoSoTrungTuyen:
-                    DSHoSoTT = _LiteDb.GetColletion<HoSoTrungTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
+                case TuDien.CategoryName.HoSoTrungTuyenTC:
+                    DSHoSoTT = _LiteDb.GetDatabase().GetCollection<HoSoTrungTuyenTC>(TuDien.CategoryName.HoSoTrungTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
                     break;
 
                 default: break;
@@ -108,13 +93,13 @@ namespace QuanLyTuyenSinh
 
         internal static List<DanToc> DsDanToc { get; set; }
 
-        internal static List<DoiTuongUT> DsDoiTuongUT { get; set; }
+        internal static List<DoiTuongUTTC> DsDoiTuongUT { get; set; }
 
         internal static List<DotXetTuyen> DsDotXetTuyen { get; set; }
 
-        internal static List<HoSoDuTuyen> DSHoSoDT { get; set; }
+        internal static List<HoSoDuTuyenTC> DSHoSoDT { get; set; }
 
-        internal static List<HoSoTrungTuyen> DSHoSoTT { get; set; }
+        internal static List<HoSoTrungTuyenTC> DSHoSoTT { get; set; }
 
         internal static List<KhuVucUT> DsKhuVucUT { get; set; }
 
@@ -128,7 +113,7 @@ namespace QuanLyTuyenSinh
 
         internal static List<Truong> DsTruong { get; set; }
 
-        internal static List<ChiTieuXetTuyen> DsChiTieu { get; set; }
+        internal static List<ChiTieuXetTuyenTC> DsChiTieu { get; set; }
 
         internal static List<User> DsUser = _Helper.LoadFromJson<User>(TuDien.DbName.User);
 
@@ -217,7 +202,7 @@ namespace QuanLyTuyenSinh
                     result = DsNghe.Where(x => x.Ma.Equals(Code)).Count() >= 2 || DsNghe.Where(x => x.Ma2.Equals(Code)).Count() >= 2;
                     break;
 
-                case TuDien.CategoryName.DoiTuongUuTien:
+                case TuDien.CategoryName.DoiTuongUuTienTC:
                     result = DsDoiTuongUT.Where(x => x.Ma.Equals(Code)).Count() >= 2;
                     break;
 
@@ -250,9 +235,9 @@ namespace QuanLyTuyenSinh
             return result;
         }
 
-        internal static List<HoSoDuTuyenView> GetDSDuTuyen(int DotTS, string TDHV = "THCS")
+        internal static List<HoSoDuTuyenTCView> GetDSDuTuyen(int DotTS, string TDHV = "THCS")
         {
-            List<HoSoDuTuyenView> lst = new();
+            List<HoSoDuTuyenTCView> lst = new();
             lst = DSHoSoDT.Where(
                 hs => (DotTS <= 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true))
                 .Select(x => x.ToView())
@@ -262,9 +247,9 @@ namespace QuanLyTuyenSinh
             return lst;
         }
 
-        internal static List<HoSoTrungTuyen> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null, string? IdTruong = null, bool KhongTT = true)
+        internal static List<HoSoTrungTuyenTC> GetDSTrungTuyen(int DotTS, string TDHV = "THCS", string? MaTinh = null, string? MaHuyen = null, string? MaXa = null, string? IdTruong = null, bool KhongTT = true)
         {
-            List<HoSoTrungTuyen> lst = new();
+            List<HoSoTrungTuyenTC> lst = new();
             if (KhongTT)
             {
                 var lstHSDT = Data.DSHoSoDT.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
@@ -300,9 +285,9 @@ namespace QuanLyTuyenSinh
 
 
 
-        internal static List<TongHopDiemXetTuyen> THDiemXetTuyen(int DotTS, string htdt = "THCS")
+        internal static List<TongHopDiemXetTuyenTC> THDiemXetTuyen(int DotTS, string htdt = "THCS")
         {
-            List<TongHopDiemXetTuyen> lst = new();
+            List<TongHopDiemXetTuyenTC> lst = new();
             if (DotTS <= 0)
                 return lst;
             lst = DSHoSoDT.Where(
@@ -312,7 +297,7 @@ namespace QuanLyTuyenSinh
             return lst;
         }
 
-        internal static void LapDSTrungTuyen(int DotTS, List<HoSoTrungTuyen> DsTT, List<HoSoTrungTuyen> DsKhongTT)
+        internal static void LapDSTrungTuyen(int DotTS, List<HoSoTrungTuyenTC> DsTT, List<HoSoTrungTuyenTC> DsKhongTT)
         {
             if (DotTS <= 0)
                 return;
@@ -544,38 +529,38 @@ namespace QuanLyTuyenSinh
         public static void ConvertToLiteDb()
         {
             //Danh mục
-            _LiteDb.GetColletion<Truong>().DeleteAll();
-            _LiteDb.GetColletion<Truong>().InsertBulk(Data.DsTruong);
-            _LiteDb.GetColletion<Nghe>().DeleteAll();
-            _LiteDb.GetColletion<Nghe>().InsertBulk(Data.DsNghe);
-            _LiteDb.GetColletion<DanToc>().DeleteAll();
-            _LiteDb.GetColletion<DanToc>().InsertBulk(Data.DsDanToc);
-            _LiteDb.GetColletion<QuocTich>().DeleteAll();
-            _LiteDb.GetColletion<QuocTich>().InsertBulk(Data.DsQuocTich);
-            _LiteDb.GetColletion<TonGiao>().DeleteAll();
-            _LiteDb.GetColletion<TonGiao>().InsertBulk(Data.DsTonGiao);
-            _LiteDb.GetColletion<TrinhDo>().DeleteAll();
-            _LiteDb.GetColletion<TrinhDo>().InsertBulk(Data.DsTrinhDo);
-            _LiteDb.GetColletion<DoiTuongUT>().DeleteAll();
-            _LiteDb.GetColletion<DoiTuongUT>().InsertBulk(Data.DsDoiTuongUT);
-            _LiteDb.GetColletion<KhuVucUT>().DeleteAll();
-            _LiteDb.GetColletion<KhuVucUT>().InsertBulk(Data.DsKhuVucUT);
-            _LiteDb.GetColletion<DotXetTuyen>().DeleteAll();
-            _LiteDb.GetColletion<DotXetTuyen>().InsertBulk(_Helper.LoadFromJson<DotXetTuyen>(TuDien.DbName.DotXetTuyen));
-            _LiteDb.GetColletion<ChiTieuXetTuyen>().DeleteAll();
-            _LiteDb.GetColletion<ChiTieuXetTuyen>().InsertBulk(Data.DsChiTieu);
-            _LiteDb.GetColletion<User>().DeleteAll();
-            _LiteDb.GetColletion<User>().InsertBulk(Data.DsUser);
+            _LiteDb.GetDatabase().GetCollection<Truong>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<Truong>().InsertBulk(Data.DsTruong);
+            _LiteDb.GetDatabase().GetCollection<Nghe>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<Nghe>().InsertBulk(Data.DsNghe);
+            _LiteDb.GetDatabase().GetCollection<DanToc>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<DanToc>().InsertBulk(Data.DsDanToc);
+            _LiteDb.GetDatabase().GetCollection<QuocTich>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<QuocTich>().InsertBulk(Data.DsQuocTich);
+            _LiteDb.GetDatabase().GetCollection<TonGiao>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<TonGiao>().InsertBulk(Data.DsTonGiao);
+            _LiteDb.GetDatabase().GetCollection<TrinhDo>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<TrinhDo>().InsertBulk(Data.DsTrinhDo);
+            _LiteDb.GetDatabase().GetCollection<DoiTuongUTTC>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<DoiTuongUTTC>().InsertBulk(Data.DsDoiTuongUT);
+            _LiteDb.GetDatabase().GetCollection<KhuVucUT>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<KhuVucUT>().InsertBulk(Data.DsKhuVucUT);
+            _LiteDb.GetDatabase().GetCollection<DotXetTuyen>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<DotXetTuyen>().InsertBulk(_Helper.LoadFromJson<DotXetTuyen>(TuDien.DbName.DotXetTuyen));
+            _LiteDb.GetDatabase().GetCollection<ChiTieuXetTuyenTC>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<ChiTieuXetTuyenTC>().InsertBulk(Data.DsChiTieu);
+            _LiteDb.GetDatabase().GetCollection<User>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<User>().InsertBulk(Data.DsUser);
 
             //Hồ sơ
-            _LiteDb.GetColletion<HoSoDuTuyen>().DeleteAll();
-            _LiteDb.GetColletion<HoSoDuTuyen>().InsertBulk(_Helper.LoadFromJson<HoSoDuTuyen>(TuDien.DbName.HoSoDuTuyen));
-            _LiteDb.GetColletion<HoSoTrungTuyen>().DeleteAll();
-            _LiteDb.GetColletion<HoSoTrungTuyen>().InsertBulk(_Helper.LoadFromJson<HoSoTrungTuyen>(TuDien.DbName.HoSoTrungTuyen));
+            _LiteDb.GetDatabase().GetCollection<HoSoDuTuyenTC>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<HoSoDuTuyenTC>().InsertBulk(_Helper.LoadFromJson<HoSoDuTuyenTC>(TuDien.DbName.HoSoDuTuyen));
+            _LiteDb.GetDatabase().GetCollection<HoSoTrungTuyenTC>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<HoSoTrungTuyenTC>().InsertBulk(_Helper.LoadFromJson<HoSoTrungTuyenTC>(TuDien.DbName.HoSoTrungTuyen));
 
             //setting
-            _LiteDb.GetColletion<CaiDat>().DeleteAll();
-            _LiteDb.GetColletion<CaiDat>().Insert(Data.CurrSettings);
+            _LiteDb.GetDatabase().GetCollection<CaiDat>().DeleteAll();
+            _LiteDb.GetDatabase().GetCollection<CaiDat>().Insert(Data.CurrSettings);
         }
     }
 }

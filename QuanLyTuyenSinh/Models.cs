@@ -23,7 +23,7 @@ namespace QuanLyTuyenSinh
         public abstract bool Delete();
     }
 
-    public class HoSoDuTuyen : DBClass
+    public class HoSoDuTuyenTC : DBClass
     {
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -297,9 +297,9 @@ namespace QuanLyTuyenSinh
             return tong;
         }
 
-        public TongHopDiemXetTuyen ToTHDXT()
+        public TongHopDiemXetTuyenTC ToTHDXT()
         {
-            var th = new TongHopDiemXetTuyen
+            var th = new TongHopDiemXetTuyenTC
             {
                 IdHoSo = Id,
                 MaHoSo = MaHoSo,
@@ -387,9 +387,9 @@ namespace QuanLyTuyenSinh
             return th;
         }
 
-        public HoSoTrungTuyen ToHSTT()
+        public HoSoTrungTuyenTC ToHSTT()
         {
-            var hs = new HoSoTrungTuyen()
+            var hs = new HoSoTrungTuyenTC()
             {
                 IdHSDT = Id,
                 MaHoSo = MaHoSo,
@@ -433,7 +433,7 @@ namespace QuanLyTuyenSinh
             return hs;
         }
 
-        public HoSoDuTuyenView ToView() => new HoSoDuTuyenView
+        public HoSoDuTuyenTCView ToView() => new HoSoDuTuyenTCView
         {
             Id = Id,
             MaHoSo = MaHoSo,
@@ -477,12 +477,12 @@ namespace QuanLyTuyenSinh
             DotTS = DotTS,
         };
 
-        public override bool Save() => _LiteDb.Upsert(this);
+        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoDuTuyenTC);
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<HoSoDuTuyenTC>(Id, TuDien.CategoryName.HoSoDuTuyenTC);
     }
 
-    public class HoSoDuTuyenView : BaseClass
+    public class HoSoDuTuyenTCView : BaseClass
     {
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -601,7 +601,7 @@ namespace QuanLyTuyenSinh
         public int DotTS { get; set; }
     }
 
-    public class TongHopDiemXetTuyen
+    public class TongHopDiemXetTuyenTC
     {
         [Display(AutoGenerateField = false)]
         public string IdHoSo { get; set; }
@@ -650,7 +650,7 @@ namespace QuanLyTuyenSinh
 
         [Display(AutoGenerateField = false)]
         public string IdDTUT { get; set; }
-        public HoSoTrungTuyen ToHSTT()
+        public HoSoTrungTuyenTC ToHSTT()
         {
             var hsdt = Data.DSHoSoDT.First(x => x.Id.Equals(IdHoSo));
             return hsdt.ToHSTT();
@@ -678,7 +678,7 @@ namespace QuanLyTuyenSinh
         public int Tong => SLNV1 + SLNV2;
     }
 
-    public class HoSoTrungTuyen : DBClass
+    public class HoSoTrungTuyenTC : DBClass
     {
         [Display(AutoGenerateField = false)]
         public string IdHSDT { get; set; }
@@ -794,9 +794,9 @@ namespace QuanLyTuyenSinh
         [Display(Name = "KVƯT")]
         public string IdKVUT { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<HoSoTrungTuyenTC>(Id, TuDien.CategoryName.HoSoTrungTuyenTC);
 
-        public override bool Save() => _LiteDb.Upsert(this);
+        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoTrungTuyenTC);
     }
 
     public class THSLTTTheoNghe
@@ -874,12 +874,12 @@ namespace QuanLyTuyenSinh
         [Required(ErrorMessage = "Chưa nhập ngày kết thúc")]
         public DateTime DenNgay { get; set; } = new DateTime(Data._NamTS, 1, 30);
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<DotXetTuyen>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class ChiTieuXetTuyenView : DBClass
+    public class ChiTieuXetTuyenTCView : DBClass
     {
         [Display(AutoGenerateField = false)]
         public int Nam { get; set; } = Data._NamTS;
@@ -916,7 +916,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Điểm trúng tuyển THPT")]
         public double DiemTTTHPT { get; set; } = 5;
-        public ChiTieuXetTuyen ToCTXT() => new ChiTieuXetTuyen
+        public ChiTieuXetTuyenTC ToCTXT() => new ChiTieuXetTuyenTC
         {
             Id = Id,
             Nam = Nam,
@@ -926,19 +926,18 @@ namespace QuanLyTuyenSinh
             IdNghe = IdNghe,
         };
 
-        public override bool Save() => _LiteDb.Upsert(this.ToCTXT());
-
-        public override bool Delete() => _LiteDb.Delete(this.ToCTXT());
+        public override bool Save() => _LiteDb.Upsert(ToCTXT(), TuDien.CategoryName.ChiTieuTC);
+        public override bool Delete() => _LiteDb.Delete<ChiTieuXetTuyenTC>(Id, TuDien.CategoryName.ChiTieuTC);
     }
 
-    public class ChiTieuXetTuyen : BaseClass
+    public class ChiTieuXetTuyenTC : BaseClass
     {
         public int Nam { get; set; } = Data._NamTS;
         public string IdNghe { get; set; }
         public int ChiTieu { get; set; }
         public double DiemTTTHCS { get; set; } = 5;
         public double DiemTTTHPT { get; set; } = 5;
-        public ChiTieuXetTuyenView ToCTXT() => new ChiTieuXetTuyenView
+        public ChiTieuXetTuyenTCView ToCTXT() => new ChiTieuXetTuyenTCView
         {
             Id = Id,
             Nam = Nam,
@@ -967,7 +966,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<Nghe>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -989,7 +988,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<Truong>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -1010,12 +1009,12 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<KhuVucUT>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class DoiTuongUT : DBClass
+    public class DoiTuongUTTC : DBClass
     {
         [Display(Name = "Mã đối tượng")]
         [Required(ErrorMessage = "Chưa nhập mã đối tượng")]
@@ -1031,9 +1030,9 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<DoiTuongUTTC>(Id, TuDien.CategoryName.DoiTuongUuTienTC);
 
-        public override bool Save() => _LiteDb.Upsert(this);
+        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.DoiTuongUuTienTC);
     }
 
     public class DanToc : DBClass
@@ -1049,7 +1048,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<DanToc>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -1067,7 +1066,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<TonGiao>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -1085,7 +1084,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<QuocTich>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -1103,7 +1102,7 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Mô tả")]
         public string MoTa { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<TrinhDo>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -1123,7 +1122,7 @@ namespace QuanLyTuyenSinh
         public string Salt { get; set; }
         public string Permissons { get; set; }
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.Delete<Nghe>(Id);
 
         public override bool Save() => _LiteDb.Upsert(this);
     }
@@ -1143,9 +1142,9 @@ namespace QuanLyTuyenSinh
         public string MaTinh { get; set; } = "511";
         public string MaHuyen { get; set; } = "51103";
 
-        public override bool Delete() => _LiteDb.Delete(this);
+        public override bool Delete() => _LiteDb.GetDatabase().GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Delete(Id);
 
-        public override bool Save() => _LiteDb.Upsert(this);
+        public override bool Save() => _LiteDb.GetDatabase().GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Upsert(this);
     }
 
     public class HANH_KIEM_THCS

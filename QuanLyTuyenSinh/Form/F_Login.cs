@@ -67,7 +67,7 @@ namespace QuanLyTuyenSinh.Form
                 Properties.Settings.Default.Save();
                 Task.Run(() =>
                 {
-                    Data.LoadStaticList2();
+                    Data.LoadStaticList();
                 });
                 MainWorkspace.FormMain = new F_Main();
                 MainWorkspace.FormMain.FormClosed += FormMain_FormClosed;
