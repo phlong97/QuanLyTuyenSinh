@@ -8,7 +8,13 @@
     <Setting Name="UserName" Type="System.String" Scope="User">
       <Value Profile="(Default)">admin</Value>
     </Setting>
-    <Setting Name="DbDirectory" Type="System.String" Scope="Application">
+    <Setting Name="MaTinh" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MaHuyen" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DBPATH" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

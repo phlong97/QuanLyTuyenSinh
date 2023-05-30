@@ -38,7 +38,7 @@ namespace QuanLyTuyenSinh.Form
                     }
                     else
                     {
-                        if (Data.UpdateUser(_user.Id, txtHoVaTen.Text, txtNewPass.Text))
+                        if (DataHelper.UpdateUser(_user.Id, txtHoVaTen.Text, txtNewPass.Text))
                         {
                             XtraMessageBox.Show("Đổi mật khẩu thành công!");
                             Close();
@@ -55,7 +55,7 @@ namespace QuanLyTuyenSinh.Form
             }
             else
             {
-                Data.UpdateUser(_user.Id, txtHoVaTen.Text);
+                DataHelper.UpdateUser(_user.Id, txtHoVaTen.Text);
                 Close();
             }
         }

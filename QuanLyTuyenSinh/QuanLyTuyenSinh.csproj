@@ -6,7 +6,16 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NeutralLanguage>vi-VN</NeutralLanguage>
+    <Authors>Long Hoàng</Authors>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <IsPublishable>False</IsPublishable>
+    <PackageIcon></PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -17,6 +26,7 @@
     <PackageReference Include="DevExpress.Win.Design" Version="22.2.4" />
     <PackageReference Include="LiteDB" Version="5.0.16" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

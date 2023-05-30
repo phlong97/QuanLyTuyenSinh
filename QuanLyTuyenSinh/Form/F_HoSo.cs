@@ -30,7 +30,7 @@ namespace QuanLyTuyenSinh.Form
             MaximizeBox = false;
 
             _hoSo = hoSo;
-            Text = Data.CurrSettings.TENTRUONG;
+            Text = DataHelper.CurrSettings.TENTRUONG;
             HeaderText.Caption = $"Hồ sơ dự tuyển - Đợt {_hoSo.DotTS}";
             if (!string.IsNullOrEmpty(_hoSo.MaTinh))
             {
@@ -126,7 +126,7 @@ namespace QuanLyTuyenSinh.Form
                 Directory.CreateDirectory(path);
                 string filePath = Path.Combine(path, _hoSo.MaHoSo);
                 Anh.Image.Save(filePath);
-                _hoSo.Anh = $"{_hoSo.NamTS}/" + $"{_hoSo.DotTS}/" + _hoSo.MaHoSo;
+                _hoSo.Anh = $"{_hoSo.NamTS}/" + $"{_hoSo.DotTS}/" + _hoSo.Id;
             }
         }
 
@@ -143,13 +143,12 @@ namespace QuanLyTuyenSinh.Form
                 if (nv == null) return;
                 if (string.IsNullOrEmpty(nv.IdNghe))
                     return;
-                if (!string.IsNullOrEmpty(_hoSo.MaHoSo) && !string.IsNullOrEmpty(nv.IdNghe))
-                    return;
-                var nv1 = Data.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
+
+                var nv1 = DataHelper.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
                 if (nv1 == null)
                     return;
                 string manghe = nv1.Ma2;
-                var max = Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                var max = DataHelper.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
                 if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
                 else
                 {
@@ -176,7 +175,7 @@ namespace QuanLyTuyenSinh.Form
         private void TxtHoTenAutoComplete()
         {
             var collection = new AutoCompleteStringCollection();
-            collection.AddRange(Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ten).Distinct().ToArray());
+            collection.AddRange(DataHelper.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ten).Distinct().ToArray());
             txtTen.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -185,7 +184,7 @@ namespace QuanLyTuyenSinh.Form
             txtTen.Properties.AdvancedModeOptions.AutoCompleteCustomSource = collection;
 
             var collection2 = new AutoCompleteStringCollection();
-            collection2.AddRange(Data.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ho).Distinct().ToArray());
+            collection2.AddRange(DataHelper.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ho).Distinct().ToArray());
             txtHo.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtHo.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -261,7 +260,7 @@ namespace QuanLyTuyenSinh.Form
             gridView1.ShowingEditor += GridView_ShowingEditor;
             gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
 
-            DevForm.CreateRepositoryItemLookUpEdit(gridView1, Data.DsNghe, "IdNghe", "Ten", "Id");
+            DevForm.CreateRepositoryItemLookUpEdit(gridView1, DataHelper.DsNghe, "IdNghe", "Ten", "Id");
         }
 
         private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
@@ -372,13 +371,13 @@ namespace QuanLyTuyenSinh.Form
 
         private void InitLookupEdits()
         {
-            DevForm.CreateSearchLookupEdit(lookDanToc, "Ten", "Id", Data.DsDanToc);
-            DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", Data.DsQuocTich);
-            DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", Data.DsTonGiao);
-            DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", Data.DsTrinhDo);
-            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", Data.DsDoiTuongUT);
-            DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", Data.DsKhuVucUT);
-            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", Data.DsTruong);
+            DevForm.CreateSearchLookupEdit(lookDanToc, "Ten", "Id", DataHelper.DsDanToc);
+            DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", DataHelper.DsQuocTich);
+            DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", DataHelper.DsTonGiao);
+            DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", DataHelper.DsTrinhDo);
+            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DataHelper.DsDoiTuongUT);
+            DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", DataHelper.DsKhuVucUT);
+            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DataHelper.DsTruong);
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode");
             DevForm.CreateSearchLookupEdit(lookXa, "AddressName", "AddressCode");
@@ -430,23 +429,23 @@ namespace QuanLyTuyenSinh.Form
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
             {
-                var index = Data.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
+                var index = DataHelper.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
                 if (index >= 0)
                 {
-                    Data.DSHoSoDT[index] = _hoSo;
+                    DataHelper.DSHoSoDT[index] = _hoSo;
                 }
                 else
                 {
-                    Data.DSHoSoDT.Add(_hoSo);
+                    DataHelper.DSHoSoDT.Add(_hoSo);
                 }
                 SaveAnh();
                 _hoSo.Save();
                 int dts = _hoSo.DotTS, nts = _hoSo.NamTS;
-                var dsdt = Data.DSHoSoDT.Where(x => x.NamTS == nts && x.DotTS == dts);
-                var dt = Data.DsDanToc.FirstOrDefault();
-                var qt = Data.DsQuocTich.FirstOrDefault();
-                var tg = Data.DsTonGiao.FirstOrDefault();
-                var tdvh = Data.DsTrinhDo.FirstOrDefault();
+                var dsdt = DataHelper.DSHoSoDT.Where(x => x.NamTS == nts && x.DotTS == dts);
+                var dt = DataHelper.DsDanToc.FirstOrDefault();
+                var qt = DataHelper.DsQuocTich.FirstOrDefault();
+                var tg = DataHelper.DsTonGiao.FirstOrDefault();
+                var tdvh = DataHelper.DsTrinhDo.FirstOrDefault();
                 _hoSo = new HoSoDuTuyenTC
                 {
                     NamTS = nts,
@@ -479,7 +478,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void lookTruong_EditValueChanged(object sender, EventArgs e)
         {
-            var truong = Data.DsTruong.FirstOrDefault(x => x.Id.Equals(lookTruong.EditValue.ToString()));
+            var truong = DataHelper.DsTruong.FirstOrDefault(x => x.Id.Equals(lookTruong.EditValue.ToString()));
             if (truong is null)
             {
                 return;

@@ -151,7 +151,7 @@ namespace QuanLyTuyenSinh
             string errs = string.Empty;
             if (string.IsNullOrEmpty(MaHoSo))
                 errs += "Chưa nhập mã hồ sơ\n";
-            if (Data.DSHoSoDT.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) >= 2)
+            if (DataHelper.DSHoSoDT.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) >= 2)
                 errs += "Trùng mã hồ sơ\n";
             if (string.IsNullOrEmpty(Ho))
                 errs += "Chưa nhập họ học sinh \n";
@@ -161,7 +161,7 @@ namespace QuanLyTuyenSinh
             {
                 if (CCCD.Length > 0 && CCCD.Length == 11)
                     errs += "Nhập sai CCCD/CMND! \n";
-                if (Data.DSHoSoDT.Count(x => x.CCCD == CCCD) >= 2)
+                if (DataHelper.DSHoSoDT.Count(x => x.CCCD == CCCD) >= 2)
                     errs += "Đã tồn tại CCCD/CMND!\n";
             }
             if (NgaySinh == DateTime.MinValue)
@@ -196,15 +196,15 @@ namespace QuanLyTuyenSinh
             {
                 int sltt = 0;
                 var nv1 = DsNguyenVong.First(x => x.NV == 1);
-                int sldt = Data.DSHoSoDT.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
-                var ctnv1 = Data.DsChiTieu.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
+                int sldt = DataHelper.DSHoSoDT.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
+                var ctnv1 = DataHelper.DsChiTieu.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
                 if (ctnv1 != null)
                 {
                     for (int i = 1; i < DotTS; i++)
                     {
-                        sltt += Data.DSHoSoTT.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
+                        sltt += DataHelper.DSHoSoTT.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
                     }
-                    int ctmax = (int)(ctnv1.ChiTieu + ctnv1.ChiTieu * Data.CurrSettings.CHITIEUVUOTMUC);
+                    int ctmax = (int)(ctnv1.ChiTieu + ctnv1.ChiTieu * DataHelper.CurrSettings.CHITIEUVUOTMUC);
                     if (sldt + sltt >= ctmax)
                     {
                         errs += $"Nguyện vọng 1 đã vượt chỉ tiêu tối đa! Chỉ tiêu tối đa: {ctmax}\n";
@@ -222,24 +222,24 @@ namespace QuanLyTuyenSinh
                 switch (HanhKiem)
                 {
                     case "Tốt":
-                        tong += Data.CurrSettings.HANH_KIEM_THCS.TOT; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.TOT; break;
                     case "Khá":
-                        tong += Data.CurrSettings.HANH_KIEM_THCS.KHA; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.KHA; break;
                     case "Trung bình":
-                        tong += Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                     default:
-                        tong += Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                 }
                 switch (XLTN)
                 {
                     case "Giỏi":
-                        tong += Data.CurrSettings.XLTN_THCS.GIOI; break;
+                        tong += DataHelper.CurrSettings.XLTN_THCS.GIOI; break;
                     case "Khá":
-                        tong += Data.CurrSettings.XLTN_THCS.KHA; break;
+                        tong += DataHelper.CurrSettings.XLTN_THCS.KHA; break;
                     case "Trung bình":
-                        tong += Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                     default:
-                        tong += Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                 }
             }
             else if (TDHV.Equals("THPT"))
@@ -247,40 +247,40 @@ namespace QuanLyTuyenSinh
                 switch (HanhKiem)
                 {
                     case "Tốt":
-                        tong += Data.CurrSettings.HANH_KIEM_THPT.TOT; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.TOT; break;
                     case "Khá":
-                        tong += Data.CurrSettings.HANH_KIEM_THPT.KHA; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.KHA; break;
                     case "Trung bình":
-                        tong += Data.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
                     default:
-                        tong += Data.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
                 }
                 switch (XLHocTap)
                 {
                     case "Giỏi":
-                        tong += Data.CurrSettings.XLHT_THPT.GIOI; break;
+                        tong += DataHelper.CurrSettings.XLHT_THPT.GIOI; break;
                     case "Khá":
-                        tong += Data.CurrSettings.XLHT_THPT.KHA; break;
+                        tong += DataHelper.CurrSettings.XLHT_THPT.KHA; break;
                     case "Trung bình":
-                        tong += Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                     default:
-                        tong += Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                 }
                 switch (XLTN)
                 {
                     case "Giỏi":
-                        tong += Data.CurrSettings.XLTN_THPT.GIOI; break;
+                        tong += DataHelper.CurrSettings.XLTN_THPT.GIOI; break;
                     case "Khá":
-                        tong += Data.CurrSettings.XLTN_THPT.KHA; break;
+                        tong += DataHelper.CurrSettings.XLTN_THPT.KHA; break;
                     case "Trung bình":
-                        tong += Data.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
                     default:
-                        tong += Data.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
+                        tong += DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
                 }
             }
             if (!string.IsNullOrEmpty(IdKVUT))
             {
-                var kv = Data.DsKhuVucUT.FirstOrDefault(kv => kv.Id.Equals(IdKVUT));
+                var kv = DataHelper.DsKhuVucUT.FirstOrDefault(kv => kv.Id.Equals(IdKVUT));
                 if (kv != null)
                 {
                     tong += kv.Diem;
@@ -288,7 +288,7 @@ namespace QuanLyTuyenSinh
             }
             if (!string.IsNullOrEmpty(IdDTUT))
             {
-                var dt = Data.DsDoiTuongUT.FirstOrDefault(dt => dt.Id.Equals(IdDTUT));
+                var dt = DataHelper.DsDoiTuongUT.FirstOrDefault(dt => dt.Id.Equals(IdDTUT));
                 if (dt != null)
                 {
                     tong += dt.Diem;
@@ -316,35 +316,35 @@ namespace QuanLyTuyenSinh
                 UTDT =
                     string.IsNullOrEmpty(IdDTUT)
                         ? 0
-                        : Data.DsDoiTuongUT.FirstOrDefault(x => x.Id.Equals(IdDTUT)).Diem,
+                        : DataHelper.DsDoiTuongUT.FirstOrDefault(x => x.Id.Equals(IdDTUT)).Diem,
                 UTKV =
                     string.IsNullOrEmpty(IdKVUT)
                         ? 0
-                        : Data.DsKhuVucUT.FirstOrDefault(x => x.Id.Equals(IdKVUT)).Diem,
+                        : DataHelper.DsKhuVucUT.FirstOrDefault(x => x.Id.Equals(IdKVUT)).Diem,
             };
             if (TDHV.Equals("THCS"))
             {
                 switch (HanhKiem)
                 {
                     case "Tốt":
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.TOT; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.TOT; break;
                     case "Khá":
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.KHA; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.KHA; break;
                     case "Trung bình":
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                     default:
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
                 }
                 switch (XLTN)
                 {
                     case "Giỏi":
-                        th.XLTN = Data.CurrSettings.XLTN_THCS.GIOI; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.GIOI; break;
                     case "Khá":
-                        th.XLTN = Data.CurrSettings.XLTN_THCS.KHA; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.KHA; break;
                     case "Trung bình":
-                        th.XLTN = Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                     default:
-                        th.XLTN = Data.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
                 }
             }
             else if (TDHV.Equals("THPT"))
@@ -352,35 +352,35 @@ namespace QuanLyTuyenSinh
                 switch (HanhKiem)
                 {
                     case "Tốt":
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THPT.TOT; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.TOT; break;
                     case "Khá":
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THPT.KHA; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.KHA; break;
                     case "Trung bình":
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
                     default:
-                        th.HanhKiem = Data.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
+                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
                 }
                 switch (XLHocTap)
                 {
                     case "Giỏi":
-                        th.XLHT = Data.CurrSettings.XLHT_THPT.GIOI; break;
+                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.GIOI; break;
                     case "Khá":
-                        th.XLHT = Data.CurrSettings.XLHT_THPT.KHA; break;
+                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.KHA; break;
                     case "Trung bình":
-                        th.XLHT = Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
+                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                     default:
-                        th.XLHT = Data.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
+                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
                 }
                 switch (XLTN)
                 {
                     case "Giỏi":
-                        th.XLTN = Data.CurrSettings.XLTN_THPT.GIOI; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.GIOI; break;
                     case "Khá":
-                        th.XLTN = Data.CurrSettings.XLTN_THPT.KHA; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.KHA; break;
                     case "Trung bình":
-                        th.XLTN = Data.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
                     default:
-                        th.XLTN = Data.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
+                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
                 }
             }
 
@@ -652,7 +652,7 @@ namespace QuanLyTuyenSinh
         public string IdDTUT { get; set; }
         public HoSoTrungTuyenTC ToHSTT()
         {
-            var hsdt = Data.DSHoSoDT.First(x => x.Id.Equals(IdHoSo));
+            var hsdt = DataHelper.DSHoSoDT.First(x => x.Id.Equals(IdHoSo));
             return hsdt.ToHSTT();
         }
     }
@@ -858,7 +858,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Năm tuyển sinh")]
         [Required(ErrorMessage = "Chưa nhập năm")]
-        public int NamTS { get; set; } = Data._NamTS;
+        public int NamTS { get; set; } = DataHelper._NamTS;
 
         [Display(Name = "Đợt tuyển sinh")]
         [Required(ErrorMessage = "Chưa nhập đợt")]
@@ -867,12 +867,12 @@ namespace QuanLyTuyenSinh
         [Display(Name = "Ngày mở đợt")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "dd/MM/yyyy")]
         [Required(ErrorMessage = "Chưa nhập ngày mở đợt")]
-        public DateTime TuNgay { get; set; } = new DateTime(Data._NamTS, 1, 1);
+        public DateTime TuNgay { get; set; } = new DateTime(DataHelper._NamTS, 1, 1);
 
         [Display(Name = "Ngày kết thúc")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "dd/MM/yyyy")]
         [Required(ErrorMessage = "Chưa nhập ngày kết thúc")]
-        public DateTime DenNgay { get; set; } = new DateTime(Data._NamTS, 1, 30);
+        public DateTime DenNgay { get; set; } = new DateTime(DataHelper._NamTS, 1, 30);
 
         public override bool Delete() => _LiteDb.Delete<DotXetTuyen>(Id);
 
@@ -882,7 +882,7 @@ namespace QuanLyTuyenSinh
     public class ChiTieuXetTuyenTCView : DBClass
     {
         [Display(AutoGenerateField = false)]
-        public int Nam { get; set; } = Data._NamTS;
+        public int Nam { get; set; } = DataHelper._NamTS;
 
         private string _IdNghe;
 
@@ -894,7 +894,7 @@ namespace QuanLyTuyenSinh
             set
             {
                 _IdNghe = value;
-                var nghe = Data.DsNghe.FirstOrDefault(x => x.Id.Equals(_IdNghe));
+                var nghe = DataHelper.DsNghe.FirstOrDefault(x => x.Id.Equals(_IdNghe));
                 MaNghe = nghe is null ? string.Empty : nghe.Ma;
                 TenNghe = nghe is null ? string.Empty : nghe.Ten;
             }
@@ -932,7 +932,7 @@ namespace QuanLyTuyenSinh
 
     public class ChiTieuXetTuyenTC : BaseClass
     {
-        public int Nam { get; set; } = Data._NamTS;
+        public int Nam { get; set; } = DataHelper._NamTS;
         public string IdNghe { get; set; }
         public int ChiTieu { get; set; }
         public double DiemTTTHCS { get; set; } = 5;
@@ -1139,12 +1139,9 @@ namespace QuanLyTuyenSinh
         public HANH_KIEM_THPT HANH_KIEM_THPT { get; set; } = new();
         public XLTN_THPT XLTN_THPT { get; set; } = new();
         public XLHT_THPT XLHT_THPT { get; set; } = new();
-        public string MaTinh { get; set; } = "511";
-        public string MaHuyen { get; set; } = "51103";
 
-        public override bool Delete() => _LiteDb.GetDatabase().GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Delete(Id);
-
-        public override bool Save() => _LiteDb.GetDatabase().GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Upsert(this);
+        public override bool Delete() => _LiteDb.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Delete(Id);
+        public override bool Save() => _LiteDb.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Upsert(this);
     }
 
     public class HANH_KIEM_THCS

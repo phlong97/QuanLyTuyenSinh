@@ -3,20 +3,37 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using Microsoft.Office.Interop.Word;
 using Newtonsoft.Json;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
+using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace QuanLyTuyenSinh
 {
     public static class _Helper
     {
+        public static void FindAndReplace(Application app, string findText, string replaceWithText)
+        {
+            Find findObject = app.Selection.Find;
+            findObject.ClearFormatting();
+            findObject.Text = findText;
+            findObject.Replacement.ClearFormatting();
+            findObject.Replacement.Text = replaceWithText;
+            object missing = System.Reflection.Missing.Value;
+            object replaceAll = WdReplace.wdReplaceAll;
+            findObject.Execute(ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref replaceAll, ref missing, ref missing, ref missing, ref missing);
+        }
+        public static void ResetDbPath()
+        {
+            Properties.Settings.Default.DBPATH = string.Empty;
+            Properties.Settings.Default.Save();
+        }
         /// <summary>
         /// Perform a deep Copy of the object, using Json as a serialization method. NOTE: Private members are not cloned using this method.
         /// </summary>
@@ -305,12 +322,12 @@ namespace QuanLyTuyenSinh
         /// </summary>
         /// <param name="items"></param>
         /// <returns>A DataTable with the copied dynamic data.</returns>
-        public static DataTable ToDataTable(this IEnumerable<dynamic> items)
+        public static System.Data.DataTable ToDataTable(this IEnumerable<dynamic> items)
         {
             var data = items.ToArray();
             if (data.Count() == 0) return null;
 
-            var dt = new DataTable();
+            var dt = new System.Data.DataTable();
             foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
             {
                 dt.Columns.Add(key);

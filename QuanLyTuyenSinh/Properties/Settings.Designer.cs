@@ -47,12 +47,39 @@ namespace QuanLyTuyenSinh.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DbDirectory {
+        public string MaTinh {
             get {
-                return ((string)(this["DbDirectory"]));
+                return ((string)(this["MaTinh"]));
+            }
+            set {
+                this["MaTinh"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MaHuyen {
+            get {
+                return ((string)(this["MaHuyen"]));
+            }
+            set {
+                this["MaHuyen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DBPATH {
+            get {
+                return ((string)(this["DBPATH"]));
+            }
+            set {
+                this["DBPATH"] = value;
             }
         }
     }

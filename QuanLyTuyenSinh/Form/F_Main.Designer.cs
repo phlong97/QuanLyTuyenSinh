@@ -59,6 +59,7 @@
             gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
             btnExel = new DevExpress.XtraEditors.SimpleButton();
+            btnExportGBTT = new DevExpress.XtraEditors.SimpleButton();
             dropbtnHoSo = new DevExpress.XtraEditors.DropDownButton();
             btnLapChiTieu = new DevExpress.XtraEditors.SimpleButton();
             btnRefresh = new DevExpress.XtraEditors.SimpleButton();
@@ -358,6 +359,7 @@
             // panelControl2
             // 
             panelControl2.Controls.Add(btnExel);
+            panelControl2.Controls.Add(btnExportGBTT);
             panelControl2.Controls.Add(dropbtnHoSo);
             panelControl2.Controls.Add(btnLapChiTieu);
             panelControl2.Controls.Add(btnRefresh);
@@ -377,12 +379,27 @@
             btnExel.Appearance.Options.UseFont = true;
             btnExel.Dock = DockStyle.Left;
             btnExel.ImageOptions.Image = (Image)resources.GetObject("btnExel.ImageOptions.Image");
-            btnExel.Location = new Point(585, 2);
+            btnExel.Location = new Point(770, 2);
             btnExel.Margin = new Padding(0);
             btnExel.Name = "btnExel";
             btnExel.Size = new Size(137, 20);
             btnExel.TabIndex = 31;
             btnExel.Text = "Xuất file Exel";
+            // 
+            // btnExportGBTT
+            // 
+            btnExportGBTT.Appearance.BackColor = Color.WhiteSmoke;
+            btnExportGBTT.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            btnExportGBTT.Appearance.Options.UseBackColor = true;
+            btnExportGBTT.Appearance.Options.UseFont = true;
+            btnExportGBTT.Dock = DockStyle.Left;
+            btnExportGBTT.ImageOptions.Image = (Image)resources.GetObject("btnExportGBTT.ImageOptions.Image");
+            btnExportGBTT.Location = new Point(585, 2);
+            btnExportGBTT.Margin = new Padding(0);
+            btnExportGBTT.Name = "btnExportGBTT";
+            btnExportGBTT.Size = new Size(185, 20);
+            btnExportGBTT.TabIndex = 34;
+            btnExportGBTT.Text = "Xuất giấy báo  trúng tuyển";
             // 
             // dropbtnHoSo
             // 
@@ -899,5 +916,6 @@
         private DevExpress.XtraEditors.SearchLookUpEdit lookTruong;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.SimpleButton btnExportGBTT;
     }
 }

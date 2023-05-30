@@ -65,7 +65,7 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.White;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Image = Properties.Resources.logo;
             pictureBox1.InitialImage = null;
             pictureBox1.Location = new Point(94, 62);
             pictureBox1.Margin = new Padding(2);

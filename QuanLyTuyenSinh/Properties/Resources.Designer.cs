@@ -61,7 +61,7 @@ namespace QuanLyTuyenSinh.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;Sections Version=&quot;434&quot;&gt;
+        ///   Looks up a localized string similar to &lt;Sections Version=&quot;504&quot;&gt;
         ///  &lt;Section Dynamic=&quot;0&quot; MaxRows=&quot;0&quot;&gt;
         ///    &lt;Items&gt;
         ///      &lt;Item Value=&quot;0###101###10101###Quận Ba Đình&quot; /&gt;
@@ -80,20 +80,18 @@ namespace QuanLyTuyenSinh.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;Sections Version=&quot;342&quot;&gt;
+        ///   Looks up a localized string similar to     &lt;Sections Version=&quot;437&quot;&gt;
         ///  &lt;Section Dynamic=&quot;0&quot; MaxRows=&quot;0&quot;&gt;
         ///    &lt;Items&gt;
-        ///      &lt;Item Value=&quot;0###101###Hà Nội&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###103###Hải Phòng&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###107###Hải Dương&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###109###Hưng Yên&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###111###Hà Nam&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###113###Nam Định&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###115###Thái Bình&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###117###Ninh Bình&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###201###Hà Giang&quot; /&gt;
-        ///      &lt;Item Value=&quot;0###203###Cao Bằng&quot; /&gt;
-        ///       [rest of string was truncated]&quot;;.
+        ///      &lt;Item Value=&quot;0###101###Thành Phố Hà Nội&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###103###Thành Phố Hải Phòng&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###107###Tỉnh Hải Dương&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###109###Tỉnh Hưng Yên&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###111###Tỉnh Hà Nam&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###113###Tỉnh Nam Định&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###115###Tỉnh Thái Bình&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###117###Tỉnh Ninh Bình&quot; /&gt;
+        ///      &lt;Item Value=&quot;0###201###Tỉnh Hà G [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Catalogue_Dia_Ban_Tinh {
             get {
@@ -102,7 +100,7 @@ namespace QuanLyTuyenSinh.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;Sections Version=&quot;436&quot;&gt;
+        ///   Looks up a localized string similar to &lt;Sections Version=&quot;504&quot;&gt;
         ///  &lt;Section Dynamic=&quot;0&quot; MaxRows=&quot;0&quot;&gt;
         ///    &lt;Items&gt;
         ///      &lt;Item Value=&quot;0###101###10101###1010101###Phường Phúc Xá&quot; /&gt;
@@ -116,6 +114,26 @@ namespace QuanLyTuyenSinh.Properties {
         internal static string Catalogue_Dia_Ban_Xa {
             get {
                 return ResourceManager.GetString("Catalogue_Dia_Ban_Xa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon {
+            get {
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo {
+            get {
+                object obj = ResourceManager.GetObject("logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
