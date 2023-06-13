@@ -13,10 +13,15 @@ namespace QuanLyTuyenSinh
         public static int _NamTS;
         public static User CurrUser { get; set; }
         public static CaiDat CurrSettings { get; set; }
+        public static List<_Helper.Address> lstTinh;
+        public static List<_Helper.Address> lstQuanHuyen;
+        public static List<_Helper.Address> lstPhuongXa;
         public static void LoadStaticList()
         {
             _NamTS = Properties.Settings.Default.NamTS;
-
+            lstTinh = _Helper.getListProvince();
+            lstQuanHuyen = _Helper.getListDistrict();
+            lstPhuongXa = _Helper.getListWards();
             using (var db = _LiteDb.GetDatabase())
             {
                 CurrSettings = db.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).FindOne(x => true);
@@ -28,11 +33,11 @@ namespace QuanLyTuyenSinh
                 DsDanToc = db.GetCollection<DanToc>().FindAll().ToList();
                 DsTruong = db.GetCollection<Truong>().FindAll().ToList();
                 DsKhuVucUT = db.GetCollection<KhuVucUT>().FindAll().ToList();
-                DsDoiTuongUT = db.GetCollection<DoiTuongUTTC>(TuDien.CategoryName.DoiTuongUuTienTC).FindAll().ToList();
+                DsDoiTuongUT = db.GetCollection<DoiTuongUTTC>().FindAll().ToList();
                 DsDotXetTuyen = db.GetCollection<DotXetTuyen>().Find(Query.EQ("NamTS", _NamTS)).ToList();
-                DsChiTieu = db.GetCollection<ChiTieuXetTuyenTC>(TuDien.CategoryName.ChiTieuTC).Find(Query.EQ("Nam", _NamTS)).ToList();
-                DSHoSoDT = db.GetCollection<HoSoDuTuyenTC>(TuDien.CategoryName.HoSoDuTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
-                DSHoSoTT = db.GetCollection<HoSoTrungTuyenTC>(TuDien.CategoryName.HoSoTrungTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
+                DsChiTieu = db.GetCollection<ChiTieuTC>().Find(Query.EQ("Nam", _NamTS)).ToList();
+                DSHoSoXTTC = db.GetCollection<HoSoDuTuyenTC>(TuDien.CategoryName.HoSoDuTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
+                DSHoSoTTTC = db.GetCollection<HoSoTrungTuyenTC>(TuDien.CategoryName.HoSoTrungTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
             }
 
         }
@@ -50,7 +55,7 @@ namespace QuanLyTuyenSinh
                     break;
 
                 case TuDien.CategoryName.DoiTuongUuTienTC:
-                    DsDoiTuongUT = _LiteDb.GetCollection<DoiTuongUTTC>(TuDien.CategoryName.DoiTuongUuTienTC).FindAll().ToList();
+                    DsDoiTuongUT = _LiteDb.GetCollection<DoiTuongUTTC>().FindAll().ToList();
                     break;
 
                 case TuDien.CategoryName.KhuVucUuTien:
@@ -78,15 +83,15 @@ namespace QuanLyTuyenSinh
                     break;
 
                 case TuDien.CategoryName.ChiTieuTC:
-                    DsChiTieu = _LiteDb.GetCollection<ChiTieuXetTuyenTC>(TuDien.CategoryName.ChiTieuTC).Find(Query.EQ("Nam", _NamTS)).ToList();
+                    DsChiTieu = _LiteDb.GetCollection<ChiTieuTC>().Find(Query.EQ("Nam", _NamTS)).ToList();
                     break;
 
                 case TuDien.CategoryName.HoSoDuTuyenTC:
-                    DSHoSoDT = _LiteDb.GetCollection<HoSoDuTuyenTC>(TuDien.CategoryName.HoSoDuTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
+                    DSHoSoXTTC = _LiteDb.GetCollection<HoSoDuTuyenTC>(TuDien.CategoryName.HoSoDuTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
                     break;
 
                 case TuDien.CategoryName.HoSoTrungTuyenTC:
-                    DSHoSoTT = _LiteDb.GetCollection<HoSoTrungTuyenTC>(TuDien.CategoryName.HoSoTrungTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
+                    DSHoSoTTTC = _LiteDb.GetCollection<HoSoTrungTuyenTC>(TuDien.CategoryName.HoSoTrungTuyenTC).Find(Query.EQ("NamTS", _NamTS)).ToList();
                     break;
                 case TuDien.CategoryName.CaiDat:
                     CurrSettings = _LiteDb.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).FindOne(x => true);
@@ -101,9 +106,9 @@ namespace QuanLyTuyenSinh
 
         internal static List<DotXetTuyen> DsDotXetTuyen { get; set; }
 
-        internal static List<HoSoDuTuyenTC> DSHoSoDT { get; set; }
+        internal static List<HoSoDuTuyenTC> DSHoSoXTTC { get; set; }
 
-        internal static List<HoSoTrungTuyenTC> DSHoSoTT { get; set; }
+        internal static List<HoSoTrungTuyenTC> DSHoSoTTTC { get; set; }
 
         internal static List<KhuVucUT> DsKhuVucUT { get; set; }
 
@@ -117,7 +122,7 @@ namespace QuanLyTuyenSinh
 
         internal static List<Truong> DsTruong { get; set; }
 
-        internal static List<ChiTieuXetTuyenTC> DsChiTieu { get; set; }
+        internal static List<ChiTieuTC> DsChiTieu { get; set; }
 
         internal static List<User> DsUser = _LiteDb.GetCollection<User>().FindAll().ToList();
 
@@ -262,7 +267,7 @@ namespace QuanLyTuyenSinh
         internal static List<HoSoDuTuyenTCView> GetDSDuTuyen(int DotTS, string TDHV = "THCS")
         {
             List<HoSoDuTuyenTCView> lst = new();
-            lst = DSHoSoDT.Where(
+            lst = DSHoSoXTTC.Where(
                 hs => (DotTS <= 0 ? true : hs.DotTS == DotTS) && (hs.TDHV != null ? hs.TDHV.Equals(TDHV) : true))
                 .Select(x => x.ToView())
                 .OrderByDescending(x => x.DotTS).ThenBy(x => x.MaHoSo)
@@ -276,12 +281,12 @@ namespace QuanLyTuyenSinh
             List<HoSoTrungTuyenTC> lst = new();
             if (KhongTT)
             {
-                var lstHSDT = DataHelper.DSHoSoDT.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
+                var lstHSDT = DataHelper.DSHoSoXTTC.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
                         && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                         && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa)))
                         .Select(x => x.Id).ToList();
-                var lstHSTT = DataHelper.DSHoSoTT.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
+                var lstHSTT = DataHelper.DSHoSoTTTC.Where(hs => hs.DotTS == DotTS && hs.TDHV.Equals(TDHV)
                         && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                         && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
@@ -290,13 +295,13 @@ namespace QuanLyTuyenSinh
                 var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
                 foreach (var id in lstHSKhongTT)
                 {
-                    var hs = DataHelper.DSHoSoDT.FirstOrDefault(x => x.DotTS == DotTS && x.Id == id);
+                    var hs = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.DotTS == DotTS && x.Id == id);
                     if (hs != null)
                         lst.Add(hs.ToHSTT());
                 }
             }
             else
-                lst = DSHoSoTT.Where(
+                lst = DSHoSoTTTC.Where(
                         hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS)) && hs.TDHV.Equals(TDHV)
                         && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
@@ -314,7 +319,7 @@ namespace QuanLyTuyenSinh
             List<TongHopDiemXetTuyenTC> lst = new();
             if (DotTS <= 0)
                 return lst;
-            lst = DSHoSoDT.Where(
+            lst = DSHoSoXTTC.Where(
                 hs => (hs.DotTS.Equals(DotTS) && hs.TDHV.Equals(htdt))).OrderBy(x => x.MaHoSo).Select(x => x.ToTHDXT()).OrderByDescending(x => x.Tong)
                 .ToList();
 
@@ -327,10 +332,10 @@ namespace QuanLyTuyenSinh
                 return;
             DsTT.Clear();
             DsKhongTT.Clear();
-            var HSDT_THCS = DSHoSoDT.Where(
+            var HSDT_THCS = DSHoSoXTTC.Where(
                 hs => hs.DotTS.Equals(DotTS) && hs.TDHV.Equals("THCS")).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
                 .ToList();
-            var HSDT_THPT = DSHoSoDT.Where(
+            var HSDT_THPT = DSHoSoXTTC.Where(
                 hs => hs.DotTS.Equals(DotTS) && hs.TDHV.Equals("THPT")).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
                 .ToList();
 
@@ -340,7 +345,7 @@ namespace QuanLyTuyenSinh
                 var THPT_Nghe = HSDT_THPT.Where(x => x.IdNgheNV1.Equals(ct.IdNghe) && x.Tong >= ct.DiemTTTHPT).ToList();
 
                 int ctmax = (int)(ct.ChiTieu + (ct.ChiTieu * CurrSettings.CHITIEUVUOTMUC));
-                int sl = DSHoSoTT.Where(x => !x.DotTS.Equals(DotTS) && x.IdNgheTrungTuyen.Equals(ct.IdNghe)).Count();
+                int sl = DSHoSoTTTC.Where(x => !x.DotTS.Equals(DotTS) && x.IdNgheTrungTuyen.Equals(ct.IdNghe)).Count();
 
                 if (sl < ctmax)
                 {
@@ -392,7 +397,7 @@ namespace QuanLyTuyenSinh
                 int tongTHCS = 0;
                 for (int j = 0; j < DsNghe.Count; j++)
                 {
-                    int sldt = DSHoSoDT.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
+                    int sldt = DSHoSoXTTC.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
                     x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(DsNghe[j].Id)) is not null
                     && (madot == 0 ? true : x.DotTS == madot)).Count();
                     tongTHCS += sldt;
@@ -402,7 +407,7 @@ namespace QuanLyTuyenSinh
                 DsThongKe.Add(dynamicObj);
             }
 
-            var HSTHPT = DSHoSoDT.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
+            var HSTHPT = DSHoSoXTTC.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
             {
                 return hs;
             }).ToList();
@@ -454,7 +459,7 @@ namespace QuanLyTuyenSinh
                 int tongTHCS = 0;
                 for (int j = 0; j < DsNghe.Count; j++)
                 {
-                    int sltt = DSHoSoTT.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
+                    int sltt = DSHoSoTTTC.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
                     x.IdNgheTrungTuyen == DsNghe[j].Id && (dotts == 0 ? true : x.DotTS == dotts)).Count();
                     tongTHCS += sltt;
                     dynamicObj.Add(DsNghe[j].Ten, sltt);
@@ -463,7 +468,7 @@ namespace QuanLyTuyenSinh
                 DsThongKe.Add(dynamicObj);
             }
 
-            var HSTHPT = DSHoSoTT.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
+            var HSTHPT = DSHoSoTTTC.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
             {
                 return hs;
             }).ToList();
@@ -507,7 +512,7 @@ namespace QuanLyTuyenSinh
         {
             List<IDictionary<string, object>> DsThongKe = new();
 
-            var lstTT = DSHoSoTT.Where(x => (dotts == 0 ? true : x.DotTS == dotts));
+            var lstTT = DSHoSoTTTC.Where(x => (dotts == 0 ? true : x.DotTS == dotts));
             var lstXa = _Helper.getListWards(mahuyen);
 
             for (int i = 0; i < DsNghe.Count; i++)

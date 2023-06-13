@@ -86,7 +86,7 @@ namespace QuanLyTuyenSinh.Form
             ChartControl chart = new ChartControl();
             ChartSetting(chart);
 
-            var lstTT = DataHelper.DSHoSoTT.Where(x => (dts == 0 ? true : x.DotTS == dts));
+            var lstTT = DataHelper.DSHoSoTTTC.Where(x => (dts == 0 ? true : x.DotTS == dts));
             var lstXa = _Helper.getListWards(mahuyen);
 
             for (int i = 0; i < DataHelper.DsNghe.Count; i++)
@@ -130,7 +130,7 @@ namespace QuanLyTuyenSinh.Form
 
                 List<NguyenVong> lstNV1 = new();
                 List<NguyenVong> lstNV2 = new();
-                var hsdt = DataHelper.DSHoSoDT.Where(x => (dts == 0 ? true : x.DotTS == dts));
+                var hsdt = DataHelper.DSHoSoXTTC.Where(x => (dts == 0 ? true : x.DotTS == dts));
                 foreach (var hs in hsdt)
                 {
                     var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
@@ -188,7 +188,7 @@ namespace QuanLyTuyenSinh.Form
 
                 for (int i = 0; i < DataHelper.DsNghe.Count; i++)
                 {
-                    var lstHDTTNghe = DataHelper.DSHoSoTT.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
+                    var lstHDTTNghe = DataHelper.DSHoSoTTTC.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
                     && (dts == 0 ? true : x.DotTS == dts));
                     series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Count()));
                     series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
@@ -260,7 +260,7 @@ namespace QuanLyTuyenSinh.Form
             ChartSetting(chart);
             var dstruongTHCS = DataHelper.DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
             var dstruongTHPT = DataHelper.DsTruong.Where(x => x.LoaiTruong == "THPT").ToList();
-            var HSTHPT = DataHelper.DSHoSoTT.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
+            var HSTHPT = DataHelper.DSHoSoTTTC.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
             {
                 return hs;
             }).ToList();
@@ -271,7 +271,7 @@ namespace QuanLyTuyenSinh.Form
                 series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
                 for (int j = 0; j < dstruongTHCS.Count; j++)
                 {
-                    int sldt = DataHelper.DSHoSoTT.Where(x => x.IdTruong.Equals(dstruongTHCS[j].Id) &&
+                    int sldt = DataHelper.DSHoSoTTTC.Where(x => x.IdTruong.Equals(dstruongTHCS[j].Id) &&
                     x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id) && (dts == 0 ? true : x.DotTS == dts)).Count();
                     series.Points.Add(new SeriesPoint(dstruongTHCS[j].Ten, sldt));
                 }
@@ -298,7 +298,7 @@ namespace QuanLyTuyenSinh.Form
 
             var dstruongTHCS = DataHelper.DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
             var dstruongTHPT = DataHelper.DsTruong.Where(x => x.LoaiTruong == "THPT").ToList();
-            var HSTHPT = DataHelper.DSHoSoDT.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
+            var HSTHPT = DataHelper.DSHoSoXTTC.Join(dstruongTHPT, hs => hs.IdTruong, tr => tr.Id, (hs, tr) =>
             {
                 return hs;
             }).ToList();
@@ -309,7 +309,7 @@ namespace QuanLyTuyenSinh.Form
                 series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
                 for (int j = 0; j < dstruongTHCS.Count; j++)
                 {
-                    int sldt = DataHelper.DSHoSoDT.Where(x => x.IdTruong.Equals(dstruongTHCS[j].Id) &&
+                    int sldt = DataHelper.DSHoSoXTTC.Where(x => x.IdTruong.Equals(dstruongTHCS[j].Id) &&
                     x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)) is not null
                     && (dts == 0 ? true : x.DotTS == dts)).Count();
 

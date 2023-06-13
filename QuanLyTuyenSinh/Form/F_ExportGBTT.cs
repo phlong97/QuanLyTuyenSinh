@@ -48,7 +48,7 @@ namespace QuanLyTuyenSinh.Form
                     documentFrom = wordApp.Documents.Open(fileNameFrom, Type.Missing, true);
                     documentFrom.ActiveWindow.Selection.WholeStory();
                     documentFrom.ActiveWindow.Selection.Copy();
-                    Directory.CreateDirectory(fbd.SelectedPath + @"/GBTT");
+                    Directory.CreateDirectory(fbd.SelectedPath);
                     // Initializing progress bar properties
                     progressBarControl1.Properties.Step = 1;
                     progressBarControl1.Properties.PercentView = true;
@@ -59,7 +59,7 @@ namespace QuanLyTuyenSinh.Form
                     {
                         var newDocument = wordApp.Documents.Add();
                         newDocument.ActiveWindow.Selection.PasteAndFormat(WdRecoveryType.wdPasteDefault);
-                        object fileName = System.IO.Path.Combine(fbd.SelectedPath, "GBTT", $"{tt.NamTS}_{tt.DotTS}_{tt.MaHoSo}.docx");
+                        object fileName = System.IO.Path.Combine(fbd.SelectedPath, $"{tt.NamTS}_{tt.DotTS}_{tt.MaHoSo}.docx");
                         newDocument.SaveAs2(fileName);
                         newDocument.Close();
 
@@ -95,7 +95,7 @@ namespace QuanLyTuyenSinh.Form
                         progressBarControl1.Update();
                     }
 
-                    XtraMessageBox.Show($"Xuất giấy báo thành công!\n {fbd.SelectedPath + @"/GBTT"}");
+                    XtraMessageBox.Show($"Xuất giấy báo thành công!\n {fbd.SelectedPath}");
                 }
 
             }

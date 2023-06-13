@@ -1,6 +1,7 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using LiteDB;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
@@ -13,13 +14,14 @@ namespace QuanLyTuyenSinh.Form
         private BindingSource _sourceHS;
         private BindingSource _sourceNV;
 
+        private bool ImportMode = false;
         private bool EditMode;
         private string Diachi = string.Empty;
         private List<_Helper.Address> lstTinh = _Helper.getListProvince();
         private List<_Helper.Address> lstQuanHuyen;
         private List<_Helper.Address> lstPhuongXa;
 
-        public F_HoSo(HoSoDuTuyenTC hoSo)
+        public F_HoSo(HoSoDuTuyenTC hoSo, bool ImportMode = false)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
@@ -43,8 +45,14 @@ namespace QuanLyTuyenSinh.Form
                 lstPhuongXa = _Helper.getListWards(_hoSo.MaHuyen);
                 lookXa.Properties.DataSource = lstPhuongXa;
             }
+            if (ImportMode) SetReadOnly();
         }
-
+        private void SetReadOnly()
+        {
+            ImportMode = true;
+            btnSaveAndNew.Enabled = false;
+            Anh.Enabled = false;
+        }
         private void F_HoSo_Load(object sender, EventArgs e)
         {
             _sourceHS = new BindingSource();
@@ -98,8 +106,21 @@ namespace QuanLyTuyenSinh.Form
             {
                 try
                 {
-                    Image img = Image.FromStream(new MemoryStream(File.ReadAllBytes(Path.Combine(TuDien.IMG_FOLDER, _hoSo.Anh))));
-                    Anh.EditValue = img;
+                    using (var db = _LiteDb.GetDatabase())
+                    {
+                        var fileInfo = db.FileStorage.FindById($@"$/photos/{_hoSo.Id}");
+                        if (fileInfo != null)
+                        {
+                            var stream = new MemoryStream();
+                            db.FileStorage.Download($@"$/photos/{_hoSo.Id}", stream);
+                            Image img = Image.FromStream(stream);
+                            Anh.EditValue = img;
+                        }
+                        else
+                        {
+                            _hoSo.Anh = string.Empty;
+                        }
+                    }
                 }
                 catch { }
             }
@@ -113,26 +134,40 @@ namespace QuanLyTuyenSinh.Form
 
         private void SaveAnh()
         {
-            if (string.IsNullOrEmpty(Anh.GetLoadedImageLocation()) && !string.IsNullOrEmpty(_hoSo.Anh))
+            if ((Anh.Image == null) && !string.IsNullOrEmpty(_hoSo.Anh))
             {
-                File.Delete(Path.Combine(TuDien.IMG_FOLDER, _hoSo.Anh));
-                _hoSo.Anh = string.Empty;
+                using (var db = _LiteDb.GetDatabase())
+                {
+                    var fileInfo = db.FileStorage.FindById($@"$/photos/{_hoSo.Id}");
+                    if (fileInfo != null)
+                    {
+                        db.FileStorage.Delete($@"$/photos/{_hoSo.Id}");
+                        _hoSo.Anh = string.Empty;
+                    }
+                }
                 return;
             }
             else if (!string.IsNullOrEmpty(Anh.GetLoadedImageLocation()) && Anh.Image != null)
             {
-
-                string path = Path.Combine(TuDien.IMG_FOLDER, _hoSo.NamTS.ToString(), _hoSo.DotTS.ToString());
-                Directory.CreateDirectory(path);
-                string filePath = Path.Combine(path, _hoSo.MaHoSo);
-                Anh.Image.Save(filePath);
-                _hoSo.Anh = $"{_hoSo.NamTS}/" + $"{_hoSo.DotTS}/" + _hoSo.Id;
+                using (var db = _LiteDb.GetDatabase())
+                {
+                    var fileInfo = db.FileStorage.FindById($@"$/photos/{_hoSo.Id}");
+                    if (fileInfo != null)
+                    {
+                        db.FileStorage.Delete($@"$/photos/{_hoSo.Id}");
+                    }
+                    db.FileStorage.Upload($@"$/photos/{_hoSo.Id}", Anh.GetLoadedImageLocation());
+                    _hoSo.Anh = $@"$/photos/{_hoSo.Id}";
+                }
             }
         }
 
         private void HS_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MainWorkspace.FormMain.RefreshData();
+            if (ImportMode)
+                MainWorkspace.FormUploadHS.RefreshData();
+            else
+                MainWorkspace.FormMain.RefreshData();
         }
 
         private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -148,7 +183,7 @@ namespace QuanLyTuyenSinh.Form
                 if (nv1 == null)
                     return;
                 string manghe = nv1.Ma2;
-                var max = DataHelper.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                var max = DataHelper.DSHoSoXTTC.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
                 if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
                 else
                 {
@@ -175,7 +210,7 @@ namespace QuanLyTuyenSinh.Form
         private void TxtHoTenAutoComplete()
         {
             var collection = new AutoCompleteStringCollection();
-            collection.AddRange(DataHelper.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ten).Distinct().ToArray());
+            collection.AddRange(DataHelper.DSHoSoXTTC.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ten).Distinct().ToArray());
             txtTen.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -184,7 +219,7 @@ namespace QuanLyTuyenSinh.Form
             txtTen.Properties.AdvancedModeOptions.AutoCompleteCustomSource = collection;
 
             var collection2 = new AutoCompleteStringCollection();
-            collection2.AddRange(DataHelper.DSHoSoDT.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ho).Distinct().ToArray());
+            collection2.AddRange(DataHelper.DSHoSoXTTC.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ho).Distinct().ToArray());
             txtHo.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtHo.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -429,19 +464,19 @@ namespace QuanLyTuyenSinh.Form
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
             {
-                var index = DataHelper.DSHoSoDT.FindIndex(x => x.Id.Equals(_hoSo.Id));
+                var index = DataHelper.DSHoSoXTTC.FindIndex(x => x.Id.Equals(_hoSo.Id));
                 if (index >= 0)
                 {
-                    DataHelper.DSHoSoDT[index] = _hoSo;
+                    DataHelper.DSHoSoXTTC[index] = _hoSo;
                 }
                 else
                 {
-                    DataHelper.DSHoSoDT.Add(_hoSo);
+                    DataHelper.DSHoSoXTTC.Add(_hoSo);
                 }
                 SaveAnh();
                 _hoSo.Save();
                 int dts = _hoSo.DotTS, nts = _hoSo.NamTS;
-                var dsdt = DataHelper.DSHoSoDT.Where(x => x.NamTS == nts && x.DotTS == dts);
+                var dsdt = DataHelper.DSHoSoXTTC.Where(x => x.NamTS == nts && x.DotTS == dts);
                 var dt = DataHelper.DsDanToc.FirstOrDefault();
                 var qt = DataHelper.DsQuocTich.FirstOrDefault();
                 var tg = DataHelper.DsTonGiao.FirstOrDefault();
@@ -469,8 +504,15 @@ namespace QuanLyTuyenSinh.Form
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
             {
-                SaveAnh();
-                _hoSo.Save();
+                if (ImportMode)
+                {
+
+                }
+                else
+                {
+                    SaveAnh();
+                    _hoSo.Save();
+                }
                 Close();
             }
             else { XtraMessageBox.Show(this, errs, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error); }

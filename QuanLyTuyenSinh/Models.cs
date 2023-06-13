@@ -1,4 +1,5 @@
-﻿using DevExpress.Data.Linq.Helpers;
+﻿using DevExpress.CodeParser;
+using DevExpress.Data.Linq.Helpers;
 using LiteDB;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -151,7 +152,7 @@ namespace QuanLyTuyenSinh
             string errs = string.Empty;
             if (string.IsNullOrEmpty(MaHoSo))
                 errs += "Chưa nhập mã hồ sơ\n";
-            if (DataHelper.DSHoSoDT.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) >= 2)
+            if (DataHelper.DSHoSoXTTC.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) >= 1)
                 errs += "Trùng mã hồ sơ\n";
             if (string.IsNullOrEmpty(Ho))
                 errs += "Chưa nhập họ học sinh \n";
@@ -161,7 +162,7 @@ namespace QuanLyTuyenSinh
             {
                 if (CCCD.Length > 0 && CCCD.Length == 11)
                     errs += "Nhập sai CCCD/CMND! \n";
-                if (DataHelper.DSHoSoDT.Count(x => x.CCCD == CCCD) >= 2)
+                if (DataHelper.DSHoSoXTTC.Count(x => x.CCCD == CCCD) >= 2)
                     errs += "Đã tồn tại CCCD/CMND!\n";
             }
             if (NgaySinh == DateTime.MinValue)
@@ -196,13 +197,13 @@ namespace QuanLyTuyenSinh
             {
                 int sltt = 0;
                 var nv1 = DsNguyenVong.First(x => x.NV == 1);
-                int sldt = DataHelper.DSHoSoDT.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
+                int sldt = DataHelper.DSHoSoXTTC.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
                 var ctnv1 = DataHelper.DsChiTieu.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
                 if (ctnv1 != null)
                 {
                     for (int i = 1; i < DotTS; i++)
                     {
-                        sltt += DataHelper.DSHoSoTT.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
+                        sltt += DataHelper.DSHoSoTTTC.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
                     }
                     int ctmax = (int)(ctnv1.ChiTieu + ctnv1.ChiTieu * DataHelper.CurrSettings.CHITIEUVUOTMUC);
                     if (sldt + sltt >= ctmax)
@@ -482,7 +483,7 @@ namespace QuanLyTuyenSinh
         public override bool Delete() => _LiteDb.Delete<HoSoDuTuyenTC>(Id, TuDien.CategoryName.HoSoDuTuyenTC);
     }
 
-    public class HoSoDuTuyenTCView : BaseClass
+    public class HoSoDuTuyenTCView : DBClass
     {
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -599,6 +600,75 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Đợt tuyển sinh")]
         public int DotTS { get; set; }
+
+        public override bool Delete()
+        {
+            return _LiteDb.Delete<HoSoDuTuyenTC>(Id, TuDien.CategoryName.HoSoDuTuyenTC);
+        }
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+        //public HoSoDuTuyenTC ToHoSo() 
+        //{
+        //    var hs = new HoSoDuTuyenTC
+        //    {
+        //        Id = Id,
+        //        MaHoSo = MaHoSo,
+        //        Ho = Ho,
+        //        Ten = Ten,
+        //        NgaySinh = NgaySinh,
+        //        GioiTinh = GT == "Nam" ? true : false,
+        //        HanhKiem = HanhKiem,
+        //        XLTN = XLTN,
+        //        XLHocTap = XLHT,
+        //        IdDTUT = IdDTUT,
+        //        IdKVUT = IdKVUT,
+        //        DsNguyenVong = new()
+        //        {
+        //            new NguyenVong()
+        //            {
+        //                NV = 1,
+        //                IdNghe = IdNgheDT1
+        //            }
+        //        },
+        //        GhiChu = GhiChu,
+        //        IdTruong = IdTruong,
+        //        ThonDuong = ThonDuong,
+        //        MaTinh = MaTinh,
+        //        MaHuyen = MaHuyen,
+        //        MaXa = MaXa,
+        //        Lop = Lop,
+        //        NamTN = NamTN,
+        //        HoTenCha = HoTenCha,
+        //        NamSinhCha = NamSinhCha,
+        //        HoTenMe = HoTenMe,
+        //        NamSinhMe = NamSinhMe,
+        //        NoiSinh = NoiSinh,
+        //        DiaChi = DiaChi,
+        //        CCCD = CCCD,
+        //        BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
+        //        GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
+        //        GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
+        //        GiayKhaiSinh = KiemTraHS.GiayKhaiSinh ? "X" : string.Empty,
+        //        GKSK = KiemTraHS.GKSK ? "X" : string.Empty,
+        //        HinhThe = KiemTraHS.HinhThe ? "X" : string.Empty,
+        //        HocBa = KiemTraHS.HocBa ? "X" : string.Empty,
+        //        PhieuDKDT = KiemTraHS.PhieuDKDT ? "X" : string.Empty,
+        //        CCCDX = KiemTraHS.CCCD ? "X" : string.Empty,
+        //        SDT = SDT,
+        //        NamTS = NamTS,
+        //        DotTS = DotTS,
+        //    };
+        //    if (!string.IsNullOrEmpty(IdNgheDT2))
+        //        hs.DsNguyenVong.Add(new NguyenVong
+        //        {
+        //            NV = 2,
+        //            IdNghe = IdNgheDT2
+        //        });
+
+        //} 
     }
 
     public class TongHopDiemXetTuyenTC
@@ -652,7 +722,7 @@ namespace QuanLyTuyenSinh
         public string IdDTUT { get; set; }
         public HoSoTrungTuyenTC ToHSTT()
         {
-            var hsdt = DataHelper.DSHoSoDT.First(x => x.Id.Equals(IdHoSo));
+            var hsdt = DataHelper.DSHoSoXTTC.First(x => x.Id.Equals(IdHoSo));
             return hsdt.ToHSTT();
         }
     }
@@ -879,7 +949,7 @@ namespace QuanLyTuyenSinh
         public override bool Save() => _LiteDb.Upsert(this);
     }
 
-    public class ChiTieuXetTuyenTCView : DBClass
+    public class ChiTieuTCView : DBClass
     {
         [Display(AutoGenerateField = false)]
         public int Nam { get; set; } = DataHelper._NamTS;
@@ -916,7 +986,7 @@ namespace QuanLyTuyenSinh
 
         [Display(Name = "Điểm trúng tuyển THPT")]
         public double DiemTTTHPT { get; set; } = 5;
-        public ChiTieuXetTuyenTC ToCTXT() => new ChiTieuXetTuyenTC
+        public ChiTieuTC ToCTXT() => new ChiTieuTC
         {
             Id = Id,
             Nam = Nam,
@@ -927,17 +997,17 @@ namespace QuanLyTuyenSinh
         };
 
         public override bool Save() => _LiteDb.Upsert(ToCTXT(), TuDien.CategoryName.ChiTieuTC);
-        public override bool Delete() => _LiteDb.Delete<ChiTieuXetTuyenTC>(Id, TuDien.CategoryName.ChiTieuTC);
+        public override bool Delete() => _LiteDb.Delete<ChiTieuTC>(Id, TuDien.CategoryName.ChiTieuTC);
     }
 
-    public class ChiTieuXetTuyenTC : BaseClass
+    public class ChiTieuTC : BaseClass
     {
-        public int Nam { get; set; } = DataHelper._NamTS;
+        public int Nam { get; set; }
         public string IdNghe { get; set; }
         public int ChiTieu { get; set; }
         public double DiemTTTHCS { get; set; } = 5;
         public double DiemTTTHPT { get; set; } = 5;
-        public ChiTieuXetTuyenTCView ToCTXT() => new ChiTieuXetTuyenTCView
+        public ChiTieuTCView ToCTXT() => new ChiTieuTCView
         {
             Id = Id,
             Nam = Nam,
