@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraSplashScreen;
+using System.IO;
 
 namespace QuanLyTuyenSinh.Form
 {
@@ -10,6 +11,8 @@ namespace QuanLyTuyenSinh.Form
             InitializeComponent();
             spinNam.Value = Properties.Settings.Default.NamTS;
             txtName.Text = Properties.Settings.Default.UserName;
+            //Properties.Settings.Default.DBPATH = string.Empty;
+            //Properties.Settings.Default.Save();
         }
         private void lblExit_Click(object sender, EventArgs e)
         {
@@ -18,6 +21,19 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(Properties.Settings.Default.DBPATH) || !DataHelper.CheckDatabase(Properties.Settings.Default.DBPATH))
+            {
+                XtraMessageBox.Show(this, "Đường dẫn lưu dữ liệu không hợp lệ, vui lòng chọn lại", "Đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Hide();
+                Form.F_DBPATH f = new();
+                f.FormClosed += (sender, e) =>
+                {
+                    Show();
+                };
+                f.Show();
+                return;
+            }
+
             DataHelper.CheckUsers();
             string username = txtName.Text;
             string password = txtPass.Text;

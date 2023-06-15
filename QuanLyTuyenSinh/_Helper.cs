@@ -29,11 +29,6 @@ namespace QuanLyTuyenSinh
             object replaceAll = WdReplace.wdReplaceAll;
             findObject.Execute(ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref replaceAll, ref missing, ref missing, ref missing, ref missing);
         }
-        public static void ResetDbPath()
-        {
-            Properties.Settings.Default.DBPATH = string.Empty;
-            Properties.Settings.Default.Save();
-        }
         /// <summary>
         /// Perform a deep Copy of the object, using Json as a serialization method. NOTE: Private members are not cloned using this method.
         /// </summary>

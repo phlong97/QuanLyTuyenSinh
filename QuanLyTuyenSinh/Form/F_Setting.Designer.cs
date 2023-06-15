@@ -31,9 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_Setting));
             directxFormContainerControl1 = new DevExpress.XtraEditors.DirectXFormContainerControl();
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            btnOpenPath = new DevExpress.XtraEditors.SimpleButton();
-            txtDbPath = new DevExpress.XtraEditors.TextEdit();
-            labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            btnDBPath = new DevExpress.XtraEditors.SimpleButton();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             btnCancel = new DevExpress.XtraEditors.SimpleButton();
             btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -81,7 +79,6 @@
             directxFormContainerControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
             panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)txtDbPath.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Gioi.Properties).BeginInit();
@@ -113,9 +110,7 @@
             // 
             // panelControl1
             // 
-            panelControl1.Controls.Add(btnOpenPath);
-            panelControl1.Controls.Add(txtDbPath);
-            panelControl1.Controls.Add(labelControl3);
+            panelControl1.Controls.Add(btnDBPath);
             panelControl1.Controls.Add(groupControl1);
             panelControl1.Controls.Add(spinCTVM);
             panelControl1.Controls.Add(labelControl4);
@@ -127,29 +122,15 @@
             panelControl1.Size = new Size(465, 537);
             panelControl1.TabIndex = 0;
             // 
-            // btnOpenPath
+            // btnDBPath
             // 
-            btnOpenPath.ImageOptions.Image = (Image)resources.GetObject("btnOpenPath.ImageOptions.Image");
-            btnOpenPath.Location = new Point(420, 10);
-            btnOpenPath.Name = "btnOpenPath";
-            btnOpenPath.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            btnOpenPath.Size = new Size(22, 22);
-            btnOpenPath.TabIndex = 41;
-            // 
-            // txtDbPath
-            // 
-            txtDbPath.Location = new Point(114, 12);
-            txtDbPath.Name = "txtDbPath";
-            txtDbPath.Size = new Size(300, 20);
-            txtDbPath.TabIndex = 40;
-            // 
-            // labelControl3
-            // 
-            labelControl3.Location = new Point(24, 15);
-            labelControl3.Name = "labelControl3";
-            labelControl3.Size = new Size(73, 13);
-            labelControl3.TabIndex = 39;
-            labelControl3.Text = "Vị trí lưu dữ liệu";
+            btnDBPath.ImageOptions.Image = (Image)resources.GetObject("btnDBPath.ImageOptions.Image");
+            btnDBPath.Location = new Point(276, 52);
+            btnDBPath.Name = "btnDBPath";
+            btnDBPath.Size = new Size(139, 23);
+            btnDBPath.TabIndex = 16;
+            btnDBPath.Text = "Chọn vị trí lưu dữ liệu";
+            btnDBPath.Click += btnDBPath_Click;
             // 
             // groupControl1
             // 
@@ -193,16 +174,16 @@
             groupControl1.Controls.Add(labelControl2);
             groupControl1.Controls.Add(spinHKTHCS_TB);
             groupControl1.Dock = DockStyle.Bottom;
-            groupControl1.Location = new Point(2, 104);
+            groupControl1.Location = new Point(2, 84);
             groupControl1.Name = "groupControl1";
-            groupControl1.Size = new Size(461, 431);
+            groupControl1.Size = new Size(461, 451);
             groupControl1.TabIndex = 38;
             groupControl1.Text = "Điểm xét tuyển";
             // 
             // btnCancel
             // 
             btnCancel.ImageOptions.Image = (Image)resources.GetObject("btnCancel.ImageOptions.Image");
-            btnCancel.Location = new Point(242, 387);
+            btnCancel.Location = new Point(262, 403);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 16;
@@ -211,7 +192,7 @@
             // btnSave
             // 
             btnSave.ImageOptions.Image = (Image)resources.GetObject("btnSave.ImageOptions.Image");
-            btnSave.Location = new Point(122, 387);
+            btnSave.Location = new Point(144, 403);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(75, 23);
             btnSave.TabIndex = 16;
@@ -550,7 +531,7 @@
             // spinCTVM
             // 
             spinCTVM.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinCTVM.Location = new Point(113, 68);
+            spinCTVM.Location = new Point(115, 48);
             spinCTVM.Name = "spinCTVM";
             spinCTVM.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinCTVM.Properties.MaxValue = new decimal(new int[] { 1, 0, 0, 0 });
@@ -559,7 +540,7 @@
             // 
             // labelControl4
             // 
-            labelControl4.Location = new Point(13, 72);
+            labelControl4.Location = new Point(15, 52);
             labelControl4.Name = "labelControl4";
             labelControl4.Size = new Size(82, 13);
             labelControl4.TabIndex = 36;
@@ -567,14 +548,14 @@
             // 
             // txtTenTruong
             // 
-            txtTenTruong.Location = new Point(113, 43);
+            txtTenTruong.Location = new Point(115, 23);
             txtTenTruong.Name = "txtTenTruong";
             txtTenTruong.Size = new Size(300, 20);
             txtTenTruong.TabIndex = 34;
             // 
             // labelControl1
             // 
-            labelControl1.Location = new Point(43, 46);
+            labelControl1.Location = new Point(45, 26);
             labelControl1.Name = "labelControl1";
             labelControl1.Size = new Size(52, 13);
             labelControl1.TabIndex = 37;
@@ -597,7 +578,6 @@
             ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
             panelControl1.ResumeLayout(false);
             panelControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)txtDbPath.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
             groupControl1.PerformLayout();
@@ -624,9 +604,6 @@
         #endregion
         private DevExpress.XtraEditors.DirectXFormContainerControl directxFormContainerControl1;
         private DevExpress.XtraEditors.PanelControl panelControl1;
-        private DevExpress.XtraEditors.SimpleButton btnOpenPath;
-        private DevExpress.XtraEditors.TextEdit txtDbPath;
-        private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraEditors.LabelControl labelControl10;
         private DevExpress.XtraEditors.LabelControl labelControl9;
@@ -671,5 +648,6 @@
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraEditors.SimpleButton btnCancel;
+        private DevExpress.XtraEditors.SimpleButton btnDBPath;
     }
 }

@@ -7,5 +7,6 @@ namespace QuanLyTuyenSinh
         public static Form.F_TK FormTK;
         public static Form.F_UploadHoSo FormUploadHS;
         public static Form.F_Setting FormSetting;
+        public static Form.F_DBPATH FormDBPath = new();
     }
 }

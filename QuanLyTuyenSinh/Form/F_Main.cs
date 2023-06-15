@@ -1729,7 +1729,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
-            Form.F_Setting f = new(DataHelper.CurrSettings.CloneJson());
+            F_Setting f = new(DataHelper.CurrSettings.CloneJson());
             f.Show();
         }
 
