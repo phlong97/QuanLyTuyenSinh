@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using QuanLyTuyenSinh.Models;
 
 namespace QuanLyTuyenSinh.Form
 {

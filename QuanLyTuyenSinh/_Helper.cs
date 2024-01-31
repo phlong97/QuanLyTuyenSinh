@@ -63,7 +63,9 @@ namespace QuanLyTuyenSinh
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 myList = JsonConvert.DeserializeObject<List<T>>(json);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             }
             return myList;
         }
@@ -129,7 +131,9 @@ namespace QuanLyTuyenSinh
         {
             List<Address> lstReturn = new List<Address>();
             if (ProvinceCode == null) return lstReturn;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string code = ProvinceCode.ToString();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Huyen);
             var nodes = doc.GetElementsByTagName("Item");
@@ -222,7 +226,9 @@ namespace QuanLyTuyenSinh
         {
             List<Address> lstReturn = new List<Address>();
             if (DistrictCode == null) return lstReturn;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string code = DistrictCode.ToString();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(QuanLyTuyenSinh.Properties.Resources.Catalogue_Dia_Ban_Xa);
             var nodes = doc.GetElementsByTagName("Item");
@@ -397,11 +403,15 @@ namespace QuanLyTuyenSinh
 
         public static int GetVisibleToUsersColumnCount(GridView view)
         {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             GridViewInfo info = view.GetViewInfo() as GridViewInfo;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             int result = 0;
             for (int i = 0; i < view.VisibleColumns.Count; i++)
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (info.GetColumnLeftCoord(view.GetVisibleColumn(i)) < view.ViewRect.Width - info.ViewRects.IndicatorWidth)
                     result++;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             return result;
         }
     }

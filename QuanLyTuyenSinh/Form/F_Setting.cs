@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using QuanLyTuyenSinh.Models;
 using System.Configuration;
 using System.IO;
 
@@ -57,13 +58,13 @@ namespace QuanLyTuyenSinh.Form
             spinXLHTTHPT_Gioi.DataBindings.Add("EditValue", source, "XLHT_THPT.GIOI", true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnSave_Click(object? sender, EventArgs e)
         {
             setting.Save();
             Close();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object? sender, EventArgs e)
         {
             Close();
         }

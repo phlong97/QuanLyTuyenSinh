@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using Microsoft.Office.Interop.Word;
+using QuanLyTuyenSinh.Models;
 using System.IO;
 using MsWord = Microsoft.Office.Interop.Word;
 
@@ -33,7 +34,9 @@ namespace QuanLyTuyenSinh.Form
         private void btnExport_Click(object sender, EventArgs e)
         {
             var wordApp = new MsWord.Application();
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             MsWord.Document documentFrom = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             try
             {
                 string fileNameFrom = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "GBTT.doc");

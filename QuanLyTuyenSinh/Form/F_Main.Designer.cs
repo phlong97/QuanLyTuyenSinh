@@ -58,6 +58,8 @@
             gridControl = new DevExpress.XtraGrid.GridControl();
             gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            cbbHeDaoTao = new DevExpress.XtraEditors.ComboBoxEdit();
             btnExel = new DevExpress.XtraEditors.SimpleButton();
             btnExportGBTT = new DevExpress.XtraEditors.SimpleButton();
             dropbtnHoSo = new DevExpress.XtraEditors.DropDownButton();
@@ -106,6 +108,7 @@
             ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
             panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHeDaoTao.Properties).BeginInit();
             _panelButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl3).BeginInit();
             panelControl3.SuspendLayout();
@@ -358,6 +361,8 @@
             // 
             // panelControl2
             // 
+            panelControl2.Controls.Add(labelControl4);
+            panelControl2.Controls.Add(cbbHeDaoTao);
             panelControl2.Controls.Add(btnExel);
             panelControl2.Controls.Add(btnExportGBTT);
             panelControl2.Controls.Add(dropbtnHoSo);
@@ -370,6 +375,26 @@
             panelControl2.Name = "panelControl2";
             panelControl2.Size = new Size(1334, 24);
             panelControl2.TabIndex = 21;
+            // 
+            // labelControl4
+            // 
+            labelControl4.Appearance.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl4.Appearance.Options.UseFont = true;
+            labelControl4.Dock = DockStyle.Right;
+            labelControl4.Location = new Point(1095, 2);
+            labelControl4.Name = "labelControl4";
+            labelControl4.Size = new Size(90, 17);
+            labelControl4.TabIndex = 35;
+            labelControl4.Text = "Hệ đào tạo :";
+            // 
+            // cbbHeDaoTao
+            // 
+            cbbHeDaoTao.Dock = DockStyle.Right;
+            cbbHeDaoTao.Location = new Point(1185, 2);
+            cbbHeDaoTao.Name = "cbbHeDaoTao";
+            cbbHeDaoTao.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHeDaoTao.Size = new Size(121, 20);
+            cbbHeDaoTao.TabIndex = 42;
             // 
             // btnExel
             // 
@@ -679,6 +704,7 @@
             // txtNamTS
             // 
             txtNamTS.AllowHtmlText = DevExpress.Utils.DefaultBoolean.True;
+            txtNamTS.Caption = "Năm tuyển sinh : ";
             txtNamTS.Id = 0;
             txtNamTS.Name = "txtNamTS";
             // 
@@ -686,6 +712,7 @@
             // 
             txtUser.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
             txtUser.AllowHtmlText = DevExpress.Utils.DefaultBoolean.True;
+            txtUser.Caption = "Xin chào :";
             txtUser.Id = 1;
             txtUser.Name = "txtUser";
             // 
@@ -818,6 +845,8 @@
             ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
             panelControl2.ResumeLayout(false);
+            panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHeDaoTao.Properties).EndInit();
             _panelButton.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)panelControl3).EndInit();
             panelControl3.ResumeLayout(false);
@@ -866,7 +895,6 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnHSTT;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnChiTieu;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement4;
-        private DevExpress.XtraBars.Navigation.AccordionControlElement btnDiemDT;
         private Panel pnImg;
         private TableLayoutPanel panelGrid;
         private DevExpress.XtraGrid.GridControl gridControl;
@@ -917,5 +945,7 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.SimpleButton btnExportGBTT;
+        private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHeDaoTao;
     }
 }

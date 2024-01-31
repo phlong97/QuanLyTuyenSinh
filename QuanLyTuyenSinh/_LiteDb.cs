@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using QuanLyTuyenSinh.Models;
 
 namespace QuanLyTuyenSinh
 {

@@ -11,6 +11,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <IsPublishable>False</IsPublishable>
     <PackageIcon></PackageIcon>
+    <AssemblyName>QuanLyXetTuyen</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

@@ -142,6 +142,7 @@
             btnEdit = new DevExpress.XtraEditors.SimpleButton();
             btnDelete = new DevExpress.XtraEditors.SimpleButton();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            chkSYLL = new DevExpress.XtraEditors.CheckEdit();
             Anh = new DevExpress.XtraEditors.PictureEdit();
             labelControl31 = new DevExpress.XtraEditors.LabelControl();
             chkCCCD = new DevExpress.XtraEditors.CheckEdit();
@@ -218,6 +219,7 @@
             panelControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chkSYLL.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Anh.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkCCCD.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkBangTN.Properties).BeginInit();
@@ -1030,7 +1032,7 @@
             tabTrungCap.Controls.Add(lookKVUT);
             tabTrungCap.Name = "tabTrungCap";
             tabTrungCap.Size = new Size(504, 130);
-            tabTrungCap.Text = "Trung cấp";
+            tabTrungCap.Text = "Tiêu chí xét tuyển";
             // 
             // labelControl23
             // 
@@ -1219,6 +1221,7 @@
             // 
             // groupControl1
             // 
+            groupControl1.Controls.Add(chkSYLL);
             groupControl1.Controls.Add(Anh);
             groupControl1.Controls.Add(labelControl31);
             groupControl1.Controls.Add(chkCCCD);
@@ -1237,6 +1240,14 @@
             groupControl1.Size = new Size(506, 278);
             groupControl1.TabIndex = 20;
             groupControl1.Text = "Kiểm tra hồ sơ";
+            // 
+            // chkSYLL
+            // 
+            chkSYLL.Location = new Point(18, 169);
+            chkSYLL.Name = "chkSYLL";
+            chkSYLL.Properties.Caption = "Sơ yếu lý lịch";
+            chkSYLL.Size = new Size(166, 20);
+            chkSYLL.TabIndex = 98;
             // 
             // Anh
             // 
@@ -1444,6 +1455,7 @@
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
             groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chkSYLL.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)Anh.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkCCCD.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkBangTN.Properties).EndInit();
@@ -1578,5 +1590,6 @@
         private DevExpress.XtraEditors.SimpleButton btnAdd;
         private DevExpress.XtraEditors.SimpleButton btnEdit;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
+        private DevExpress.XtraEditors.CheckEdit chkSYLL;
     }
 }

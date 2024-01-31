@@ -4,6 +4,7 @@ using DevExpress.XtraCharts;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting;
+using QuanLyTuyenSinh.Models;
 using System.Data;
 using ChartTitle = DevExpress.XtraCharts.ChartTitle;
 
@@ -31,7 +32,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void LoadComboBoxDTS()
         {
-            var ds = DataHelper.DsDotXetTuyen.Where(x => x.NamTS == DataHelper._NamTS).OrderBy(x => x.DotTS).ToList();
+            var ds = DataHelper.DsDotXetTuyen.Where(x => x.NamTS == DataHelper.NamTS).OrderBy(x => x.DotTS).ToList();
 
             var lst = new List<string>() { "Cả năm" };
             lst.AddRange(ds.Select(x => x.DotTS.ToString()).ToList());
@@ -331,7 +332,9 @@ namespace QuanLyTuyenSinh.Form
 
         private void HighlightTotal(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             DevExpress.XtraGrid.Views.Grid.GridView gridView = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             if (gridView != null && e.RowHandle == gridView.RowCount - 1)
             {
@@ -395,7 +398,9 @@ namespace QuanLyTuyenSinh.Form
                     break;
 
                 case 1:
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                     ChartControl chart = panelchart.Controls.Find("chart", true).FirstOrDefault() as ChartControl;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                     if (chart != null)
                     {
                         PrintableComponentLink link = new PrintableComponentLink(new PrintingSystem());

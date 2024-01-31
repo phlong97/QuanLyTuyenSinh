@@ -8,6 +8,7 @@ namespace QuanLyTuyenSinh.Form
         public F_DBPATH()
         {
             InitializeComponent();
+            txtDbPath.Text = Properties.Settings.Default.DBPATH;
         }
 
         private void btnOpenPath_Click(object sender, EventArgs e)

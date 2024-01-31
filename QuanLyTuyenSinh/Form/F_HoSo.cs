@@ -2,9 +2,11 @@
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using LiteDB;
+using QuanLyTuyenSinh.Models;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using Image = System.Drawing.Image;
 
 namespace QuanLyTuyenSinh.Form
 {
@@ -25,7 +27,9 @@ namespace QuanLyTuyenSinh.Form
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             int y = Screen.PrimaryScreen.WorkingArea.Bottom - Height;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             Location = new Point(0, y);
             TopMost = true;
             MinimumSize = MaximumSize = Size;
@@ -53,7 +57,7 @@ namespace QuanLyTuyenSinh.Form
             btnSaveAndNew.Enabled = false;
             Anh.Enabled = false;
         }
-        private void F_HoSo_Load(object sender, EventArgs e)
+        private void F_HoSo_Load(object? sender, EventArgs e)
         {
             _sourceHS = new BindingSource();
             _sourceNV = new BindingSource();
@@ -91,11 +95,30 @@ namespace QuanLyTuyenSinh.Form
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
             Anh.ContextButtonClick += Anh_ContextButtonClick;
+            gridView1.CellValueChanging += GridView1_CellValueChanging;
             FormClosing += HS_FormClosing;
             ActiveControl = txtHo;
         }
 
-        private void Anh_ContextButtonClick(object sender, DevExpress.Utils.ContextItemClickEventArgs e)
+        private void GridView1_CellValueChanging(object? sender, CellValueChangedEventArgs e)
+        {
+            string? value = e.Value.ToString();
+            gridView1.CellValueChanged -= GridView1_CellValueChanging;
+            if (e.Column.FieldName.Equals("IdNghe"))
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (_hoSo.DsNguyenVong.FirstOrDefault(x => x.IdNghe == value) is not null)
+                    {
+                        XtraMessageBox.Show(this, "Đã tồn tại nguyện vọng này");
+                        gridView1.SetFocusedRowCellValue("IdNghe", null);
+                    }
+                }
+            }
+            gridView1.CellValueChanging += GridView1_CellValueChanging;
+        }
+
+        private void Anh_ContextButtonClick(object? sender, DevExpress.Utils.ContextItemClickEventArgs e)
         {
             Anh.LoadImage();
         }
@@ -162,7 +185,7 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void HS_FormClosing(object sender, FormClosingEventArgs e)
+        private void HS_FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (ImportMode)
                 MainWorkspace.FormUploadHS.RefreshData();
@@ -170,7 +193,7 @@ namespace QuanLyTuyenSinh.Form
                 MainWorkspace.FormMain.RefreshData();
         }
 
-        private void TxtMaHS_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        private void TxtMaHS_ButtonClick(object? sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             if (_hoSo.DsNguyenVong.Count >= 1)
             {
@@ -197,7 +220,9 @@ namespace QuanLyTuyenSinh.Form
         {
             if (dtNgaySinh.EditValue != null)
             {
+#pragma warning disable CS8604 // Possible null reference argument.
                 DateTime ns = DateTime.Parse(dtNgaySinh.EditValue.ToString());
+#pragma warning restore CS8604 // Possible null reference argument.
                 if (DateTime.Now.Year - ns.Year < 15)
                 {
                     XtraMessageBox.Show("Tuổi phải >= 15");
@@ -232,7 +257,9 @@ namespace QuanLyTuyenSinh.Form
         {
             if (lookQuanHuyen.EditValue != null)
             {
+#pragma warning disable CS8604 // Possible null reference argument.
                 lstPhuongXa = _Helper.getListWards(lookQuanHuyen.EditValue.ToString());
+#pragma warning restore CS8604 // Possible null reference argument.
             }
             lookXa.Properties.DataSource = lstPhuongXa;
             lookXa.EditValue = null;
@@ -244,14 +271,16 @@ namespace QuanLyTuyenSinh.Form
         {
             if (lookTinh.EditValue != null)
             {
+#pragma warning disable CS8604 // Possible null reference argument.
                 lstQuanHuyen = _Helper.getListDistrict(lookTinh.EditValue.ToString());
+#pragma warning restore CS8604 // Possible null reference argument.
             }
             lookQuanHuyen.Properties.DataSource = lstQuanHuyen;
             lookXa.EditValue = null;
             lookQuanHuyen.EditValue = null;
         }
 
-        private void TxtDiaChi_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        private void TxtDiaChi_ButtonClick(object? sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             CapNhatDiaChi();
         }
@@ -298,7 +327,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateRepositoryItemLookUpEdit(gridView1, DataHelper.DsNghe, "IdNghe", "Ten", "Id");
         }
 
-        private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        private void GridView_CustomDrawRowIndicator(object? sender, RowIndicatorCustomDrawEventArgs e)
         {
             if (e.RowHandle >= 0)
                 e.Info.DisplayText = (e.RowHandle + 1).ToString("D");
@@ -383,12 +412,16 @@ namespace QuanLyTuyenSinh.Form
             chkBangTN.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.BangTN", true, DataSourceUpdateMode.OnPropertyChanged);
             chkAnh.DataBindings.Clear();
             chkAnh.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.HinhThe", true, DataSourceUpdateMode.OnPropertyChanged);
+            chkCCCD.DataBindings.Clear();
+            chkCCCD.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.CCCD", true, DataSourceUpdateMode.OnPropertyChanged);
             chkGKS.DataBindings.Clear();
             chkGKS.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.GiayKhaiSinh", true, DataSourceUpdateMode.OnPropertyChanged);
             chkCNUT.DataBindings.Clear();
             chkCNUT.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.GiayCNUT", true, DataSourceUpdateMode.OnPropertyChanged);
             chkGKSK.DataBindings.Clear();
             chkGKSK.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.GKSK", true, DataSourceUpdateMode.OnPropertyChanged);
+            chkSYLL.DataBindings.Clear();
+            chkSYLL.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.SYLL", true, DataSourceUpdateMode.OnPropertyChanged);
             txtGhiChu.DataBindings.Clear();
             txtGhiChu.DataBindings.Add("Text", _sourceHS, "KiemTraHS.GhiChu", true, DataSourceUpdateMode.OnPropertyChanged);
             //Điểm xét tuyển
@@ -410,7 +443,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", DataHelper.DsQuocTich);
             DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", DataHelper.DsTonGiao);
             DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", DataHelper.DsTrinhDo);
-            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DataHelper.DsDoiTuongUT);
+            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DataHelper.DsDoiTuongUT.Where(x => x.ApDung.Equals("Trung cấp")).ToList());
             DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", DataHelper.DsKhuVucUT);
             DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DataHelper.DsTruong);
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
@@ -433,7 +466,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AddressName.Replace("Tỉnh ", "").Replace("Thành Phố", "TP")).ToArray(), "", true, true);
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void btnAdd_Click(object? sender, EventArgs e)
         {
             if (EditMode)
                 EditMode = !EditMode;
@@ -441,13 +474,13 @@ namespace QuanLyTuyenSinh.Form
             gridView1.SetFocusedRowCellValue("NV", _hoSo.DsNguyenVong.Count());
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void btnEdit_Click(object? sender, EventArgs e)
         {
             btnEdit.Text = EditMode ? "Sửa" : "Lưu";
             EditMode = !EditMode;
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object? sender, EventArgs e)
         {
             var r = gridView1.GetFocusedRow();
             if (r is not null)
@@ -459,7 +492,7 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void btnSaveNewHS_Click(object sender, EventArgs e)
+        private void btnSaveNewHS_Click(object? sender, EventArgs e)
         {
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
@@ -499,7 +532,7 @@ namespace QuanLyTuyenSinh.Form
             else { MessageBox.Show(this, errs, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-        private void btnSaveCloseHS_Click(object sender, EventArgs e)
+        private void btnSaveCloseHS_Click(object? sender, EventArgs e)
         {
             string errs = _hoSo.CheckError();
             if (string.IsNullOrEmpty(errs))
@@ -518,7 +551,7 @@ namespace QuanLyTuyenSinh.Form
             else { XtraMessageBox.Show(this, errs, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-        private void lookTruong_EditValueChanged(object sender, EventArgs e)
+        private void lookTruong_EditValueChanged(object? sender, EventArgs e)
         {
             var truong = DataHelper.DsTruong.FirstOrDefault(x => x.Id.Equals(lookTruong.EditValue.ToString()));
             if (truong is null)
@@ -534,7 +567,9 @@ namespace QuanLyTuyenSinh.Form
                 return;
             Diachi = string.Empty;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string maXa = lookXa.EditValue.ToString();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (!string.IsNullOrEmpty(maXa))
             {
                 string tenXa = lstPhuongXa.First(x => x.AddressCode == lookXa.EditValue.ToString()).AddressName;
@@ -546,7 +581,7 @@ namespace QuanLyTuyenSinh.Form
             txtDiaChi.Text = Diachi;
         }
 
-        private void txtThonDuong_TextChanged(object sender, EventArgs e)
+        private void txtThonDuong_TextChanged(object? sender, EventArgs e)
         {
             string word = txtThonDuong.Text;
             if (string.IsNullOrEmpty(word))

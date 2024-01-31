@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using ClosedXML.Excel;
 using System.Data;
 using DocumentFormat.OpenXml.Wordprocessing;
+using QuanLyTuyenSinh.Models;
 
 namespace QuanLyTuyenSinh.Form
 {
@@ -46,9 +47,15 @@ namespace QuanLyTuyenSinh.Form
             sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             sfd.CheckPathExists = true;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             try
             {
                 if (sfd.ShowDialog() == true)
@@ -88,10 +95,14 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnImport_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            if (XtraMessageBox.Show(this, "Danh sách đã có dữ liệu, xác nhận load lại?", "Upload", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            if (lstHSTC.Count() > 0)
             {
-                return;
+                if (XtraMessageBox.Show(this, "Danh sách đã có dữ liệu, xác nhận load lại?", "Upload", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    return;
+                }
             }
+
             try
             {
                 using (var fDlg = new OpenFileDialog
@@ -125,10 +136,12 @@ namespace QuanLyTuyenSinh.Form
                             lstHSTC.Clear();
                             foreach (DataRow r in Data.Rows)
                             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8601 // Possible null reference assignment.
                                 var hs = new HoSoDuTuyenTC()
                                 {
                                     DotTS = _dts,
-                                    NamTS = DataHelper._NamTS,
+                                    NamTS = DataHelper.NamTS,
                                     MaHoSo = r[1].ToString(),
                                     Ho = r[2].ToString(),
                                     Ten = r[3].ToString(),
@@ -160,18 +173,21 @@ namespace QuanLyTuyenSinh.Form
                                         GKSK = !string.IsNullOrEmpty(r[40].ToString()) ? true : false,
                                         GiayCNUT = !string.IsNullOrEmpty(r[41].ToString()) ? true : false,
                                         GiayKhaiSinh = !string.IsNullOrEmpty(r[42].ToString()) ? true : false,
-                                        CCCD = !string.IsNullOrEmpty(r[43].ToString()) ? true : false,
-                                        HocBa = !string.IsNullOrEmpty(r[44].ToString()) ? true : false,
-                                        BangTN = !string.IsNullOrEmpty(r[45].ToString()) ? true : false,
-                                        HinhThe = !string.IsNullOrEmpty(r[46].ToString()) ? true : false,
-                                        GhiChu = r[47].ToString()
+                                        SYLL = !string.IsNullOrEmpty(r[43].ToString()) ? true : false,
+                                        CCCD = !string.IsNullOrEmpty(r[44].ToString()) ? true : false,
+                                        HocBa = !string.IsNullOrEmpty(r[45].ToString()) ? true : false,
+                                        BangTN = !string.IsNullOrEmpty(r[46].ToString()) ? true : false,
+                                        HinhThe = !string.IsNullOrEmpty(r[47].ToString()) ? true : false,
+                                        GhiChu = r[48].ToString()
                                     },
-                                    HanhKiem = r[48].ToString(),
-                                    XLHocTap = r[49].ToString(),
-                                    XLTN = r[50].ToString(),
+                                    HanhKiem = r[49].ToString(),
+                                    XLHocTap = r[50].ToString(),
+                                    XLTN = r[51].ToString(),
 
                                     DsNguyenVong = new List<NguyenVong>()
                                 };
+#pragma warning restore CS8601 // Possible null reference assignment.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                                 if (!string.IsNullOrEmpty(r[17].ToString()))
                                 {
                                     var dt = DataHelper.DsDanToc.FirstOrDefault(x => x.Ma == r[17].ToString());
@@ -201,19 +217,19 @@ namespace QuanLyTuyenSinh.Form
                                         hs.TDHV = truong.LoaiTruong;
                                     }
                                 }
-                                if (!string.IsNullOrEmpty(r[51].ToString()))
-                                {
-                                    var dtut = DataHelper.DsDoiTuongUT.FirstOrDefault(x => x.Ma == r[51].ToString());
-                                    hs.IdDTUT = dtut is null ? string.Empty : dtut.Id;
-                                }
                                 if (!string.IsNullOrEmpty(r[52].ToString()))
                                 {
-                                    var kvut = DataHelper.DsKhuVucUT.FirstOrDefault(x => x.Ma == r[52].ToString());
+                                    var dtut = DataHelper.DsDoiTuongUT.FirstOrDefault(x => x.Ma == r[52].ToString());
+                                    hs.IdDTUT = dtut is null ? string.Empty : dtut.Id;
+                                }
+                                if (!string.IsNullOrEmpty(r[53].ToString()))
+                                {
+                                    var kvut = DataHelper.DsKhuVucUT.FirstOrDefault(x => x.Ma == r[53].ToString());
                                     hs.IdKVUT = kvut is null ? string.Empty : kvut.Id;
                                 }
-                                if (!string.IsNullOrEmpty(r[54].ToString()))
+                                if (!string.IsNullOrEmpty(r[55].ToString()))
                                 {
-                                    var nghe = DataHelper.DsNghe.FirstOrDefault(x => x.Ma2 == r[54].ToString());
+                                    var nghe = DataHelper.DsNghe.FirstOrDefault(x => x.Ma2 == r[55].ToString());
                                     if (nghe != null)
                                         hs.DsNguyenVong.Add(new NguyenVong
                                         {
@@ -221,9 +237,9 @@ namespace QuanLyTuyenSinh.Form
                                             IdNghe = nghe.Id
                                         });
                                 }
-                                if (!string.IsNullOrEmpty(r[56].ToString()))
+                                if (!string.IsNullOrEmpty(r[57].ToString()))
                                 {
-                                    var nghe = DataHelper.DsNghe.FirstOrDefault(x => x.Ma2 == r[56].ToString());
+                                    var nghe = DataHelper.DsNghe.FirstOrDefault(x => x.Ma2 == r[57].ToString());
                                     if (nghe != null)
                                         hs.DsNguyenVong.Add(new NguyenVong
                                         {
@@ -255,7 +271,12 @@ namespace QuanLyTuyenSinh.Form
         {
             string errs = string.Empty;
             var selectedRowHandles = gridViewHSTC.GetSelectedRows();
-            if (selectedRowHandles.Length == 0) return;
+            if (selectedRowHandles.Length == 0)
+            {
+                XtraMessageBox.Show($"Chưa chọn hồ sơ để lưu");
+
+                return;
+            }
             if (selectedRowHandles[0] == -1) selectedRowHandles = selectedRowHandles.Skip(1).ToArray();
             if (selectedRowHandles.Length > 0)
             {
@@ -285,9 +306,13 @@ namespace QuanLyTuyenSinh.Form
                         {
                             var hstc = lstHSTC.FirstOrDefault(x => x.Id == r.Id);
                             if (hstc is not null)
+                            {
                                 hstc.Save();
+                                lstHSTC.RemoveAt(seletedRowHandle);
+                            }
                         }
                     }
+                    RefreshData();
                     XtraMessageBox.Show("Lưu hồ sơ thành công");
                 }
             }

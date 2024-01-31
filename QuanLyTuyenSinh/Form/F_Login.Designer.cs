@@ -55,7 +55,7 @@
             labelControl1.Appearance.ForeColor = Color.DodgerBlue;
             labelControl1.Appearance.Options.UseFont = true;
             labelControl1.Appearance.Options.UseForeColor = true;
-            labelControl1.Location = new Point(103, 214);
+            labelControl1.Location = new Point(117, 210);
             labelControl1.Margin = new Padding(2);
             labelControl1.Name = "labelControl1";
             labelControl1.Size = new Size(111, 39);
@@ -78,7 +78,7 @@
             // panel1
             // 
             panel1.BackColor = Color.CornflowerBlue;
-            panel1.Location = new Point(40, 341);
+            panel1.Location = new Point(38, 352);
             panel1.Margin = new Padding(2);
             panel1.Name = "panel1";
             panel1.Size = new Size(257, 1);
@@ -87,7 +87,7 @@
             // pictureEdit1
             // 
             pictureEdit1.EditValue = resources.GetObject("pictureEdit1.EditValue");
-            pictureEdit1.Location = new Point(40, 305);
+            pictureEdit1.Location = new Point(38, 316);
             pictureEdit1.Margin = new Padding(2);
             pictureEdit1.Name = "pictureEdit1";
             pictureEdit1.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
@@ -99,7 +99,7 @@
             // panel2
             // 
             panel2.BackColor = Color.CornflowerBlue;
-            panel2.Location = new Point(41, 384);
+            panel2.Location = new Point(39, 395);
             panel2.Margin = new Padding(2);
             panel2.Name = "panel2";
             panel2.Size = new Size(257, 1);
@@ -108,7 +108,7 @@
             // pictureEdit2
             // 
             pictureEdit2.EditValue = resources.GetObject("pictureEdit2.EditValue");
-            pictureEdit2.Location = new Point(41, 348);
+            pictureEdit2.Location = new Point(39, 359);
             pictureEdit2.Margin = new Padding(2);
             pictureEdit2.Name = "pictureEdit2";
             pictureEdit2.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
@@ -123,10 +123,10 @@
             btnLogin.Appearance.Font = new Font("Berlin Sans FB Demi", 12F, FontStyle.Bold, GraphicsUnit.Point);
             btnLogin.Appearance.Options.UseBackColor = true;
             btnLogin.Appearance.Options.UseFont = true;
-            btnLogin.Location = new Point(41, 406);
+            btnLogin.Location = new Point(44, 417);
             btnLogin.Margin = new Padding(2);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(257, 29);
+            btnLogin.Size = new Size(256, 29);
             btnLogin.TabIndex = 6;
             btnLogin.Text = "Đăng nhập";
             btnLogin.Click += btnLogin_Click;
@@ -137,7 +137,7 @@
             lblExit.Appearance.ForeColor = Color.DodgerBlue;
             lblExit.Appearance.Options.UseFont = true;
             lblExit.Appearance.Options.UseForeColor = true;
-            lblExit.Location = new Point(145, 464);
+            lblExit.Location = new Point(152, 475);
             lblExit.Margin = new Padding(2);
             lblExit.Name = "lblExit";
             lblExit.Size = new Size(40, 19);
@@ -148,7 +148,7 @@
             // txtName
             // 
             txtName.EditValue = "";
-            txtName.Location = new Point(77, 311);
+            txtName.Location = new Point(75, 322);
             txtName.Margin = new Padding(2);
             txtName.Name = "txtName";
             txtName.Properties.Appearance.Font = new Font("Bahnschrift Light", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -163,7 +163,7 @@
             labelControl3.Appearance.ForeColor = Color.DodgerBlue;
             labelControl3.Appearance.Options.UseFont = true;
             labelControl3.Appearance.Options.UseForeColor = true;
-            labelControl3.Location = new Point(66, 270);
+            labelControl3.Location = new Point(75, 270);
             labelControl3.Margin = new Padding(2);
             labelControl3.Name = "labelControl3";
             labelControl3.Size = new Size(100, 17);
@@ -186,13 +186,13 @@
             spinNam.Properties.MaskSettings.Set("mask", "d");
             spinNam.Properties.MaxValue = new decimal(new int[] { 2099, 0, 0, 0 });
             spinNam.Properties.MinValue = new decimal(new int[] { 2000, 0, 0, 0 });
-            spinNam.Size = new Size(76, 22);
+            spinNam.Size = new Size(62, 22);
             spinNam.TabIndex = 9;
             // 
             // txtPass
             // 
             txtPass.EditValue = "";
-            txtPass.Location = new Point(77, 353);
+            txtPass.Location = new Point(75, 364);
             txtPass.Margin = new Padding(2);
             txtPass.Name = "txtPass";
             txtPass.Properties.Appearance.Font = new Font("Bahnschrift Light", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -210,7 +210,7 @@
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(341, 493);
+            ClientSize = new Size(348, 535);
             Controls.Add(spinNam);
             Controls.Add(txtPass);
             Controls.Add(txtName);

@@ -35,8 +35,8 @@ namespace QuanLyTuyenSinh.Form
             }
 
             DataHelper.CheckUsers();
-            string username = txtName.Text;
-            string password = txtPass.Text;
+            string username = txtName.Text.Trim();
+            string password = txtPass.Text.Trim();
             var user = DataHelper.GetUser(username, password);
             if (user != null)
             {

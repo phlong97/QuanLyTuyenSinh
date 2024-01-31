@@ -12,6 +12,7 @@ using DevExpress.XtraPrinting;
 using DevExpress.XtraSplashScreen;
 using LiteDB;
 using Microsoft.Office.Interop.Excel;
+using QuanLyTuyenSinh.Models;
 using QuanLyTuyenSinh.Properties;
 using System.ComponentModel;
 using System.Data;
@@ -57,11 +58,11 @@ namespace QuanLyTuyenSinh.Form
             InitializeComponent();
             _NamTS = Properties.Settings.Default.NamTS;
             Text = "Quản lý xét tuyển - " + DataHelper.CurrSettings.TENTRUONG;
-            txtNamTS.Caption = $"Năm tuyển sinh : <b>{_NamTS}</b>";
-            txtUser.Caption = $"Xin chào : <b>{DataHelper.CurrUser.UserName}</b>";
+            txtNamTS.Caption += $" <b>{_NamTS}</b>";
+            txtUser.Caption = $" <b>{DataHelper.CurrUser.UserName}</b>";
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void btnAdd_Click(object? sender, EventArgs e)
         {
             EditMode = false;
 
@@ -122,12 +123,12 @@ namespace QuanLyTuyenSinh.Form
                 gridView.AddNewRow();
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnClose_Click(object? sender, EventArgs e)
         {
             panelGrid.SendToBack();
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object? sender, EventArgs e)
         {
             var selectedRowHandles = gridView.GetSelectedRows();
             if (selectedRowHandles.Length == 0) return;
@@ -156,7 +157,7 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void btnEdit_Click(object? sender, EventArgs e)
         {
             if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC))
             {
@@ -210,7 +211,9 @@ namespace QuanLyTuyenSinh.Form
                     DevExpress.Export.ExportSettings.DefaultExportType = ExportType.WYSIWYG;
                     //Customize export options
                     var view = (gridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     view.OptionsPrint.PrintHeader = true;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                     XlsxExportOptionsEx advOptions = new XlsxExportOptionsEx();
                     advOptions.ShowTotalSummaries = DevExpress.Utils.DefaultBoolean.True;
@@ -234,7 +237,7 @@ namespace QuanLyTuyenSinh.Form
             }
         }
 
-        private void btnLapChiTieu_Click(object sender, EventArgs e)
+        private void btnLapChiTieu_Click(object? sender, EventArgs e)
         {
             if (DataHelper.DsChiTieu.Count() < DataHelper.DsNghe.Count())
             {
@@ -256,7 +259,11 @@ namespace QuanLyTuyenSinh.Form
         private void BtnExportGBTT_Click(object? sender, EventArgs e)
         {
             var selectedRowHandles = gridView.GetSelectedRows();
-            if (selectedRowHandles.Length == 0) return;
+            if (selectedRowHandles.Length == 0)
+            {
+                XtraMessageBox.Show("Chưa chọn hồ sơ!");
+                return;
+            }
             if (selectedRowHandles[0] == -1) selectedRowHandles = selectedRowHandles.Skip(1).ToArray();
             if (selectedRowHandles.Length > 0)
             {
@@ -285,7 +292,7 @@ namespace QuanLyTuyenSinh.Form
             LoadForm();
         }
 
-        private void cbbDTS_EditValueChanged(object sender, EventArgs e)
+        private void cbbDTS_EditValueChanged(object? sender, EventArgs e)
         {
             if (TenDm is null)
                 return;
@@ -300,14 +307,16 @@ namespace QuanLyTuyenSinh.Form
                 return;
             if (_bindingSource is null)
                 return;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string td = cbbTDHV.EditValue.ToString();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (string.IsNullOrEmpty(td))
                 return;
             DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DataHelper.DsTruong.Where(x => x.LoaiTruong.Equals(cbbTDHV.EditValue.ToString())).ToList(), "(Tất cả)");
             RefreshData();
         }
 
-        private void F_Main_Load(object sender, EventArgs e)
+        private void F_Main_Load(object? sender, EventArgs e)
         {
 
             WindowState = FormWindowState.Maximized;
@@ -317,6 +326,7 @@ namespace QuanLyTuyenSinh.Form
             LoadBackgound();
             LoadComboBoxDTS();
             LoadComboBoxHTDT();
+            LoadComboBoxHeDaoTao();
 
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", DataHelper.lstTinh, "(Tất cả)");
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode", null, "(Tất cả)");
@@ -327,6 +337,12 @@ namespace QuanLyTuyenSinh.Form
             Shown += F_Main_Shown;
         }
 
+        private void LoadComboBoxHeDaoTao()
+        {
+            string[] ds = { "Trung cấp", "Thướng xuyên" };
+            DevForm.CreateComboboxEdit(cbbHeDaoTao, ds);
+            cbbTDHV.SelectedIndex = 0;
+        }
         private void LoadLookupAddress()
         {
             lookTinh.EditValue = string.IsNullOrEmpty(Settings.Default.MaTinh) ? null : Settings.Default.MaTinh;
@@ -350,6 +366,7 @@ namespace QuanLyTuyenSinh.Form
 
             cbbDTS.EditValueChanged += cbbDTS_EditValueChanged;
             cbbTDHV.EditValueChanged += CbbHTDT_EditValueChanged;
+            cbbHeDaoTao.EditValueChanged += CbbHeDaoTao_EditValueChanged;
             lookTinh.TextChanged += LookTinh_TextChanged;
             lookQuanHuyen.TextChanged += LookQuanHuyen_TextChanged;
             lookXa.TextChanged += LookXa_TextChanged;
@@ -357,6 +374,21 @@ namespace QuanLyTuyenSinh.Form
             chkKhongTT.CheckedChanged += ChkKhongTT_CheckedChanged;
         }
 
+        private void CbbHeDaoTao_EditValueChanged(object? sender, EventArgs e)
+        {
+            if (cbbHeDaoTao.EditValue is null)
+                return;
+
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            string hdt = cbbHeDaoTao.EditValue.ToString();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            if (string.IsNullOrEmpty(hdt)) return;
+            DataHelper.HeDaoTao = hdt;
+            if(hdt.Equals("Trung cấp"))
+            {
+
+            }
+        }
 
         private void LookTruong_TextChanged(object? sender, EventArgs e)
         {
@@ -534,14 +566,14 @@ namespace QuanLyTuyenSinh.Form
             dropbtnHoSo.DropDownControl = popupMenu;
         }
 
-        private void BtnExportXls2_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnExportXls2_ItemClick(object? sender, ItemClickEventArgs e)
         {
             gridView.Columns.Clear();
             var ds = _Helper.getListProvince();
             _bindingSource.DataSource = ds;
             gridControl.DataSource = _bindingSource;
         }
-        private void BtnExportXls3_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnExportXls3_ItemClick(object? sender, ItemClickEventArgs e)
         {
             gridView.Columns.Clear();
 
@@ -550,7 +582,7 @@ namespace QuanLyTuyenSinh.Form
             gridControl.DataSource = _bindingSource;
 
         }
-        private void BtnExportXls4_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnExportXls4_ItemClick(object? sender, ItemClickEventArgs e)
         {
             gridView.Columns.Clear();
 
@@ -559,7 +591,7 @@ namespace QuanLyTuyenSinh.Form
             gridControl.DataSource = _bindingSource;
 
         }
-        private void BtnExportXls5_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnExportXls5_ItemClick(object? sender, ItemClickEventArgs e)
         {
             if (cbbDTS.SelectedIndex <= 0)
             {
@@ -571,16 +603,22 @@ namespace QuanLyTuyenSinh.Form
             MainWorkspace.FormUploadHS.ShowDialog();
         }
 
-        private void XuatDSTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatDSTheoTruong_ItemClick(object? sender, ItemClickEventArgs e)
         {
             if (lookTruong.EditValue == null)
             {
                 XtraMessageBox.Show($"Chưa chọn trường!");
                 return;
             }
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             Directory.CreateDirectory(TuDien.EXEL_FOLDER);
             string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSTRUONG.xlsx");
             if (!File.Exists(filePath))
@@ -610,7 +648,7 @@ namespace QuanLyTuyenSinh.Form
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
                     string Truong = lookTruong.Text.ToUpper();
                     sheet.Cells[4, 1] = $"DANH SÁCH HỌC SINH TRƯỜNG {cbbTDHV.Text.ToUpper()} {lookTruong.Text.ToUpper()} ĐANG THEO HỌC TẠI TRƯỜNG";
-                    sheet.Cells[5, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {DataHelper._NamTS}-{DataHelper._NamTS + 1}.";
+                    sheet.Cells[5, 1] = $"TRÌNH ĐỘ: TRUNG CẤP ; NĂM HỌC: {DataHelper.NamTS}-{DataHelper.NamTS + 1}.";
 
                     var lst = (List<HoSoTrungTuyenTC>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
@@ -632,7 +670,9 @@ namespace QuanLyTuyenSinh.Form
                         range.set_Value(Missing.Value, export);
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
                         Marshal.ReleaseComObject(range);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         range = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                         sheet.Range[$"C{9}:C{1000}"].Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
                         sheet.Cells[lst.Count + 8, 1] = $"Tổng số: {lst.Count} thí sinh";
@@ -671,16 +711,22 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void XuatDSTheoXa_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatDSTheoXa_ItemClick(object? sender, ItemClickEventArgs e)
         {
             if (lookXa.EditValue == null)
             {
                 XtraMessageBox.Show($"Chưa chọn xã!");
                 return;
             }
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             Directory.CreateDirectory(TuDien.EXEL_FOLDER);
             string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSXA.xlsx");
             if (!File.Exists(filePath))
@@ -710,7 +756,7 @@ namespace QuanLyTuyenSinh.Form
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
                     string XA = lookXa.Text.ToUpper();
                     sheet.Cells[4, 1] = $"DANH SÁCH HỌC SINH {XA} ĐANG THEO HỌC TẠI TRƯỜNG";
-                    sheet.Cells[5, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {DataHelper._NamTS}-{DataHelper._NamTS + 1}.";
+                    sheet.Cells[5, 1] = $"TRÌNH ĐỘ: TRUNG CẤP ; NĂM HỌC: {DataHelper.NamTS}-{DataHelper.NamTS + 1}.";
 
                     var lst = (List<HoSoTrungTuyenTC>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
@@ -732,7 +778,9 @@ namespace QuanLyTuyenSinh.Form
                         range.set_Value(Missing.Value, export);
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
                         Marshal.ReleaseComObject(range);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         range = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                         sheet.Range[$"C{9}:C{1000}"].Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
                         sheet.Cells[lst.Count + 8, 1] = $"Tổng số: {lst.Count} thí sinh";
@@ -771,7 +819,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void XuatExelTheoMauDSTT_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatExelTheoMauDSTT_ItemClick(object? sender, ItemClickEventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
@@ -779,9 +827,15 @@ namespace QuanLyTuyenSinh.Form
                 XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
                 return;
             }
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             Directory.CreateDirectory(TuDien.EXEL_FOLDER);
             string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSTT.xlsx");
             if (!File.Exists(filePath))
@@ -810,7 +864,7 @@ namespace QuanLyTuyenSinh.Form
                     book = app.Workbooks.Open(sfd.FileName);
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
                     sheet.Cells[4, 1] = $"DANH SÁCH HỌC SINH TRÚNG TUYỂN ĐỢT {_Helper.ToIIVX(dts)}";
-                    sheet.Cells[5, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {DataHelper._NamTS}-{DataHelper._NamTS + 1}.";
+                    sheet.Cells[5, 1] = $"TRÌNH ĐỘ: TRUNG CẤP ; NĂM HỌC: {DataHelper.NamTS}-{DataHelper.NamTS + 1}.";
 
                     var lst = (List<HoSoTrungTuyenTC>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
@@ -833,7 +887,9 @@ namespace QuanLyTuyenSinh.Form
                         range.set_Value(Missing.Value, export);
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
                         Marshal.ReleaseComObject(range);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         range = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                         sheet.Range[$"C{9}:C{1000}"].Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
                         sheet.Cells[lst.Count + 9, 1] = $"Tổng số: {lst.Count} thí sinh";
@@ -872,7 +928,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void XuatDSXTTheoMauDSDT_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatDSXTTheoMauDSDT_ItemClick(object? sender, ItemClickEventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
@@ -880,9 +936,15 @@ namespace QuanLyTuyenSinh.Form
                 XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
                 return;
             }
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             Directory.CreateDirectory(TuDien.EXEL_FOLDER);
             string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "DSDT.xlsx");
             if (!File.Exists(filePath))
@@ -911,7 +973,7 @@ namespace QuanLyTuyenSinh.Form
                     book = app.Workbooks.Open(sfd.FileName);
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
                     sheet.Cells[5, 1] = $"DANH SÁCH HỌC SINH ĐĂNG KÝ DỰ TUYỂN ĐỢT {_Helper.ToIIVX(dts)}";
-                    sheet.Cells[6, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {DataHelper._NamTS}-{DataHelper._NamTS + 1}.";
+                    sheet.Cells[6, 1] = $"TRÌNH ĐỘ: TRUNG CẤP ; NĂM HỌC: {DataHelper.NamTS}-{DataHelper.NamTS + 1}.";
 
                     var lst = (List<HoSoDuTuyenTCView>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
@@ -937,7 +999,9 @@ namespace QuanLyTuyenSinh.Form
                         range.set_Value(Missing.Value, export);
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
                         Marshal.ReleaseComObject(range);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         range = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                         sheet.Range[$"C{9}:C{1000}"].Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
                         sheet.Cells[lst.Count + 9, 1] = $"Tổng số: {lst.Count} thí sinh";
                         Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + 9, 1], sheet.Cells[lst.Count + 9, 5]);
@@ -975,7 +1039,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void XuatDSXTTheoMauKQXT_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatDSXTTheoMauKQXT_ItemClick(object? sender, ItemClickEventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
@@ -983,9 +1047,15 @@ namespace QuanLyTuyenSinh.Form
                 XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
                 return;
             }
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             Directory.CreateDirectory(TuDien.EXEL_FOLDER);
             string filePath = System.IO.Path.Combine(TuDien.EXEL_FOLDER, "KQXT.xlsx");
             if (!File.Exists(filePath))
@@ -1015,7 +1085,7 @@ namespace QuanLyTuyenSinh.Form
                     book = app.Workbooks.Open(sfd.FileName);
                     sheet = (Excel.Worksheet)book.Worksheets.get_Item(1);
                     sheet.Cells[5, 1] = $"DANH SÁCH HỌC SINH ĐĂNG KÝ DỰ TUYỂN ĐỢT {_Helper.ToIIVX(dts)}";
-                    sheet.Cells[6, 1] = $"HỆ: TRUNG CẤP ; NĂM HỌC: {DataHelper._NamTS}-{DataHelper._NamTS + 1}.";
+                    sheet.Cells[6, 1] = $"TRÌNH ĐỘ: TRUNG CẤP ; NĂM HỌC: {DataHelper.NamTS}-{DataHelper.NamTS + 1}.";
 
                     var lst = ((List<TongHopDiemXetTuyenTC>)_bindingSource.DataSource).OrderBy(x => x.MaHoSo).ToList();
                     int slnghe = lst.DistinctBy(x => x.IdNgheNV1).Count();
@@ -1058,7 +1128,9 @@ namespace QuanLyTuyenSinh.Form
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
 
                         Marshal.ReleaseComObject(range);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         range = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                         sheet.Range[$"C{9}:C{1000}"].Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
                         sheet.Cells[lst.Count + slnghe + 9, 1] = $"Tổng số: {lst.Count} thí sinh";
@@ -1101,7 +1173,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void BtnDanhLaiMa_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnDanhLaiMa_ItemClick(object? sender, ItemClickEventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
@@ -1131,7 +1203,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void XuatDsTTTheoMauCSGDNN_ItemClick(object sender, ItemClickEventArgs e)
+        private void XuatDsTTTheoMauCSGDNN_ItemClick(object? sender, ItemClickEventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
@@ -1139,9 +1211,15 @@ namespace QuanLyTuyenSinh.Form
                 XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
                 return;
             }
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Application app = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Workbook book = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Excel.Worksheet sheet = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             try
             {
 
@@ -1208,7 +1286,9 @@ namespace QuanLyTuyenSinh.Form
                         Excel.Range range = sheet.get_Range(sheet.Cells[4, 1], sheet.Cells[lst.Count + 3, 27]);
                         range.set_Value(Missing.Value, export);
                         Marshal.ReleaseComObject(range);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                         range = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
                     }
                     book.Save();
@@ -1238,7 +1318,7 @@ namespace QuanLyTuyenSinh.Form
                 }
             }
         }
-        private void BtnSaveDSTT_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnSaveDSTT_ItemClick(object? sender, ItemClickEventArgs e)
         {
             int dts = cbbDTS.SelectedIndex;
             if (dts <= 0)
@@ -1275,7 +1355,6 @@ namespace QuanLyTuyenSinh.Form
         }
 
         private List<HoSoTrungTuyenTC> lstHSTTTemp = new();
-        private List<HoSoTrungTuyenTC> lstHSKhongTT = new();
 
         private void DropbtnDSTT_Click(object? sender, EventArgs e)
         {
@@ -1290,18 +1369,15 @@ namespace QuanLyTuyenSinh.Form
                 if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lập lại danh sách?",
                     "Lập danh sách trúng tuyển", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    DataHelper.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHSTTTemp, lstHSKhongTT);
-                    _bindingSource.DataSource = lstHSTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
+                    DataHelper.LapDSTrungTuyen(cbbDTS.SelectedIndex);
                 }
             }
             else
             {
-                DataHelper.LapDSTrungTuyen(cbbDTS.SelectedIndex, lstHSTTTemp, lstHSKhongTT);
-                _bindingSource.DataSource = lstHSTTTemp.Where(x => x.TDHV.Equals(cbbTDHV.SelectedItem));
+                DataHelper.LapDSTrungTuyen(cbbDTS.SelectedIndex);
             }
-            gridView.RefreshData();
-            gridView.ExpandAllGroups();
-            gridView.BestFitColumns(true);
+            RefreshData();
+            LoadForm();
         }
 
         private void ShowTotalFooter()
@@ -1327,7 +1403,7 @@ namespace QuanLyTuyenSinh.Form
                     _bindingSource.DataSource = DataHelper.DsNghe;
                     break;
 
-                case TuDien.CategoryName.DoiTuongUuTienTC:
+                case TuDien.CategoryName.DoiTuongUuTien:
                     _bindingSource.DataSource = DataHelper.DsDoiTuongUT;
                     break;
 
@@ -1360,18 +1436,24 @@ namespace QuanLyTuyenSinh.Form
                     break;
 
                 case TuDien.CategoryName.HoSoDuTuyenTC:
+#pragma warning disable CS8604 // Possible null reference argument.
                     _bindingSource.DataSource = DataHelper.GetDSDuTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
+#pragma warning restore CS8604 // Possible null reference argument.
                     break;
 
                 case TuDien.CategoryName.HoSoTrungTuyenTC:
+#pragma warning disable CS8604 // Possible null reference argument.
                     _bindingSource.DataSource = DataHelper.GetDSTrungTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS", (string)lookTinh.EditValue, (string)lookQuanHuyen.EditValue, (string)lookXa.EditValue, (string)lookTruong.EditValue, chkKhongTT.Checked);
+#pragma warning restore CS8604 // Possible null reference argument.
                     break;
 
                 case TuDien.CategoryName.DiemXetTuyenTC:
+#pragma warning disable CS8604 // Possible null reference argument.
                     _bindingSource.DataSource = DataHelper.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
                     cbbTDHV.EditValue.ToString() : "THCS");
+#pragma warning restore CS8604 // Possible null reference argument.
                     break;
 
                 default: break;
@@ -1397,6 +1479,16 @@ namespace QuanLyTuyenSinh.Form
                     RepositoryItemComboBox riComboBox = new RepositoryItemComboBox();
                     riComboBox.Items.AddRange(new string[] { "THCS", "THPT" });
                     colLoaiTruong.ColumnEdit = riComboBox;
+                }
+            }
+            if (TenDm.Equals(TuDien.CategoryName.DoiTuongUuTien))
+            {
+                var colApdung = gridView.Columns.ColumnByFieldName("ApDung");
+                if (colApdung != null)
+                {
+                    RepositoryItemComboBox riComboBox = new RepositoryItemComboBox();
+                    riComboBox.Items.AddRange(new string[] { "Trung cấp", "Giáo dục thường xuyên" });
+                    colApdung.ColumnEdit = riComboBox;
                 }
             }
             if (TenDm.Equals(TuDien.CategoryName.ChiTieuTC))
@@ -1433,7 +1525,7 @@ namespace QuanLyTuyenSinh.Form
                 if (colXLHT != null) { colXLHT.Visible = ((string)cbbTDHV.EditValue != "THCS"); }
                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC))
                 {
-                    for (int i = 27; i <= 36; i++)
+                    for (int i = 27; i <= 37; i++)
                     {
                         gridView.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
                     }
@@ -1475,7 +1567,9 @@ namespace QuanLyTuyenSinh.Form
         private void LookQuanHuyen_TextChanged(object? sender, EventArgs e)
         {
             if (lookQuanHuyen.EditValue != null)
+#pragma warning disable CS8604 // Possible null reference argument.
                 lookXa.Properties.DataSource = DataHelper.lstPhuongXa.Where(x => x.AddressCode.StartsWith(lookQuanHuyen.EditValue.ToString()));
+#pragma warning restore CS8604 // Possible null reference argument.
             Settings.Default.MaHuyen = lookQuanHuyen.EditValue == null ? string.Empty : lookQuanHuyen.EditValue.ToString();
             Settings.Default.Save();
             lookXa.EditValue = null;
@@ -1486,7 +1580,9 @@ namespace QuanLyTuyenSinh.Form
         private void LookTinh_TextChanged(object? sender, EventArgs e)
         {
             if (lookTinh.EditValue != null)
+#pragma warning disable CS8604 // Possible null reference argument.
                 lookQuanHuyen.Properties.DataSource = DataHelper.lstQuanHuyen.Where(x => x.AddressCode.StartsWith(lookTinh.EditValue.ToString()));
+#pragma warning restore CS8604 // Possible null reference argument.
             Settings.Default.MaTinh = lookTinh.EditValue == null ? string.Empty : lookTinh.EditValue.ToString();
             Settings.Default.Save();
             lookXa.EditValue = null;
@@ -1503,7 +1599,7 @@ namespace QuanLyTuyenSinh.Form
 
         #region Xử lý GridControl
 
-        private void GridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        private void GridView_CellValueChanged(object? sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             string? value = e.Value.ToString();
 
@@ -1514,8 +1610,8 @@ namespace QuanLyTuyenSinh.Form
                 {
                     if (DataHelper.CheckDupCode(value, TenDm))
                     {
-                        MessageBox.Show(this, "Trùng mã!");
-                        gridView.SetFocusedRowCellValue("Ma", string.Empty);
+                        XtraMessageBox.Show(this, "Trùng mã!");
+                        gridView.SetFocusedRowCellValue("Ma", null);
                     }
                 }
             }
@@ -1525,8 +1621,8 @@ namespace QuanLyTuyenSinh.Form
                 {
                     if (DataHelper.CheckDupCode(value, TenDm))
                     {
-                        MessageBox.Show(this, "Trùng mã!");
-                        gridView.SetFocusedRowCellValue("Ma", string.Empty);
+                        XtraMessageBox.Show(this, "Trùng mã!");
+                        gridView.SetFocusedRowCellValue("Ma", null);
                     }
                     else
                         gridView.SetFocusedRowCellValue("Ma2", value.ToUpper());
@@ -1535,7 +1631,7 @@ namespace QuanLyTuyenSinh.Form
             gridView.CellValueChanged += GridView_CellValueChanged;
         }
 
-        private void GridView_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        private void GridView_CustomDrawRowIndicator(object? sender, RowIndicatorCustomDrawEventArgs e)
         {
             if (e.RowHandle >= 0)
                 e.Info.DisplayText = (e.RowHandle + 1).ToString("D3");
@@ -1585,9 +1681,32 @@ namespace QuanLyTuyenSinh.Form
                 {
                 }
             }
+            else if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC))
+            {
+                try
+                {
+                    var r = gridView.GetFocusedRow() as TongHopDiemXetTuyenTC;
+                    if (r is not null)
+                    {
+                        var hs = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id.Equals(r.IdHoSo));
+                        if (hs is not null)
+                        {
+                            F_HoSo f = new(hs.CloneJson());
+                            f.Show();
+                        }
+                        else
+                        {
+                            XtraMessageBox.Show("Hồ sơ xét tuyển không tồn tại trong hệ thống");
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
         }
 
-        private void GridView_RowUpdated(object sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
+        private void GridView_RowUpdated(object? sender, DevExpress.XtraGrid.Views.Base.RowObjectEventArgs e)
         {
             var r = e.Row as DBClass;
             if (r != null)
@@ -1602,7 +1721,7 @@ namespace QuanLyTuyenSinh.Form
             e.Cancel = EditMode ^ (gridView.FocusedRowHandle != DevExpress.XtraGrid.GridControl.NewItemRowHandle);
         }
 
-        private void GridView_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        private void GridView_CustomColumnDisplayText(object? sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
         {
             if (e.Column.FieldName == "GioiTinh")
             {
@@ -1655,97 +1774,97 @@ namespace QuanLyTuyenSinh.Form
 
         #region MenuSelect
 
-        private void btnChiTieu_Click(object sender, EventArgs e)
+        private void btnChiTieu_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.ChiTieuTC;
             LoadForm();
         }
 
-        private void btnDanToc_Click(object sender, EventArgs e)
+        private void btnDanToc_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DanToc;
             LoadForm();
         }
 
-        private void btnDotTS_Click(object sender, EventArgs e)
+        private void btnDotTS_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DotXetTuyen;
             LoadForm();
         }
 
-        private void btnDTUT_Click(object sender, EventArgs e)
+        private void btnDTUT_Click(object? sender, EventArgs e)
         {
-            TenDm = TuDien.CategoryName.DoiTuongUuTienTC;
+            TenDm = TuDien.CategoryName.DoiTuongUuTien;
             LoadForm();
         }
 
-        private void btnHoSoDuTuyenTC_Click(object sender, EventArgs e)
+        private void btnHoSoDuTuyenTC_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.HoSoDuTuyenTC;
             LoadForm();
         }
 
-        private void btnKVUT_Click(object sender, EventArgs e)
+        private void btnKVUT_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.KhuVucUuTien;
             LoadForm();
         }
 
-        private void btnNghe_Click(object sender, EventArgs e)
+        private void btnNghe_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.NganhNghe;
             LoadForm();
         }
 
-        private void btnQuocTich_Click(object sender, EventArgs e)
+        private void btnQuocTich_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.QuocTich;
             LoadForm();
         }
 
-        private void btnTDHV_Click(object sender, EventArgs e)
+        private void btnTDHV_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TrinhDo;
             LoadForm();
         }
 
-        private void btnTonGiao_Click(object sender, EventArgs e)
+        private void btnTonGiao_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TonGiao;
             LoadForm();
         }
 
-        private void btnTruong_Click(object sender, EventArgs e)
+        private void btnTruong_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.TruongHoc;
             LoadForm();
         }
 
-        private void btnHSTT_Click(object sender, EventArgs e)
+        private void btnHSTT_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.HoSoTrungTuyenTC;
             LoadForm();
         }
 
-        private void btnSetting_Click(object sender, EventArgs e)
+        private void btnSetting_Click(object? sender, EventArgs e)
         {
             F_Setting f = new(DataHelper.CurrSettings.CloneJson());
             f.Show();
         }
 
-        private void btnAccount_Click(object sender, EventArgs e)
+        private void btnAccount_Click(object? sender, EventArgs e)
         {
             F_Account f = new(DataHelper.CurrUser.CloneJson());
             f.Show();
         }
 
-        private void btnTKTT_Click(object sender, EventArgs e)
+        private void btnTKTT_Click(object? sender, EventArgs e)
         {
             if (!F_TK.GetForm.Visible) F_TK.GetForm.Show(this);
             F_TK.GetForm.BringToFront();
         }
 
-        private void btnDiemXetTuyen_Click(object sender, EventArgs e)
+        private void btnDiemXetTuyen_Click(object? sender, EventArgs e)
         {
             TenDm = TuDien.CategoryName.DiemXetTuyenTC;
             LoadForm();
