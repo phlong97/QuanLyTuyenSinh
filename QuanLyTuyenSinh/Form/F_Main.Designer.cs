@@ -371,7 +371,7 @@
             btnExel.Appearance.Options.UseFont = true;
             btnExel.Dock = DockStyle.Left;
             btnExel.ImageOptions.Image = (Image)resources.GetObject("btnExel.ImageOptions.Image");
-            btnExel.Location = new Point(770, 2);
+            btnExel.Location = new Point(801, 2);
             btnExel.Margin = new Padding(0);
             btnExel.Name = "btnExel";
             btnExel.Size = new Size(137, 20);
@@ -386,7 +386,7 @@
             btnExportGBTT.Appearance.Options.UseFont = true;
             btnExportGBTT.Dock = DockStyle.Left;
             btnExportGBTT.ImageOptions.Image = (Image)resources.GetObject("btnExportGBTT.ImageOptions.Image");
-            btnExportGBTT.Location = new Point(585, 2);
+            btnExportGBTT.Location = new Point(616, 2);
             btnExportGBTT.Margin = new Padding(0);
             btnExportGBTT.Name = "btnExportGBTT";
             btnExportGBTT.Size = new Size(185, 20);
@@ -401,9 +401,9 @@
             dropbtnHoSo.Appearance.Options.UseFont = true;
             dropbtnHoSo.Dock = DockStyle.Left;
             dropbtnHoSo.ImageOptions.Image = (Image)resources.GetObject("dropbtnHoSo.ImageOptions.Image");
-            dropbtnHoSo.Location = new Point(440, 2);
+            dropbtnHoSo.Location = new Point(441, 2);
             dropbtnHoSo.Name = "dropbtnHoSo";
-            dropbtnHoSo.Size = new Size(145, 20);
+            dropbtnHoSo.Size = new Size(175, 20);
             dropbtnHoSo.TabIndex = 33;
             dropbtnHoSo.Text = "Xử lý hồ sơ";
             // 
@@ -415,7 +415,7 @@
             btnLapChiTieu.Appearance.Options.UseFont = true;
             btnLapChiTieu.Dock = DockStyle.Left;
             btnLapChiTieu.ImageOptions.Image = (Image)resources.GetObject("btnLapChiTieu.ImageOptions.Image");
-            btnLapChiTieu.Location = new Point(314, 2);
+            btnLapChiTieu.Location = new Point(315, 2);
             btnLapChiTieu.Margin = new Padding(0);
             btnLapChiTieu.Name = "btnLapChiTieu";
             btnLapChiTieu.Size = new Size(126, 20);
@@ -430,7 +430,7 @@
             btnRefresh.Appearance.Options.UseBorderColor = true;
             btnRefresh.Dock = DockStyle.Left;
             btnRefresh.ImageOptions.Image = (Image)resources.GetObject("btnRefresh.ImageOptions.Image");
-            btnRefresh.Location = new Point(221, 2);
+            btnRefresh.Location = new Point(222, 2);
             btnRefresh.Margin = new Padding(0);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(93, 20);
@@ -459,7 +459,7 @@
             _panelButton.Dock = DockStyle.Left;
             _panelButton.Location = new Point(2, 2);
             _panelButton.Name = "_panelButton";
-            _panelButton.Size = new Size(219, 20);
+            _panelButton.Size = new Size(220, 20);
             _panelButton.TabIndex = 27;
             // 
             // btnDelete
@@ -651,7 +651,6 @@
             barManager1.DockControls.Add(barDockControlBottom);
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
-            barManager1.DockWindowTabFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             barManager1.Form = this;
             barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { txtNamTS, txtUser });
             barManager1.MainMenu = bar2;
@@ -728,7 +727,7 @@
             // 
             // cbbTDHV
             // 
-            cbbTDHV.Location = new Point(67, 5);
+            cbbTDHV.Location = new Point(58, 5);
             cbbTDHV.Name = "cbbTDHV";
             cbbTDHV.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cbbTDHV.Size = new Size(75, 20);
@@ -820,7 +819,7 @@
             rdGDTX.AutoSize = true;
             rdGDTX.Location = new Point(139, 1);
             rdGDTX.Name = "rdGDTX";
-            rdGDTX.Size = new Size(95, 17);
+            rdGDTX.Size = new Size(93, 17);
             rdGDTX.TabIndex = 1;
             rdGDTX.Text = "Thường xuyên";
             rdGDTX.UseVisualStyleBackColor = true;
@@ -831,7 +830,7 @@
             rdTC.Checked = true;
             rdTC.Location = new Point(40, 1);
             rdTC.Name = "rdTC";
-            rdTC.Size = new Size(73, 17);
+            rdTC.Size = new Size(74, 17);
             rdTC.TabIndex = 0;
             rdTC.TabStop = true;
             rdTC.Text = "Trung cấp";

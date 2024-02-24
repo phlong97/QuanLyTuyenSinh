@@ -6,9 +6,7 @@ using DevExpress.Utils;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraExport.Helpers;
 using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.BandedGrid;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraPrinting;
 using DevExpress.XtraSplashScreen;
@@ -21,7 +19,6 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
 using SummaryItemType = DevExpress.Data.SummaryItemType;
 
@@ -134,7 +131,7 @@ namespace QuanLyTuyenSinh.Form
                 var kvut = DataHelper.DsKhuVucUT.FirstOrDefault(x => x.Ma == "KV2-NT");
                 try
                 {
-                    if(rdTC.Checked)
+                    if (rdTC.Checked)
                     {
                         F_HoSo f = new(
                         new HoSoDuTuyenTC
@@ -151,7 +148,7 @@ namespace QuanLyTuyenSinh.Form
                             IdTonGiao = tg is not null ? tg.Id : string.Empty,
                             IdKVUT = kvut is not null ? kvut.Id : string.Empty,
                         });
-                            f.Show(this);
+                        f.Show(this);
                     }
                     else
                     {
@@ -224,7 +221,7 @@ namespace QuanLyTuyenSinh.Form
                     var r = gridView.GetFocusedRow() as BaseClass;
                     if (r is not null)
                     {
-                        if(rdTC.Checked)
+                        if (rdTC.Checked)
                         {
                             var hs = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id.Equals(r.Id));
                             if (hs is not null)
@@ -309,7 +306,7 @@ namespace QuanLyTuyenSinh.Form
 
         private void btnLapChiTieu_Click(object? sender, EventArgs e)
         {
-            if(rdTC.Checked)
+            if (rdTC.Checked)
             {
                 if (DataHelper.DsChiTieuTC.Count() < DataHelper.DsNghe.Count())
                 {
@@ -671,7 +668,7 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 3] = lst[i].NgaySinh;
                             export[i, 4] = lst[i].GioiTinh ? "Nam" : "Nữ";
                             export[i, 5] = lst[i].NoiSinh;
-                            export[i, 6] = lst[i].DiaChi; 
+                            export[i, 6] = lst[i].DiaChi;
                             export[i, 7] = lst[i].TongDXT;
                             export[i, 8] = lst[i].GhiChu;
                         }
@@ -797,7 +794,7 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 20] = lst[i].Tong;
                             export[i, 21] = lst[i].GhiChu;
                         }
-                        
+
                         Excel.Range range = sheet.get_Range(sheet.Cells[header + 1, 1], sheet.Cells[lst.Count + header, width]);
                         range.set_Value(Missing.Value, export);
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
@@ -1047,7 +1044,7 @@ namespace QuanLyTuyenSinh.Form
 
                         sheet.Columns.AutoFit();
                     }
-                    else if(lst2 != null && lst2.Count > 0)
+                    else if (lst2 != null && lst2.Count > 0)
                     {
                         for (int i = 0; i < lst2.Count(); i++)
                         {
@@ -1183,7 +1180,7 @@ namespace QuanLyTuyenSinh.Form
 
                         sheet.Columns.AutoFit();
                     }
-                    else if(lst2 != null && lst2.Count > 0)
+                    else if (lst2 != null && lst2.Count > 0)
                     {
                         for (int i = 0; i < lst2.Count(); i++)
                         {
@@ -1843,7 +1840,7 @@ namespace QuanLyTuyenSinh.Form
                     DataHelper.LapDSTrungTuyenTX(cbbDTS.SelectedIndex);
                 }
             }
-            
+
             RefreshData();
             LoadForm();
         }
@@ -1900,7 +1897,7 @@ namespace QuanLyTuyenSinh.Form
                     break;
 
                 case TuDien.CategoryName.ChiTieuTC:
-                    _bindingSource.DataSource = rdTC.Checked ? DataHelper.DsChiTieuTC.Select(x => x.ToCTXT()).ToList() : 
+                    _bindingSource.DataSource = rdTC.Checked ? DataHelper.DsChiTieuTC.Select(x => x.ToCTXT()).ToList() :
                         DataHelper.DsChiTieuTX.Select(x => x.ToCTXT()).ToList();
                     break;
 
@@ -1995,7 +1992,7 @@ namespace QuanLyTuyenSinh.Form
                 if (colXLHT != null) { colXLHT.Visible = ((string)cbbTDHV.EditValue != "THCS"); }
                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC))
                 {
-                    if(rdTC.Checked)
+                    if (rdTC.Checked)
                         for (int i = 27; i <= 37; i++)
                         {
                             gridView.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
@@ -2009,7 +2006,7 @@ namespace QuanLyTuyenSinh.Form
                 var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
                 if (colDotTS != null) colDotTS.Group();
                 var colNghe = TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC) ? gridView.Columns.ColumnByFieldName("IdNgheDT1") : gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen");
-                if (colNghe != null) colNghe.Group();                
+                if (colNghe != null) colNghe.Group();
             }
             if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC))
             {
@@ -2017,7 +2014,7 @@ namespace QuanLyTuyenSinh.Form
 
                 gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdDTUT", "Ten", "Id");
-                
+
             }
 
             panelGrid.RowStyles[1].Height = TenDm.StartsWith("HS") || TenDm.StartsWith("TK") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 40 : 0;
@@ -2025,13 +2022,13 @@ namespace QuanLyTuyenSinh.Form
             btnEdit.Enabled = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyenTC) || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? false : true;
             btnDelete.Enabled = TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? false : true;
             btnLapChiTieu.Width = TenDm.Equals(TuDien.CategoryName.ChiTieuTC) ? 110 : 0;
-            btnExportGBTT.Width = TenDm.StartsWith("HSTT") ? 185 : 0;
-            _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 220;
+            btnExportGBTT.Width = TenDm.StartsWith("HSTT") ? 200 : 0;
+            _panelButton.Width = TenDm.StartsWith("TK") ? 0 : 260;
             panelTS.Width = (TenDm.StartsWith("TK") || TenDm.StartsWith("HS")) || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 180 : 0;
-            panelTDHV.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 155 : 0;
+            panelTDHV.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 170 : 0;
             chkKhongTT.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyenTC) ? true : false;
             panelFilter.Visible = TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyenTC) ? true : false;
-            dropbtnHoSo.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 145 : 0;
+            dropbtnHoSo.Width = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 175 : 0;
             panelHeDaoTao.Height = TenDm.StartsWith("HS") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) || TenDm.StartsWith("ChiTieu") ? 20 : 0;
             gridView.OptionsBehavior.KeepFocusedRowOnUpdate = TenDm.StartsWith("HS");
 
