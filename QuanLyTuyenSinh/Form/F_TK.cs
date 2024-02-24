@@ -424,7 +424,7 @@ namespace QuanLyTuyenSinh.Form
                 }                
                 chart.Series.Add(series);
             }
-
+            //
             chart.SeriesTemplate.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
             ChartTitle chartTitle1 = new ChartTitle();
             chartTitle1.Text = "Số lượng trúng tuyển theo từng trường";
