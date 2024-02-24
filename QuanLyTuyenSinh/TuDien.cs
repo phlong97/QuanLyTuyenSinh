@@ -13,8 +13,10 @@ namespace QuanLyTuyenSinh
         {
             public const string TruongHoc = "DMTH", NganhNghe = "DMNN",
                 DoiTuongUuTien = "DMDTUT", KhuVucUuTien = "DMKVUT", DotXetTuyen = "DXT", DanToc = "DMDT",
-                TonGiao = "DMTG", QuocTich = "DMQT", TrinhDo = "DMTDVH", ChiTieuTC = "ChiTieuTC",
-                HoSoDuTuyenTC = "HSDTTC", HoSoTrungTuyenTC = "HSTTTC", DiemXetTuyenTC = "DiemXTTC", ThongKe = "TK", CaiDat = "Setting";
+                TonGiao = "DMTG", QuocTich = "DMQT", TrinhDo = "DMTDVH", ChiTieuTC = "ChiTieuTC", ChiTieuTX = "ChiTieuTX",
+                HoSoDuTuyenTC = "HSDTTC", HoSoTrungTuyenTC = "HSTTTC", HoSoDuTuyenGDTX = "HSDTGDTX",
+                HoSoTrungTuyenGDTX = "HSTTGDTX", DiemXetTuyenTC = "DiemXTTC", 
+                ThongKe = "TK", CaiDat = "Setting";
         }
 
     }

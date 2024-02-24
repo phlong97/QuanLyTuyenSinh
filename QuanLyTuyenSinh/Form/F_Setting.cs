@@ -56,6 +56,20 @@ namespace QuanLyTuyenSinh.Form
             spinXLHTTHPT_Kha.DataBindings.Add("EditValue", source, "XLHT_THPT.KHA", true, DataSourceUpdateMode.OnPropertyChanged);
             spinXLHTTHPT_Gioi.DataBindings.Clear();
             spinXLHTTHPT_Gioi.DataBindings.Add("EditValue", source, "XLHT_THPT.GIOI", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            spinHKGDTX_TB.DataBindings.Clear();
+            spinHKGDTX_TB.DataBindings.Add("EditValue", source, "HK_GDTX.TRUNG_BINH", true, DataSourceUpdateMode.OnPropertyChanged);
+            spinHKGDTX_Kha.DataBindings.Clear();
+            spinHKGDTX_Kha.DataBindings.Add("EditValue", source, "HK_GDTX.KHA", true, DataSourceUpdateMode.OnPropertyChanged);
+            spinHKGDTX_Tot.DataBindings.Clear();
+            spinHKGDTX_Tot.DataBindings.Add("EditValue", source, "HK_GDTX.TOT", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            spinHLGDTX_TB.DataBindings.Clear();
+            spinHLGDTX_TB.DataBindings.Add("EditValue", source, "HL_GDTX.TRUNG_BINH", true, DataSourceUpdateMode.OnPropertyChanged);
+            spinHLGDTX_Kha.DataBindings.Clear();
+            spinHLGDTX_Kha.DataBindings.Add("EditValue", source, "HL_GDTX.KHA", true, DataSourceUpdateMode.OnPropertyChanged);
+            spinHLGDTX_Gioi.DataBindings.Clear();
+            spinHLGDTX_Gioi.DataBindings.Add("EditValue", source, "HL_GDTX.GIOI", true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void btnSave_Click(object? sender, EventArgs e)

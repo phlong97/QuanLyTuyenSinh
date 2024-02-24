@@ -33,16 +33,9 @@
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
             btnDBPath = new DevExpress.XtraEditors.SimpleButton();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            btnCancel = new DevExpress.XtraEditors.SimpleButton();
-            btnSave = new DevExpress.XtraEditors.SimpleButton();
-            spinCTVM = new DevExpress.XtraEditors.SpinEdit();
-            labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            txtTenTruong = new DevExpress.XtraEditors.TextEdit();
-            labelControl1 = new DevExpress.XtraEditors.LabelControl();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
             tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
             tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             labelControl10 = new DevExpress.XtraEditors.LabelControl();
             labelControl9 = new DevExpress.XtraEditors.LabelControl();
             labelControl8 = new DevExpress.XtraEditors.LabelControl();
@@ -80,33 +73,37 @@
             spinHKTHPT_TB = new DevExpress.XtraEditors.SpinEdit();
             labelControl2 = new DevExpress.XtraEditors.LabelControl();
             spinHKTHCS_TB = new DevExpress.XtraEditors.SpinEdit();
+            tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            spinEdit1 = new DevExpress.XtraEditors.SpinEdit();
+            spinHLGDTX_Gioi = new DevExpress.XtraEditors.SpinEdit();
             labelControl26 = new DevExpress.XtraEditors.LabelControl();
-            spinEdit2 = new DevExpress.XtraEditors.SpinEdit();
-            spinEdit3 = new DevExpress.XtraEditors.SpinEdit();
+            spinHKGDTX_Tot = new DevExpress.XtraEditors.SpinEdit();
+            spinHLGDTX_Kha = new DevExpress.XtraEditors.SpinEdit();
             labelControl27 = new DevExpress.XtraEditors.LabelControl();
             labelControl28 = new DevExpress.XtraEditors.LabelControl();
-            spinEdit4 = new DevExpress.XtraEditors.SpinEdit();
+            spinHKGDTX_Kha = new DevExpress.XtraEditors.SpinEdit();
             labelControl29 = new DevExpress.XtraEditors.LabelControl();
             labelControl30 = new DevExpress.XtraEditors.LabelControl();
             labelControl31 = new DevExpress.XtraEditors.LabelControl();
-            spinEdit5 = new DevExpress.XtraEditors.SpinEdit();
+            spinHLGDTX_TB = new DevExpress.XtraEditors.SpinEdit();
             labelControl32 = new DevExpress.XtraEditors.LabelControl();
-            spinEdit6 = new DevExpress.XtraEditors.SpinEdit();
+            spinHKGDTX_TB = new DevExpress.XtraEditors.SpinEdit();
+            btnCancel = new DevExpress.XtraEditors.SimpleButton();
+            btnSave = new DevExpress.XtraEditors.SimpleButton();
+            spinCTVM = new DevExpress.XtraEditors.SpinEdit();
+            labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            txtTenTruong = new DevExpress.XtraEditors.TextEdit();
+            labelControl1 = new DevExpress.XtraEditors.LabelControl();
             directxFormContainerControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
             panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)spinCTVM.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)txtTenTruong.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
             panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tabPane1).BeginInit();
             tabPane1.SuspendLayout();
             tabNavigationPage1.SuspendLayout();
-            tabNavigationPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Gioi.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHPT_Gioi.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_Gioi.Properties).BeginInit();
@@ -122,12 +119,15 @@
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_TB.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHPT_TB.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHCS_TB.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit1.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit2.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit3.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit4.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit5.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit6.Properties).BeginInit();
+            tabNavigationPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)spinHLGDTX_Gioi.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)spinHKGDTX_Tot.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)spinHLGDTX_Kha.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)spinHKGDTX_Kha.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)spinHLGDTX_TB.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)spinHKGDTX_TB.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)spinCTVM.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtTenTruong.Properties).BeginInit();
             SuspendLayout();
             // 
             // directxFormContainerControl1
@@ -173,57 +173,6 @@
             groupControl1.Size = new Size(461, 451);
             groupControl1.TabIndex = 38;
             groupControl1.Text = "Điểm xét tuyển";
-            // 
-            // btnCancel
-            // 
-            btnCancel.ImageOptions.Image = (Image)resources.GetObject("btnCancel.ImageOptions.Image");
-            btnCancel.Location = new Point(262, 403);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 16;
-            btnCancel.Text = "Hủy";
-            // 
-            // btnSave
-            // 
-            btnSave.ImageOptions.Image = (Image)resources.GetObject("btnSave.ImageOptions.Image");
-            btnSave.Location = new Point(144, 403);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(75, 23);
-            btnSave.TabIndex = 16;
-            btnSave.Text = "Lưu";
-            // 
-            // spinCTVM
-            // 
-            spinCTVM.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinCTVM.Location = new Point(115, 48);
-            spinCTVM.Name = "spinCTVM";
-            spinCTVM.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinCTVM.Properties.MaxValue = new decimal(new int[] { 1, 0, 0, 0 });
-            spinCTVM.Size = new Size(47, 20);
-            spinCTVM.TabIndex = 35;
-            // 
-            // labelControl4
-            // 
-            labelControl4.Location = new Point(15, 52);
-            labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(82, 13);
-            labelControl4.TabIndex = 36;
-            labelControl4.Text = "Chỉ tiêu vượt mức";
-            // 
-            // txtTenTruong
-            // 
-            txtTenTruong.Location = new Point(115, 23);
-            txtTenTruong.Name = "txtTenTruong";
-            txtTenTruong.Size = new Size(300, 20);
-            txtTenTruong.TabIndex = 34;
-            // 
-            // labelControl1
-            // 
-            labelControl1.Location = new Point(45, 26);
-            labelControl1.Name = "labelControl1";
-            labelControl1.Size = new Size(52, 13);
-            labelControl1.TabIndex = 37;
-            labelControl1.Text = "Tên trường";
             // 
             // panelControl2
             // 
@@ -290,26 +239,6 @@
             tabNavigationPage1.Controls.Add(spinHKTHCS_TB);
             tabNavigationPage1.Name = "tabNavigationPage1";
             tabNavigationPage1.Size = new Size(453, 337);
-            // 
-            // tabNavigationPage2
-            // 
-            tabNavigationPage2.Caption = "Thường xuyên";
-            tabNavigationPage2.Controls.Add(labelControl3);
-            tabNavigationPage2.Controls.Add(spinEdit1);
-            tabNavigationPage2.Controls.Add(labelControl26);
-            tabNavigationPage2.Controls.Add(spinEdit2);
-            tabNavigationPage2.Controls.Add(spinEdit3);
-            tabNavigationPage2.Controls.Add(labelControl27);
-            tabNavigationPage2.Controls.Add(labelControl28);
-            tabNavigationPage2.Controls.Add(spinEdit4);
-            tabNavigationPage2.Controls.Add(labelControl29);
-            tabNavigationPage2.Controls.Add(labelControl30);
-            tabNavigationPage2.Controls.Add(labelControl31);
-            tabNavigationPage2.Controls.Add(spinEdit5);
-            tabNavigationPage2.Controls.Add(labelControl32);
-            tabNavigationPage2.Controls.Add(spinEdit6);
-            tabNavigationPage2.Name = "tabNavigationPage2";
-            tabNavigationPage2.Size = new Size(453, 337);
             // 
             // labelControl10
             // 
@@ -394,7 +323,7 @@
             // spinXLTNTHCS_Gioi
             // 
             spinXLTNTHCS_Gioi.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHCS_Gioi.Location = new Point(363, 136);
+            spinXLTNTHCS_Gioi.Location = new Point(363, 129);
             spinXLTNTHCS_Gioi.Name = "spinXLTNTHCS_Gioi";
             spinXLTNTHCS_Gioi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHCS_Gioi.Properties.MaskSettings.Set("mask", "f");
@@ -411,7 +340,7 @@
             // 
             // labelControl16
             // 
-            labelControl16.Location = new Point(322, 140);
+            labelControl16.Location = new Point(322, 133);
             labelControl16.Name = "labelControl16";
             labelControl16.Size = new Size(24, 13);
             labelControl16.TabIndex = 34;
@@ -468,7 +397,7 @@
             // spinXLTNTHCS_Kha
             // 
             spinXLTNTHCS_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHCS_Kha.Location = new Point(258, 136);
+            spinXLTNTHCS_Kha.Location = new Point(258, 129);
             spinXLTNTHCS_Kha.Name = "spinXLTNTHCS_Kha";
             spinXLTNTHCS_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHCS_Kha.Properties.MaskSettings.Set("mask", "f");
@@ -511,7 +440,7 @@
             // 
             // labelControl15
             // 
-            labelControl15.Location = new Point(214, 140);
+            labelControl15.Location = new Point(214, 133);
             labelControl15.Name = "labelControl15";
             labelControl15.Size = new Size(25, 13);
             labelControl15.TabIndex = 27;
@@ -553,7 +482,7 @@
             // 
             // labelControl14
             // 
-            labelControl14.Location = new Point(74, 140);
+            labelControl14.Location = new Point(74, 133);
             labelControl14.Name = "labelControl14";
             labelControl14.Size = new Size(57, 13);
             labelControl14.TabIndex = 23;
@@ -606,7 +535,7 @@
             // spinXLTNTHCS_TB
             // 
             spinXLTNTHCS_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinXLTNTHCS_TB.Location = new Point(151, 136);
+            spinXLTNTHCS_TB.Location = new Point(151, 129);
             spinXLTNTHCS_TB.Name = "spinXLTNTHCS_TB";
             spinXLTNTHCS_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             spinXLTNTHCS_TB.Properties.MaskSettings.Set("mask", "f");
@@ -641,6 +570,26 @@
             spinHKTHCS_TB.Size = new Size(42, 20);
             spinHKTHCS_TB.TabIndex = 16;
             // 
+            // tabNavigationPage2
+            // 
+            tabNavigationPage2.Caption = "Thường xuyên";
+            tabNavigationPage2.Controls.Add(labelControl3);
+            tabNavigationPage2.Controls.Add(spinHLGDTX_Gioi);
+            tabNavigationPage2.Controls.Add(labelControl26);
+            tabNavigationPage2.Controls.Add(spinHKGDTX_Tot);
+            tabNavigationPage2.Controls.Add(spinHLGDTX_Kha);
+            tabNavigationPage2.Controls.Add(labelControl27);
+            tabNavigationPage2.Controls.Add(labelControl28);
+            tabNavigationPage2.Controls.Add(spinHKGDTX_Kha);
+            tabNavigationPage2.Controls.Add(labelControl29);
+            tabNavigationPage2.Controls.Add(labelControl30);
+            tabNavigationPage2.Controls.Add(labelControl31);
+            tabNavigationPage2.Controls.Add(spinHLGDTX_TB);
+            tabNavigationPage2.Controls.Add(labelControl32);
+            tabNavigationPage2.Controls.Add(spinHKGDTX_TB);
+            tabNavigationPage2.Name = "tabNavigationPage2";
+            tabNavigationPage2.Size = new Size(453, 337);
+            // 
             // labelControl3
             // 
             labelControl3.Location = new Point(24, 84);
@@ -649,43 +598,43 @@
             labelControl3.TabIndex = 54;
             labelControl3.Text = "Học lực";
             // 
-            // spinEdit1
+            // spinHLGDTX_Gioi
             // 
-            spinEdit1.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinEdit1.Location = new Point(353, 117);
-            spinEdit1.Name = "spinEdit1";
-            spinEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinEdit1.Properties.MaskSettings.Set("mask", "f");
-            spinEdit1.Size = new Size(46, 20);
-            spinEdit1.TabIndex = 55;
+            spinHLGDTX_Gioi.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinHLGDTX_Gioi.Location = new Point(353, 112);
+            spinHLGDTX_Gioi.Name = "spinHLGDTX_Gioi";
+            spinHLGDTX_Gioi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinHLGDTX_Gioi.Properties.MaskSettings.Set("mask", "f");
+            spinHLGDTX_Gioi.Size = new Size(46, 20);
+            spinHLGDTX_Gioi.TabIndex = 55;
             // 
             // labelControl26
             // 
-            labelControl26.Location = new Point(312, 121);
+            labelControl26.Location = new Point(312, 116);
             labelControl26.Name = "labelControl26";
             labelControl26.Size = new Size(24, 13);
             labelControl26.TabIndex = 53;
             labelControl26.Text = "- Giỏi";
             // 
-            // spinEdit2
+            // spinHKGDTX_Tot
             // 
-            spinEdit2.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinEdit2.Location = new Point(353, 40);
-            spinEdit2.Name = "spinEdit2";
-            spinEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinEdit2.Properties.MaskSettings.Set("mask", "f");
-            spinEdit2.Size = new Size(46, 20);
-            spinEdit2.TabIndex = 44;
+            spinHKGDTX_Tot.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinHKGDTX_Tot.Location = new Point(353, 40);
+            spinHKGDTX_Tot.Name = "spinHKGDTX_Tot";
+            spinHKGDTX_Tot.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinHKGDTX_Tot.Properties.MaskSettings.Set("mask", "f");
+            spinHKGDTX_Tot.Size = new Size(46, 20);
+            spinHKGDTX_Tot.TabIndex = 44;
             // 
-            // spinEdit3
+            // spinHLGDTX_Kha
             // 
-            spinEdit3.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinEdit3.Location = new Point(248, 117);
-            spinEdit3.Name = "spinEdit3";
-            spinEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinEdit3.Properties.MaskSettings.Set("mask", "f");
-            spinEdit3.Size = new Size(46, 20);
-            spinEdit3.TabIndex = 51;
+            spinHLGDTX_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinHLGDTX_Kha.Location = new Point(248, 112);
+            spinHLGDTX_Kha.Name = "spinHLGDTX_Kha";
+            spinHLGDTX_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinHLGDTX_Kha.Properties.MaskSettings.Set("mask", "f");
+            spinHLGDTX_Kha.Size = new Size(46, 20);
+            spinHLGDTX_Kha.TabIndex = 51;
             // 
             // labelControl27
             // 
@@ -697,25 +646,25 @@
             // 
             // labelControl28
             // 
-            labelControl28.Location = new Point(204, 121);
+            labelControl28.Location = new Point(204, 116);
             labelControl28.Name = "labelControl28";
             labelControl28.Size = new Size(25, 13);
             labelControl28.TabIndex = 49;
             labelControl28.Text = "- Khá";
             // 
-            // spinEdit4
+            // spinHKGDTX_Kha
             // 
-            spinEdit4.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinEdit4.Location = new Point(248, 40);
-            spinEdit4.Name = "spinEdit4";
-            spinEdit4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinEdit4.Properties.MaskSettings.Set("mask", "f");
-            spinEdit4.Size = new Size(46, 20);
-            spinEdit4.TabIndex = 43;
+            spinHKGDTX_Kha.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinHKGDTX_Kha.Location = new Point(248, 40);
+            spinHKGDTX_Kha.Name = "spinHKGDTX_Kha";
+            spinHKGDTX_Kha.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinHKGDTX_Kha.Properties.MaskSettings.Set("mask", "f");
+            spinHKGDTX_Kha.Size = new Size(46, 20);
+            spinHKGDTX_Kha.TabIndex = 43;
             // 
             // labelControl29
             // 
-            labelControl29.Location = new Point(64, 121);
+            labelControl29.Location = new Point(64, 116);
             labelControl29.Name = "labelControl29";
             labelControl29.Size = new Size(57, 13);
             labelControl29.TabIndex = 48;
@@ -723,7 +672,7 @@
             // 
             // labelControl30
             // 
-            labelControl30.Location = new Point(200, 44);
+            labelControl30.Location = new Point(204, 44);
             labelControl30.Name = "labelControl30";
             labelControl30.Size = new Size(25, 13);
             labelControl30.TabIndex = 47;
@@ -737,15 +686,15 @@
             labelControl31.TabIndex = 46;
             labelControl31.Text = "- Trung bình";
             // 
-            // spinEdit5
+            // spinHLGDTX_TB
             // 
-            spinEdit5.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinEdit5.Location = new Point(141, 117);
-            spinEdit5.Name = "spinEdit5";
-            spinEdit5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinEdit5.Properties.MaskSettings.Set("mask", "f");
-            spinEdit5.Size = new Size(42, 20);
-            spinEdit5.TabIndex = 45;
+            spinHLGDTX_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinHLGDTX_TB.Location = new Point(141, 112);
+            spinHLGDTX_TB.Name = "spinHLGDTX_TB";
+            spinHLGDTX_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinHLGDTX_TB.Properties.MaskSettings.Set("mask", "f");
+            spinHLGDTX_TB.Size = new Size(42, 20);
+            spinHLGDTX_TB.TabIndex = 45;
             // 
             // labelControl32
             // 
@@ -755,15 +704,66 @@
             labelControl32.TabIndex = 50;
             labelControl32.Text = "Hạnh kiểm :";
             // 
-            // spinEdit6
+            // spinHKGDTX_TB
             // 
-            spinEdit6.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
-            spinEdit6.Location = new Point(141, 40);
-            spinEdit6.Name = "spinEdit6";
-            spinEdit6.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            spinEdit6.Properties.MaskSettings.Set("mask", "f");
-            spinEdit6.Size = new Size(42, 20);
-            spinEdit6.TabIndex = 42;
+            spinHKGDTX_TB.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinHKGDTX_TB.Location = new Point(141, 40);
+            spinHKGDTX_TB.Name = "spinHKGDTX_TB";
+            spinHKGDTX_TB.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinHKGDTX_TB.Properties.MaskSettings.Set("mask", "f");
+            spinHKGDTX_TB.Size = new Size(42, 20);
+            spinHKGDTX_TB.TabIndex = 42;
+            // 
+            // btnCancel
+            // 
+            btnCancel.ImageOptions.Image = (Image)resources.GetObject("btnCancel.ImageOptions.Image");
+            btnCancel.Location = new Point(262, 403);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 16;
+            btnCancel.Text = "Hủy";
+            // 
+            // btnSave
+            // 
+            btnSave.ImageOptions.Image = (Image)resources.GetObject("btnSave.ImageOptions.Image");
+            btnSave.Location = new Point(144, 403);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(75, 23);
+            btnSave.TabIndex = 16;
+            btnSave.Text = "Lưu";
+            // 
+            // spinCTVM
+            // 
+            spinCTVM.EditValue = new decimal(new int[] { 0, 0, 0, 0 });
+            spinCTVM.Location = new Point(115, 48);
+            spinCTVM.Name = "spinCTVM";
+            spinCTVM.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            spinCTVM.Properties.MaxValue = new decimal(new int[] { 1, 0, 0, 0 });
+            spinCTVM.Size = new Size(47, 20);
+            spinCTVM.TabIndex = 35;
+            // 
+            // labelControl4
+            // 
+            labelControl4.Location = new Point(15, 52);
+            labelControl4.Name = "labelControl4";
+            labelControl4.Size = new Size(82, 13);
+            labelControl4.TabIndex = 36;
+            labelControl4.Text = "Chỉ tiêu vượt mức";
+            // 
+            // txtTenTruong
+            // 
+            txtTenTruong.Location = new Point(115, 23);
+            txtTenTruong.Name = "txtTenTruong";
+            txtTenTruong.Size = new Size(300, 20);
+            txtTenTruong.TabIndex = 34;
+            // 
+            // labelControl1
+            // 
+            labelControl1.Location = new Point(45, 26);
+            labelControl1.Name = "labelControl1";
+            labelControl1.Size = new Size(52, 13);
+            labelControl1.TabIndex = 37;
+            labelControl1.Text = "Tên trường";
             // 
             // F_Setting
             // 
@@ -784,16 +784,12 @@
             panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)spinCTVM.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)txtTenTruong.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
             panelControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)tabPane1).EndInit();
             tabPane1.ResumeLayout(false);
             tabNavigationPage1.ResumeLayout(false);
             tabNavigationPage1.PerformLayout();
-            tabNavigationPage2.ResumeLayout(false);
-            tabNavigationPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)spinXLHTTHPT_Gioi.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHPT_Gioi.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_Gioi.Properties).EndInit();
@@ -809,12 +805,16 @@
             ((System.ComponentModel.ISupportInitialize)spinXLTNTHCS_TB.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHPT_TB.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)spinHKTHCS_TB.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit1.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit2.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit3.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit4.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit5.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)spinEdit6.Properties).EndInit();
+            tabNavigationPage2.ResumeLayout(false);
+            tabNavigationPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)spinHLGDTX_Gioi.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)spinHKGDTX_Tot.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)spinHLGDTX_Kha.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)spinHKGDTX_Kha.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)spinHLGDTX_TB.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)spinHKGDTX_TB.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)spinCTVM.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtTenTruong.Properties).EndInit();
             ResumeLayout(false);
         }
 
@@ -871,18 +871,18 @@
         private DevExpress.XtraEditors.SpinEdit spinHKTHCS_TB;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage2;
         private DevExpress.XtraEditors.LabelControl labelControl3;
-        private DevExpress.XtraEditors.SpinEdit spinEdit1;
+        private DevExpress.XtraEditors.SpinEdit spinHLGDTX_Gioi;
         private DevExpress.XtraEditors.LabelControl labelControl26;
-        private DevExpress.XtraEditors.SpinEdit spinEdit2;
-        private DevExpress.XtraEditors.SpinEdit spinEdit3;
+        private DevExpress.XtraEditors.SpinEdit spinHKGDTX_Tot;
+        private DevExpress.XtraEditors.SpinEdit spinHLGDTX_Kha;
         private DevExpress.XtraEditors.LabelControl labelControl27;
         private DevExpress.XtraEditors.LabelControl labelControl28;
-        private DevExpress.XtraEditors.SpinEdit spinEdit4;
+        private DevExpress.XtraEditors.SpinEdit spinHKGDTX_Kha;
         private DevExpress.XtraEditors.LabelControl labelControl29;
         private DevExpress.XtraEditors.LabelControl labelControl30;
         private DevExpress.XtraEditors.LabelControl labelControl31;
-        private DevExpress.XtraEditors.SpinEdit spinEdit5;
+        private DevExpress.XtraEditors.SpinEdit spinHLGDTX_TB;
         private DevExpress.XtraEditors.LabelControl labelControl32;
-        private DevExpress.XtraEditors.SpinEdit spinEdit6;
+        private DevExpress.XtraEditors.SpinEdit spinHKGDTX_TB;
     }
 }

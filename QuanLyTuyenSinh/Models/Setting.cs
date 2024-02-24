@@ -10,6 +10,8 @@
         public HANH_KIEM_THPT HANH_KIEM_THPT { get; set; } = new();
         public XLTN_THPT XLTN_THPT { get; set; } = new();
         public XLHT_THPT XLHT_THPT { get; set; } = new();
+        public HK_GDTX HK_GDTX { get; set; } = new();
+        public HL_GDTX HL_GDTX { get; set; } = new();
 
         public override bool Delete() => _LiteDb.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Delete(Id);
         public override bool Save() => _LiteDb.GetCollection<CaiDat>(TuDien.CategoryName.CaiDat).Upsert(this);
@@ -48,5 +50,17 @@
         public double TRUNG_BINH { get; set; } = 3;
         public double KHA { get; set; } = 5;
         public double GIOI { get; set; } = 6;
+    }
+    public class HK_GDTX
+    {
+        public double TRUNG_BINH { get; set; } = 3;
+        public double KHA { get; set; } = 4;
+        public double TOT { get; set; } = 5;
+    }
+    public class HL_GDTX
+    {
+        public double TRUNG_BINH { get; set; } = 3;
+        public double KHA { get; set; } = 4;
+        public double GIOI { get; set; } = 5;
     }
 }

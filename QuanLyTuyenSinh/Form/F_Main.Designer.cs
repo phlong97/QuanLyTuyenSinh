@@ -55,11 +55,7 @@
             btnAccount = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             pnMain = new Panel();
             panelGrid = new TableLayoutPanel();
-            gridControl = new DevExpress.XtraGrid.GridControl();
-            gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            cbbHeDaoTao = new DevExpress.XtraEditors.ComboBoxEdit();
             btnExel = new DevExpress.XtraEditors.SimpleButton();
             btnExportGBTT = new DevExpress.XtraEditors.SimpleButton();
             dropbtnHoSo = new DevExpress.XtraEditors.DropDownButton();
@@ -100,15 +96,18 @@
             btnRefreshDTS = new DevExpress.XtraEditors.SimpleButton();
             cbbDTS = new DevExpress.XtraEditors.ComboBoxEdit();
             labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            panelGrid2 = new DevExpress.XtraEditors.PanelControl();
+            gridControl = new DevExpress.XtraGrid.GridControl();
+            gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            panelHeDaoTao = new DevExpress.XtraEditors.PanelControl();
+            rdGDTX = new RadioButton();
+            rdTC = new RadioButton();
             pnImg = new Panel();
             ((System.ComponentModel.ISupportInitialize)accordionControl1).BeginInit();
             pnMain.SuspendLayout();
             panelGrid.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
             panelControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)cbbHeDaoTao.Properties).BeginInit();
             _panelButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl3).BeginInit();
             panelControl3.SuspendLayout();
@@ -130,6 +129,12 @@
             ((System.ComponentModel.ISupportInitialize)panelTS).BeginInit();
             panelTS.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cbbDTS.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelGrid2).BeginInit();
+            panelGrid2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelHeDaoTao).BeginInit();
+            panelHeDaoTao.SuspendLayout();
             SuspendLayout();
             // 
             // accordionControl1
@@ -329,9 +334,9 @@
             // 
             panelGrid.ColumnCount = 1;
             panelGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            panelGrid.Controls.Add(gridControl, 0, 2);
             panelGrid.Controls.Add(panelControl2, 0, 0);
             panelGrid.Controls.Add(panelControl3, 0, 1);
+            panelGrid.Controls.Add(panelGrid2, 0, 2);
             panelGrid.Dock = DockStyle.Fill;
             panelGrid.Location = new Point(0, 0);
             panelGrid.Name = "panelGrid";
@@ -343,26 +348,8 @@
             panelGrid.Size = new Size(1340, 752);
             panelGrid.TabIndex = 19;
             // 
-            // gridControl
-            // 
-            gridControl.Dock = DockStyle.Fill;
-            gridControl.Location = new Point(3, 73);
-            gridControl.MainView = gridView;
-            gridControl.Name = "gridControl";
-            gridControl.Size = new Size(1334, 676);
-            gridControl.TabIndex = 10;
-            gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
-            // 
-            // gridView
-            // 
-            gridView.GridControl = gridControl;
-            gridView.Name = "gridView";
-            gridView.OptionsView.ShowGroupPanel = false;
-            // 
             // panelControl2
             // 
-            panelControl2.Controls.Add(labelControl4);
-            panelControl2.Controls.Add(cbbHeDaoTao);
             panelControl2.Controls.Add(btnExel);
             panelControl2.Controls.Add(btnExportGBTT);
             panelControl2.Controls.Add(dropbtnHoSo);
@@ -375,26 +362,6 @@
             panelControl2.Name = "panelControl2";
             panelControl2.Size = new Size(1334, 24);
             panelControl2.TabIndex = 21;
-            // 
-            // labelControl4
-            // 
-            labelControl4.Appearance.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            labelControl4.Appearance.Options.UseFont = true;
-            labelControl4.Dock = DockStyle.Right;
-            labelControl4.Location = new Point(1095, 2);
-            labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(90, 17);
-            labelControl4.TabIndex = 35;
-            labelControl4.Text = "Hệ đào tạo :";
-            // 
-            // cbbHeDaoTao
-            // 
-            cbbHeDaoTao.Dock = DockStyle.Right;
-            cbbHeDaoTao.Location = new Point(1185, 2);
-            cbbHeDaoTao.Name = "cbbHeDaoTao";
-            cbbHeDaoTao.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbHeDaoTao.Size = new Size(121, 20);
-            cbbHeDaoTao.TabIndex = 42;
             // 
             // btnExel
             // 
@@ -812,6 +779,64 @@
             labelControl3.TabIndex = 36;
             labelControl3.Text = "Đợt TS";
             // 
+            // panelGrid2
+            // 
+            panelGrid2.Controls.Add(gridControl);
+            panelGrid2.Controls.Add(panelHeDaoTao);
+            panelGrid2.Dock = DockStyle.Fill;
+            panelGrid2.Location = new Point(3, 73);
+            panelGrid2.Name = "panelGrid2";
+            panelGrid2.Size = new Size(1334, 676);
+            panelGrid2.TabIndex = 23;
+            // 
+            // gridControl
+            // 
+            gridControl.Dock = DockStyle.Fill;
+            gridControl.Location = new Point(2, 22);
+            gridControl.MainView = gridView;
+            gridControl.Name = "gridControl";
+            gridControl.Size = new Size(1330, 652);
+            gridControl.TabIndex = 27;
+            gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
+            // 
+            // gridView
+            // 
+            gridView.GridControl = gridControl;
+            gridView.Name = "gridView";
+            gridView.OptionsView.ShowGroupPanel = false;
+            // 
+            // panelHeDaoTao
+            // 
+            panelHeDaoTao.Controls.Add(rdGDTX);
+            panelHeDaoTao.Controls.Add(rdTC);
+            panelHeDaoTao.Dock = DockStyle.Top;
+            panelHeDaoTao.Location = new Point(2, 2);
+            panelHeDaoTao.Name = "panelHeDaoTao";
+            panelHeDaoTao.Size = new Size(1330, 20);
+            panelHeDaoTao.TabIndex = 26;
+            // 
+            // rdGDTX
+            // 
+            rdGDTX.AutoSize = true;
+            rdGDTX.Location = new Point(139, 1);
+            rdGDTX.Name = "rdGDTX";
+            rdGDTX.Size = new Size(95, 17);
+            rdGDTX.TabIndex = 1;
+            rdGDTX.Text = "Thường xuyên";
+            rdGDTX.UseVisualStyleBackColor = true;
+            // 
+            // rdTC
+            // 
+            rdTC.AutoSize = true;
+            rdTC.Checked = true;
+            rdTC.Location = new Point(40, 1);
+            rdTC.Name = "rdTC";
+            rdTC.Size = new Size(73, 17);
+            rdTC.TabIndex = 0;
+            rdTC.TabStop = true;
+            rdTC.Text = "Trung cấp";
+            rdTC.UseVisualStyleBackColor = true;
+            // 
             // pnImg
             // 
             pnImg.Location = new Point(5, 1);
@@ -841,12 +866,8 @@
             ((System.ComponentModel.ISupportInitialize)accordionControl1).EndInit();
             pnMain.ResumeLayout(false);
             panelGrid.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)gridControl).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
             panelControl2.ResumeLayout(false);
-            panelControl2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)cbbHeDaoTao.Properties).EndInit();
             _panelButton.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)panelControl3).EndInit();
             panelControl3.ResumeLayout(false);
@@ -871,6 +892,13 @@
             panelTS.ResumeLayout(false);
             panelTS.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)cbbDTS.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelGrid2).EndInit();
+            panelGrid2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gridControl).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelHeDaoTao).EndInit();
+            panelHeDaoTao.ResumeLayout(false);
+            panelHeDaoTao.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -897,8 +925,6 @@
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement4;
         private Panel pnImg;
         private TableLayoutPanel panelGrid;
-        private DevExpress.XtraGrid.GridControl gridControl;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView;
         private DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement5;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnSetting;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btnAccount;
@@ -945,7 +971,11 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.SimpleButton btnExportGBTT;
-        private DevExpress.XtraEditors.LabelControl labelControl4;
-        private DevExpress.XtraEditors.ComboBoxEdit cbbHeDaoTao;
+        private DevExpress.XtraEditors.PanelControl panelGrid2;
+        private DevExpress.XtraEditors.PanelControl panelHeDaoTao;
+        private RadioButton rdGDTX;
+        private RadioButton rdTC;
+        private DevExpress.XtraGrid.GridControl gridControl;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace QuanLyTuyenSinh.Form
 {
-    partial class F_HoSo
+    partial class F_HoSo_TX
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_HoSo));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_HoSo_TX));
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -43,7 +43,6 @@
             DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
             tablePanelTT = new DevExpress.Utils.Layout.TablePanel();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            btnCreateGDTX = new DevExpress.XtraEditors.SimpleButton();
             labelControl36 = new DevExpress.XtraEditors.LabelControl();
             txtNamTN = new DevExpress.XtraEditors.TextEdit();
             labelControl35 = new DevExpress.XtraEditors.LabelControl();
@@ -121,15 +120,29 @@
             txtNSMe = new DevExpress.XtraEditors.TextEdit();
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
             xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
-            tabTrungCap = new DevExpress.XtraTab.XtraTabPage();
-            labelControl23 = new DevExpress.XtraEditors.LabelControl();
-            labelControl22 = new DevExpress.XtraEditors.LabelControl();
+            xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
+            labelControl40 = new DevExpress.XtraEditors.LabelControl();
+            labelControl41 = new DevExpress.XtraEditors.LabelControl();
+            cbbHK6 = new DevExpress.XtraEditors.ComboBoxEdit();
+            cbbHL6 = new DevExpress.XtraEditors.ComboBoxEdit();
+            xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             labelControl21 = new DevExpress.XtraEditors.LabelControl();
+            labelControl22 = new DevExpress.XtraEditors.LabelControl();
+            cbbHK7 = new DevExpress.XtraEditors.ComboBoxEdit();
+            cbbHL7 = new DevExpress.XtraEditors.ComboBoxEdit();
+            xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
+            labelControl23 = new DevExpress.XtraEditors.LabelControl();
+            labelControl37 = new DevExpress.XtraEditors.LabelControl();
+            cbbHK8 = new DevExpress.XtraEditors.ComboBoxEdit();
+            cbbHL8 = new DevExpress.XtraEditors.ComboBoxEdit();
+            xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
+            labelControl38 = new DevExpress.XtraEditors.LabelControl();
+            labelControl39 = new DevExpress.XtraEditors.LabelControl();
+            cbbHK9 = new DevExpress.XtraEditors.ComboBoxEdit();
+            cbbHL9 = new DevExpress.XtraEditors.ComboBoxEdit();
+            tabTX = new DevExpress.XtraTab.XtraTabPage();
             labelControl24 = new DevExpress.XtraEditors.LabelControl();
             labelControl25 = new DevExpress.XtraEditors.LabelControl();
-            cbbHanhKiem = new DevExpress.XtraEditors.ComboBoxEdit();
-            cbbXLHT = new DevExpress.XtraEditors.ComboBoxEdit();
-            cbbXLTN = new DevExpress.XtraEditors.ComboBoxEdit();
             lookDTUT = new DevExpress.XtraEditors.SearchLookUpEdit();
             gridView10 = new DevExpress.XtraGrid.Views.Grid.GridView();
             lookKVUT = new DevExpress.XtraEditors.SearchLookUpEdit();
@@ -143,6 +156,7 @@
             btnEdit = new DevExpress.XtraEditors.SimpleButton();
             btnDelete = new DevExpress.XtraEditors.SimpleButton();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            chkDKXTGDTX = new DevExpress.XtraEditors.CheckEdit();
             chkSYLL = new DevExpress.XtraEditors.CheckEdit();
             Anh = new DevExpress.XtraEditors.PictureEdit();
             labelControl31 = new DevExpress.XtraEditors.LabelControl();
@@ -157,7 +171,6 @@
             chkCNTN = new DevExpress.XtraEditors.CheckEdit();
             chkPhieuDKDT = new DevExpress.XtraEditors.CheckEdit();
             directxFormContainerControl1 = new DevExpress.XtraEditors.DirectXFormContainerControl();
-            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)tablePanelTT).BeginInit();
             tablePanelTT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
@@ -205,10 +218,19 @@
             panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)xtraTabControl1).BeginInit();
             xtraTabControl1.SuspendLayout();
-            tabTrungCap.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)cbbHanhKiem.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cbbXLHT.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cbbXLTN.Properties).BeginInit();
+            xtraTabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK6.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL6.Properties).BeginInit();
+            xtraTabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK7.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL7.Properties).BeginInit();
+            xtraTabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK8.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL8.Properties).BeginInit();
+            xtraTabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK9.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL9.Properties).BeginInit();
+            tabTX.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)lookDTUT.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lookKVUT.Properties).BeginInit();
@@ -221,6 +243,7 @@
             panelControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chkDKXTGDTX.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkSYLL.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Anh.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkCCCD.Properties).BeginInit();
@@ -251,7 +274,6 @@
             // groupControl2
             // 
             tablePanelTT.SetColumn(groupControl2, 0);
-            groupControl2.Controls.Add(btnCreateGDTX);
             groupControl2.Controls.Add(labelControl36);
             groupControl2.Controls.Add(txtNamTN);
             groupControl2.Controls.Add(labelControl35);
@@ -317,16 +339,6 @@
             groupControl2.Size = new Size(724, 589);
             groupControl2.TabIndex = 4;
             groupControl2.Text = "Thông tin học sinh";
-            // 
-            // btnCreateGDTX
-            // 
-            btnCreateGDTX.ImageOptions.Image = (Image)resources.GetObject("btnCreateGDTX.ImageOptions.Image");
-            btnCreateGDTX.Location = new Point(595, 0);
-            btnCreateGDTX.Margin = new Padding(0);
-            btnCreateGDTX.Name = "btnCreateGDTX";
-            btnCreateGDTX.Size = new Size(127, 19);
-            btnCreateGDTX.TabIndex = 145;
-            btnCreateGDTX.Text = "Tạo hồ sơ GDTX";
             // 
             // labelControl36
             // 
@@ -430,7 +442,7 @@
             // 
             // HeaderText
             // 
-            HeaderText.Caption = "Hồ sơ dự tuyển - Hệ trung cấp";
+            HeaderText.Caption = "Hồ sơ dự tuyển - Hệ GDTX";
             HeaderText.Id = 2;
             HeaderText.Name = "HeaderText";
             // 
@@ -1024,60 +1036,203 @@
             // xtraTabControl1
             // 
             xtraTabControl1.Dock = DockStyle.Fill;
-            xtraTabControl1.Location = new Point(2, 280);
+            xtraTabControl1.Location = new Point(2, 327);
             xtraTabControl1.Name = "xtraTabControl1";
-            xtraTabControl1.SelectedTabPage = tabTrungCap;
-            xtraTabControl1.Size = new Size(506, 155);
+            xtraTabControl1.SelectedTabPage = xtraTabPage4;
+            xtraTabControl1.Size = new Size(506, 108);
             xtraTabControl1.TabIndex = 22;
-            xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { tabTrungCap });
+            xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage4, xtraTabPage1, xtraTabPage2, xtraTabPage3, tabTX });
             // 
-            // tabTrungCap
+            // xtraTabPage4
             // 
-            tabTrungCap.Controls.Add(labelControl23);
-            tabTrungCap.Controls.Add(labelControl22);
-            tabTrungCap.Controls.Add(labelControl21);
-            tabTrungCap.Controls.Add(labelControl24);
-            tabTrungCap.Controls.Add(labelControl25);
-            tabTrungCap.Controls.Add(cbbHanhKiem);
-            tabTrungCap.Controls.Add(cbbXLHT);
-            tabTrungCap.Controls.Add(cbbXLTN);
-            tabTrungCap.Controls.Add(lookDTUT);
-            tabTrungCap.Controls.Add(lookKVUT);
-            tabTrungCap.Name = "tabTrungCap";
-            tabTrungCap.Size = new Size(504, 130);
-            tabTrungCap.Text = "Tiêu chí xét tuyển";
+            xtraTabPage4.Controls.Add(labelControl40);
+            xtraTabPage4.Controls.Add(labelControl41);
+            xtraTabPage4.Controls.Add(cbbHK6);
+            xtraTabPage4.Controls.Add(cbbHL6);
+            xtraTabPage4.Name = "xtraTabPage4";
+            xtraTabPage4.Size = new Size(504, 83);
+            xtraTabPage4.Text = "Lớp 6";
             // 
-            // labelControl23
+            // labelControl40
             // 
-            labelControl23.AllowHtmlString = true;
-            labelControl23.Location = new Point(19, 85);
-            labelControl23.Name = "labelControl23";
-            labelControl23.Size = new Size(51, 13);
-            labelControl23.TabIndex = 50;
-            labelControl23.Text = "Tốt nghiệp";
+            labelControl40.AllowHtmlString = true;
+            labelControl40.Location = new Point(279, 32);
+            labelControl40.Name = "labelControl40";
+            labelControl40.Size = new Size(37, 13);
+            labelControl40.TabIndex = 67;
+            labelControl40.Text = "Học lực";
             // 
-            // labelControl22
+            // labelControl41
             // 
-            labelControl22.AllowHtmlString = true;
-            labelControl22.Location = new Point(20, 57);
-            labelControl22.Name = "labelControl22";
-            labelControl22.Size = new Size(52, 13);
-            labelControl22.TabIndex = 51;
-            labelControl22.Text = "XL học tập";
+            labelControl41.AllowHtmlString = true;
+            labelControl41.Location = new Point(35, 32);
+            labelControl41.Name = "labelControl41";
+            labelControl41.Size = new Size(51, 13);
+            labelControl41.TabIndex = 68;
+            labelControl41.Text = "Hạnh kiểm";
+            // 
+            // cbbHK6
+            // 
+            cbbHK6.Location = new Point(101, 31);
+            cbbHK6.Name = "cbbHK6";
+            cbbHK6.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHK6.Size = new Size(124, 20);
+            cbbHK6.TabIndex = 65;
+            // 
+            // cbbHL6
+            // 
+            cbbHL6.Location = new Point(345, 31);
+            cbbHL6.Name = "cbbHL6";
+            cbbHL6.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHL6.Size = new Size(124, 20);
+            cbbHL6.TabIndex = 66;
+            // 
+            // xtraTabPage1
+            // 
+            xtraTabPage1.Controls.Add(labelControl21);
+            xtraTabPage1.Controls.Add(labelControl22);
+            xtraTabPage1.Controls.Add(cbbHK7);
+            xtraTabPage1.Controls.Add(cbbHL7);
+            xtraTabPage1.Name = "xtraTabPage1";
+            xtraTabPage1.Size = new Size(504, 107);
+            xtraTabPage1.Text = "Lớp 7";
             // 
             // labelControl21
             // 
             labelControl21.AllowHtmlString = true;
-            labelControl21.Location = new Point(20, 29);
+            labelControl21.Location = new Point(279, 33);
             labelControl21.Name = "labelControl21";
-            labelControl21.Size = new Size(51, 13);
-            labelControl21.TabIndex = 52;
-            labelControl21.Text = "Hạnh kiểm";
+            labelControl21.Size = new Size(37, 13);
+            labelControl21.TabIndex = 63;
+            labelControl21.Text = "Học lực";
+            // 
+            // labelControl22
+            // 
+            labelControl22.AllowHtmlString = true;
+            labelControl22.Location = new Point(35, 33);
+            labelControl22.Name = "labelControl22";
+            labelControl22.Size = new Size(51, 13);
+            labelControl22.TabIndex = 64;
+            labelControl22.Text = "Hạnh kiểm";
+            // 
+            // cbbHK7
+            // 
+            cbbHK7.Location = new Point(101, 32);
+            cbbHK7.Name = "cbbHK7";
+            cbbHK7.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHK7.Size = new Size(124, 20);
+            cbbHK7.TabIndex = 61;
+            // 
+            // cbbHL7
+            // 
+            cbbHL7.Location = new Point(345, 32);
+            cbbHL7.Name = "cbbHL7";
+            cbbHL7.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHL7.Size = new Size(124, 20);
+            cbbHL7.TabIndex = 62;
+            // 
+            // xtraTabPage2
+            // 
+            xtraTabPage2.Controls.Add(labelControl23);
+            xtraTabPage2.Controls.Add(labelControl37);
+            xtraTabPage2.Controls.Add(cbbHK8);
+            xtraTabPage2.Controls.Add(cbbHL8);
+            xtraTabPage2.Name = "xtraTabPage2";
+            xtraTabPage2.Size = new Size(504, 107);
+            xtraTabPage2.Text = "Lớp 8";
+            // 
+            // labelControl23
+            // 
+            labelControl23.AllowHtmlString = true;
+            labelControl23.Location = new Point(279, 33);
+            labelControl23.Name = "labelControl23";
+            labelControl23.Size = new Size(37, 13);
+            labelControl23.TabIndex = 59;
+            labelControl23.Text = "Học lực";
+            // 
+            // labelControl37
+            // 
+            labelControl37.AllowHtmlString = true;
+            labelControl37.Location = new Point(35, 33);
+            labelControl37.Name = "labelControl37";
+            labelControl37.Size = new Size(51, 13);
+            labelControl37.TabIndex = 60;
+            labelControl37.Text = "Hạnh kiểm";
+            // 
+            // cbbHK8
+            // 
+            cbbHK8.Location = new Point(101, 32);
+            cbbHK8.Name = "cbbHK8";
+            cbbHK8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHK8.Size = new Size(124, 20);
+            cbbHK8.TabIndex = 57;
+            // 
+            // cbbHL8
+            // 
+            cbbHL8.Location = new Point(345, 32);
+            cbbHL8.Name = "cbbHL8";
+            cbbHL8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHL8.Size = new Size(124, 20);
+            cbbHL8.TabIndex = 58;
+            // 
+            // xtraTabPage3
+            // 
+            xtraTabPage3.Controls.Add(labelControl38);
+            xtraTabPage3.Controls.Add(labelControl39);
+            xtraTabPage3.Controls.Add(cbbHK9);
+            xtraTabPage3.Controls.Add(cbbHL9);
+            xtraTabPage3.Name = "xtraTabPage3";
+            xtraTabPage3.Size = new Size(504, 107);
+            xtraTabPage3.Text = "Lớp 9";
+            // 
+            // labelControl38
+            // 
+            labelControl38.AllowHtmlString = true;
+            labelControl38.Location = new Point(279, 33);
+            labelControl38.Name = "labelControl38";
+            labelControl38.Size = new Size(37, 13);
+            labelControl38.TabIndex = 63;
+            labelControl38.Text = "Học lực";
+            // 
+            // labelControl39
+            // 
+            labelControl39.AllowHtmlString = true;
+            labelControl39.Location = new Point(35, 33);
+            labelControl39.Name = "labelControl39";
+            labelControl39.Size = new Size(51, 13);
+            labelControl39.TabIndex = 64;
+            labelControl39.Text = "Hạnh kiểm";
+            // 
+            // cbbHK9
+            // 
+            cbbHK9.Location = new Point(101, 32);
+            cbbHK9.Name = "cbbHK9";
+            cbbHK9.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHK9.Size = new Size(124, 20);
+            cbbHK9.TabIndex = 61;
+            // 
+            // cbbHL9
+            // 
+            cbbHL9.Location = new Point(345, 32);
+            cbbHL9.Name = "cbbHL9";
+            cbbHL9.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            cbbHL9.Size = new Size(124, 20);
+            cbbHL9.TabIndex = 62;
+            // 
+            // tabTX
+            // 
+            tabTX.Controls.Add(labelControl24);
+            tabTX.Controls.Add(labelControl25);
+            tabTX.Controls.Add(lookDTUT);
+            tabTX.Controls.Add(lookKVUT);
+            tabTX.Name = "tabTX";
+            tabTX.Size = new Size(504, 107);
+            tabTX.Text = "Ưu tiên";
             // 
             // labelControl24
             // 
             labelControl24.AllowHtmlString = true;
-            labelControl24.Location = new Point(223, 29);
+            labelControl24.Location = new Point(37, 16);
             labelControl24.Name = "labelControl24";
             labelControl24.Size = new Size(64, 13);
             labelControl24.TabIndex = 48;
@@ -1086,39 +1241,15 @@
             // labelControl25
             // 
             labelControl25.AllowHtmlString = true;
-            labelControl25.Location = new Point(229, 56);
+            labelControl25.Location = new Point(37, 51);
             labelControl25.Name = "labelControl25";
             labelControl25.Size = new Size(58, 13);
             labelControl25.TabIndex = 49;
             labelControl25.Text = "Khu vực ƯT";
             // 
-            // cbbHanhKiem
-            // 
-            cbbHanhKiem.Location = new Point(86, 28);
-            cbbHanhKiem.Name = "cbbHanhKiem";
-            cbbHanhKiem.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbHanhKiem.Size = new Size(124, 20);
-            cbbHanhKiem.TabIndex = 43;
-            // 
-            // cbbXLHT
-            // 
-            cbbXLHT.Location = new Point(86, 56);
-            cbbXLHT.Name = "cbbXLHT";
-            cbbXLHT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbXLHT.Size = new Size(124, 20);
-            cbbXLHT.TabIndex = 44;
-            // 
-            // cbbXLTN
-            // 
-            cbbXLTN.Location = new Point(86, 84);
-            cbbXLTN.Name = "cbbXLTN";
-            cbbXLTN.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cbbXLTN.Size = new Size(124, 20);
-            cbbXLTN.TabIndex = 45;
-            // 
             // lookDTUT
             // 
-            lookDTUT.Location = new Point(299, 26);
+            lookDTUT.Location = new Point(120, 13);
             lookDTUT.Name = "lookDTUT";
             lookDTUT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookDTUT.Properties.NullText = "(Trống)";
@@ -1135,7 +1266,7 @@
             // 
             // lookKVUT
             // 
-            lookKVUT.Location = new Point(299, 54);
+            lookKVUT.Location = new Point(120, 49);
             lookKVUT.Name = "lookKVUT";
             lookKVUT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookKVUT.Properties.NullText = "(Trống)";
@@ -1234,6 +1365,7 @@
             // 
             // groupControl1
             // 
+            groupControl1.Controls.Add(chkDKXTGDTX);
             groupControl1.Controls.Add(chkSYLL);
             groupControl1.Controls.Add(Anh);
             groupControl1.Controls.Add(labelControl31);
@@ -1250,13 +1382,21 @@
             groupControl1.Dock = DockStyle.Top;
             groupControl1.Location = new Point(2, 2);
             groupControl1.Name = "groupControl1";
-            groupControl1.Size = new Size(506, 278);
+            groupControl1.Size = new Size(506, 325);
             groupControl1.TabIndex = 20;
             groupControl1.Text = "Kiểm tra hồ sơ";
             // 
+            // chkDKXTGDTX
+            // 
+            chkDKXTGDTX.Location = new Point(18, 191);
+            chkDKXTGDTX.Name = "chkDKXTGDTX";
+            chkDKXTGDTX.Properties.Caption = "Phiếu đăng ký xét tuyển GDTX";
+            chkDKXTGDTX.Size = new Size(176, 20);
+            chkDKXTGDTX.TabIndex = 99;
+            // 
             // chkSYLL
             // 
-            chkSYLL.Location = new Point(18, 169);
+            chkSYLL.Location = new Point(18, 162);
             chkSYLL.Name = "chkSYLL";
             chkSYLL.Properties.Caption = "Sơ yếu lý lịch";
             chkSYLL.Size = new Size(166, 20);
@@ -1278,13 +1418,13 @@
             Anh.Properties.ContextButtons.Add(contextButton1);
             Anh.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             Anh.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            Anh.Size = new Size(166, 187);
+            Anh.Size = new Size(166, 213);
             Anh.TabIndex = 97;
             // 
             // labelControl31
             // 
             labelControl31.AllowHtmlString = true;
-            labelControl31.Location = new Point(13, 202);
+            labelControl31.Location = new Point(18, 231);
             labelControl31.Name = "labelControl31";
             labelControl31.Size = new Size(37, 13);
             labelControl31.TabIndex = 96;
@@ -1302,7 +1442,7 @@
             // chkBangTN
             // 
             chkBangTN.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            chkBangTN.Location = new Point(198, 139);
+            chkBangTN.Location = new Point(198, 136);
             chkBangTN.Name = "chkBangTN";
             chkBangTN.Properties.Caption = "Bằng tốt nghiệp";
             chkBangTN.Size = new Size(125, 20);
@@ -1320,7 +1460,7 @@
             // chkAnh
             // 
             chkAnh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            chkAnh.Location = new Point(198, 169);
+            chkAnh.Location = new Point(198, 166);
             chkAnh.Name = "chkAnh";
             chkAnh.Properties.Caption = "Ảnh thẻ";
             chkAnh.Size = new Size(83, 20);
@@ -1329,7 +1469,7 @@
             // chkHocBa
             // 
             chkHocBa.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            chkHocBa.Location = new Point(198, 108);
+            chkHocBa.Location = new Point(198, 106);
             chkHocBa.Name = "chkHocBa";
             chkHocBa.Properties.Caption = "Học bạ";
             chkHocBa.Size = new Size(83, 20);
@@ -1338,14 +1478,14 @@
             // txtGhiChu
             // 
             txtGhiChu.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtGhiChu.Location = new Point(13, 224);
+            txtGhiChu.Location = new Point(13, 255);
             txtGhiChu.Name = "txtGhiChu";
-            txtGhiChu.Size = new Size(488, 49);
+            txtGhiChu.Size = new Size(488, 65);
             txtGhiChu.TabIndex = 9;
             // 
             // chkCNUT
             // 
-            chkCNUT.Location = new Point(18, 139);
+            chkCNUT.Location = new Point(18, 133);
             chkCNUT.Name = "chkCNUT";
             chkCNUT.Properties.Caption = "Giấy chứng nhận ưu tiên";
             chkCNUT.Size = new Size(166, 20);
@@ -1353,7 +1493,7 @@
             // 
             // chkGKSK
             // 
-            chkGKSK.Location = new Point(18, 108);
+            chkGKSK.Location = new Point(18, 104);
             chkGKSK.Name = "chkGKSK";
             chkGKSK.Properties.Caption = "Giấy khám sức khỏe";
             chkGKSK.Size = new Size(166, 20);
@@ -1361,7 +1501,7 @@
             // 
             // chkCNTN
             // 
-            chkCNTN.Location = new Point(18, 77);
+            chkCNTN.Location = new Point(18, 75);
             chkCNTN.Name = "chkCNTN";
             chkCNTN.Properties.Caption = "Chứng nhận tốt nghiệp";
             chkCNTN.Size = new Size(166, 20);
@@ -1387,17 +1527,7 @@
             directxFormContainerControl1.Size = new Size(1246, 619);
             directxFormContainerControl1.TabIndex = 0;
             // 
-            // barButtonItem1
-            // 
-            barButtonItem1.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-            barButtonItem1.Caption = "Lưu và thêm mới";
-            barButtonItem1.Id = 0;
-            barButtonItem1.ImageOptions.Image = (Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
-            barButtonItem1.ImageOptions.LargeImage = (Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
-            barButtonItem1.Name = "barButtonItem1";
-            barButtonItem1.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
-            // 
-            // F_HoSo
+            // F_HoSo_TX
             // 
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -1407,7 +1537,7 @@
             Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
-            Name = "F_HoSo";
+            Name = "F_HoSo_TX";
             StartPosition = FormStartPosition.WindowsDefaultBounds;
             TopMost = true;
             Load += F_HoSo_Load;
@@ -1459,11 +1589,24 @@
             panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)xtraTabControl1).EndInit();
             xtraTabControl1.ResumeLayout(false);
-            tabTrungCap.ResumeLayout(false);
-            tabTrungCap.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)cbbHanhKiem.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cbbXLHT.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cbbXLTN.Properties).EndInit();
+            xtraTabPage4.ResumeLayout(false);
+            xtraTabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK6.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL6.Properties).EndInit();
+            xtraTabPage1.ResumeLayout(false);
+            xtraTabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK7.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL7.Properties).EndInit();
+            xtraTabPage2.ResumeLayout(false);
+            xtraTabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK8.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL8.Properties).EndInit();
+            xtraTabPage3.ResumeLayout(false);
+            xtraTabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbbHK9.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbbHL9.Properties).EndInit();
+            tabTX.ResumeLayout(false);
+            tabTX.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)lookDTUT.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView10).EndInit();
             ((System.ComponentModel.ISupportInitialize)lookKVUT.Properties).EndInit();
@@ -1478,6 +1621,7 @@
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
             groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chkDKXTGDTX.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkSYLL.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)Anh.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkCCCD.Properties).EndInit();
@@ -1592,15 +1736,9 @@
         private DevExpress.XtraEditors.CheckEdit chkPhieuDKDT;
         private DevExpress.XtraEditors.PictureEdit Anh;
         private DevExpress.XtraTab.XtraTabControl xtraTabControl1;
-        private DevExpress.XtraTab.XtraTabPage tabTrungCap;
-        private DevExpress.XtraEditors.LabelControl labelControl23;
-        private DevExpress.XtraEditors.LabelControl labelControl22;
-        private DevExpress.XtraEditors.LabelControl labelControl21;
+        private DevExpress.XtraTab.XtraTabPage tabTX;
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraEditors.LabelControl labelControl25;
-        private DevExpress.XtraEditors.ComboBoxEdit cbbHanhKiem;
-        private DevExpress.XtraEditors.ComboBoxEdit cbbXLHT;
-        private DevExpress.XtraEditors.ComboBoxEdit cbbXLTN;
         private DevExpress.XtraEditors.SearchLookUpEdit lookDTUT;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView10;
         private DevExpress.XtraEditors.SearchLookUpEdit lookKVUT;
@@ -1614,7 +1752,26 @@
         private DevExpress.XtraEditors.SimpleButton btnEdit;
         private DevExpress.XtraEditors.SimpleButton btnDelete;
         private DevExpress.XtraEditors.CheckEdit chkSYLL;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
-        private DevExpress.XtraEditors.SimpleButton btnCreateGDTX;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
+        private DevExpress.XtraEditors.LabelControl labelControl23;
+        private DevExpress.XtraEditors.LabelControl labelControl37;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHK8;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHL8;
+        private DevExpress.XtraEditors.LabelControl labelControl21;
+        private DevExpress.XtraEditors.LabelControl labelControl22;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHK7;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHL7;
+        private DevExpress.XtraEditors.LabelControl labelControl38;
+        private DevExpress.XtraEditors.LabelControl labelControl39;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHK9;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHL9;
+        private DevExpress.XtraEditors.CheckEdit chkDKXTGDTX;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
+        private DevExpress.XtraEditors.LabelControl labelControl40;
+        private DevExpress.XtraEditors.LabelControl labelControl41;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHK6;
+        private DevExpress.XtraEditors.ComboBoxEdit cbbHL6;
     }
 }

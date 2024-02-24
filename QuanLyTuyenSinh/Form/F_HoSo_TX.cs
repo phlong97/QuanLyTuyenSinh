@@ -10,9 +10,9 @@ using Image = System.Drawing.Image;
 
 namespace QuanLyTuyenSinh.Form
 {
-    public partial class F_HoSo : DirectXForm
+    public partial class F_HoSo_TX : DirectXForm
     {
-        private HoSoDuTuyenTC _hoSo;
+        private HoSoDuTuyenGDTX _hoSo;
         private BindingSource _sourceHS;
         private BindingSource _sourceNV;
 
@@ -23,7 +23,7 @@ namespace QuanLyTuyenSinh.Form
         private List<_Helper.Address> lstQuanHuyen;
         private List<_Helper.Address> lstPhuongXa;
 
-        public F_HoSo(HoSoDuTuyenTC hoSo, bool ImportMode = false)
+        public F_HoSo_TX(HoSoDuTuyenGDTX hoSo, bool ImportMode = false)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
@@ -80,7 +80,6 @@ namespace QuanLyTuyenSinh.Form
             Thread.Sleep(100);
             btnSaveAndClose.ItemClick += btnSaveCloseHS_Click;
             btnSaveAndNew.ItemClick += btnSaveNewHS_Click;
-            btnCreateGDTX.Click += BtnCreateGDTX_Click;
             txtHo.TextChanged += TxtHo_TextChanged;
             txtTen.TextChanged += TxtTen_TextChanged;
             txtTenCha.TextChanged += TxtTenCha_TextChanged;
@@ -99,65 +98,6 @@ namespace QuanLyTuyenSinh.Form
             gridView1.CellValueChanging += GridView1_CellValueChanging;
             FormClosing += HS_FormClosing;
             ActiveControl = txtHo;
-        }
-
-        private void BtnCreateGDTX_Click(object? sender, EventArgs e)
-        {
-            string errs = string.Empty;
-            if (string.IsNullOrEmpty(_hoSo.Ho))
-                errs += "Chưa nhập họ học sinh \n";
-            if (string.IsNullOrEmpty(_hoSo.Ten))
-                errs += "Chưa nhập tên học sinh \n";
-            if (!string.IsNullOrEmpty(_hoSo.CCCD) || !string.IsNullOrWhiteSpace(_hoSo.CCCD))
-            {
-                if (_hoSo.CCCD.Length > 0 && _hoSo.CCCD.Length == 11)
-                    errs += "Nhập sai CCCD/CMND! \n";
-                if (DataHelper.DSHoSoXTTC.Count(x => x.CCCD == _hoSo.CCCD) >= 2)
-                    errs += "Đã tồn tại CCCD/CMND!\n";
-            }
-            if (_hoSo.NgaySinh == DateTime.MinValue)
-                errs += "Chưa nhập ngày sinh\n";
-            if (string.IsNullOrEmpty(_hoSo.NoiSinh))
-                errs += "Chưa nhập nơi sinh\n";
-            if (string.IsNullOrEmpty(_hoSo.DiaChi))
-                errs += "Chưa nhập địa chỉ\n";
-            if (string.IsNullOrEmpty(_hoSo.MaTinh))
-                errs += "Chưa chọn tỉnh\n";
-            if (string.IsNullOrEmpty(_hoSo.MaHuyen))
-                errs += "Chưa chọn quận/huyện\n";
-            if (string.IsNullOrEmpty(_hoSo.MaXa))
-                errs += "Chưa chọn phường/xã\n";
-            if (string.IsNullOrEmpty(_hoSo.IdDanToc))
-                errs += "Chưa chọn dân tộc\n";
-            if (string.IsNullOrEmpty(_hoSo.IdTonGiao))
-                errs += "Chưa chọn tôn giáo\n";
-            if (string.IsNullOrEmpty(_hoSo.IdQuocTich))
-                errs += "Chưa chọn quốc tịch\n";
-            if (string.IsNullOrEmpty(_hoSo.IdTrinhDoVH))
-                errs += "Chưa chọn trình độ văn hóa\n";
-            if (string.IsNullOrEmpty(_hoSo.IdTruong))
-                errs += "Chưa chọn trường\n";
-            else
-            {
-                var truong = DataHelper.DsTruong.FirstOrDefault(x => x.Id == _hoSo.IdTruong);
-                if ((truong != null) && truong.LoaiTruong.Equals("THPT"))
-                    errs += "Phải là trường THCS";
-                else if (truong == null) errs += "Trường không tồn tại";
-            }
-            if (!_hoSo.TDHV.Equals("THCS"))
-                errs += "Trình độ học vấn phải là THCS\n";
-
-            if (!string.IsNullOrEmpty(errs))
-            {
-                XtraMessageBox.Show(this, errs, "Chưa đủ thông tin!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            HoSoDuTuyenGDTX hsgdtx = _hoSo.ToHoSoGDTX();
-            if (hsgdtx != null)
-            {
-                F_HoSo_TX f = new(hsgdtx.CloneJson());
-                f.Show();
-            }
         }
 
         private void GridView1_CellValueChanging(object? sender, CellValueChangedEventArgs e)
@@ -268,12 +208,13 @@ namespace QuanLyTuyenSinh.Form
                 if (nv1 == null)
                     return;
                 string manghe = nv1.Ma2;
-                var max = DataHelper.DSHoSoXTTC.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
-                if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}{manghe}001";
+                var max = DataHelper.DSHoSoXetTuyenTX.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+                if (max == null) txtMaHS.Text = $"TX{_hoSo.NamTS}{manghe}001";
                 else
                 {
-                    int maxstt = int.Parse(max.MaHoSo.Substring(6, 3)) + 1;
-                    txtMaHS.Text = $"{_hoSo.NamTS}{manghe}{maxstt.ToString("D3")}";
+                    int maxstt = int.Parse(max.MaHoSo.Substring(6, 3));
+                    if (!max.Id.Equals(_hoSo.Id)) maxstt += 1;
+                    txtMaHS.Text = $"TX{_hoSo.NamTS}{manghe}{maxstt.ToString("D3")}";
                 }
             }
         }
@@ -484,15 +425,31 @@ namespace QuanLyTuyenSinh.Form
             chkGKSK.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.GKSK", true, DataSourceUpdateMode.OnPropertyChanged);
             chkSYLL.DataBindings.Clear();
             chkSYLL.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.SYLL", true, DataSourceUpdateMode.OnPropertyChanged);
+            chkDKXTGDTX.DataBindings.Clear();
+            chkDKXTGDTX.DataBindings.Add("Checked", _sourceHS, "KiemTraHS.PhieuDKXTGDTX", true, DataSourceUpdateMode.OnPropertyChanged);
             txtGhiChu.DataBindings.Clear();
             txtGhiChu.DataBindings.Add("Text", _sourceHS, "KiemTraHS.GhiChu", true, DataSourceUpdateMode.OnPropertyChanged);
             //Điểm xét tuyển
-            cbbHanhKiem.DataBindings.Clear();
-            cbbHanhKiem.DataBindings.Add("EditValue", _sourceHS, "HanhKiem", true, DataSourceUpdateMode.OnPropertyChanged);
-            cbbXLHT.DataBindings.Clear();
-            cbbXLHT.DataBindings.Add("EditValue", _sourceHS, "XLHocTap", true, DataSourceUpdateMode.OnPropertyChanged);
-            cbbXLTN.DataBindings.Clear();
-            cbbXLTN.DataBindings.Add("EditValue", _sourceHS, "XLTN", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHK6.DataBindings.Clear();
+            cbbHK6.DataBindings.Add("EditValue", _sourceHS, "HanhKiem6", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHL6.DataBindings.Clear();
+            cbbHL6.DataBindings.Add("EditValue", _sourceHS, "HocLuc6", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            cbbHK7.DataBindings.Clear();
+            cbbHK7.DataBindings.Add("EditValue", _sourceHS, "HanhKiem7", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHL7.DataBindings.Clear();
+            cbbHL7.DataBindings.Add("EditValue", _sourceHS, "HocLuc7", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            cbbHK8.DataBindings.Clear();
+            cbbHK8.DataBindings.Add("EditValue", _sourceHS, "HanhKiem8", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHL8.DataBindings.Clear();
+            cbbHL8.DataBindings.Add("EditValue", _sourceHS, "HocLuc8", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            cbbHK9.DataBindings.Clear();
+            cbbHK9.DataBindings.Add("EditValue", _sourceHS, "HanhKiem9", true, DataSourceUpdateMode.OnPropertyChanged);
+            cbbHL9.DataBindings.Clear();
+            cbbHL9.DataBindings.Add("EditValue", _sourceHS, "HocLuc9", true, DataSourceUpdateMode.OnPropertyChanged);
+
             lookDTUT.DataBindings.Clear();
             lookDTUT.DataBindings.Add("EditValue", _sourceHS, "IdDTUT", true, DataSourceUpdateMode.OnPropertyChanged);
             lookKVUT.DataBindings.Clear();
@@ -505,9 +462,9 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookQuocTich, "Ten", "Id", DataHelper.DsQuocTich);
             DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", DataHelper.DsTonGiao);
             DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", DataHelper.DsTrinhDo);
-            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DataHelper.DsDoiTuongUT.Where(x => x.ApDung.Equals("Trung cấp")).ToList());
+            DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DataHelper.DsDoiTuongUT.Where(x => x.ApDung.Equals("Thường xuyên")).ToList());
             DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", DataHelper.DsKhuVucUT);
-            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DataHelper.DsTruong);
+            DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DataHelper.DsTruong.Where(x => x.LoaiTruong.Equals("THCS")).ToList());
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode");
             DevForm.CreateSearchLookupEdit(lookXa, "AddressName", "AddressCode");
@@ -517,13 +474,19 @@ namespace QuanLyTuyenSinh.Form
         private void LoadComboBox()
         {
             string[] lstHanhKiem = { "Trung bình", "Khá", "Tốt" };
-            string[] lstXepLoaiHocTap = { "Trung bình", "Khá", "Giỏi" };
-            string[] lstXepLoaiTotNghiep = { "Trung bình", "Khá", "Giỏi" };
+            string[] lstHocLuc = { "Trung bình", "Khá", "Giỏi" };
             string[] lstHTDT = { "Chính quy", "Đào tạo kỹ thuật an toàn lao động", "Đào tạo huấn luyện kỹ năng", "Đào tạo Và nâng cao trình độ chuyên môn kỹ thuật", "Đào tạo thường xuyên", "Đào tạo từ xa, tự học có hướng dẫn", "Vừa làm vừa học" };
 
-            DevForm.CreateComboboxEdit(cbbHanhKiem, lstHanhKiem);
-            DevForm.CreateComboboxEdit(cbbXLHT, lstXepLoaiHocTap);
-            DevForm.CreateComboboxEdit(cbbXLTN, lstXepLoaiTotNghiep);
+            DevForm.CreateComboboxEdit(cbbHK6, lstHanhKiem);
+            DevForm.CreateComboboxEdit(cbbHK7, lstHanhKiem);
+            DevForm.CreateComboboxEdit(cbbHK8, lstHanhKiem);
+            DevForm.CreateComboboxEdit(cbbHK9, lstHanhKiem);
+
+            DevForm.CreateComboboxEdit(cbbHL6, lstHocLuc);
+            DevForm.CreateComboboxEdit(cbbHL7, lstHocLuc);
+            DevForm.CreateComboboxEdit(cbbHL8, lstHocLuc);
+            DevForm.CreateComboboxEdit(cbbHL9, lstHocLuc);
+
             DevForm.CreateComboboxEdit(cbbHTDT, lstHTDT);
             DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AddressName.Replace("Tỉnh ", "").Replace("Thành Phố", "TP")).ToArray(), "", true, true);
         }
@@ -562,11 +525,11 @@ namespace QuanLyTuyenSinh.Form
                 var index = DataHelper.DSHoSoXTTC.FindIndex(x => x.Id.Equals(_hoSo.Id));
                 if (index >= 0)
                 {
-                    DataHelper.DSHoSoXTTC[index] = _hoSo;
+                    DataHelper.DSHoSoXetTuyenTX[index] = _hoSo;
                 }
                 else
                 {
-                    DataHelper.DSHoSoXTTC.Add(_hoSo);
+                    DataHelper.DSHoSoXetTuyenTX.Add(_hoSo);
                 }
                 SaveAnh();
                 _hoSo.Save();
@@ -576,7 +539,7 @@ namespace QuanLyTuyenSinh.Form
                 var qt = DataHelper.DsQuocTich.FirstOrDefault();
                 var tg = DataHelper.DsTonGiao.FirstOrDefault();
                 var tdvh = DataHelper.DsTrinhDo.FirstOrDefault();
-                _hoSo = new HoSoDuTuyenTC
+                _hoSo = new HoSoDuTuyenGDTX
                 {
                     NamTS = nts,
                     DotTS = dts,

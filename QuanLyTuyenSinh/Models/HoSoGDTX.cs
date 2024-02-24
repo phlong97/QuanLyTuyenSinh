@@ -2,26 +2,25 @@
 
 namespace QuanLyTuyenSinh.Models
 {
-    public class HoSoDuTuyenTC : HoSo
-    {        
-        [Display(Name = "Hạnh kiểm")]
-        public string HanhKiem { get; set; }
+    public class HoSoDuTuyenGDTX : HoSo
+    {
+        public string HanhKiem6 { get; set; }
+        public string HanhKiem7 {  get; set; }
+        public string HanhKiem8 { get; set; }
+        public string HanhKiem9 { get; set; }
+        public string HocLuc6 { get; set; }
+        public string HocLuc7 { get; set; }
+        public string HocLuc8 { get; set; }
+        public string HocLuc9 { get; set; }
 
-        [Display(Name = "Xếp loại HT")]
-        public string XLHocTap { get; set; }
-
-        [Display(Name = "Xếp loại TN")]
-        public string XLTN { get; set; }        
-
-        [Display(AutoGenerateField = false)]
-        public KiemTraHoSo KiemTraHS { get; set; } = new();       
+        public KiemTraHoSoGDTX KiemTraHS { get; set; } = new();      
 
         public override string CheckError()
         {
             string errs = string.Empty;
             if (string.IsNullOrEmpty(MaHoSo))
                 errs += "Chưa nhập mã hồ sơ\n";
-            if (DataHelper.DSHoSoXTTC.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) > 1)
+            if (DataHelper.DSHoSoXetTuyenTX.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) > 1)
                 errs += "Trùng mã hồ sơ\n";
             if (string.IsNullOrEmpty(Ho))
                 errs += "Chưa nhập họ học sinh \n";
@@ -31,7 +30,7 @@ namespace QuanLyTuyenSinh.Models
             {
                 if (CCCD.Length > 0 && CCCD.Length == 11)
                     errs += "Nhập sai CCCD/CMND! \n";
-                if (DataHelper.DSHoSoXTTC.Count(x => x.CCCD == CCCD) >= 2)
+                if (DataHelper.DSHoSoXetTuyenTX.Count(x => x.CCCD == CCCD) >= 2)
                     errs += "Đã tồn tại CCCD/CMND!\n";
             }
             if (NgaySinh == DateTime.MinValue)
@@ -56,6 +55,16 @@ namespace QuanLyTuyenSinh.Models
                 errs += "Chưa chọn trình độ văn hóa\n";
             if (string.IsNullOrEmpty(IdTruong))
                 errs += "Chưa chọn trường\n";
+            if (string.IsNullOrEmpty(HanhKiem6) || 
+                string.IsNullOrEmpty(HanhKiem7) || 
+                string.IsNullOrEmpty(HanhKiem8) ||
+                string.IsNullOrEmpty(HanhKiem9))
+                errs += "Chưa nhập hạnh kiểm\n";
+            if (string.IsNullOrEmpty(HocLuc6) ||
+                string.IsNullOrEmpty(HocLuc7) ||
+                string.IsNullOrEmpty(HocLuc8) ||
+                string.IsNullOrEmpty(HocLuc9))
+                errs += "Chưa nhập học lực\n";
             if (DsNguyenVong.Count() == 0)
                 errs += "Chưa chọn nguyện vọng\n";
             if (DsNguyenVong.Count(x => x.NV == 1) == 0)
@@ -66,8 +75,8 @@ namespace QuanLyTuyenSinh.Models
             {
                 int sltt = 0;
                 var nv1 = DsNguyenVong.First(x => x.NV == 1);
-                int sldt = DataHelper.DSHoSoXTTC.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
-                var ctnv1 = DataHelper.DsChiTieuTC.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
+                int sldt = DataHelper.DSHoSoXetTuyenTX.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
+                var ctnv1 = DataHelper.DsChiTieuTX.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
                 if (ctnv1 != null)
                 {
                     for (int i = 1; i < DotTS; i++)
@@ -84,146 +93,10 @@ namespace QuanLyTuyenSinh.Models
             return errs;
         }
 
-        public override double TinhDiemXetTuyen()
-        {
-            double tong = 0;
-            if (TDHV.Equals("THCS"))
-            {
-                switch (HanhKiem)
-                {
-                    case "Tốt":
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.TOT; break;
-                    case "Khá":
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.KHA; break;
-                    case "Trung bình":
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
-                    default:
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
-                }
-                switch (XLTN)
-                {
-                    case "Giỏi":
-                        tong += DataHelper.CurrSettings.XLTN_THCS.GIOI; break;
-                    case "Khá":
-                        tong += DataHelper.CurrSettings.XLTN_THCS.KHA; break;
-                    case "Trung bình":
-                        tong += DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
-                    default:
-                        tong += DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
-                }
-            }
-            else if (TDHV.Equals("THPT"))
-            {
-                switch (HanhKiem)
-                {
-                    case "Tốt":
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.TOT; break;
-                    case "Khá":
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.KHA; break;
-                    case "Trung bình":
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
-                    default:
-                        tong += DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
-                }
-                switch (XLHocTap)
-                {
-                    case "Giỏi":
-                        tong += DataHelper.CurrSettings.XLHT_THPT.GIOI; break;
-                    case "Khá":
-                        tong += DataHelper.CurrSettings.XLHT_THPT.KHA; break;
-                    case "Trung bình":
-                        tong += DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
-                    default:
-                        tong += DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
-                }
-                switch (XLTN)
-                {
-                    case "Giỏi":
-                        tong += DataHelper.CurrSettings.XLTN_THPT.GIOI; break;
-                    case "Khá":
-                        tong += DataHelper.CurrSettings.XLTN_THPT.KHA; break;
-                    case "Trung bình":
-                        tong += DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
-                    default:
-                        tong += DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
-                }
-            }
-            if (!string.IsNullOrEmpty(IdKVUT))
-            {
-                var kv = DataHelper.DsKhuVucUT.FirstOrDefault(kv => kv.Id.Equals(IdKVUT));
-                if (kv != null)
-                {
-                    tong += kv.Diem;
-                }
-            }
-            if (!string.IsNullOrEmpty(IdDTUT))
-            {
-                var dt = DataHelper.DsDoiTuongUT.FirstOrDefault(dt => dt.Id.Equals(IdDTUT));
-                if (dt != null)
-                {
-                    tong += dt.Diem;
-                }
-            }
-            return tong;
-        }
-
-        public HoSoDuTuyenGDTX ToHoSoGDTX()
-        {
-            return new HoSoDuTuyenGDTX
-            {
-                Ho = Ho,
-                Ten = Ten,
-                NgaySinh = NgaySinh,
-                NoiSinh = NoiSinh,
-                DiaChi = DiaChi,
-                Anh = Anh,
-                CCCD = CCCD,
-                DotTS = DotTS,
-                NamTS = NamTS,
-                Email = Email,
-                GioiTinh = GioiTinh,
-                GhiChu = GhiChu,
-                HoTenCha = HoTenCha,
-                HoTenMe = HoTenMe,
-                HTDT = HTDT,
-                IdDanToc = IdDanToc,
-                IdKVUT = IdKVUT,
-                IdQuocTich = IdQuocTich,
-                IdTonGiao = IdTonGiao,
-                IdTruong = IdTruong,
-                IdTrinhDoVH = IdTrinhDoVH,
-                Lop = Lop,
-                MaHuyen = MaHuyen,
-                MaTinh = MaTinh,
-                MaXa = MaXa,
-                DsNguyenVong = DsNguyenVong,
-                NamTN = NamTN,
-                NamSinhCha = NamSinhCha,
-                NamSinhMe = NamSinhMe,
-                NgheNghiepCha = NgheNghiepCha,
-                NgheNghiepMe = NgheNghiepMe,
-                SDT = SDT,
-                TDHV = TDHV,
-                ThonDuong = ThonDuong,
-                KiemTraHS = new KiemTraHoSoGDTX
-                {
-                    BangTN = KiemTraHS.BangTN,
-                    CCCD = KiemTraHS.CCCD,
-                    GCNTT = KiemTraHS.GCNTT,
-                    GiayCNUT = KiemTraHS.GiayCNUT,
-                    GiayKhaiSinh = KiemTraHS.GiayKhaiSinh,
-                    GKSK = KiemTraHS.GKSK,
-                    HinhThe = KiemTraHS.HinhThe,
-                    HocBa = KiemTraHS.HocBa,
-                    PhieuDKDT = KiemTraHS.PhieuDKDT,
-                    SYLL = KiemTraHS.SYLL
-                }
-            };
-        }
-        public TongHopDiemXetTuyenTC ToTHDXT()
+        public TongHopDiemXetTuyenGDTX ToTHDXT()
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            var th = new TongHopDiemXetTuyenTC
+            var th = new TongHopDiemXetTuyenGDTX
             {
                 IdHoSo = Id,
                 MaHoSo = MaHoSo,
@@ -245,76 +118,39 @@ namespace QuanLyTuyenSinh.Models
                     string.IsNullOrEmpty(IdKVUT)
                         ? 0
                         : DataHelper.DsKhuVucUT.FirstOrDefault(x => x.Id.Equals(IdKVUT)).Diem,
+                HocLuc6 = HocLuc6,
+                HocLuc7 = HocLuc7,
+                HocLuc8 = HocLuc8,
+                HocLuc9 = HocLuc9,
+                HanhKiem6 = HanhKiem6,
+                HanhKiem7 = HanhKiem7,
+                HanhKiem8 = HanhKiem8,
+                HanhKiem9 = HanhKiem9,
+                DiemLop6 = TinhDiemXL(HocLuc7, HanhKiem7),
+                DiemLop7 = TinhDiemXL(HocLuc7,HanhKiem7),
+                DiemLop8 = TinhDiemXL(HocLuc8, HanhKiem8),
+                DiemLop9 = TinhDiemXL(HocLuc9, HanhKiem9),
             };
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-            if (TDHV.Equals("THCS"))
-            {
-                switch (HanhKiem)
-                {
-                    case "Tốt":
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.TOT; break;
-                    case "Khá":
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.KHA; break;
-                    case "Trung bình":
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
-                    default:
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THCS.TRUNG_BINH; break;
-                }
-                switch (XLTN)
-                {
-                    case "Giỏi":
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.GIOI; break;
-                    case "Khá":
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.KHA; break;
-                    case "Trung bình":
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
-                    default:
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THCS.TRUNG_BINH; break;
-                }
-            }
-            else if (TDHV.Equals("THPT"))
-            {
-                switch (HanhKiem)
-                {
-                    case "Tốt":
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.TOT; break;
-                    case "Khá":
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.KHA; break;
-                    case "Trung bình":
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
-                    default:
-                        th.HanhKiem = DataHelper.CurrSettings.HANH_KIEM_THPT.TRUNG_BINH; break;
-                }
-                switch (XLHocTap)
-                {
-                    case "Giỏi":
-                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.GIOI; break;
-                    case "Khá":
-                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.KHA; break;
-                    case "Trung bình":
-                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
-                    default:
-                        th.XLHT = DataHelper.CurrSettings.XLHT_THPT.TRUNG_BINH; break;
-                }
-                switch (XLTN)
-                {
-                    case "Giỏi":
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.GIOI; break;
-                    case "Khá":
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.KHA; break;
-                    case "Trung bình":
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
-                    default:
-                        th.XLTN = DataHelper.CurrSettings.XLTN_THPT.TRUNG_BINH; break;
-                }
-            }
 
             return th;
         }
-
-        public HoSoTrungTuyenTC ToHSTT()
+        double TinhDiemXL(string XepLoaiHL,string XepLoaiHK)
         {
-            var hs = new HoSoTrungTuyenTC()
+            double DiemHK = XepLoaiHK.Equals("Tốt") ? DataHelper.CurrSettings.HK_GDTX.TOT : XepLoaiHK.Equals("Khá") ?
+                    DataHelper.CurrSettings.HK_GDTX.KHA : DataHelper.CurrSettings.HK_GDTX.TRUNG_BINH;
+            double DiemHL = XepLoaiHL.Equals("Giỏi") ? DataHelper.CurrSettings.HL_GDTX.GIOI : XepLoaiHL.Equals("Khá") ?
+                    DataHelper.CurrSettings.HL_GDTX.KHA : DataHelper.CurrSettings.HL_GDTX.TRUNG_BINH;
+
+            double TongDiem = DiemHK + DiemHL;
+
+            if (TongDiem <= 4) TongDiem = 5;
+
+            return TongDiem;
+        }
+        public HoSoTrungTuyenGDTX ToHSTT()
+        {
+            var hs = new HoSoTrungTuyenGDTX()
             {
                 IdHSDT = Id,
                 MaHoSo = MaHoSo,
@@ -358,7 +194,7 @@ namespace QuanLyTuyenSinh.Models
             return hs;
         }
 
-        public HoSoDuTuyenTCView ToView() => new HoSoDuTuyenTCView
+        public HoSoDuTuyenGDTXView ToView() => new HoSoDuTuyenGDTXView
         {
             Id = Id,
             MaHoSo = MaHoSo,
@@ -366,9 +202,14 @@ namespace QuanLyTuyenSinh.Models
             Ten = Ten,
             NgaySinh = NgaySinh,
             GT = GioiTinh ? "Nam" : "Nữ",
-            HanhKiem = HanhKiem,
-            XLTN = XLTN,
-            XLHT = XLHocTap,
+            HanhKiem6 = HanhKiem6,
+            HanhKiem7 = HanhKiem7,
+            HanhKiem8 = HanhKiem8,
+            HanhKiem9 = HanhKiem9,
+            HocLuc6 = HocLuc6,
+            HocLuc7 = HocLuc7,
+            HocLuc8 = HocLuc8,
+            HocLuc9 = HocLuc9,
             IdDTUT = IdDTUT,
             IdKVUT = IdKVUT,
             IdNgheDT1 = DsNguyenVong.First().IdNghe,
@@ -396,6 +237,7 @@ namespace QuanLyTuyenSinh.Models
             HinhThe = KiemTraHS.HinhThe ? "X" : string.Empty,
             HocBa = KiemTraHS.HocBa ? "X" : string.Empty,
             PhieuDKDT = KiemTraHS.PhieuDKDT ? "X" : string.Empty,
+            PhieuDKXTGDTX = KiemTraHS.PhieuDKXTGDTX ? "X" : string.Empty,
             CCCDX = KiemTraHS.CCCD ? "X" : string.Empty,
             SYLL = KiemTraHS.SYLL ? "X" : string.Empty,
             SDT = SDT,
@@ -403,12 +245,20 @@ namespace QuanLyTuyenSinh.Models
             DotTS = DotTS,
         };
 
-        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoDuTuyenTC);
+        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoDuTuyenGDTX);
 
-        public override bool Delete() => _LiteDb.Delete<HoSoDuTuyenTC>(Id, TuDien.CategoryName.HoSoDuTuyenTC);
+        public override bool Delete() => _LiteDb.Delete<HoSoDuTuyenGDTX>(Id, TuDien.CategoryName.HoSoDuTuyenGDTX);
+
+        public override double TinhDiemXetTuyen()
+        {
+            double DiemXL = TinhDiemXL(HocLuc6, HanhKiem6) + TinhDiemXL(HocLuc7, HanhKiem7) + TinhDiemXL(HocLuc8, HanhKiem8) + TinhDiemXL(HocLuc9, HanhKiem9);
+            double DiemUTDT = string.IsNullOrEmpty(IdDTUT) ? 0 : DataHelper.DsDoiTuongUT.First(x => x.Id == IdDTUT).Diem;
+            double DiemUTKV = string.IsNullOrEmpty(IdKVUT) ? 0 : DataHelper.DsKhuVucUT.First(x => x.Id == IdKVUT).Diem;
+            return DiemXL + DiemUTDT + DiemUTKV;
+        }
     }
 
-    public class HoSoDuTuyenTCView : DBClass
+    public class HoSoDuTuyenGDTXView : DBClass
     {
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
@@ -422,10 +272,8 @@ namespace QuanLyTuyenSinh.Models
         [Display(Name = "Ngày sinh")]
         [DisplayFormat(DataFormatString = "dd/MM/yyyy")]
         public DateTime NgaySinh { get; set; }
-
         [Display(Name = "Giới tính")]
         public string GT { get; set; }
-
         [Display(Name = "Nơi sinh")]
         public string NoiSinh { get; set; }
         [Display(Name = "Thôn/đường")]
@@ -435,21 +283,28 @@ namespace QuanLyTuyenSinh.Models
 
         [Display(Name = "Huyện")]
         public string MaHuyen { get; set; }
-
         [Display(Name = "Xã")]
         public string MaXa { get; set; }
 
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
+        [Display(Name = "Hạnh kiểm 6")]
+        public string HanhKiem6 { get; set; }
+        [Display(Name = "Học lực 6")]
+        public string HocLuc6 { get; set; }
 
-        [Display(Name = "Hạnh kiểm")]
-        public string HanhKiem { get; set; }
-
-        [Display(Name = "Xếp loại HT")]
-        public string XLHT { get; set; }
-
-        [Display(Name = "Xếp loại TN")]
-        public string XLTN { get; set; }
+        [Display(Name = "Hạnh kiểm 7")]
+        public string HanhKiem7 { get; set; }
+        [Display(Name = "Học lực 7")]
+        public string HocLuc7 { get; set; }
+        [Display(Name = "Hạnh kiểm 8")]
+        public string HanhKiem8 { get; set; }
+        [Display(Name = "Học lực 8")]
+        public string HocLuc8 { get; set; }
+        [Display(Name = "Hạnh kiểm 9")]
+        public string HanhKiem9 { get; set; }
+        [Display(Name = "Học lực 9")]
+        public string HocLuc9 { get; set; }
 
         [Display(Name = "Đối tượng ưu tiên")]
         public string IdDTUT { get; set; }
@@ -492,6 +347,8 @@ namespace QuanLyTuyenSinh.Models
 
         [Display(Name = "Số ĐT")]
         public string SDT { get; set; }
+        [Display(Name = "Phiếu đăng ký xét tuyển GDTX")]
+        public string PhieuDKXTGDTX { get; set; }
 
         [Display(Name = "Phiếu đăng ký dự tuyển")]
         public string PhieuDKDT { get; set; }
@@ -530,7 +387,7 @@ namespace QuanLyTuyenSinh.Models
 
         public override bool Delete()
         {
-            return _LiteDb.Delete<HoSoDuTuyenTC>(Id, TuDien.CategoryName.HoSoDuTuyenTC);
+            return _LiteDb.Delete<HoSoDuTuyenGDTX>(Id, TuDien.CategoryName.HoSoDuTuyenGDTX);
         }
 
         public override bool Save()
@@ -539,24 +396,26 @@ namespace QuanLyTuyenSinh.Models
         }
 
     }
-    public class HoSoTrungTuyenTC : HoSo
+
+    public class HoSoTrungTuyenGDTX : HoSo
     {
         [Display(AutoGenerateField = false)]
-        public string IdHSDT { get; set; }        
+        public string IdHSDT { get; set; }
 
-        [Display(Name = "Tổng số điểm xét tuyển",Order =98)]
+        [Display(Name = "Tổng số điểm xét tuyển",Order = 98)]
         public double TongDXT { get; set; }
 
         [Display(Name = "Nghề trúng tuyển")]
         public string IdNgheTrungTuyen { get; set; }
+
         public override string CheckError()
         {
             throw new NotImplementedException();
         }
 
-        public override bool Delete() => _LiteDb.Delete<HoSoTrungTuyenTC>(Id, TuDien.CategoryName.HoSoTrungTuyenTC);
+        public override bool Delete() => _LiteDb.Delete<HoSoTrungTuyenGDTX>(Id, TuDien.CategoryName.HoSoTrungTuyenGDTX);
 
-        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoTrungTuyenTC);
+        public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoTrungTuyenGDTX);
 
         public override double TinhDiemXetTuyen()
         {

@@ -44,6 +44,8 @@
             barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
             barCbbDTS = new DevExpress.XtraBars.BarEditItem();
             CbbDTS = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
+            chkTrungCap = new DevExpress.XtraBars.BarCheckItem();
+            chkGDTX = new DevExpress.XtraBars.BarCheckItem();
             bar3 = new DevExpress.XtraBars.Bar();
             barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -77,7 +79,7 @@
             directXFormContainerControl1.Controls.Add(barDockControlTop);
             directXFormContainerControl1.Location = new Point(1, 31);
             directXFormContainerControl1.Name = "directXFormContainerControl1";
-            directXFormContainerControl1.Size = new Size(1130, 647);
+            directXFormContainerControl1.Size = new Size(1210, 727);
             directXFormContainerControl1.TabIndex = 0;
             // 
             // tabTK
@@ -86,7 +88,7 @@
             tabTK.Location = new Point(0, 24);
             tabTK.Name = "tabTK";
             tabTK.SelectedTabPage = pageTK;
-            tabTK.Size = new Size(1130, 603);
+            tabTK.Size = new Size(1210, 683);
             tabTK.TabIndex = 4;
             tabTK.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { pageTK, pageChart });
             // 
@@ -94,7 +96,7 @@
             // 
             pageTK.Controls.Add(gridControl1);
             pageTK.Name = "pageTK";
-            pageTK.Size = new Size(1128, 578);
+            pageTK.Size = new Size(1208, 658);
             pageTK.Text = "Thống kê";
             // 
             // gridControl1
@@ -104,7 +106,7 @@
             gridControl1.MainView = gridView;
             gridControl1.MenuManager = barManager1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new Size(1128, 578);
+            gridControl1.Size = new Size(1208, 658);
             gridControl1.TabIndex = 0;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView, gridView1 });
             // 
@@ -123,9 +125,9 @@
             barManager1.DockControls.Add(barDockControlRight);
             barManager1.DockWindowTabFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             barManager1.Form = this;
-            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { btnTK, barSubItemTK, btnPrint, chkXetTuyen, chkTrungTuyen, barStaticItem1, barCbbDTS });
+            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { btnTK, barSubItemTK, btnPrint, chkXetTuyen, chkTrungTuyen, barStaticItem1, barCbbDTS, chkTrungCap, chkGDTX });
             barManager1.MainMenu = bar2;
-            barManager1.MaxItemId = 7;
+            barManager1.MaxItemId = 9;
             barManager1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { CbbDTS });
             barManager1.StatusBar = bar3;
             // 
@@ -135,7 +137,7 @@
             bar2.DockCol = 0;
             bar2.DockRow = 0;
             bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, barSubItemTK, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, btnPrint, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, chkXetTuyen, DevExpress.XtraBars.BarItemPaintStyle.Standard), new DevExpress.XtraBars.LinkPersistInfo(chkTrungTuyen), new DevExpress.XtraBars.LinkPersistInfo(barStaticItem1), new DevExpress.XtraBars.LinkPersistInfo(barCbbDTS) });
+            bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, barSubItemTK, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, btnPrint, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, chkXetTuyen, DevExpress.XtraBars.BarItemPaintStyle.Standard), new DevExpress.XtraBars.LinkPersistInfo(chkTrungTuyen), new DevExpress.XtraBars.LinkPersistInfo(barStaticItem1), new DevExpress.XtraBars.LinkPersistInfo(barCbbDTS), new DevExpress.XtraBars.LinkPersistInfo(chkTrungCap), new DevExpress.XtraBars.LinkPersistInfo(chkGDTX) });
             bar2.OptionsBar.MultiLine = true;
             bar2.OptionsBar.UseWholeRow = true;
             bar2.Text = "Main menu";
@@ -186,6 +188,8 @@
             barStaticItem1.Caption = "Đợt TS";
             barStaticItem1.Id = 5;
             barStaticItem1.Name = "barStaticItem1";
+            barStaticItem1.Size = new Size(50, 0);
+            barStaticItem1.Width = 50;
             // 
             // barCbbDTS
             // 
@@ -193,6 +197,7 @@
             barCbbDTS.Edit = CbbDTS;
             barCbbDTS.Id = 6;
             barCbbDTS.Name = "barCbbDTS";
+            barCbbDTS.Size = new Size(100, 0);
             barCbbDTS.EditValueChanged += barCbbDTS_EditValueChanged;
             // 
             // CbbDTS
@@ -201,6 +206,28 @@
             CbbDTS.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             CbbDTS.DropDownRows = 4;
             CbbDTS.Name = "CbbDTS";
+            // 
+            // chkTrungCap
+            // 
+            chkTrungCap.BindableChecked = true;
+            chkTrungCap.Caption = "Trung cấp";
+            chkTrungCap.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.BeforeText;
+            chkTrungCap.Checked = true;
+            chkTrungCap.CheckStyle = DevExpress.XtraBars.BarCheckStyles.Radio;
+            chkTrungCap.GroupIndex = 1;
+            chkTrungCap.Id = 7;
+            chkTrungCap.Name = "chkTrungCap";
+            chkTrungCap.CheckedChanged += chkTrungCap_CheckedChanged;
+            // 
+            // chkGDTX
+            // 
+            chkGDTX.Caption = "GDTX";
+            chkGDTX.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.BeforeText;
+            chkGDTX.CheckStyle = DevExpress.XtraBars.BarCheckStyles.Radio;
+            chkGDTX.GroupIndex = 1;
+            chkGDTX.Id = 8;
+            chkGDTX.Name = "chkGDTX";
+            chkGDTX.CheckedChanged += chkGDTX_CheckedChanged;
             // 
             // bar3
             // 
@@ -220,15 +247,15 @@
             barDockControlTop.Dock = DockStyle.Top;
             barDockControlTop.Location = new Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new Size(1130, 24);
+            barDockControlTop.Size = new Size(1210, 24);
             // 
             // barDockControlBottom
             // 
             barDockControlBottom.CausesValidation = false;
             barDockControlBottom.Dock = DockStyle.Bottom;
-            barDockControlBottom.Location = new Point(0, 627);
+            barDockControlBottom.Location = new Point(0, 707);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new Size(1130, 20);
+            barDockControlBottom.Size = new Size(1210, 20);
             // 
             // barDockControlLeft
             // 
@@ -236,15 +263,15 @@
             barDockControlLeft.Dock = DockStyle.Left;
             barDockControlLeft.Location = new Point(0, 24);
             barDockControlLeft.Manager = barManager1;
-            barDockControlLeft.Size = new Size(0, 603);
+            barDockControlLeft.Size = new Size(0, 683);
             // 
             // barDockControlRight
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = DockStyle.Right;
-            barDockControlRight.Location = new Point(1130, 24);
+            barDockControlRight.Location = new Point(1210, 24);
             barDockControlRight.Manager = barManager1;
-            barDockControlRight.Size = new Size(0, 603);
+            barDockControlRight.Size = new Size(0, 683);
             // 
             // btnTK
             // 
@@ -271,7 +298,7 @@
             // 
             pageChart.Controls.Add(panelchart);
             pageChart.Name = "pageChart";
-            pageChart.Size = new Size(1114, 608);
+            pageChart.Size = new Size(1194, 688);
             pageChart.Text = "Biểu đồ";
             // 
             // panelchart
@@ -279,7 +306,7 @@
             panelchart.Dock = DockStyle.Fill;
             panelchart.Location = new Point(0, 0);
             panelchart.Name = "panelchart";
-            panelchart.Size = new Size(1114, 608);
+            panelchart.Size = new Size(1194, 688);
             panelchart.TabIndex = 0;
             // 
             // F_TK
@@ -290,7 +317,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ChildControls.Add(directXFormContainerControl1);
-            ClientSize = new Size(1132, 679);
+            ClientSize = new Size(1212, 759);
             Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "F_TK";
             StartPosition = FormStartPosition.CenterScreen;
@@ -338,5 +365,7 @@
         private DevExpress.XtraTab.XtraTabPage pageChart;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.PanelControl panelchart;
+        private DevExpress.XtraBars.BarCheckItem chkTrungCap;
+        private DevExpress.XtraBars.BarCheckItem chkGDTX;
     }
 }
