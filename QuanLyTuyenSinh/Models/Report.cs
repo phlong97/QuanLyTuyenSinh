@@ -160,9 +160,9 @@ namespace QuanLyTuyenSinh.Models
         public string HanhKiem6 { get; set; }
         [Display(Name = "Điểm lớp 6")]
         public double DiemLop6 { get; set; }
-        [Display(Name = "Học lực 6")]
+        [Display(Name = "Học lực 7")]
         public string HocLuc7 { get; set; }
-        [Display(Name = "Hạnh kiểm 6")]
+        [Display(Name = "Hạnh kiểm 7")]
         public string HanhKiem7 { get; set; }
         [Display(Name = "Điểm lớp 7")]
         public double DiemLop7 { get; set; }
@@ -180,13 +180,13 @@ namespace QuanLyTuyenSinh.Models
         public double DiemLop9 { get; set; }
 
         [Display(Name = "Ưu tiên đối tượng")]
-        public double UTDT { get; set; }
+        public string IdDTUT { get; set; }
 
-        [Display(Name = "Ưu tiên KV")]
-        public double UTKV { get; set; }
+        [Display(Name = "Điểm ưu tiên")]
+        public double DiemUT { get; set; }
 
         [Display(Name = "Tổng điểm xét tuyển")]
-        public double Tong => DiemLop7 + DiemLop8 + DiemLop9;
+        public double Tong => DiemLop6 + DiemLop7 + DiemLop8 + DiemLop9 + DiemUT;
 
         [Display(Name = "Nghề")]
         public string IdNgheNV1 { get; set; }
@@ -194,8 +194,6 @@ namespace QuanLyTuyenSinh.Models
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        public string IdDTUT { get; set; }
         public HoSoTrungTuyenGDTX ToHSTT()
         {
             var hsdt = DataHelper.DSHoSoXetTuyenTX.First(x => x.Id.Equals(IdHoSo));

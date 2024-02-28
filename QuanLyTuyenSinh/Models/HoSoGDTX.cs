@@ -110,14 +110,10 @@ namespace QuanLyTuyenSinh.Models
                 IdDTUT = string.IsNullOrEmpty(IdDTUT)
                         ? string.Empty
                         : IdDTUT,
-                UTDT =
+                DiemUT =
                     string.IsNullOrEmpty(IdDTUT)
                         ? 0
                         : DataHelper.DsDoiTuongUT.FirstOrDefault(x => x.Id.Equals(IdDTUT)).Diem,
-                UTKV =
-                    string.IsNullOrEmpty(IdKVUT)
-                        ? 0
-                        : DataHelper.DsKhuVucUT.FirstOrDefault(x => x.Id.Equals(IdKVUT)).Diem,
                 HocLuc6 = HocLuc6,
                 HocLuc7 = HocLuc7,
                 HocLuc8 = HocLuc8,
@@ -126,7 +122,7 @@ namespace QuanLyTuyenSinh.Models
                 HanhKiem7 = HanhKiem7,
                 HanhKiem8 = HanhKiem8,
                 HanhKiem9 = HanhKiem9,
-                DiemLop6 = TinhDiemXL(HocLuc7, HanhKiem7),
+                DiemLop6 = TinhDiemXL(HocLuc6, HanhKiem6),
                 DiemLop7 = TinhDiemXL(HocLuc7,HanhKiem7),
                 DiemLop8 = TinhDiemXL(HocLuc8, HanhKiem8),
                 DiemLop9 = TinhDiemXL(HocLuc9, HanhKiem9),
@@ -253,8 +249,8 @@ namespace QuanLyTuyenSinh.Models
         {
             double DiemXL = TinhDiemXL(HocLuc6, HanhKiem6) + TinhDiemXL(HocLuc7, HanhKiem7) + TinhDiemXL(HocLuc8, HanhKiem8) + TinhDiemXL(HocLuc9, HanhKiem9);
             double DiemUTDT = string.IsNullOrEmpty(IdDTUT) ? 0 : DataHelper.DsDoiTuongUT.First(x => x.Id == IdDTUT).Diem;
-            double DiemUTKV = string.IsNullOrEmpty(IdKVUT) ? 0 : DataHelper.DsKhuVucUT.First(x => x.Id == IdKVUT).Diem;
-            return DiemXL + DiemUTDT + DiemUTKV;
+           
+            return DiemXL + DiemUTDT;
         }
     }
 

@@ -452,8 +452,7 @@ namespace QuanLyTuyenSinh.Form
 
             lookDTUT.DataBindings.Clear();
             lookDTUT.DataBindings.Add("EditValue", _sourceHS, "IdDTUT", true, DataSourceUpdateMode.OnPropertyChanged);
-            lookKVUT.DataBindings.Clear();
-            lookKVUT.DataBindings.Add("EditValue", _sourceHS, "IdKVUT", true, DataSourceUpdateMode.OnPropertyChanged);
+            
         }
 
         private void InitLookupEdits()
@@ -463,7 +462,6 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookTonGiao, "Ten", "Id", DataHelper.DsTonGiao);
             DevForm.CreateSearchLookupEdit(lookTDVH, "Ten", "Id", DataHelper.DsTrinhDo);
             DevForm.CreateSearchLookupEdit(lookDTUT, "Ten", "Id", DataHelper.DsDoiTuongUT.Where(x => x.ApDung.Equals("Thường xuyên")).ToList());
-            DevForm.CreateSearchLookupEdit(lookKVUT, "Ten", "Id", DataHelper.DsKhuVucUT);
             DevForm.CreateSearchLookupEdit(lookTruong, "Ten", "Id", DataHelper.DsTruong.Where(x => x.LoaiTruong.Equals("THCS")).ToList());
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode");

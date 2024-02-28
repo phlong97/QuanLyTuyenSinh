@@ -2011,9 +2011,8 @@ namespace QuanLyTuyenSinh.Form
             if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC))
             {
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheNV1", "Ten", "Id");
-
                 gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdDTUT", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsDoiTuongUT, "IdDTUT", "Ma", "Id","");
 
             }
 
