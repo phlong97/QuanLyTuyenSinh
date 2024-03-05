@@ -125,7 +125,6 @@ namespace QuanLyTuyenSinh.Models
         {
             Id = Id,
             Nam = Nam,
-            IdNghe = IdNghe,
             ChiTieu = ChiTieu,
             DiemTT = DiemTT,
         };
@@ -133,31 +132,7 @@ namespace QuanLyTuyenSinh.Models
     public class ChiTieuTXView : DBClass
     {
         [Display(AutoGenerateField = false)]
-        public int Nam { get; set; } = DataHelper.NamTS;
-
-        private string _IdNghe;
-
-        [Display(AutoGenerateField = false)]
-        [Editable(false)]
-        public string IdNghe
-        {
-            get => _IdNghe;
-            set
-            {
-                _IdNghe = value;
-                var nghe = DataHelper.DsNghe.FirstOrDefault(x => x.Id.Equals(_IdNghe));
-                MaNghe = nghe is null ? string.Empty : nghe.Ma;
-                TenNghe = nghe is null ? string.Empty : nghe.Ten;
-            }
-        }
-
-        [Display(Name = "Mã nghề")]
-        [Editable(false)]
-        public string MaNghe { get; set; }
-
-        [Display(Name = "Tên nghề")]
-        [Editable(false)]
-        public string TenNghe { get; set; }
+        public int Nam { get; set; } = DataHelper.NamTS;       
 
         [Display(Name = "Chỉ tiêu")]
         public int ChiTieu { get; set; }
@@ -170,7 +145,6 @@ namespace QuanLyTuyenSinh.Models
             Nam = Nam,
             ChiTieu = ChiTieu,
             DiemTT = DiemTT,
-            IdNghe = IdNghe,
         };
 
         public override bool Save() => _LiteDb.Upsert(ToCTXT(), TuDien.CategoryName.ChiTieuTX);

@@ -28,6 +28,7 @@ namespace QuanLyTuyenSinh.Form
         private F_TK()
         {
             InitializeComponent();
+
         }
 
         private void LoadComboBoxDTS()
@@ -254,7 +255,7 @@ namespace QuanLyTuyenSinh.Form
 
                     for (int i = 0; i < DataHelper.DsNghe.Count; i++)
                     {
-                        var lstHDTTNghe = DataHelper.DSHoSoTTTC.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
+                        var lstHDTTNghe = DataHelper.DSHoSoTrungTuyenTX.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
                         && (dts == 0 ? true : x.DotTS == dts));
                         series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Count()));
                         series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
@@ -302,22 +303,29 @@ namespace QuanLyTuyenSinh.Form
                 return;
             }
             gridView.Columns.Clear();
-            gridView.CustomDrawCell += HighlightTotal;
-            gridControl1.DataSource = (chkXetTuyen.Checked && chkTrungCap.Checked) ? 
-                DataHelper.THSLNgheXTTheoTruongTC(dts) :
-                (!chkXetTuyen.Checked && chkTrungCap.Checked) ? 
-                DataHelper.THSLNgheTTTheoTruongTC(dts) :
-                (chkXetTuyen.Checked && !chkTrungCap.Checked) ?
-                DataHelper.THSLNgheXTTheoTruongGDTX(dts) :
-                DataHelper.THSLNgheTTTheoTruongGDTX(dts);
+            gridView.CustomDrawCell += HighlightTotal;           
 
-            if (chkXetTuyen.Checked && chkTrungCap.Checked) LoadThongKeDTTheoTruongTC();
+            if (chkXetTuyen.Checked && chkTrungCap.Checked)
+            {
+                gridControl1.DataSource = DataHelper.THSLNgheXTTheoTruongTC(dts);
+                LoadThongKeDTTheoTruongTC();
+            }                
             else if (!chkXetTuyen.Checked && chkTrungCap.Checked)
+            {
+                gridControl1.DataSource = DataHelper.THSLNgheTTTheoTruongTC(dts);
                 LoadThongKeTTTheoTruongTC();
+            }                
             else if (chkXetTuyen.Checked && !chkTrungCap.Checked)
+            {
+                gridControl1.DataSource = DataHelper.THSLNgheXTTheoTruongGDTX(dts);
                 LoadThongKeDTTheoTruongGDTX();
+            }
             else
+            {
+                gridControl1.DataSource = DataHelper.THSLNgheTTTheoTruongGDTX(dts);
                 LoadThongKeTTTheoTruongGDTX();
+            }
+                
             gridView.BestFitColumns(true);
         }
 
@@ -449,11 +457,17 @@ namespace QuanLyTuyenSinh.Form
                 series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
                 for (int j = 0; j < dstruong.Count; j++)
                 {
-                    int sldt = DataHelper.DSHoSoXTTC.Where(x => x.IdTruong.Equals(dstruong[j].Id) &&
-                    x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)) is not null
-                    && (dts == 0 ? true : x.DotTS == dts)).Count();
-
-                    series.Points.Add(new SeriesPoint(dstruong[j].Ten, sldt));                    
+                   
+                    var sltheotruong = DataHelper.DSHoSoXetTuyenTX.Where(x => x.IdTruong.Equals(dstruong[j].Id));
+                    int slNV1 = 0;
+                    foreach (var hs in sltheotruong)
+                    {
+                        var NV1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
+                        if (NV1 != null && NV1.IdNghe == DataHelper.DsNghe[i].Id)
+                            slNV1++; 
+                    }
+                   
+                    series.Points.Add(new SeriesPoint(dstruong[j].Ten, slNV1));                    
                 }
                 chart.Series.Add(series);
             }
@@ -484,6 +498,7 @@ namespace QuanLyTuyenSinh.Form
             MinimumSize = Size;
             LoadMenuTK();
             LoadComboBoxDTS();
+            gridView.OptionsBehavior.Editable = false;
             gridView.CustomDrawCell += HighlightTotal;
         }
 

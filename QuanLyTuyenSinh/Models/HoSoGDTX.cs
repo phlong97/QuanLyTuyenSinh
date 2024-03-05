@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DevExpress.Data.Linq.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyTuyenSinh.Models
 {
@@ -11,10 +12,10 @@ namespace QuanLyTuyenSinh.Models
         public string HocLuc6 { get; set; }
         public string HocLuc7 { get; set; }
         public string HocLuc8 { get; set; }
-        public string HocLuc9 { get; set; }
-
+        public string HocLuc9 { get; set; }       
+        public string IdHoSoTC { get; set; }
+        public List<NguyenVong> DanhSachNgheTrungCap { get; set; }
         public KiemTraHoSoGDTX KiemTraHS { get; set; } = new();      
-
         public override string CheckError()
         {
             string errs = string.Empty;
@@ -65,34 +66,8 @@ namespace QuanLyTuyenSinh.Models
                 string.IsNullOrEmpty(HocLuc8) ||
                 string.IsNullOrEmpty(HocLuc9))
                 errs += "Chưa nhập học lực\n";
-            if (DsNguyenVong.Count() == 0)
-                errs += "Chưa chọn nguyện vọng\n";
-            if (DsNguyenVong.Count(x => x.NV == 1) == 0)
-                errs += "Chưa chọn nguyện vọng 1\n";
-            if (DsNguyenVong.Count(x => x.IdNghe == null) > 0)
-                errs += "Chưa chọn nghề cho nguyện vọng\n";
-            if (DsNguyenVong.Count(x => x.NV == 1) == 1)
-            {
-                int sltt = 0;
-                var nv1 = DsNguyenVong.First(x => x.NV == 1);
-                int sldt = DataHelper.DSHoSoXetTuyenTX.Where(x => x.DsNguyenVong.FirstOrDefault(nv => nv.IdNghe == nv1.IdNghe && nv.NV == 1) != null && x.DotTS == DotTS).Count();
-                var ctnv1 = DataHelper.DsChiTieuTX.FirstOrDefault(x => x.IdNghe == nv1.IdNghe);
-                if (ctnv1 != null)
-                {
-                    for (int i = 1; i < DotTS; i++)
-                    {
-                        sltt += DataHelper.DSHoSoTTTC.Where(x => x.DotTS == i && x.IdNgheTrungTuyen == nv1.IdNghe).Count();
-                    }
-                    int ctmax = (int)(ctnv1.ChiTieu + ctnv1.ChiTieu * DataHelper.CurrSettings.CHITIEUVUOTMUC);
-                    if (sldt + sltt >= ctmax)
-                    {
-                        errs += $"Nguyện vọng 1 đã vượt chỉ tiêu tối đa! Chỉ tiêu tối đa: {ctmax}\n";
-                    }
-                }
-            }
             return errs;
         }
-
         public TongHopDiemXetTuyenGDTX ToTHDXT()
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -105,7 +80,6 @@ namespace QuanLyTuyenSinh.Models
                 NgaySinh = NgaySinh,
                 GT = GioiTinh ? "Nam" : "Nữ",
                 DiaChi = DiaChi,
-                IdNgheNV1 = DsNguyenVong.First().IdNghe,
                 GhiChu = GhiChu,
                 IdDTUT = string.IsNullOrEmpty(IdDTUT)
                         ? string.Empty
@@ -140,9 +114,7 @@ namespace QuanLyTuyenSinh.Models
 
             double TongDiem = DiemHK + DiemHL;
 
-            if (TongDiem <= 4) TongDiem = 5;
-
-            return TongDiem;
+            return TongDiem <= 4 ? 5 : TongDiem;
         }
         public HoSoTrungTuyenGDTX ToHSTT()
         {
@@ -168,7 +140,6 @@ namespace QuanLyTuyenSinh.Models
                 HTDT = HTDT,
                 TDHV = TDHV,
                 Lop = Lop,
-                IdNgheTrungTuyen = DsNguyenVong.First(x => x.NV == 1).IdNghe,
                 IdQuocTich = IdQuocTich,
                 IdTonGiao = IdTonGiao,
                 IdTrinhDoVH = IdTrinhDoVH,
@@ -184,7 +155,6 @@ namespace QuanLyTuyenSinh.Models
                 SDT = SDT,
                 DiaChi = DiaChi,
                 IdDTUT = IdDTUT,
-                IdKVUT = IdKVUT
             };
 
             return hs;
@@ -206,10 +176,7 @@ namespace QuanLyTuyenSinh.Models
             HocLuc7 = HocLuc7,
             HocLuc8 = HocLuc8,
             HocLuc9 = HocLuc9,
-            IdDTUT = IdDTUT,
-            IdKVUT = IdKVUT,
-            IdNgheDT1 = DsNguyenVong.First().IdNghe,
-            IdNgheDT2 = DsNguyenVong.FirstOrDefault(x => x.NV == 2) != null ? DsNguyenVong.First(x => x.NV == 2).IdNghe : string.Empty,
+            IdDTUT = IdDTUT,           
             GhiChu = GhiChu,
             IdTruong = IdTruong,
             ThonDuong = ThonDuong,
@@ -225,6 +192,7 @@ namespace QuanLyTuyenSinh.Models
             NoiSinh = NoiSinh,
             DiaChi = DiaChi,
             CCCD = CCCD,
+            LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoTC) ? "Chỉ học văn hóa" : "Có học nghề",
             BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
             GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
             GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
@@ -256,6 +224,7 @@ namespace QuanLyTuyenSinh.Models
 
     public class HoSoDuTuyenGDTXView : DBClass
     {
+
         [Display(Name = "Mã hồ sơ")]
         public string MaHoSo { get; set; }
 
@@ -304,15 +273,13 @@ namespace QuanLyTuyenSinh.Models
 
         [Display(Name = "Đối tượng ưu tiên")]
         public string IdDTUT { get; set; }
-
-        [Display(Name = "Khu vực ưu tiên")]
-        public string IdKVUT { get; set; }
+        [Display(AutoGenerateField =false)]
+        public string IdHoSoTC { get; set; }
+        [Display(Name = "Xét tuyển")]
+        public string LoaiXetTuyen { get; set; } // Chỉ học văn hóa/ Học thêm nghề
 
         [Display(Name = "Nghề xét tuyển NV1")]
         public string IdNgheDT1 { get; set; }
-
-        [Display(Name = "Nghề xét tuyển NV2")]
-        public string IdNgheDT2 { get; set; }
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }

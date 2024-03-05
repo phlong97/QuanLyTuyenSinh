@@ -101,10 +101,7 @@ namespace QuanLyTuyenSinh.Models
 
         [Display(Name = "ĐTƯT")]
         public string IdDTUT { get; set; }
-
-        [Display(Name = "KVƯT")]
-        public string IdKVUT { get; set; }
-        public List<NguyenVong> DsNguyenVong { get; set; } = new();
+        
         [Display(AutoGenerateField = false)]
         public string Anh { get; set; }
         [Display(Name = "Ghi chú",Order = 99)]

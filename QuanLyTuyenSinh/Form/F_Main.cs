@@ -326,24 +326,21 @@ namespace QuanLyTuyenSinh.Form
             }
             else
             {
-                if (DataHelper.DsChiTieuTX.Count() < DataHelper.DsNghe.Count())
+                var ct = DataHelper.DsChiTieuTX.FirstOrDefault();
+                if (ct == null)
                 {
                     using (var db = _LiteDb.GetDatabase())
                     {
-                        foreach (var nghe in DataHelper.DsNghe)
+                        ChiTieuTX cttx = new()
                         {
-                            if (DataHelper.DsChiTieuTX.FirstOrDefault(x => x.IdNghe.Equals(nghe.Id)) is null)
-                            {
-                                ChiTieuTX ct = new() { IdNghe = nghe.Id, Nam = _NamTS, ChiTieu = 50 };
-                                db.GetCollection<ChiTieuTX>().Upsert(ct);
-                            }
-                        }
+                            Nam = _NamTS,
+                            ChiTieu = 0,
+                        };
+                        db.GetCollection<ChiTieuTX>().Upsert(cttx);
                     }
-
                 }
             }
             RefreshData();
-
         }
         private void BtnExportGBTT_Click(object? sender, EventArgs e)
         {
@@ -679,7 +676,7 @@ namespace QuanLyTuyenSinh.Form
                         Marshal.ReleaseComObject(range);
                         range = null;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                        Excel.Range rangeData = sheet.Range[$"C{header + 1}:C{1000}"];
+                        Excel.Range rangeData = sheet.Range[$"B{header + 1}:B{200}"];
                         rangeData.Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
                         rangeData.Cells.Font.Size = 11;
                         Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + header + 2, 1], sheet.Cells[lst.Count + header + 2, 4]);
@@ -911,13 +908,13 @@ namespace QuanLyTuyenSinh.Form
                             export[i, 15] = string.IsNullOrEmpty(lst[i].IdDTUT) ? string.Empty : DataHelper.DsDoiTuongUT.First(x => x.Id.Equals(lst[i].IdDTUT)).Ma;
                             export[i, 16] = lst[i].GhiChu;
                         }
-                        Excel.Range range = sheet.get_Range(sheet.Cells[11, 1], sheet.Cells[lst.Count + header + 1, width]);
+                        Excel.Range range = sheet.get_Range(sheet.Cells[11, 1], sheet.Cells[lst.Count + header, width]);
                         range.set_Value(Missing.Value, export);
                         range.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
                         Marshal.ReleaseComObject(range);
                         range = null;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                        Excel.Range rangeData = sheet.Range[$"C{header + 1}:C{200}"];
+                        Excel.Range rangeData = sheet.Range[$"B{header + 1}:B{200}"];
                         rangeData.Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
                         rangeData.Cells.Font.Size = 11;
                         Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + header + 2, 1], sheet.Cells[lst.Count + header + 2, 4]);

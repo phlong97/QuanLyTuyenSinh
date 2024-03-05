@@ -11,11 +11,15 @@ namespace QuanLyTuyenSinh.Models
         public string XLHocTap { get; set; }
 
         [Display(Name = "Xếp loại TN")]
-        public string XLTN { get; set; }        
+        public string XLTN { get; set; }
+
+        [Display(Name = "KVƯT")]
+        public string IdKVUT { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public KiemTraHoSo KiemTraHS { get; set; } = new();       
-
+        public KiemTraHoSo KiemTraHS { get; set; } = new();
+        [Display(AutoGenerateField = false)]
+        public List<NguyenVong> DsNguyenVong { get; set; } = new();
         public override string CheckError()
         {
             string errs = string.Empty;
@@ -187,7 +191,6 @@ namespace QuanLyTuyenSinh.Models
                 HoTenMe = HoTenMe,
                 HTDT = HTDT,
                 IdDanToc = IdDanToc,
-                IdKVUT = IdKVUT,
                 IdQuocTich = IdQuocTich,
                 IdTonGiao = IdTonGiao,
                 IdTruong = IdTruong,
@@ -196,7 +199,6 @@ namespace QuanLyTuyenSinh.Models
                 MaHuyen = MaHuyen,
                 MaTinh = MaTinh,
                 MaXa = MaXa,
-                DsNguyenVong = DsNguyenVong,
                 NamTN = NamTN,
                 NamSinhCha = NamSinhCha,
                 NamSinhMe = NamSinhMe,
@@ -352,7 +354,6 @@ namespace QuanLyTuyenSinh.Models
                 SDT = SDT,
                 DiaChi = DiaChi,
                 IdDTUT = IdDTUT,
-                IdKVUT = IdKVUT
             };
 
             return hs;

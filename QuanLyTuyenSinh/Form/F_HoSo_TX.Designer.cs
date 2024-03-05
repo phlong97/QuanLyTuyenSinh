@@ -30,16 +30,16 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_HoSo_TX));
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
             tablePanelTT = new DevExpress.Utils.Layout.TablePanel();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
@@ -518,7 +518,7 @@
             // 
             txtDiaChi.Location = new Point(86, 336);
             txtDiaChi.Name = "txtDiaChi";
-            txtDiaChi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Cập nhật địa chỉ", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            txtDiaChi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Cập nhật địa chỉ", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
             txtDiaChi.Properties.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             txtDiaChi.Size = new Size(620, 20);
             txtDiaChi.TabIndex = 11;
@@ -972,7 +972,7 @@
             txtMaHS.Name = "txtMaHS";
             txtMaHS.Properties.Appearance.Font = new Font("Tahoma", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
             txtMaHS.Properties.Appearance.Options.UseFont = true;
-            txtMaHS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Cập nhật mã", -1, true, true, false, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Tạo mới mã sau khi chọn nguyện vọng 1", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            txtMaHS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Cập nhật mã", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Tạo mới mã sau khi chọn nguyện vọng 1", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
             txtMaHS.Properties.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             txtMaHS.Size = new Size(213, 18);
             txtMaHS.TabIndex = 0;
@@ -1065,55 +1065,55 @@
             // labelControl45
             // 
             labelControl45.AllowHtmlString = true;
-            labelControl45.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl45.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             labelControl45.Appearance.Options.UseFont = true;
             labelControl45.Location = new Point(23, 121);
             labelControl45.Name = "labelControl45";
-            labelControl45.Size = new Size(98, 13);
+            labelControl45.Size = new Size(81, 13);
             labelControl45.TabIndex = 83;
             labelControl45.Text = "Đối tượng ưu tiên";
             // 
             // labelControl24
             // 
             labelControl24.AllowHtmlString = true;
-            labelControl24.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl24.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             labelControl24.Appearance.Options.UseFont = true;
             labelControl24.Location = new Point(23, 97);
             labelControl24.Name = "labelControl24";
-            labelControl24.Size = new Size(32, 13);
+            labelControl24.Size = new Size(27, 13);
             labelControl24.TabIndex = 83;
             labelControl24.Text = "Lớp 9";
             // 
             // labelControl44
             // 
             labelControl44.AllowHtmlString = true;
-            labelControl44.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl44.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             labelControl44.Appearance.Options.UseFont = true;
             labelControl44.Location = new Point(23, 70);
             labelControl44.Name = "labelControl44";
-            labelControl44.Size = new Size(32, 13);
+            labelControl44.Size = new Size(27, 13);
             labelControl44.TabIndex = 83;
             labelControl44.Text = "Lớp 8";
             // 
             // labelControl43
             // 
             labelControl43.AllowHtmlString = true;
-            labelControl43.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl43.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             labelControl43.Appearance.Options.UseFont = true;
             labelControl43.Location = new Point(23, 44);
             labelControl43.Name = "labelControl43";
-            labelControl43.Size = new Size(32, 13);
+            labelControl43.Size = new Size(27, 13);
             labelControl43.TabIndex = 83;
             labelControl43.Text = "Lớp 7";
             // 
             // labelControl42
             // 
             labelControl42.AllowHtmlString = true;
-            labelControl42.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold, GraphicsUnit.Point);
+            labelControl42.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             labelControl42.Appearance.Options.UseFont = true;
             labelControl42.Location = new Point(23, 18);
             labelControl42.Name = "labelControl42";
-            labelControl42.Size = new Size(32, 13);
+            labelControl42.Size = new Size(27, 13);
             labelControl42.TabIndex = 83;
             labelControl42.Text = "Lớp 6";
             // 
