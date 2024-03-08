@@ -36,8 +36,8 @@ namespace QuanLyTuyenSinh.Form
             MaximizeBox = false;
 
             _hoSo = hoSo;
-            Text = DataHelper.CurrSettings.TENTRUONG;
-            HeaderText.Caption = $"Hồ sơ dự tuyển - Đợt {_hoSo.DotTS}";
+            Text = DataHelper.CurrSettings.TENTRUONG;     
+            
             if (!string.IsNullOrEmpty(_hoSo.MaTinh))
             {
                 lstQuanHuyen = _Helper.getListDistrict(_hoSo.MaTinh);
@@ -50,6 +50,18 @@ namespace QuanLyTuyenSinh.Form
                 lookXa.Properties.DataSource = lstPhuongXa;
             }
             if (ImportMode) SetReadOnly();
+
+            if (string.IsNullOrEmpty(_hoSo.IdHoSoDTTC))
+            {
+                chkCoHocNghe.Checked = false;
+                lookMaHoSoTC.Enabled = false;
+            }
+            else
+            {
+                chkCoHocNghe.Checked = true;
+                lookMaHoSoTC.Enabled = true;
+
+            }
         }
         private void SetReadOnly()
         {
@@ -63,7 +75,7 @@ namespace QuanLyTuyenSinh.Form
             _sourceNV = new BindingSource();
 
             _sourceHS.DataSource = _hoSo;
-            _sourceNV.DataSource = _hoSo.DsNguyenVong;
+            _sourceNV.DataSource = _hoSo.DanhSachNgheTrungCap;
             gridControl1.DataSource = _sourceNV;
 
             InitLookupEdits();
@@ -74,10 +86,19 @@ namespace QuanLyTuyenSinh.Form
             LoadAnh();
             Shown += F_HoSo_Shown;
         }
-
+        void EnableControls(bool IsEnable = true)
+        {
+            string WhiteList = "chkCoHocNghe/lookMaHoSoTC";
+            foreach (Control control in grpControlHSData.Controls)
+            {
+                if(!WhiteList.Contains(control.Name))
+                    control.Enabled = IsEnable;
+            }
+        }
         private void F_HoSo_Shown(object? sender, EventArgs e)
         {
             Thread.Sleep(100);
+            chkCoHocNghe.CheckedChanged += ChkCoHocNghe_CheckedChanged;
             btnSaveAndClose.ItemClick += btnSaveCloseHS_Click;
             btnSaveAndNew.ItemClick += btnSaveNewHS_Click;
             txtHo.TextChanged += TxtHo_TextChanged;
@@ -91,31 +112,19 @@ namespace QuanLyTuyenSinh.Form
             txtDiaChi.ButtonClick += TxtDiaChi_ButtonClick;
             txtMaHS.ButtonClick += TxtMaHS_ButtonClick;
             txtThonDuong.TextChanged += txtThonDuong_TextChanged;
-            btnAdd.Click += btnAdd_Click;
-            btnEdit.Click += btnEdit_Click;
-            btnDelete.Click += btnDelete_Click;
             Anh.ContextButtonClick += Anh_ContextButtonClick;
-            gridView1.CellValueChanging += GridView1_CellValueChanging;
             FormClosing += HS_FormClosing;
             ActiveControl = txtHo;
         }
 
-        private void GridView1_CellValueChanging(object? sender, CellValueChangedEventArgs e)
+        private void ChkCoHocNghe_CheckedChanged(object? sender, EventArgs e)
         {
-            string? value = e.Value.ToString();
-            gridView1.CellValueChanged -= GridView1_CellValueChanging;
-            if (e.Column.FieldName.Equals("IdNghe"))
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    if (_hoSo.DsNguyenVong.FirstOrDefault(x => x.IdNghe == value) is not null)
-                    {
-                        XtraMessageBox.Show(this, "Đã tồn tại nguyện vọng này");
-                        gridView1.SetFocusedRowCellValue("IdNghe", null);
-                    }
-                }
-            }
-            gridView1.CellValueChanging += GridView1_CellValueChanging;
+            lookMaHoSoTC.Enabled = chkCoHocNghe.Checked;
+            if(chkCoHocNghe.Checked)
+                EnableControls(false);
+            else
+                EnableControls();
+
         }
 
         private void Anh_ContextButtonClick(object? sender, DevExpress.Utils.ContextItemClickEventArgs e)
@@ -197,25 +206,14 @@ namespace QuanLyTuyenSinh.Form
 
         private void TxtMaHS_ButtonClick(object? sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            if (_hoSo.DsNguyenVong.Count >= 1)
+            //Mã hồ sơ : TX001
+            var max = DataHelper.DSHoSoXetTuyenTX.OrderByDescending(x => x.MaHoSo).FirstOrDefault();
+            if (max == null) txtMaHS.Text = $"TX{_hoSo.NamTS}001";
+            else
             {
-                var nv = _hoSo.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                if (nv == null) return;
-                if (string.IsNullOrEmpty(nv.IdNghe))
-                    return;
-
-                var nv1 = DataHelper.DsNghe.FirstOrDefault(x => x.Id == nv.IdNghe);
-                if (nv1 == null)
-                    return;
-                string manghe = nv1.Ma2;
-                var max = DataHelper.DSHoSoXetTuyenTX.Where(x => x.DotTS == _hoSo.DotTS && x.MaHoSo.Substring(4, 2).Equals(manghe)).OrderByDescending(x => x.MaHoSo).FirstOrDefault();
-                if (max == null) txtMaHS.Text = $"TX{_hoSo.NamTS}{manghe}001";
-                else
-                {
-                    int maxstt = int.Parse(max.MaHoSo.Substring(6, 3));
-                    if (!max.Id.Equals(_hoSo.Id)) maxstt += 1;
-                    txtMaHS.Text = $"TX{_hoSo.NamTS}{manghe}{maxstt.ToString("D3")}";
-                }
+                int maxstt = int.Parse(max.MaHoSo.Substring(2, 3));
+                if (!max.Id.Equals(_hoSo.Id)) maxstt += 1;
+                txtMaHS.Text = $"TX{_hoSo.NamTS}{maxstt.ToString("D3")}";
             }
         }
 
@@ -238,7 +236,7 @@ namespace QuanLyTuyenSinh.Form
         private void TxtHoTenAutoComplete()
         {
             var collection = new AutoCompleteStringCollection();
-            collection.AddRange(DataHelper.DSHoSoXTTC.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ten).Distinct().ToArray());
+            collection.AddRange(DataHelper.DSHoSoXTTC.Select(x => x.Ten).Distinct().ToArray());
             txtTen.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtTen.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -247,7 +245,7 @@ namespace QuanLyTuyenSinh.Form
             txtTen.Properties.AdvancedModeOptions.AutoCompleteCustomSource = collection;
 
             var collection2 = new AutoCompleteStringCollection();
-            collection2.AddRange(DataHelper.DSHoSoXTTC.Where(x => x.DotTS == _hoSo.DotTS).Select(x => x.Ho).Distinct().ToArray());
+            collection2.AddRange(DataHelper.DSHoSoXTTC.Select(x => x.Ho).Distinct().ToArray());
             txtHo.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             txtHo.Properties.AdvancedModeOptions.AutoCompleteMode =
                 TextEditAutoCompleteMode.SuggestAppend;
@@ -452,7 +450,10 @@ namespace QuanLyTuyenSinh.Form
 
             lookDTUT.DataBindings.Clear();
             lookDTUT.DataBindings.Add("EditValue", _sourceHS, "IdDTUT", true, DataSourceUpdateMode.OnPropertyChanged);
-            
+
+            lookMaHoSoTC.DataBindings.Clear();
+            lookMaHoSoTC.DataBindings.Add("EditValue", _sourceHS, "IdHoSoDTTC", true, DataSourceUpdateMode.OnPropertyChanged);
+
         }
 
         private void InitLookupEdits()
@@ -466,7 +467,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode");
             DevForm.CreateSearchLookupEdit(lookXa, "AddressName", "AddressCode");
-
+            DevForm.CreateSearchLookupEdit(lookMaHoSoTC, "MaHoSo", "Id", DataHelper.DSHoSoXTTC, fields: new string[] { "MaHoSo","Ho","Ten"},captions:new string[] {"Mã HS","Họ","Tên"});
         }
 
         private void LoadComboBox()
@@ -487,32 +488,6 @@ namespace QuanLyTuyenSinh.Form
 
             DevForm.CreateComboboxEdit(cbbHTDT, lstHTDT);
             DevForm.CreateComboboxEdit(cbbNoiSinh, lstTinh.Select(x => x.AddressName.Replace("Tỉnh ", "").Replace("Thành Phố", "TP")).ToArray(), "", true, true);
-        }
-
-        private void btnAdd_Click(object? sender, EventArgs e)
-        {
-            if (EditMode)
-                EditMode = !EditMode;
-            gridView1.AddNewRow();
-            gridView1.SetFocusedRowCellValue("NV", _hoSo.DsNguyenVong.Count());
-        }
-
-        private void btnEdit_Click(object? sender, EventArgs e)
-        {
-            btnEdit.Text = EditMode ? "Sửa" : "Lưu";
-            EditMode = !EditMode;
-        }
-
-        private void btnDelete_Click(object? sender, EventArgs e)
-        {
-            var r = gridView1.GetFocusedRow();
-            if (r is not null)
-            {
-                if (XtraMessageBox.Show(this, "Xác nhận xóa?", "Xóa", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    _sourceNV.Remove(r);
-                }
-            }
         }
 
         private void btnSaveNewHS_Click(object? sender, EventArgs e)

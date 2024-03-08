@@ -149,10 +149,10 @@ namespace QuanLyTuyenSinh.Form
                 else
                     foreach (var hs in hsdtTX)
                     {
-                        var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                        if (nv1 != null) lstNV1.Add(nv1);
-                        var nv2 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 2);
-                        if (nv2 != null) lstNV2.Add(nv2);
+                        //var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
+                        //if (nv1 != null) lstNV1.Add(nv1);
+                        //var nv2 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 2);
+                        //if (nv2 != null) lstNV2.Add(nv2);
                     }
 
                 Series series1 = new Series("Nguyện vọng 1", ViewType.Bar);
@@ -462,9 +462,9 @@ namespace QuanLyTuyenSinh.Form
                     int slNV1 = 0;
                     foreach (var hs in sltheotruong)
                     {
-                        var NV1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                        if (NV1 != null && NV1.IdNghe == DataHelper.DsNghe[i].Id)
-                            slNV1++; 
+                        //var NV1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
+                        //if (NV1 != null && NV1.IdNghe == DataHelper.DsNghe[i].Id)
+                        //    slNV1++; 
                     }
                    
                     series.Points.Add(new SeriesPoint(dstruong[j].Ten, slNV1));                    

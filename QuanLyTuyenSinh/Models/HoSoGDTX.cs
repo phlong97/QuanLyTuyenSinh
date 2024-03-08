@@ -13,7 +13,7 @@ namespace QuanLyTuyenSinh.Models
         public string HocLuc7 { get; set; }
         public string HocLuc8 { get; set; }
         public string HocLuc9 { get; set; }       
-        public string IdHoSoTC { get; set; }
+        public string IdHoSoDTTC { get; set; }
         public List<NguyenVong> DanhSachNgheTrungCap { get; set; }
         public KiemTraHoSoGDTX KiemTraHS { get; set; } = new();      
         public override string CheckError()
@@ -192,7 +192,7 @@ namespace QuanLyTuyenSinh.Models
             NoiSinh = NoiSinh,
             DiaChi = DiaChi,
             CCCD = CCCD,
-            LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoTC) ? "Chỉ học văn hóa" : "Có học nghề",
+            LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoDTTC) ? "Chỉ học văn hóa" : "Có học nghề",
             BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
             GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
             GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,

@@ -42,7 +42,11 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
             tablePanelTT = new DevExpress.Utils.Layout.TablePanel();
-            groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            grpControlHSData = new DevExpress.XtraEditors.GroupControl();
+            lookMaHoSoTC = new DevExpress.XtraEditors.SearchLookUpEdit();
+            gridView9 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            labelControl25 = new DevExpress.XtraEditors.LabelControl();
+            chkCoHocNghe = new DevExpress.XtraEditors.CheckEdit();
             labelControl36 = new DevExpress.XtraEditors.LabelControl();
             txtNamTN = new DevExpress.XtraEditors.TextEdit();
             labelControl35 = new DevExpress.XtraEditors.LabelControl();
@@ -149,9 +153,6 @@
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl3 = new DevExpress.XtraEditors.PanelControl();
             labelControl33 = new DevExpress.XtraEditors.LabelControl();
-            btnAdd = new DevExpress.XtraEditors.SimpleButton();
-            btnEdit = new DevExpress.XtraEditors.SimpleButton();
-            btnDelete = new DevExpress.XtraEditors.SimpleButton();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             chkDKXTGDTX = new DevExpress.XtraEditors.CheckEdit();
             chkSYLL = new DevExpress.XtraEditors.CheckEdit();
@@ -170,8 +171,11 @@
             directxFormContainerControl1 = new DevExpress.XtraEditors.DirectXFormContainerControl();
             ((System.ComponentModel.ISupportInitialize)tablePanelTT).BeginInit();
             tablePanelTT.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
-            groupControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grpControlHSData).BeginInit();
+            grpControlHSData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)lookMaHoSoTC.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chkCoHocNghe.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtNamTN.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rdGioiTinh.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)barManager1).BeginInit();
@@ -253,7 +257,7 @@
             // tablePanelTT
             // 
             tablePanelTT.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 730F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 38.64F) });
-            tablePanelTT.Controls.Add(groupControl2);
+            tablePanelTT.Controls.Add(grpControlHSData);
             tablePanelTT.Controls.Add(panelControl1);
             tablePanelTT.Dock = DockStyle.Fill;
             tablePanelTT.Location = new Point(0, 24);
@@ -262,74 +266,114 @@
             tablePanelTT.Size = new Size(1246, 595);
             tablePanelTT.TabIndex = 2;
             // 
-            // groupControl2
+            // grpControlHSData
             // 
-            tablePanelTT.SetColumn(groupControl2, 0);
-            groupControl2.Controls.Add(labelControl36);
-            groupControl2.Controls.Add(txtNamTN);
-            groupControl2.Controls.Add(labelControl35);
-            groupControl2.Controls.Add(labelControl34);
-            groupControl2.Controls.Add(rdGioiTinh);
-            groupControl2.Controls.Add(labelControl32);
-            groupControl2.Controls.Add(labelControl29);
-            groupControl2.Controls.Add(labelControl30);
-            groupControl2.Controls.Add(labelControl28);
-            groupControl2.Controls.Add(labelControl27);
-            groupControl2.Controls.Add(txtDiaChi);
-            groupControl2.Controls.Add(labelControl26);
-            groupControl2.Controls.Add(txtThonDuong);
-            groupControl2.Controls.Add(cbbHTDT);
-            groupControl2.Controls.Add(txtHSGhiChu);
-            groupControl2.Controls.Add(labelControl20);
-            groupControl2.Controls.Add(labelControl12);
-            groupControl2.Controls.Add(labelControl11);
-            groupControl2.Controls.Add(labelControl10);
-            groupControl2.Controls.Add(labelControl9);
-            groupControl2.Controls.Add(labelControl8);
-            groupControl2.Controls.Add(labelControl1);
-            groupControl2.Controls.Add(labelControl17);
-            groupControl2.Controls.Add(labelControl7);
-            groupControl2.Controls.Add(labelControl19);
-            groupControl2.Controls.Add(labelControl15);
-            groupControl2.Controls.Add(labelControl18);
-            groupControl2.Controls.Add(labelControl14);
-            groupControl2.Controls.Add(labelControl13);
-            groupControl2.Controls.Add(labelControl16);
-            groupControl2.Controls.Add(labelControl6);
-            groupControl2.Controls.Add(labelControl5);
-            groupControl2.Controls.Add(labelControl4);
-            groupControl2.Controls.Add(labelControl3);
-            groupControl2.Controls.Add(labelControl2);
-            groupControl2.Controls.Add(txtNNMe);
-            groupControl2.Controls.Add(txtLop);
-            groupControl2.Controls.Add(txtEmail);
-            groupControl2.Controls.Add(dtNgaySinh);
-            groupControl2.Controls.Add(txtTenMe);
-            groupControl2.Controls.Add(txtTen);
-            groupControl2.Controls.Add(txtSDT);
-            groupControl2.Controls.Add(txtCCCD);
-            groupControl2.Controls.Add(txtTenCha);
-            groupControl2.Controls.Add(txtNNCha);
-            groupControl2.Controls.Add(txtHo);
-            groupControl2.Controls.Add(lookTruong);
-            groupControl2.Controls.Add(lookXa);
-            groupControl2.Controls.Add(lookDanToc);
-            groupControl2.Controls.Add(lookTonGiao);
-            groupControl2.Controls.Add(lookQuocTich);
-            groupControl2.Controls.Add(lookTinh);
-            groupControl2.Controls.Add(lookQuanHuyen);
-            groupControl2.Controls.Add(lookTDVH);
-            groupControl2.Controls.Add(cbbNoiSinh);
-            groupControl2.Controls.Add(txtMaHS);
-            groupControl2.Controls.Add(txtNSCha);
-            groupControl2.Controls.Add(txtNSMe);
-            groupControl2.Dock = DockStyle.Fill;
-            groupControl2.Location = new Point(3, 3);
-            groupControl2.Name = "groupControl2";
-            tablePanelTT.SetRow(groupControl2, 0);
-            groupControl2.Size = new Size(724, 589);
-            groupControl2.TabIndex = 4;
-            groupControl2.Text = "Thông tin học sinh";
+            tablePanelTT.SetColumn(grpControlHSData, 0);
+            grpControlHSData.Controls.Add(lookMaHoSoTC);
+            grpControlHSData.Controls.Add(labelControl25);
+            grpControlHSData.Controls.Add(chkCoHocNghe);
+            grpControlHSData.Controls.Add(labelControl36);
+            grpControlHSData.Controls.Add(txtNamTN);
+            grpControlHSData.Controls.Add(labelControl35);
+            grpControlHSData.Controls.Add(labelControl34);
+            grpControlHSData.Controls.Add(rdGioiTinh);
+            grpControlHSData.Controls.Add(labelControl32);
+            grpControlHSData.Controls.Add(labelControl29);
+            grpControlHSData.Controls.Add(labelControl30);
+            grpControlHSData.Controls.Add(labelControl28);
+            grpControlHSData.Controls.Add(labelControl27);
+            grpControlHSData.Controls.Add(txtDiaChi);
+            grpControlHSData.Controls.Add(labelControl26);
+            grpControlHSData.Controls.Add(txtThonDuong);
+            grpControlHSData.Controls.Add(cbbHTDT);
+            grpControlHSData.Controls.Add(txtHSGhiChu);
+            grpControlHSData.Controls.Add(labelControl20);
+            grpControlHSData.Controls.Add(labelControl12);
+            grpControlHSData.Controls.Add(labelControl11);
+            grpControlHSData.Controls.Add(labelControl10);
+            grpControlHSData.Controls.Add(labelControl9);
+            grpControlHSData.Controls.Add(labelControl8);
+            grpControlHSData.Controls.Add(labelControl1);
+            grpControlHSData.Controls.Add(labelControl17);
+            grpControlHSData.Controls.Add(labelControl7);
+            grpControlHSData.Controls.Add(labelControl19);
+            grpControlHSData.Controls.Add(labelControl15);
+            grpControlHSData.Controls.Add(labelControl18);
+            grpControlHSData.Controls.Add(labelControl14);
+            grpControlHSData.Controls.Add(labelControl13);
+            grpControlHSData.Controls.Add(labelControl16);
+            grpControlHSData.Controls.Add(labelControl6);
+            grpControlHSData.Controls.Add(labelControl5);
+            grpControlHSData.Controls.Add(labelControl4);
+            grpControlHSData.Controls.Add(labelControl3);
+            grpControlHSData.Controls.Add(labelControl2);
+            grpControlHSData.Controls.Add(txtNNMe);
+            grpControlHSData.Controls.Add(txtLop);
+            grpControlHSData.Controls.Add(txtEmail);
+            grpControlHSData.Controls.Add(dtNgaySinh);
+            grpControlHSData.Controls.Add(txtTenMe);
+            grpControlHSData.Controls.Add(txtTen);
+            grpControlHSData.Controls.Add(txtSDT);
+            grpControlHSData.Controls.Add(txtCCCD);
+            grpControlHSData.Controls.Add(txtTenCha);
+            grpControlHSData.Controls.Add(txtNNCha);
+            grpControlHSData.Controls.Add(txtHo);
+            grpControlHSData.Controls.Add(lookTruong);
+            grpControlHSData.Controls.Add(lookXa);
+            grpControlHSData.Controls.Add(lookDanToc);
+            grpControlHSData.Controls.Add(lookTonGiao);
+            grpControlHSData.Controls.Add(lookQuocTich);
+            grpControlHSData.Controls.Add(lookTinh);
+            grpControlHSData.Controls.Add(lookQuanHuyen);
+            grpControlHSData.Controls.Add(lookTDVH);
+            grpControlHSData.Controls.Add(cbbNoiSinh);
+            grpControlHSData.Controls.Add(txtMaHS);
+            grpControlHSData.Controls.Add(txtNSCha);
+            grpControlHSData.Controls.Add(txtNSMe);
+            grpControlHSData.Dock = DockStyle.Fill;
+            grpControlHSData.Location = new Point(3, 3);
+            grpControlHSData.Name = "grpControlHSData";
+            tablePanelTT.SetRow(grpControlHSData, 0);
+            grpControlHSData.Size = new Size(724, 589);
+            grpControlHSData.TabIndex = 4;
+            grpControlHSData.Text = "Thông tin học sinh";
+            // 
+            // lookMaHoSoTC
+            // 
+            lookMaHoSoTC.Location = new Point(585, 1);
+            lookMaHoSoTC.Name = "lookMaHoSoTC";
+            lookMaHoSoTC.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            lookMaHoSoTC.Properties.NullText = "(Trống)";
+            lookMaHoSoTC.Properties.PopupView = gridView9;
+            lookMaHoSoTC.Size = new Size(134, 20);
+            lookMaHoSoTC.TabIndex = 146;
+            // 
+            // gridView9
+            // 
+            gridView9.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            gridView9.Name = "gridView9";
+            gridView9.OptionsSelection.EnableAppearanceFocusedCell = false;
+            gridView9.OptionsView.ShowGroupPanel = false;
+            // 
+            // labelControl25
+            // 
+            labelControl25.AllowHtmlString = true;
+            labelControl25.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
+            labelControl25.Appearance.Options.UseFont = true;
+            labelControl25.Location = new Point(516, 4);
+            labelControl25.Name = "labelControl25";
+            labelControl25.Size = new Size(61, 13);
+            labelControl25.TabIndex = 145;
+            labelControl25.Text = "Mã hồ sơ TC";
+            // 
+            // chkCoHocNghe
+            // 
+            chkCoHocNghe.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkCoHocNghe.Location = new Point(340, 0);
+            chkCoHocNghe.Name = "chkCoHocNghe";
+            chkCoHocNghe.Properties.Caption = "Có theo học nghề";
+            chkCoHocNghe.Size = new Size(120, 20);
+            chkCoHocNghe.TabIndex = 87;
             // 
             // labelControl36
             // 
@@ -1294,14 +1338,12 @@
             // 
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
+            gridView1.OptionsBehavior.Editable = false;
             gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // panelControl3
             // 
             panelControl3.Controls.Add(labelControl33);
-            panelControl3.Controls.Add(btnAdd);
-            panelControl3.Controls.Add(btnEdit);
-            panelControl3.Controls.Add(btnDelete);
             panelControl3.Location = new Point(0, 1);
             panelControl3.Name = "panelControl3";
             panelControl3.Size = new Size(507, 22);
@@ -1315,42 +1357,9 @@
             labelControl33.Dock = DockStyle.Left;
             labelControl33.Location = new Point(2, 2);
             labelControl33.Name = "labelControl33";
-            labelControl33.Size = new Size(148, 14);
+            labelControl33.Size = new Size(98, 14);
             labelControl33.TabIndex = 86;
-            labelControl33.Text = "Danh sách nguyện vọng";
-            // 
-            // btnAdd
-            // 
-            btnAdd.Dock = DockStyle.Right;
-            btnAdd.ImageOptions.Image = (Image)resources.GetObject("btnAdd.ImageOptions.Image");
-            btnAdd.Location = new Point(301, 2);
-            btnAdd.Margin = new Padding(0);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(73, 18);
-            btnAdd.TabIndex = 0;
-            btnAdd.Text = "Thêm";
-            // 
-            // btnEdit
-            // 
-            btnEdit.Dock = DockStyle.Right;
-            btnEdit.ImageOptions.Image = (Image)resources.GetObject("btnEdit.ImageOptions.Image");
-            btnEdit.Location = new Point(374, 2);
-            btnEdit.Margin = new Padding(0);
-            btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(58, 18);
-            btnEdit.TabIndex = 1;
-            btnEdit.Text = "Sửa";
-            // 
-            // btnDelete
-            // 
-            btnDelete.Dock = DockStyle.Right;
-            btnDelete.ImageOptions.Image = (Image)resources.GetObject("btnDelete.ImageOptions.Image");
-            btnDelete.Location = new Point(432, 2);
-            btnDelete.Margin = new Padding(0);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(73, 18);
-            btnDelete.TabIndex = 2;
-            btnDelete.Text = "Xóa";
+            labelControl33.Text = "Danh sách nghề";
             // 
             // groupControl1
             // 
@@ -1532,9 +1541,12 @@
             Load += F_HoSo_Load;
             ((System.ComponentModel.ISupportInitialize)tablePanelTT).EndInit();
             tablePanelTT.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
-            groupControl2.ResumeLayout(false);
-            groupControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)grpControlHSData).EndInit();
+            grpControlHSData.ResumeLayout(false);
+            grpControlHSData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)lookMaHoSoTC.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chkCoHocNghe.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtNamTN.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)rdGioiTinh.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)barManager1).EndInit();
@@ -1634,7 +1646,7 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraEditors.DirectXFormContainerControl directxFormContainerControl1;
         private DevExpress.XtraEditors.PanelControl panelControl1;
-        private DevExpress.XtraEditors.GroupControl groupControl2;
+        private DevExpress.XtraEditors.GroupControl grpControlHSData;
         private DevExpress.XtraEditors.LabelControl labelControl36;
         private DevExpress.XtraEditors.TextEdit txtNamTN;
         private DevExpress.XtraEditors.LabelControl labelControl35;
@@ -1720,9 +1732,6 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraEditors.PanelControl panelControl3;
         private DevExpress.XtraEditors.LabelControl labelControl33;
-        private DevExpress.XtraEditors.SimpleButton btnAdd;
-        private DevExpress.XtraEditors.SimpleButton btnEdit;
-        private DevExpress.XtraEditors.SimpleButton btnDelete;
         private DevExpress.XtraEditors.CheckEdit chkSYLL;
         private DevExpress.XtraEditors.CheckEdit chkDKXTGDTX;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
@@ -1749,5 +1758,9 @@
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraEditors.LabelControl labelControl44;
         private DevExpress.XtraEditors.LabelControl labelControl43;
+        private DevExpress.XtraEditors.SearchLookUpEdit lookMaHoSoTC;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView9;
+        private DevExpress.XtraEditors.LabelControl labelControl25;
+        private DevExpress.XtraEditors.CheckEdit chkCoHocNghe;
     }
 }

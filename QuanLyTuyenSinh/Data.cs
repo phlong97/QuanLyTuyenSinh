@@ -666,9 +666,7 @@ namespace QuanLyTuyenSinh
                 int tongTHCS = 0;
                 for (int j = 0; j < DsNghe.Count; j++)
                 {
-                    int sldt = DSHoSoXetTuyenTX.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
-                    x.DsNguyenVong.FirstOrDefault(x => x.IdNghe.Equals(DsNghe[j].Id) && x.NV == 1) is not null
-                    && (madot == 0 ? true : x.DotTS == madot)).Count();
+                    int sldt = 0;
                     tongTHCS += sldt;
                     dynamicObj.Add(DsNghe[j].Ten, sldt);
                 }

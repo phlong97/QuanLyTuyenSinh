@@ -362,7 +362,7 @@ namespace QuanLyTuyenSinh
 
     public static class DevForm
     {
-        public static void CreateSearchLookupEdit(SearchLookUpEdit lookUp, string display, string member, IList? source = null, string nullText = "(Trống)")
+        public static void CreateSearchLookupEdit(SearchLookUpEdit lookUp, string display, string member, IList? source = null, string nullText = "(Trống)", string[] fields = null,string[] captions = null)
         {
             if (lookUp == null)
             {
@@ -374,6 +374,14 @@ namespace QuanLyTuyenSinh
             lookUp.Properties.BestFitMode = BestFitMode.BestFit;
             lookUp.Properties.AutoHeight = true;
             lookUp.Properties.NullText = nullText;
+            if(fields != null)
+            {
+                lookUp.Properties.View.Columns.Clear();
+                for (int i = 0; i < fields.Length; i++)
+                {
+                    lookUp.Properties.View.Columns.AddVisible(fields[i], captions[i]);
+                }
+            }
         }
 
         public static void CreateComboboxEdit(ComboBoxEdit cbb, string[] lst, string nullText = "(Trống)", bool allowEdit = false, bool autoComplete = false)

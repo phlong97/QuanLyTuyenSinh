@@ -165,7 +165,6 @@ namespace QuanLyTuyenSinh.Form
                             IdDanToc = dt is not null ? dt.Id : string.Empty,
                             IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
                             IdTonGiao = tg is not null ? tg.Id : string.Empty,
-                            IdKVUT = kvut is not null ? kvut.Id : string.Empty,
                         });
                         f.Show(this);
                     }
