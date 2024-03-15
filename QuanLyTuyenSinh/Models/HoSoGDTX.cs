@@ -1,5 +1,6 @@
 ﻿using DevExpress.Data.Linq.Helpers;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace QuanLyTuyenSinh.Models
 {
@@ -12,16 +13,34 @@ namespace QuanLyTuyenSinh.Models
         public string HocLuc6 { get; set; }
         public string HocLuc7 { get; set; }
         public string HocLuc8 { get; set; }
-        public string HocLuc9 { get; set; }       
-        public string IdHoSoDTTC { get; set; }
-        public List<NguyenVong> DanhSachNgheTrungCap { get; set; }
+        public string HocLuc9 { get; set; }
+        private string _IdHoSoDTTC;
+        public string IdHoSoDTTC 
+        { 
+            get => _IdHoSoDTTC;
+            set
+            {
+                _IdHoSoDTTC = value;
+                var nghe = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id == _IdHoSoDTTC);
+                if (nghe != null)
+                {
+                    var nv = nghe.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
+                    if (nv != null)
+                    {
+                        IdNgheDT = nv.IdNghe;
+                    }
+                }
+            } 
+        }
+        public string IdNgheDT { get; set; }
+        public List<NguyenVong> DanhSachNgheTrungCap { get; set; } = new();
         public KiemTraHoSoGDTX KiemTraHS { get; set; } = new();      
         public override string CheckError()
         {
             string errs = string.Empty;
             if (string.IsNullOrEmpty(MaHoSo))
                 errs += "Chưa nhập mã hồ sơ\n";
-            if (DataHelper.DSHoSoXetTuyenTX.Count(x => x.MaHoSo.Equals(MaHoSo) && x.DotTS == DotTS) > 1)
+            if (DataHelper.DSHoSoXetTuyenTX.Count(x => x.MaHoSo.Equals(MaHoSo)) > 1)
                 errs += "Trùng mã hồ sơ\n";
             if (string.IsNullOrEmpty(Ho))
                 errs += "Chưa nhập họ học sinh \n";
@@ -100,6 +119,9 @@ namespace QuanLyTuyenSinh.Models
                 DiemLop7 = TinhDiemXL(HocLuc7,HanhKiem7),
                 DiemLop8 = TinhDiemXL(HocLuc8, HanhKiem8),
                 DiemLop9 = TinhDiemXL(HocLuc9, HanhKiem9),
+                LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoDTTC) ? "Chỉ học văn hóa" : "Học thêm nghề",
+                IdNgheNV1 = DanhSachNgheTrungCap.FirstOrDefault(x => x.NV == 1) == null ? null : DanhSachNgheTrungCap.First(x => x.NV == 1).IdNghe
+
             };
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
@@ -124,7 +146,6 @@ namespace QuanLyTuyenSinh.Models
                 MaHoSo = MaHoSo,
                 Ho = Ho,
                 Ten = Ten,
-                DotTS = DotTS,
                 CCCD = CCCD,
                 TongDXT = TinhDiemXetTuyen(),
                 Email = Email,
@@ -155,6 +176,8 @@ namespace QuanLyTuyenSinh.Models
                 SDT = SDT,
                 DiaChi = DiaChi,
                 IdDTUT = IdDTUT,
+                LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoDTTC) ? "Chỉ học văn hóa" : "Học thêm nghề",
+                IdNgheTrungTuyen = DanhSachNgheTrungCap.FirstOrDefault(x => x.NV == 1) == null ? null : DanhSachNgheTrungCap.First(x => x.NV == 1).IdNghe
             };
 
             return hs;
@@ -192,7 +215,7 @@ namespace QuanLyTuyenSinh.Models
             NoiSinh = NoiSinh,
             DiaChi = DiaChi,
             CCCD = CCCD,
-            LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoDTTC) ? "Chỉ học văn hóa" : "Có học nghề",
+            LoaiXetTuyen = string.IsNullOrEmpty(IdHoSoDTTC) ? "Chỉ học văn hóa" : "Học thêm nghề",
             BangTN = KiemTraHS.BangTN ? "X" : string.Empty,
             GCNTT = KiemTraHS.GCNTT ? "X" : string.Empty,
             GiayCNUT = KiemTraHS.GiayCNUT ? "X" : string.Empty,
@@ -206,7 +229,7 @@ namespace QuanLyTuyenSinh.Models
             SYLL = KiemTraHS.SYLL ? "X" : string.Empty,
             SDT = SDT,
             NamTS = NamTS,
-            DotTS = DotTS,
+            IdNgheDT1 = DanhSachNgheTrungCap.FirstOrDefault(x => x.NV == 1) == null ? null : DanhSachNgheTrungCap.First(x => x.NV == 1).IdNghe
         };
 
         public override bool Save() => _LiteDb.Upsert(this, TuDien.CategoryName.HoSoDuTuyenGDTX);
@@ -275,11 +298,11 @@ namespace QuanLyTuyenSinh.Models
         public string IdDTUT { get; set; }
         [Display(AutoGenerateField =false)]
         public string IdHoSoTC { get; set; }
-        [Display(Name = "Xét tuyển")]
+        [Display(Name = "Loại đăng ký")]
         public string LoaiXetTuyen { get; set; } // Chỉ học văn hóa/ Học thêm nghề
 
         [Display(Name = "Nghề xét tuyển NV1")]
-        public string IdNgheDT1 { get; set; }
+        public string? IdNgheDT1 { get; set; }
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
@@ -369,7 +392,9 @@ namespace QuanLyTuyenSinh.Models
         public double TongDXT { get; set; }
 
         [Display(Name = "Nghề trúng tuyển")]
-        public string IdNgheTrungTuyen { get; set; }
+        public string? IdNgheTrungTuyen { get; set; }
+        [Display(Name = "Loại đăng ký")]
+        public string LoaiXetTuyen { get; set; } // Chỉ học văn hóa/ Học thêm nghề
 
         public override string CheckError()
         {

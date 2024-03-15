@@ -153,7 +153,7 @@
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             panelControl3 = new DevExpress.XtraEditors.PanelControl();
             labelControl33 = new DevExpress.XtraEditors.LabelControl();
-            groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            grpKTHS = new DevExpress.XtraEditors.GroupControl();
             chkDKXTGDTX = new DevExpress.XtraEditors.CheckEdit();
             chkSYLL = new DevExpress.XtraEditors.CheckEdit();
             Anh = new DevExpress.XtraEditors.PictureEdit();
@@ -236,8 +236,8 @@
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelControl3).BeginInit();
             panelControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
-            groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grpKTHS).BeginInit();
+            grpKTHS.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chkDKXTGDTX.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkSYLL.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Anh.Properties).BeginInit();
@@ -1060,7 +1060,7 @@
             tablePanelTT.SetColumn(panelControl1, 1);
             panelControl1.Controls.Add(xtraTabControl1);
             panelControl1.Controls.Add(panelControl2);
-            panelControl1.Controls.Add(groupControl1);
+            panelControl1.Controls.Add(grpKTHS);
             panelControl1.Dock = DockStyle.Fill;
             panelControl1.Location = new Point(733, 3);
             panelControl1.Name = "panelControl1";
@@ -1361,28 +1361,28 @@
             labelControl33.TabIndex = 86;
             labelControl33.Text = "Danh sách nghề";
             // 
-            // groupControl1
+            // grpKTHS
             // 
-            groupControl1.Controls.Add(chkDKXTGDTX);
-            groupControl1.Controls.Add(chkSYLL);
-            groupControl1.Controls.Add(Anh);
-            groupControl1.Controls.Add(labelControl31);
-            groupControl1.Controls.Add(chkCCCD);
-            groupControl1.Controls.Add(chkBangTN);
-            groupControl1.Controls.Add(chkGKS);
-            groupControl1.Controls.Add(chkAnh);
-            groupControl1.Controls.Add(chkHocBa);
-            groupControl1.Controls.Add(txtGhiChu);
-            groupControl1.Controls.Add(chkCNUT);
-            groupControl1.Controls.Add(chkGKSK);
-            groupControl1.Controls.Add(chkCNTN);
-            groupControl1.Controls.Add(chkPhieuDKDT);
-            groupControl1.Dock = DockStyle.Top;
-            groupControl1.Location = new Point(2, 2);
-            groupControl1.Name = "groupControl1";
-            groupControl1.Size = new Size(506, 272);
-            groupControl1.TabIndex = 20;
-            groupControl1.Text = "Kiểm tra hồ sơ";
+            grpKTHS.Controls.Add(chkDKXTGDTX);
+            grpKTHS.Controls.Add(chkSYLL);
+            grpKTHS.Controls.Add(Anh);
+            grpKTHS.Controls.Add(labelControl31);
+            grpKTHS.Controls.Add(chkCCCD);
+            grpKTHS.Controls.Add(chkBangTN);
+            grpKTHS.Controls.Add(chkGKS);
+            grpKTHS.Controls.Add(chkAnh);
+            grpKTHS.Controls.Add(chkHocBa);
+            grpKTHS.Controls.Add(txtGhiChu);
+            grpKTHS.Controls.Add(chkCNUT);
+            grpKTHS.Controls.Add(chkGKSK);
+            grpKTHS.Controls.Add(chkCNTN);
+            grpKTHS.Controls.Add(chkPhieuDKDT);
+            grpKTHS.Dock = DockStyle.Top;
+            grpKTHS.Location = new Point(2, 2);
+            grpKTHS.Name = "grpKTHS";
+            grpKTHS.Size = new Size(506, 272);
+            grpKTHS.TabIndex = 20;
+            grpKTHS.Text = "Kiểm tra hồ sơ";
             // 
             // chkDKXTGDTX
             // 
@@ -1609,9 +1609,9 @@
             ((System.ComponentModel.ISupportInitialize)panelControl3).EndInit();
             panelControl3.ResumeLayout(false);
             panelControl3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
-            groupControl1.ResumeLayout(false);
-            groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)grpKTHS).EndInit();
+            grpKTHS.ResumeLayout(false);
+            grpKTHS.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)chkDKXTGDTX.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkSYLL.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)Anh.Properties).EndInit();
@@ -1713,7 +1713,7 @@
         private DevExpress.XtraEditors.ButtonEdit txtMaHS;
         private DevExpress.XtraEditors.TextEdit txtNSCha;
         private DevExpress.XtraEditors.TextEdit txtNSMe;
-        private DevExpress.XtraEditors.GroupControl groupControl1;
+        private DevExpress.XtraEditors.GroupControl grpKTHS;
         private DevExpress.XtraEditors.LabelControl labelControl31;
         private DevExpress.XtraEditors.CheckEdit chkCCCD;
         private DevExpress.XtraEditors.CheckEdit chkBangTN;

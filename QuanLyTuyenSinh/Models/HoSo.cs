@@ -93,9 +93,7 @@ namespace QuanLyTuyenSinh.Models
 
         [Display(AutoGenerateField = false)]
         public int NamTS { get; set; }
-
-        [Display(Name = "Đợt tuyển sinh")]
-        public int DotTS { get; set; }
+        
         [Display(Name = "Trường")]
         public string IdTruong { get; set; }
 

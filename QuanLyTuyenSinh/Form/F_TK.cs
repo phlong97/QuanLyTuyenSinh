@@ -77,19 +77,35 @@ namespace QuanLyTuyenSinh.Form
 
         private void LoadThongKeTheoXa(string mahuyen = "51103")
         {
-            if (dts < 0)
+            if (chkTrungCap.Checked)
             {
-                XtraMessageBox.Show("Chưa chọn đơt tuyển sinh");
-                return;
+                if (dts < 0)
+                {
+                    XtraMessageBox.Show("Chưa chọn đơt tuyển sinh");
+                    return;
+                }
+                gridView.Columns.Clear();
+                gridControl1.DataSource = DataHelper.THSLTTTheoXaTC(dts);
+                panelchart.Controls.Clear();
+                ChartControl chart = new ChartControl();
+                ChartSetting(chart);
+                LoadTKTheoXaTC(chart,mahuyen);
+                
             }
-            gridView.Columns.Clear();
-            gridControl1.DataSource = chkTrungCap.Checked ? DataHelper.THSLTTTheoXaTC(dts) : DataHelper.THSLTTTheoXaGDTX(dts);
-            panelchart.Controls.Clear();
-            ChartControl chart = new ChartControl();
-            ChartSetting(chart);
+            else
+            {
+                gridView.Columns.Clear();
+                gridControl1.DataSource = DataHelper.THSLTTTheoXaGDTX();
+                panelchart.Controls.Clear();
+                ChartControl chart = new ChartControl();
+                ChartSetting(chart);
+                LoadTKTheoXaGDTX(chart, mahuyen);
+            }               
+        }
 
-            var lstTTTC = DataHelper.DSHoSoTTTC.Where(x => (dts == 0 ? true : x.DotTS == dts));
-            var lstTTTX = DataHelper.DSHoSoTrungTuyenTX.Where(x => (dts == 0 ? true : x.DotTS == dts));
+        private void LoadTKTheoXaGDTX(ChartControl chart, string mahuyen)
+        {
+            var lstTTTC = DataHelper.DSHoSoTrungTuyenTX;
 
             var lstXa = _Helper.getListWards(mahuyen);
 
@@ -100,8 +116,51 @@ namespace QuanLyTuyenSinh.Form
 
                 for (int j = 0; j < lstXa.Count; j++)
                 {
-                    int sl = chkTrungCap.Checked ? lstTTTC.Where(x => x.MaXa == lstXa[j].AddressCode && 
-                    x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)).Count() : lstTTTX.Where(x => x.MaXa == lstXa[j].AddressCode &&
+                    int sl = lstTTTC.Where(x => x.MaXa == lstXa[j].AddressCode &&
+                    !string.IsNullOrEmpty(x.IdNgheTrungTuyen) &&
+                    x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)).Count();
+                    series.Points.Add(new SeriesPoint(lstXa[j].AddressName, sl));
+                }
+
+                chart.Series.Add(series);
+            }
+
+            Series seriesVH = new Series("Chỉ học văn hóa", ViewType.Bar);
+            seriesVH.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            for (int j = 0; j < lstXa.Count; j++)
+            {
+                int sl = lstTTTC.Where(x => x.MaXa == lstXa[j].AddressCode &&
+                string.IsNullOrEmpty(x.IdNgheTrungTuyen)).Count();
+                seriesVH.Points.Add(new SeriesPoint(lstXa[j].AddressName, sl));
+            }
+
+            chart.Series.Add(seriesVH);
+
+            ChartTitle chartTitle1 = new ChartTitle();
+            chartTitle1.Text = "Số lượng trúng tuyển theo từng xã huyện Vạn Ninh";
+            chart.Titles.Add(chartTitle1);
+            chart.SeriesTemplate.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            chart.Dock = DockStyle.Fill;
+            panelchart.Controls.Add(chart);
+        }
+
+        private void LoadTKTheoXaTC(ChartControl chart,string mahuyen)
+        {
+            
+            var lstTTTC = DataHelper.DSHoSoTTTC.Where(x => (dts == 0 ? true : x.DotTS == dts));
+
+            var lstXa = _Helper.getListWards(mahuyen);
+
+            for (int i = 0; i < DataHelper.DsNghe.Count; i++)
+            {
+                Series series = new Series(DataHelper.DsNghe[i].Ten, ViewType.Bar);
+                series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+                for (int j = 0; j < lstXa.Count; j++)
+                {
+                    int sl = lstTTTC.Where(x => x.MaXa == lstXa[j].AddressCode &&
                     x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)).Count();
                     series.Points.Add(new SeriesPoint(lstXa[j].AddressName, sl));
                 }
@@ -119,189 +178,268 @@ namespace QuanLyTuyenSinh.Form
 
         private void ButtonTKTheoNghe_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (dts < 0)
-            {
-                XtraMessageBox.Show("Chưa chọn đơt tuyển sinh");
-                return;
-            }
-            gridView.Columns.Clear();
+            if(chkTrungCap.Checked)
+                if (dts < 0)
+                {
+                    XtraMessageBox.Show("Chưa chọn đơt tuyển sinh");
+                    return;
+                }
 
+            gridView.Columns.Clear();
             panelchart.Controls.Clear();
             ChartControl chart = new ChartControl();
             ChartSetting(chart);
 
-            if (chkXetTuyen.Checked)
+            if (chkXetTuyen.Checked && chkTrungCap.Checked)
             {
-                List<THSLTheoNghe> lstReport = new();
-
-                List<NguyenVong> lstNV1 = new();
-                List<NguyenVong> lstNV2 = new();
-                var hsdtTC = DataHelper.DSHoSoXTTC.Where(x => (dts == 0 ? true : x.DotTS == dts));
-                var hsdtTX = DataHelper.DSHoSoXetTuyenTX.Where(x => (dts == 0 ? true : x.DotTS == dts));
-                if(chkTrungCap.Checked)
-                    foreach (var hs in hsdtTC)
-                    {
-                        var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                        if (nv1 != null) lstNV1.Add(nv1);
-                        var nv2 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 2);
-                        if (nv2 != null) lstNV2.Add(nv2);
-                    }
-                else
-                    foreach (var hs in hsdtTX)
-                    {
-                        //var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                        //if (nv1 != null) lstNV1.Add(nv1);
-                        //var nv2 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 2);
-                        //if (nv2 != null) lstNV2.Add(nv2);
-                    }
-
-                Series series1 = new Series("Nguyện vọng 1", ViewType.Bar);
-                Series series2 = new Series("Nguyện vọng 2", ViewType.Bar);
-                series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-
-                for (int i = 0; i < DataHelper.DsNghe.Count; i++)
-                {
-                    lstReport.Add(new THSLTheoNghe
-                    {
-                        STT = (i + 1).ToString(),
-                        MaNghe = DataHelper.DsNghe[i].Ma,
-                        TenNghe = DataHelper.DsNghe[i].Ten,
-                        SLNV1 = lstNV1.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count(),
-                        SLNV2 = lstNV2.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count(),
-                    });
-                    series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstNV1.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count()));
-                    series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstNV2.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count()));
-                }
-                lstReport.Add(new THSLTheoNghe
-                {
-                    TenNghe = "Tổng cộng",
-                    SLNV1 = lstNV1.Count(),
-                    SLNV2 = lstNV2.Count(),
-                });
-                gridControl1.DataSource = lstReport;
-                chart.Series.AddRange(new Series[] { series1, series2 });
-
-                ChartTitle chartTitle1 = new ChartTitle();
-                chartTitle1.Text = "Số lượng dự tuyển theo nghề";
-                chart.Titles.Add(chartTitle1);
+                LoadThongKeDTTheoNgheTC(chart);
             }
-            else
+            else if (chkTrungCap.Checked && chkTrungTuyen.Checked)
             {
-                if (chkTrungCap.Checked)
-                {
-                    List<THSLTTTheoNghe> lstReport = new();
-
-                    Series series1 = new Series("Số lượng học sinh", ViewType.Bar);
-                    Series series2 = new Series("Học sinh nữ", ViewType.Bar);
-                    Series series3 = new Series("Đối tượng ưu tiên", ViewType.Bar);
-                    Series series4 = new Series("Tốt nghiệp THCS", ViewType.Bar);
-                    Series series5 = new Series("Tốt nghiệp THPT", ViewType.Bar);
-
-                    series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series4.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series5.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-
-                    for (int i = 0; i < DataHelper.DsNghe.Count; i++)
-                    {
-                        var lstHDTTNghe = DataHelper.DSHoSoTTTC.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
-                        && (dts == 0 ? true : x.DotTS == dts));
-                        series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Count()));
-                        series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
-                        series3.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));
-                        series4.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.TDHV.Equals("THCS")).Count()));
-                        series5.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.TDHV.Equals("THPT")).Count()));
-                        lstReport.Add(new THSLTTTheoNghe
-                        {
-                            STT = (i + 1).ToString(),
-                            MaNghe = DataHelper.DsNghe[i].Ma,
-                            TenNghe = DataHelper.DsNghe[i].Ten,
-                            SLHS = lstHDTTNghe.Count(),
-                            SLHSNu = lstHDTTNghe.Where(x => !x.GioiTinh).Count(),
-                            SLDTUUT = lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
-                            SLTNTHCS = lstHDTTNghe.Where(x => x.TDHV.Equals("THCS")).Count(),
-                            SLTNTHPTT = lstHDTTNghe.Where(x => x.TDHV.Equals("THPT")).Count(),
-                        });
-                    }
-                    lstReport.Add(new THSLTTTheoNghe
-                    {
-                        TenNghe = "Tổng cộng",
-                        SLHS = lstReport.Sum(x => x.SLHS),
-                        SLHSNu = lstReport.Sum(x => x.SLHSNu),
-                        SLDTUUT = lstReport.Sum(x => x.SLDTUUT),
-                        SLTNTHCS = lstReport.Sum(x => x.SLTNTHCS),
-                        SLTNTHPTT = lstReport.Sum(x => x.SLTNTHPTT),
-                    });
-                    gridControl1.DataSource = lstReport;
-                    chart.Series.AddRange(new Series[] { series1, series2, series3, series4, series5 });
-                }
-                else
-                {
-                    List<THSLTTTheoNgheTX> lstReport = new();
-
-                    Series series1 = new Series("Số lượng học sinh", ViewType.Bar);
-                    Series series2 = new Series("Học sinh nữ", ViewType.Bar);
-                    Series series3 = new Series("Đối tượng ưu tiên", ViewType.Bar);
-                    Series series4 = new Series("Tốt nghiệp THCS", ViewType.Bar);
-                    Series series5 = new Series("Tốt nghiệp THPT", ViewType.Bar);
-
-                    series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series4.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-                    series5.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-
-                    for (int i = 0; i < DataHelper.DsNghe.Count; i++)
-                    {
-                        var lstHDTTNghe = DataHelper.DSHoSoTrungTuyenTX.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
-                        && (dts == 0 ? true : x.DotTS == dts));
-                        series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Count()));
-                        series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
-                        series3.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));
-                        series4.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.TDHV.Equals("THCS")).Count()));
-                        series5.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.TDHV.Equals("THPT")).Count()));
-                        lstReport.Add(new THSLTTTheoNgheTX
-                        {
-                            STT = (i + 1).ToString(),
-                            MaNghe = DataHelper.DsNghe[i].Ma,
-                            TenNghe = DataHelper.DsNghe[i].Ten,
-                            SLHS = lstHDTTNghe.Count(),
-                            SLHSNu = lstHDTTNghe.Where(x => !x.GioiTinh).Count(),
-                            SLDTUUT = lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
-                            SLHSNam = lstHDTTNghe.Where(x => x.GioiTinh).Count(),                            
-                        });
-                    }
-                    lstReport.Add(new THSLTTTheoNgheTX
-                    {
-                        TenNghe = "Tổng cộng",
-                        SLHS = lstReport.Sum(x => x.SLHS),
-                        SLHSNu = lstReport.Sum(x => x.SLHSNu),
-                        SLDTUUT = lstReport.Sum(x => x.SLDTUUT),
-                        SLHSNam = lstReport.Sum(x => x.SLHSNam)
-                    });
-                    gridControl1.DataSource = lstReport;
-                    chart.Series.AddRange(new Series[] { series1, series2, series3, series4, series5 });
-                }
-                
-
-                ChartTitle chartTitle1 = new ChartTitle();
-                chartTitle1.Text = "Số lượng trúng tuyển theo nghề";
-                chart.Titles.Add(chartTitle1);
+                LoadThongKeTTTheoNgheTC(chart);
             }
-
+            else if (chkGDTX.Checked && chkTrungTuyen.Checked)
+            {
+                LoadThongKeTTTheoNgheTX(chart);
+            }
+            else if (chkXetTuyen.Checked && chkGDTX.Checked)
+            {
+                LoadThongKeDTTheoNgheTX(chart);
+            }
+           
             chart.Dock = DockStyle.Fill;
             panelchart.Controls.Add(chart);
         }
 
+        private void LoadThongKeDTTheoNgheTX(ChartControl chart)
+        {
+            List<THSLTTTheoNgheTX> lstReport = new();
+
+            Series series1 = new Series("Học sinh nam", ViewType.Bar);
+            Series series2 = new Series("Học sinh nữ", ViewType.Bar);
+            Series series3 = new Series("Đối tượng ưu tiên", ViewType.Bar);
+
+
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            for (int i = 0; i < DataHelper.DsNghe.Count; i++)
+            {
+                var lstHDTTNghe = DataHelper.DSHoSoXetTuyenTX.Where(x => x.IdNgheDT == DataHelper.DsNghe[i].Id);
+                series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.GioiTinh).Count()));
+                series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
+                series3.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));                
+                lstReport.Add(new THSLTTTheoNgheTX
+                {
+                    STT = (i + 1).ToString(),
+                    MaNghe = DataHelper.DsNghe[i].Ma,
+                    TenNghe = DataHelper.DsNghe[i].Ten,
+                    SLHS = lstHDTTNghe.Count(),
+                    SLHSNu = lstHDTTNghe.Where(x => !x.GioiTinh).Count(),
+                    SLDTUUT = lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
+                    SLHSNam = lstHDTTNghe.Where(x => x.GioiTinh).Count(),                    
+                });
+            }
+            var ChiHocVH = DataHelper.DSHoSoXetTuyenTX.Where(x => string.IsNullOrEmpty(x.IdNgheDT));
+            series1.Points.Add(new SeriesPoint("Chỉ học văn hóa", ChiHocVH.Where(x => x.GioiTinh).Count()));
+            series2.Points.Add(new SeriesPoint("Chỉ học văn hóa", ChiHocVH.Where(x => !x.GioiTinh).Count()));
+            series3.Points.Add(new SeriesPoint("Chỉ học văn hóa", ChiHocVH.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));
+            lstReport.Add(new THSLTTTheoNgheTX
+            {
+                STT = (DataHelper.DsNghe.Count + 1).ToString(),
+                TenNghe = "Chỉ học văn hóa",
+                SLHS = ChiHocVH.Count(),
+                SLHSNu = ChiHocVH.Where(x => !x.GioiTinh).Count(),
+                SLHSNam = ChiHocVH.Where(x => x.GioiTinh).Count(),
+                SLDTUUT = ChiHocVH.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
+            });
+            lstReport.Add(new THSLTTTheoNgheTX
+            {
+                TenNghe = "Tổng cộng",
+                SLHS = lstReport.Sum(x => x.SLHS),
+                SLHSNu = lstReport.Sum(x => x.SLHSNu),
+                SLHSNam = lstReport.Sum(x => x.SLHSNam),
+                SLDTUUT = lstReport.Sum(x => x.SLDTUUT),
+            });
+            gridControl1.DataSource = lstReport;
+            chart.Series.AddRange(new Series[] { series1, series2, series3 });
+            ChartTitle chartTitle1 = new ChartTitle();
+            chartTitle1.Text = "Số lượng dự tuyển theo nghề";
+            chart.Titles.Add(chartTitle1);
+        }
+
+        private void LoadThongKeTTTheoNgheTX(ChartControl chart)
+        {
+            List<THSLTTTheoNgheTX> lstReport = new();
+
+            Series series1 = new Series("Số lượng học sinh", ViewType.Bar);
+            Series series2 = new Series("Học sinh nữ", ViewType.Bar);
+            Series series3 = new Series("Đối tượng ưu tiên", ViewType.Bar);
+
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            for (int i = 0; i < DataHelper.DsNghe.Count; i++)
+            {
+                var lstHDTTNghe = DataHelper.DSHoSoTrungTuyenTX.Where(x => !string.IsNullOrEmpty(x.IdNgheTrungTuyen) &&
+                x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id));
+                series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Count()));
+                series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
+                series3.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));
+                lstReport.Add(new THSLTTTheoNgheTX
+                {
+                    STT = (i + 1).ToString(),
+                    MaNghe = DataHelper.DsNghe[i].Ma,
+                    TenNghe = DataHelper.DsNghe[i].Ten,
+                    SLHS = lstHDTTNghe.Count(),
+                    SLHSNu = lstHDTTNghe.Where(x => !x.GioiTinh).Count(),
+                    SLDTUUT = lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
+                    SLHSNam = lstHDTTNghe.Where(x => x.GioiTinh).Count(),                    
+                });
+            }
+            var ChiHocVH = DataHelper.DSHoSoXetTuyenTX.Where(x => string.IsNullOrEmpty(x.IdNgheDT));
+
+            series1.Points.Add(new SeriesPoint("Chỉ học văn hóa", ChiHocVH.Where(x => x.GioiTinh).Count()));
+            series2.Points.Add(new SeriesPoint("Chỉ học văn hóa", ChiHocVH.Where(x => !x.GioiTinh).Count()));
+            series3.Points.Add(new SeriesPoint("Chỉ học văn hóa", ChiHocVH.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));
+            lstReport.Add(new THSLTTTheoNgheTX
+            {
+                STT = (DataHelper.DsNghe.Count + 1).ToString(),
+                TenNghe = "Chỉ học văn hóa",
+                SLHS = ChiHocVH.Count(),
+                SLHSNu = ChiHocVH.Where(x => !x.GioiTinh).Count(),
+                SLHSNam = ChiHocVH.Where(x => x.GioiTinh).Count(),
+                SLDTUUT = ChiHocVH.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
+            });
+            lstReport.Add(new THSLTTTheoNgheTX
+            {
+                TenNghe = "Tổng cộng",
+                SLHS = lstReport.Sum(x => x.SLHS),
+                SLHSNu = lstReport.Sum(x => x.SLHSNu),
+                SLDTUUT = lstReport.Sum(x => x.SLDTUUT),
+                SLHSNam = lstReport.Sum(x => x.SLHSNam),
+            });
+            gridControl1.DataSource = lstReport;
+            chart.Series.AddRange(new Series[] { series1, series2, series3 });
+            ChartTitle chartTitle1 = new ChartTitle();
+            chartTitle1.Text = "Số lượng trúng tuyển theo nghề";
+            chart.Titles.Add(chartTitle1);
+        }
+
+        private void LoadThongKeTTTheoNgheTC(ChartControl chart)
+        {
+            List<THSLTTTheoNghe> lstReport = new();
+
+            Series series1 = new Series("Số lượng học sinh", ViewType.Bar);
+            Series series2 = new Series("Học sinh nữ", ViewType.Bar);
+            Series series3 = new Series("Đối tượng ưu tiên", ViewType.Bar);
+            Series series4 = new Series("Tốt nghiệp THCS", ViewType.Bar);
+            Series series5 = new Series("Tốt nghiệp THPT", ViewType.Bar);
+
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series3.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series4.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series5.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            for (int i = 0; i < DataHelper.DsNghe.Count; i++)
+            {
+                var lstHDTTNghe = DataHelper.DSHoSoTTTC.Where(x => x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)
+                && (dts == 0 ? true : x.DotTS == dts));
+                series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Count()));
+                series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !x.GioiTinh).Count()));
+                series3.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count()));
+                series4.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.TDHV.Equals("THCS")).Count()));
+                series5.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstHDTTNghe.Where(x => x.TDHV.Equals("THPT")).Count()));
+                lstReport.Add(new THSLTTTheoNghe
+                {
+                    STT = (i + 1).ToString(),
+                    MaNghe = DataHelper.DsNghe[i].Ma,
+                    TenNghe = DataHelper.DsNghe[i].Ten,
+                    SLHS = lstHDTTNghe.Count(),
+                    SLHSNu = lstHDTTNghe.Where(x => !x.GioiTinh).Count(),
+                    SLDTUUT = lstHDTTNghe.Where(x => !string.IsNullOrEmpty(x.IdDTUT)).Count(),
+                    SLTNTHCS = lstHDTTNghe.Where(x => x.TDHV.Equals("THCS")).Count(),
+                    SLTNTHPTT = lstHDTTNghe.Where(x => x.TDHV.Equals("THPT")).Count(),
+                });
+            }
+            lstReport.Add(new THSLTTTheoNghe
+            {
+                TenNghe = "Tổng cộng",
+                SLHS = lstReport.Sum(x => x.SLHS),
+                SLHSNu = lstReport.Sum(x => x.SLHSNu),
+                SLDTUUT = lstReport.Sum(x => x.SLDTUUT),
+                SLTNTHCS = lstReport.Sum(x => x.SLTNTHCS),
+                SLTNTHPTT = lstReport.Sum(x => x.SLTNTHPTT),
+            });
+            gridControl1.DataSource = lstReport;
+            chart.Series.AddRange(new Series[] { series1, series2, series3, series4, series5 });
+            ChartTitle chartTitle1 = new ChartTitle();
+            chartTitle1.Text = "Số lượng trúng tuyển theo nghề";
+            chart.Titles.Add(chartTitle1);
+        }
+
+        private void LoadThongKeDTTheoNgheTC(ChartControl chart)
+        {
+            List<THSLTheoNghe> lstReport = new();
+
+            List<NguyenVong> lstNV1 = new();
+            List<NguyenVong> lstNV2 = new();
+            var hsdtTC = DataHelper.DSHoSoXTTC.Where(x => (dts == 0 ? true : x.DotTS == dts));            
+            foreach (var hs in hsdtTC)
+            {
+                var nv1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
+                if (nv1 != null) lstNV1.Add(nv1);
+                var nv2 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 2);
+                if (nv2 != null) lstNV2.Add(nv2);
+            }
+
+
+            Series series1 = new Series("Nguyện vọng 1", ViewType.Bar);
+            Series series2 = new Series("Nguyện vọng 2", ViewType.Bar);
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            for (int i = 0; i < DataHelper.DsNghe.Count; i++)
+            {
+                lstReport.Add(new THSLTheoNghe
+                {
+                    STT = (i + 1).ToString(),
+                    MaNghe = DataHelper.DsNghe[i].Ma,
+                    TenNghe = DataHelper.DsNghe[i].Ten,
+                    SLNV1 = lstNV1.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count(),
+                    SLNV2 = lstNV2.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count(),
+                });
+                series1.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstNV1.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count()));
+                series2.Points.Add(new SeriesPoint(DataHelper.DsNghe[i].Ten, lstNV2.Where(x => x.IdNghe.Equals(DataHelper.DsNghe[i].Id)).Count()));
+            }
+            lstReport.Add(new THSLTheoNghe
+            {
+                TenNghe = "Tổng cộng",
+                SLNV1 = lstNV1.Count(),
+                SLNV2 = lstNV2.Count(),
+            });
+            gridControl1.DataSource = lstReport;
+            chart.Series.AddRange(new Series[] { series1, series2 });
+
+            ChartTitle chartTitle1 = new ChartTitle();
+            chartTitle1.Text = "Số lượng dự tuyển theo nghề";
+            chart.Titles.Add(chartTitle1);
+        }
+
         private void ButtonTKTheoTruong_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (dts < 0)
+            if (chkTrungCap.Checked)
             {
-                XtraMessageBox.Show("Chưa chọn đơt tuyển sinh");
-                return;
+                if (dts < 0)
+                {
+                    XtraMessageBox.Show("Chưa chọn đơt tuyển sinh");
+                    return;
+                }
             }
+            
             gridView.Columns.Clear();
             gridView.CustomDrawCell += HighlightTotal;           
 
@@ -317,12 +455,12 @@ namespace QuanLyTuyenSinh.Form
             }                
             else if (chkXetTuyen.Checked && !chkTrungCap.Checked)
             {
-                gridControl1.DataSource = DataHelper.THSLNgheXTTheoTruongGDTX(dts);
+                gridControl1.DataSource = DataHelper.THSLNgheXTTheoTruongGDTX();
                 LoadThongKeDTTheoTruongGDTX();
             }
             else
             {
-                gridControl1.DataSource = DataHelper.THSLNgheTTTheoTruongGDTX(dts);
+                gridControl1.DataSource = DataHelper.THSLNgheTTTheoTruongGDTX();
                 LoadThongKeTTTheoTruongGDTX();
             }
                 
@@ -426,13 +564,24 @@ namespace QuanLyTuyenSinh.Form
                 series.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
                 for (int j = 0; j < dstruong.Count; j++)
                 {
-                    int sldt = DataHelper.DSHoSoTrungTuyenTX.Where(x => x.IdTruong.Equals(dstruong[j].Id) &&
-                    x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id) && (dts == 0 ? true : x.DotTS == dts)).Count();
+                    int sldt = DataHelper.DSHoSoTrungTuyenTX.Where(x => x.IdTruong.Equals(dstruong[j].Id) && 
+                    !string.IsNullOrEmpty(x.IdNgheTrungTuyen) &&
+                    x.IdNgheTrungTuyen.Equals(DataHelper.DsNghe[i].Id)).Count();
                     series.Points.Add(new SeriesPoint(dstruong[j].Ten, sldt));
                 }                
                 chart.Series.Add(series);
             }
-            //
+            //Thêm chỉ học văn hóa
+            Series seriesvh = new Series("Chỉ học văn hóa", ViewType.Bar);
+            seriesvh.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            for (int j = 0; j < dstruong.Count; j++)
+            {
+                int sldtvh = DataHelper.DSHoSoTrungTuyenTX.Where(x => x.IdTruong.Equals(dstruong[j].Id) &&
+                string.IsNullOrEmpty(x.IdNgheTrungTuyen)).Count();
+                seriesvh.Points.Add(new SeriesPoint(dstruong[j].Ten, sldtvh));
+            }
+            chart.Series.Add(seriesvh);
+
             chart.SeriesTemplate.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
             ChartTitle chartTitle1 = new ChartTitle();
             chartTitle1.Text = "Số lượng trúng tuyển theo từng trường";
@@ -450,7 +599,7 @@ namespace QuanLyTuyenSinh.Form
 
             var dstruong = DataHelper.DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();
            
-            //Thêm các dòng TK trường THCS
+            //Thêm các cột trường
             for (int i = 0; i < DataHelper.DsNghe.Count; i++)
             {
                 Series series = new Series(DataHelper.DsNghe[i].Ten, ViewType.Bar);
@@ -459,18 +608,37 @@ namespace QuanLyTuyenSinh.Form
                 {
                    
                     var sltheotruong = DataHelper.DSHoSoXetTuyenTX.Where(x => x.IdTruong.Equals(dstruong[j].Id));
-                    int slNV1 = 0;
+                    int slNV1 = 0;                    
                     foreach (var hs in sltheotruong)
                     {
-                        //var NV1 = hs.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                        //if (NV1 != null && NV1.IdNghe == DataHelper.DsNghe[i].Id)
-                        //    slNV1++; 
+                        if (hs.IdNgheDT == DataHelper.DsNghe[i].Id)
+                            slNV1++;                       
                     }
-                   
-                    series.Points.Add(new SeriesPoint(dstruong[j].Ten, slNV1));                    
+                    
+                    series.Points.Add(new SeriesPoint(dstruong[j].Ten, slNV1));  
+
                 }
                 chart.Series.Add(series);
             }
+            //Thêm 1 cột chỉ học văn hóa
+            Series seriesCHVH = new Series("Chỉ học văn hóa", ViewType.Bar);
+            seriesCHVH.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            for (int j = 0; j < dstruong.Count; j++)
+            {
+
+                var sltheotruong = DataHelper.DSHoSoXetTuyenTX.Where(x => x.IdTruong.Equals(dstruong[j].Id));
+                int slHVH = 0;
+                foreach (var hs in sltheotruong)
+                {
+                    if (string.IsNullOrEmpty(hs.IdNgheDT))
+                        slHVH++;
+                }
+
+                seriesCHVH.Points.Add(new SeriesPoint(dstruong[j].Ten, slHVH));
+
+            }
+            chart.Series.Add(seriesCHVH);
+
             ChartTitle chartTitle1 = new ChartTitle();
             chartTitle1.Text = "Số lượng dự tuyển theo từng trường";
             chart.Titles.Add(chartTitle1);

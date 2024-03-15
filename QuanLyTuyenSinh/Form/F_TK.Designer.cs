@@ -79,7 +79,7 @@
             directXFormContainerControl1.Controls.Add(barDockControlTop);
             directXFormContainerControl1.Location = new Point(1, 31);
             directXFormContainerControl1.Name = "directXFormContainerControl1";
-            directXFormContainerControl1.Size = new Size(1210, 727);
+            directXFormContainerControl1.Size = new Size(1378, 852);
             directXFormContainerControl1.TabIndex = 0;
             // 
             // tabTK
@@ -88,7 +88,7 @@
             tabTK.Location = new Point(0, 24);
             tabTK.Name = "tabTK";
             tabTK.SelectedTabPage = pageTK;
-            tabTK.Size = new Size(1210, 683);
+            tabTK.Size = new Size(1378, 808);
             tabTK.TabIndex = 4;
             tabTK.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { pageTK, pageChart });
             // 
@@ -96,7 +96,7 @@
             // 
             pageTK.Controls.Add(gridControl1);
             pageTK.Name = "pageTK";
-            pageTK.Size = new Size(1208, 658);
+            pageTK.Size = new Size(1376, 783);
             pageTK.Text = "Thống kê";
             // 
             // gridControl1
@@ -106,7 +106,7 @@
             gridControl1.MainView = gridView;
             gridControl1.MenuManager = barManager1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new Size(1208, 658);
+            gridControl1.Size = new Size(1376, 783);
             gridControl1.TabIndex = 0;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView, gridView1 });
             // 
@@ -247,15 +247,15 @@
             barDockControlTop.Dock = DockStyle.Top;
             barDockControlTop.Location = new Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new Size(1210, 24);
+            barDockControlTop.Size = new Size(1378, 24);
             // 
             // barDockControlBottom
             // 
             barDockControlBottom.CausesValidation = false;
             barDockControlBottom.Dock = DockStyle.Bottom;
-            barDockControlBottom.Location = new Point(0, 707);
+            barDockControlBottom.Location = new Point(0, 832);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new Size(1210, 20);
+            barDockControlBottom.Size = new Size(1378, 20);
             // 
             // barDockControlLeft
             // 
@@ -263,15 +263,15 @@
             barDockControlLeft.Dock = DockStyle.Left;
             barDockControlLeft.Location = new Point(0, 24);
             barDockControlLeft.Manager = barManager1;
-            barDockControlLeft.Size = new Size(0, 683);
+            barDockControlLeft.Size = new Size(0, 808);
             // 
             // barDockControlRight
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = DockStyle.Right;
-            barDockControlRight.Location = new Point(1210, 24);
+            barDockControlRight.Location = new Point(1378, 24);
             barDockControlRight.Manager = barManager1;
-            barDockControlRight.Size = new Size(0, 683);
+            barDockControlRight.Size = new Size(0, 808);
             // 
             // btnTK
             // 
@@ -298,7 +298,7 @@
             // 
             pageChart.Controls.Add(panelchart);
             pageChart.Name = "pageChart";
-            pageChart.Size = new Size(1194, 688);
+            pageChart.Size = new Size(1362, 827);
             pageChart.Text = "Biểu đồ";
             // 
             // panelchart
@@ -306,7 +306,7 @@
             panelchart.Dock = DockStyle.Fill;
             panelchart.Location = new Point(0, 0);
             panelchart.Name = "panelchart";
-            panelchart.Size = new Size(1194, 688);
+            panelchart.Size = new Size(1362, 827);
             panelchart.TabIndex = 0;
             // 
             // F_TK
@@ -317,7 +317,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ChildControls.Add(directXFormContainerControl1);
-            ClientSize = new Size(1212, 759);
+            ClientSize = new Size(1380, 884);
             Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "F_TK";
             StartPosition = FormStartPosition.CenterScreen;

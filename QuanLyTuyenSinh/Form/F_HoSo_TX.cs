@@ -1,5 +1,4 @@
 ﻿using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using LiteDB;
 using QuanLyTuyenSinh.Models;
@@ -23,7 +22,7 @@ namespace QuanLyTuyenSinh.Form
         private List<_Helper.Address> lstQuanHuyen;
         private List<_Helper.Address> lstPhuongXa;
 
-        public F_HoSo_TX(HoSoDuTuyenGDTX hoSo, bool ImportMode = false)
+        public F_HoSo_TX(HoSoDuTuyenGDTX hoSo, bool ImportMode = false, string IdHSTC = null)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
@@ -51,6 +50,13 @@ namespace QuanLyTuyenSinh.Form
             }
             if (ImportMode) SetReadOnly();
 
+            if (!string.IsNullOrEmpty(IdHSTC))
+            {
+                chkCoHocNghe.Checked = true;
+                _hoSo.IdHoSoDTTC = IdHSTC;
+                EnableControls(false);
+            }
+
             if (string.IsNullOrEmpty(_hoSo.IdHoSoDTTC))
             {
                 chkCoHocNghe.Checked = false;
@@ -60,8 +66,9 @@ namespace QuanLyTuyenSinh.Form
             {
                 chkCoHocNghe.Checked = true;
                 lookMaHoSoTC.Enabled = true;
-
+                EnableControls(false);
             }
+
         }
         private void SetReadOnly()
         {
@@ -71,13 +78,7 @@ namespace QuanLyTuyenSinh.Form
         }
         private void F_HoSo_Load(object? sender, EventArgs e)
         {
-            _sourceHS = new BindingSource();
-            _sourceNV = new BindingSource();
-
-            _sourceHS.DataSource = _hoSo;
-            _sourceNV.DataSource = _hoSo.DanhSachNgheTrungCap;
-            gridControl1.DataSource = _sourceNV;
-
+            
             InitLookupEdits();
             LoadComboBox();
             CreateBinding();
@@ -88,10 +89,15 @@ namespace QuanLyTuyenSinh.Form
         }
         void EnableControls(bool IsEnable = true)
         {
-            string WhiteList = "chkCoHocNghe/lookMaHoSoTC";
+            string WhiteList = "chkCoHocNghe/lookMaHoSoTC/txtMaHS/txtGhiChi/txtHSGhiChu/chkDKXTGDTX";
             foreach (Control control in grpControlHSData.Controls)
             {
                 if(!WhiteList.Contains(control.Name))
+                    control.Enabled = IsEnable;
+            }
+            foreach (Control control in grpKTHS.Controls)
+            {
+                if (!WhiteList.Contains(control.Name))
                     control.Enabled = IsEnable;
             }
         }
@@ -99,6 +105,7 @@ namespace QuanLyTuyenSinh.Form
         {
             Thread.Sleep(100);
             chkCoHocNghe.CheckedChanged += ChkCoHocNghe_CheckedChanged;
+            lookMaHoSoTC.EditValueChanged += LookMaHoSoTC_EditValueChanged;
             btnSaveAndClose.ItemClick += btnSaveCloseHS_Click;
             btnSaveAndNew.ItemClick += btnSaveNewHS_Click;
             txtHo.TextChanged += TxtHo_TextChanged;
@@ -115,6 +122,21 @@ namespace QuanLyTuyenSinh.Form
             Anh.ContextButtonClick += Anh_ContextButtonClick;
             FormClosing += HS_FormClosing;
             ActiveControl = txtHo;
+        }
+
+        private void LookMaHoSoTC_EditValueChanged(object? sender, EventArgs e)
+        {
+            string IdHS = (string)lookMaHoSoTC.EditValue;
+            if (!string.IsNullOrEmpty(IdHS))
+            {
+                var hsxttc = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id == IdHS);
+                if(hsxttc != null)
+                {
+                    _hoSo = hsxttc.ToHoSoGDTX();
+                    _hoSo.IdHoSoDTTC = IdHS;
+                    CreateBinding();
+                }
+            }
         }
 
         private void ChkCoHocNghe_CheckedChanged(object? sender, EventArgs e)
@@ -206,14 +228,14 @@ namespace QuanLyTuyenSinh.Form
 
         private void TxtMaHS_ButtonClick(object? sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            //Mã hồ sơ : TX001
+            //Mã hồ sơ : 20XXTX001
             var max = DataHelper.DSHoSoXetTuyenTX.OrderByDescending(x => x.MaHoSo).FirstOrDefault();
-            if (max == null) txtMaHS.Text = $"TX{_hoSo.NamTS}001";
+            if (max == null) txtMaHS.Text = $"{_hoSo.NamTS}TX001";
             else
             {
-                int maxstt = int.Parse(max.MaHoSo.Substring(2, 3));
+                int maxstt = int.Parse(max.MaHoSo.Substring(6, 3));
                 if (!max.Id.Equals(_hoSo.Id)) maxstt += 1;
-                txtMaHS.Text = $"TX{_hoSo.NamTS}{maxstt.ToString("D3")}";
+                txtMaHS.Text = $"{_hoSo.NamTS}TX{maxstt.ToString("D3")}";
             }
         }
 
@@ -322,9 +344,7 @@ namespace QuanLyTuyenSinh.Form
             gridView1.IndicatorWidth = 35;
             gridView1.OptionsCustomization.AllowColumnMoving = false;
             gridView1.HideFindPanel();
-            gridView1.ShowingEditor += GridView_ShowingEditor;
             gridView1.CustomDrawRowIndicator += GridView_CustomDrawRowIndicator;
-
             DevForm.CreateRepositoryItemLookUpEdit(gridView1, DataHelper.DsNghe, "IdNghe", "Ten", "Id");
         }
 
@@ -341,6 +361,13 @@ namespace QuanLyTuyenSinh.Form
 
         private void CreateBinding()
         {
+            _sourceHS = new BindingSource();
+            _sourceNV = new BindingSource();
+
+            _sourceHS.DataSource = _hoSo;
+            _sourceNV.DataSource = _hoSo.DanhSachNgheTrungCap;
+
+            gridControl1.DataSource = _sourceNV;
             //Hồ sơ
             txtMaHS.DataBindings.Clear();
             txtMaHS.DataBindings.Add("Text", _sourceHS, "MaHoSo", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -454,6 +481,8 @@ namespace QuanLyTuyenSinh.Form
             lookMaHoSoTC.DataBindings.Clear();
             lookMaHoSoTC.DataBindings.Add("EditValue", _sourceHS, "IdHoSoDTTC", true, DataSourceUpdateMode.OnPropertyChanged);
 
+            DevForm.CreateRepositoryItemLookUpEdit(gridView1, DataHelper.DsNghe, "IdNghe", "Ten", "Id");
+
         }
 
         private void InitLookupEdits()
@@ -506,8 +535,7 @@ namespace QuanLyTuyenSinh.Form
                 }
                 SaveAnh();
                 _hoSo.Save();
-                int dts = _hoSo.DotTS, nts = _hoSo.NamTS;
-                var dsdt = DataHelper.DSHoSoXTTC.Where(x => x.NamTS == nts && x.DotTS == dts);
+                int nts = _hoSo.NamTS;                
                 var dt = DataHelper.DsDanToc.FirstOrDefault();
                 var qt = DataHelper.DsQuocTich.FirstOrDefault();
                 var tg = DataHelper.DsTonGiao.FirstOrDefault();
@@ -515,7 +543,6 @@ namespace QuanLyTuyenSinh.Form
                 _hoSo = new HoSoDuTuyenGDTX
                 {
                     NamTS = nts,
-                    DotTS = dts,
                     HTDT = "Chính quy",
                     MaTinh = "511",
                     MaHuyen = "51103",

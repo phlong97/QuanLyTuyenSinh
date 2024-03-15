@@ -3,7 +3,9 @@
 namespace QuanLyTuyenSinh.Models
 {
     public class HoSoDuTuyenTC : HoSo
-    {        
+    {
+        [Display(Name = "Đợt tuyển sinh")]
+        public int DotTS { get; set; }
         [Display(Name = "Hạnh kiểm")]
         public string HanhKiem { get; set; }
 
@@ -182,7 +184,6 @@ namespace QuanLyTuyenSinh.Models
                 DiaChi = DiaChi,
                 Anh = Anh,
                 CCCD = CCCD,
-                DotTS = DotTS,
                 NamTS = NamTS,
                 Email = Email,
                 GioiTinh = GioiTinh,
@@ -219,7 +220,9 @@ namespace QuanLyTuyenSinh.Models
                     HocBa = KiemTraHS.HocBa,
                     PhieuDKDT = KiemTraHS.PhieuDKDT,
                     SYLL = KiemTraHS.SYLL
-                }
+                },
+                DanhSachNgheTrungCap = DsNguyenVong
+                
             };
         }
         public TongHopDiemXetTuyenTC ToTHDXT()
@@ -543,7 +546,9 @@ namespace QuanLyTuyenSinh.Models
     public class HoSoTrungTuyenTC : HoSo
     {
         [Display(AutoGenerateField = false)]
-        public string IdHSDT { get; set; }        
+        public string IdHSDT { get; set; }
+        [Display(Name = "Đợt tuyển sinh")]
+        public int DotTS { get; set; }
 
         [Display(Name = "Tổng số điểm xét tuyển",Order =98)]
         public double TongDXT { get; set; }

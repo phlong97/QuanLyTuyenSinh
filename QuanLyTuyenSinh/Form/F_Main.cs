@@ -101,29 +101,13 @@ namespace QuanLyTuyenSinh.Form
 
             if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC))
             {
-                if (cbbDTS.SelectedIndex <= 0)
+                if (cbbDTS.SelectedIndex <= 0 && rdTC.Checked)
                 {
                     XtraMessageBox.Show(this, "Chưa chọn đợt xét tuyển?", "Lỗi");
                     return;
                 }
-                int dts;
-                if (!int.TryParse(cbbDTS.SelectedItem.ToString(), out dts))
-                    return;
-                int nts = _NamTS;
-                var dxt = DataHelper.DsDotXetTuyen.FirstOrDefault(x => x.NamTS == _NamTS && x.DotTS == dts);
-                if (dxt is null)
-                    XtraMessageBox.Show(this, "Đợt xét tuyển không tồn tại", "Lỗi");
-                if (dxt is not null && dxt.DenNgay < DateTime.Today)
-                {
-                    if (XtraMessageBox.Show(
-                            this,
-                            $"Đã hết thời hạn xét tuyển đợt {dts} năm {nts}, bạn vẫn muốn nhập hồ sơ?",
-                            "Cảnh báo",
-                            MessageBoxButtons.YesNo) ==
-                        DialogResult.No)
-                        return;
-                }
 
+                int nts = _NamTS;
                 var dt = DataHelper.DsDanToc.FirstOrDefault();
                 var qt = DataHelper.DsQuocTich.FirstOrDefault();
                 var tg = DataHelper.DsTonGiao.FirstOrDefault();
@@ -133,6 +117,23 @@ namespace QuanLyTuyenSinh.Form
                 {
                     if (rdTC.Checked)
                     {
+                        int dts;
+                        if (!int.TryParse(cbbDTS.SelectedItem.ToString(), out dts))
+                            return;
+                        
+                        var dxt = DataHelper.DsDotXetTuyen.FirstOrDefault(x => x.NamTS == _NamTS && x.DotTS == dts);
+                        if (dxt is null)
+                            XtraMessageBox.Show(this, "Đợt xét tuyển không tồn tại", "Lỗi");
+                        if (dxt is not null && dxt.DenNgay < DateTime.Today)
+                        {
+                            if (XtraMessageBox.Show(
+                                    this,
+                                    $"Đã hết thời hạn xét tuyển đợt {dts} năm {nts}, bạn vẫn muốn nhập hồ sơ?",
+                                    "Cảnh báo",
+                                    MessageBoxButtons.YesNo) ==
+                                DialogResult.No)
+                                return;
+                        }
                         F_HoSo f = new(
                         new HoSoDuTuyenTC
                         {
@@ -156,14 +157,12 @@ namespace QuanLyTuyenSinh.Form
                         new HoSoDuTuyenGDTX
                         {
                             NamTS = nts,
-                            DotTS = dts,
                             HTDT = "Chính quy",
                             MaTinh = "511",
                             MaHuyen = "51103",
                             NoiSinh = "Khánh Hòa",
                             IdQuocTich = qt is not null ? qt.Id : string.Empty,
                             IdDanToc = dt is not null ? dt.Id : string.Empty,
-                            IdTrinhDoVH = tdvh is not null ? tdvh.Id : string.Empty,
                             IdTonGiao = tg is not null ? tg.Id : string.Empty,
                         });
                         f.Show(this);
@@ -606,12 +605,6 @@ namespace QuanLyTuyenSinh.Form
 
         private void XuatExelDSTT_HeGDTX_ItemClick1(object sender, ItemClickEventArgs e)
         {
-            int dts = cbbDTS.SelectedIndex;
-            if (dts <= 0)
-            {
-                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
-                return;
-            }
             if (!rdGDTX.Checked)
             {
                 XtraMessageBox.Show($"Chưa chọn hệ GDTX");
@@ -632,7 +625,7 @@ namespace QuanLyTuyenSinh.Form
             try
             {
                 Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
-                sfd.FileName = $"Kết quả xét tuyển đợt {dts}-GDTX.xlsx";
+                sfd.FileName = $"Kết quả trúng tuyển GDTX năm {DataHelper.NamTS}.xlsx";
                 sfd.DefaultExt = "xlsx";
                 sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
                 sfd.AddExtension = true;
@@ -653,20 +646,23 @@ namespace QuanLyTuyenSinh.Form
                     var lst = (List<HoSoTrungTuyenGDTX>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
                     {
-                        int width = 9;
+                        int width = 11;
                         int header = 9;
                         object[,] export = new object[lst.Count, width];
                         for (int i = 0; i < lst.Count(); i++)
                         {
                             export[i, 0] = i + 1;
-                            export[i, 1] = lst[i].Ho;
-                            export[i, 2] = lst[i].Ten;
-                            export[i, 3] = lst[i].NgaySinh;
-                            export[i, 4] = lst[i].GioiTinh ? "Nam" : "Nữ";
-                            export[i, 5] = lst[i].NoiSinh;
-                            export[i, 6] = lst[i].DiaChi;
-                            export[i, 7] = lst[i].TongDXT;
-                            export[i, 8] = lst[i].GhiChu;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GioiTinh ? "Nam" : "Nữ";
+                            export[i, 6] = lst[i].NoiSinh;
+                            export[i, 7] = lst[i].DiaChi;
+                            export[i, 8] = lst[i].TongDXT;
+                            export[i, 9] = lst[i].GhiChu;
+                            var ngheTT = DataHelper.DsNghe.FirstOrDefault(x => x.Id == lst[i].IdNgheTrungTuyen);
+                            export[i, 10] = ngheTT != null ? ngheTT.Ten : "Chỉ học văn hóa";
                         }
 
                         Excel.Range range = sheet.get_Range(sheet.Cells[header + 1, 1], sheet.Cells[lst.Count + header, width]);
@@ -675,7 +671,7 @@ namespace QuanLyTuyenSinh.Form
                         Marshal.ReleaseComObject(range);
                         range = null;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                        Excel.Range rangeData = sheet.Range[$"B{header + 1}:B{200}"];
+                        Excel.Range rangeData = sheet.Range[$"C{header + 1}:B{200}"];
                         rangeData.Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
                         rangeData.Cells.Font.Size = 11;
                         Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + header + 2, 1], sheet.Cells[lst.Count + header + 2, 4]);
@@ -715,12 +711,6 @@ namespace QuanLyTuyenSinh.Form
 
         private void XuatDSXTTheoMauKQXT_GDTX_ItemClick(object sender, ItemClickEventArgs e)
         {
-            int dts = cbbDTS.SelectedIndex;
-            if (dts <= 0)
-            {
-                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
-                return;
-            }
             if (!rdGDTX.Checked)
             {
                 XtraMessageBox.Show($"Chưa chọn hệ GDTX");
@@ -741,7 +731,7 @@ namespace QuanLyTuyenSinh.Form
             try
             {
                 Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
-                sfd.FileName = $"Kết quả xét tuyển đợt {dts}-GDTX.xlsx";
+                sfd.FileName = $"Kết quả xét tuyển GDTX năm {DataHelper.NamTS}.xlsx";
                 sfd.DefaultExt = "xlsx";
                 sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
                 sfd.AddExtension = true;
@@ -762,33 +752,37 @@ namespace QuanLyTuyenSinh.Form
                     var lst = (List<TongHopDiemXetTuyenGDTX>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
                     {
-                        int width = 22;
-                        int header = 10;
+                        int width = 24;
+                        int header = 9;
                         object[,] export = new object[lst.Count, width];
                         for (int i = 0; i < lst.Count(); i++)
                         {
                             export[i, 0] = i + 1;
-                            export[i, 1] = lst[i].Ho;
-                            export[i, 2] = lst[i].Ten;
-                            export[i, 3] = lst[i].NgaySinh;
-                            export[i, 4] = lst[i].GT;
-                            export[i, 5] = lst[i].NoiSinh;
-                            export[i, 6] = lst[i].DiaChi;
-                            export[i, 7] = lst[i].HocLuc6;
-                            export[i, 8] = lst[i].HanhKiem6;
-                            export[i, 9] = lst[i].DiemLop6;
-                            export[i, 10] = lst[i].HocLuc7;
-                            export[i, 11] = lst[i].HanhKiem7;
-                            export[i, 12] = lst[i].DiemLop7;
-                            export[i, 13] = lst[i].HocLuc8;
-                            export[i, 14] = lst[i].HanhKiem8;
-                            export[i, 15] = lst[i].DiemLop8;
-                            export[i, 16] = lst[i].HocLuc9;
-                            export[i, 17] = lst[i].HanhKiem9;
-                            export[i, 18] = lst[i].DiemLop9;
-                            export[i, 19] = string.IsNullOrEmpty(lst[i].IdDTUT) ? string.Empty : DataHelper.DsDoiTuongUT.First(x => x.Id.Equals(lst[i].IdDTUT)).Ma;
-                            export[i, 20] = lst[i].Tong;
-                            export[i, 21] = lst[i].GhiChu;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GT;
+                            export[i, 6] = lst[i].NoiSinh;
+                            export[i, 7] = lst[i].DiaChi;
+                            export[i, 8] = lst[i].HocLuc6;
+                            export[i, 9] = lst[i].HanhKiem6;
+                            export[i, 10] = lst[i].DiemLop6;
+                            export[i, 11] = lst[i].HocLuc7;
+                            export[i, 12] = lst[i].HanhKiem7;
+                            export[i, 13] = lst[i].DiemLop7;
+                            export[i, 14] = lst[i].HocLuc8;
+                            export[i, 15] = lst[i].HanhKiem8;
+                            export[i, 16] = lst[i].DiemLop8;
+                            export[i, 17] = lst[i].HocLuc9;
+                            export[i, 18] = lst[i].HanhKiem9;
+                            export[i, 19] = lst[i].DiemLop9;
+                            export[i, 20] = string.IsNullOrEmpty(lst[i].IdDTUT) ? string.Empty : DataHelper.DsDoiTuongUT.First(x => x.Id.Equals(lst[i].IdDTUT)).Ma;
+                            export[i, 21] = lst[i].Tong;
+                            export[i, 22] = lst[i].GhiChu;
+                            var NgheDT = DataHelper.DsNghe.FirstOrDefault(x => x.Id == lst[i].IdNgheNV1);
+                            export[i, 23] = NgheDT != null ? NgheDT.Ten : "Chỉ học văn hóa";
+
                         }
 
                         Excel.Range range = sheet.get_Range(sheet.Cells[header + 1, 1], sheet.Cells[lst.Count + header, width]);
@@ -797,7 +791,7 @@ namespace QuanLyTuyenSinh.Form
                         Marshal.ReleaseComObject(range);
                         range = null;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                        Excel.Range rangeData = sheet.Range[$"C{header + 1}:C{1000}"];
+                        Excel.Range rangeData = sheet.Range[$"C{header + 1}:C{200}"];
                         rangeData.Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
                         rangeData.Cells.Font.Size = 11;
                         Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + header + 2, 1], sheet.Cells[lst.Count + header + 2, 4]);
@@ -836,13 +830,7 @@ namespace QuanLyTuyenSinh.Form
         }
 
         private void XuatDSXTTheoMauDSDT_GDTX_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            int dts = cbbDTS.SelectedIndex;
-            if (dts <= 0)
-            {
-                XtraMessageBox.Show($"Chưa chọn đọt tuyển sinh!");
-                return;
-            }
+        {            
             if (!rdGDTX.Checked)
             {
                 XtraMessageBox.Show($"Chưa chọn GDTX");
@@ -863,7 +851,7 @@ namespace QuanLyTuyenSinh.Form
             try
             {
                 Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
-                sfd.FileName = $"Danh sách dự tuyển đợt {dts}-GDTX.xlsx";
+                sfd.FileName = $"Danh sách dự tuyển GDTX năm {DataHelper.NamTS}.xlsx";
                 sfd.DefaultExt = "xlsx";
                 sfd.Filter = "Exel file (*.xlsx)|*.xlsx";
                 sfd.AddExtension = true;
@@ -884,28 +872,31 @@ namespace QuanLyTuyenSinh.Form
                     var lst = (List<HoSoDuTuyenGDTXView>)_bindingSource.DataSource;
                     if (lst != null && lst.Count > 0)
                     {
-                        int width = 17;
+                        int width = 19;
                         int header = 10;
                         object[,] export = new object[lst.Count, width];
                         for (int i = 0; i < lst.Count(); i++)
                         {
                             export[i, 0] = i + 1;
-                            export[i, 1] = lst[i].Ho;
-                            export[i, 2] = lst[i].Ten;
-                            export[i, 3] = lst[i].NgaySinh;
-                            export[i, 4] = lst[i].GT;
-                            export[i, 5] = lst[i].NoiSinh;
-                            export[i, 6] = lst[i].DiaChi;
-                            export[i, 7] = lst[i].HocLuc6;
-                            export[i, 8] = lst[i].HanhKiem6;
-                            export[i, 9] = lst[i].HocLuc7;
-                            export[i, 10] = lst[i].HanhKiem7;
-                            export[i, 11] = lst[i].HocLuc8;
-                            export[i, 12] = lst[i].HanhKiem8;
-                            export[i, 13] = lst[i].HocLuc9;
-                            export[i, 14] = lst[i].HanhKiem9;
-                            export[i, 15] = string.IsNullOrEmpty(lst[i].IdDTUT) ? string.Empty : DataHelper.DsDoiTuongUT.First(x => x.Id.Equals(lst[i].IdDTUT)).Ma;
-                            export[i, 16] = lst[i].GhiChu;
+                            export[i, 1] = lst[i].MaHoSo;
+                            export[i, 2] = lst[i].Ho;
+                            export[i, 3] = lst[i].Ten;
+                            export[i, 4] = lst[i].NgaySinh;
+                            export[i, 5] = lst[i].GT;
+                            export[i, 6] = lst[i].NoiSinh;
+                            export[i, 7] = lst[i].DiaChi;
+                            export[i, 8] = lst[i].HocLuc6;
+                            export[i, 9] = lst[i].HanhKiem6;
+                            export[i, 10] = lst[i].HocLuc7;
+                            export[i, 11] = lst[i].HanhKiem7;
+                            export[i, 12] = lst[i].HocLuc8;
+                            export[i, 13] = lst[i].HanhKiem8;
+                            export[i, 14] = lst[i].HocLuc9;
+                            export[i, 15] = lst[i].HanhKiem9;
+                            export[i, 16] = string.IsNullOrEmpty(lst[i].IdDTUT) ? string.Empty : DataHelper.DsDoiTuongUT.First(x => x.Id.Equals(lst[i].IdDTUT)).Ma;
+                            export[i, 17] = lst[i].GhiChu;
+                            var NgheDT = DataHelper.DsNghe.FirstOrDefault(x => x.Id == lst[i].IdNgheDT1);
+                            export[i, 18] = NgheDT != null ? NgheDT.Ten : "Chỉ học văn hóa";
                         }
                         Excel.Range range = sheet.get_Range(sheet.Cells[11, 1], sheet.Cells[lst.Count + header, width]);
                         range.set_Value(Missing.Value, export);
@@ -913,7 +904,7 @@ namespace QuanLyTuyenSinh.Form
                         Marshal.ReleaseComObject(range);
                         range = null;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                        Excel.Range rangeData = sheet.Range[$"B{header + 1}:B{200}"];
+                        Excel.Range rangeData = sheet.Range[$"C{header + 1}:C{200}"];
                         rangeData.Cells.Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
                         rangeData.Cells.Font.Size = 11;
                         Excel.Range range2 = sheet.get_Range(sheet.Cells[lst.Count + header + 2, 1], sheet.Cells[lst.Count + header + 2, 4]);
@@ -1799,15 +1790,15 @@ namespace QuanLyTuyenSinh.Form
         private List<HoSoTrungTuyenTC> lstHSTTTemp = new();
 
         private void DropbtnDSTT_Click(object? sender, EventArgs e)
-        {
-            int dts = cbbDTS.SelectedIndex;
-            if (dts <= 0)
-            {
-                XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
-                return;
-            }
+        {            
             if (rdTC.Checked)
             {
+                int dts = cbbDTS.SelectedIndex;
+                if (dts <= 0)
+                {
+                    XtraMessageBox.Show("Chưa chọn đợt tuyển sinh!");
+                    return;
+                }
                 if (DataHelper.DSHoSoTTTC.Count(x => x.DotTS.Equals(dts)) > 0)
                 {
                     if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lập lại danh sách?",
@@ -1823,18 +1814,7 @@ namespace QuanLyTuyenSinh.Form
             }
             else
             {
-                if (DataHelper.DSHoSoTrungTuyenTX.Count(x => x.DotTS.Equals(dts)) > 0)
-                {
-                    if (XtraMessageBox.Show($"Đã tồn tại danh sách trúng tuyển đợt {dts}, bạn xác nhận muốn lập lại danh sách?",
-                        "Lập danh sách trúng tuyển - Hệ GDTX", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        DataHelper.LapDSTrungTuyenTX(cbbDTS.SelectedIndex);
-                    }
-                }
-                else
-                {
-                    DataHelper.LapDSTrungTuyenTX(cbbDTS.SelectedIndex);
-                }
+                DataHelper.LapDSTrungTuyenTX();
             }
 
             RefreshData();
@@ -1915,7 +1895,7 @@ namespace QuanLyTuyenSinh.Form
                 case TuDien.CategoryName.DiemXetTuyenTC:
 #pragma warning disable CS8604 // Possible null reference argument.
                     _bindingSource.DataSource = rdTC.Checked ? DataHelper.THDiemXetTuyen(cbbDTS.SelectedIndex, cbbTDHV.SelectedIndex >= 0 ?
-                    cbbTDHV.EditValue.ToString() : "THCS") : DataHelper.THDiemXetTuyenTX(cbbDTS.SelectedIndex);
+                    cbbTDHV.EditValue.ToString() : "THCS") : DataHelper.THDiemXetTuyenTX();
 #pragma warning restore CS8604 // Possible null reference argument.
                     break;
 
@@ -1929,6 +1909,7 @@ namespace QuanLyTuyenSinh.Form
         {
             EditMode = false;
             gridView.Columns.Clear();
+            
             _bindingSource = new BindingSource();
             gridControl.DataSource = _bindingSource;
             ReLoadDS();
@@ -1981,35 +1962,65 @@ namespace QuanLyTuyenSinh.Form
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsTruong, "IdTruong", "Ten", "Id");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsDoiTuongUT, "IdDTUT", "Ma", "Id", "");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsKhuVucUT, "IdKVUT", "Ma", "Id", "");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheDT1", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheDT2", "Ten", "Id");
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheTrungTuyen", "Ten", "Id");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheDT1", "Ten", "Id","Không học nghề");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheDT2", "Ten", "Id","");
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheTrungTuyen", "Ten", "Id","Không học nghề");
                 var colXLHT = gridView.Columns.ColumnByFieldName("XLHT");
                 if (colXLHT != null) { colXLHT.Visible = ((string)cbbTDHV.EditValue != "THCS"); }
                 if (TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC))
                 {
                     if (rdTC.Checked)
+                    {
+                        var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
+                        if (colDotTS != null) colDotTS.Group();
+                        var colNgheDT = gridView.Columns.ColumnByFieldName("IdNgheDT1");
+                        if (colNgheDT != null) colNgheDT.Group();
                         for (int i = 27; i <= 37; i++)
                         {
                             gridView.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
                         }
+                    }
                     else
+                    {
+                        var colLoaiXT = gridView.Columns.ColumnByFieldName("LoaiXetTuyen");
+                        if (colLoaiXT != null) colLoaiXT.Group();
                         for (int i = 33; i <= 43; i++)
                         {
                             gridView.Columns[i].AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center;
                         }
+                    }                        
                 }
-                var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
-                if (colDotTS != null) colDotTS.Group();
+                if (TenDm.Equals(TuDien.CategoryName.HoSoTrungTuyenTC))
+                {
+                    if (rdTC.Checked)
+                    {
+                        var colDotTS = gridView.Columns.ColumnByFieldName("DotTS");
+                        if (colDotTS != null) colDotTS.Group();
+                        var colNgheTT = gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen");
+                        if (colNgheTT != null) colNgheTT.Group();
+                    }
+                    else
+                    {
+                        var colLoaiXT = gridView.Columns.ColumnByFieldName("LoaiXetTuyen");
+                        if (colLoaiXT != null) colLoaiXT.Group();
+                    }
+                }
+                
                 var colNghe = TenDm.Equals(TuDien.CategoryName.HoSoDuTuyenTC) ? gridView.Columns.ColumnByFieldName("IdNgheDT1") : gridView.Columns.ColumnByFieldName("IdNgheTrungTuyen");
                 if (colNghe != null) colNghe.Group();
             }
             if (TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC))
             {
-                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheNV1", "Ten", "Id");
-                gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
+                if (rdTC.Checked)
+                {
+                    gridView.Columns.ColumnByFieldName("IdNgheNV1").Group();
+                }
+                else
+                {
+                    gridView.Columns.ColumnByFieldName("LoaiXetTuyen").Group();
+                }
+                DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsNghe, "IdNgheNV1", "Ten", "Id","Chỉ học văn hóa");
                 DevForm.CreateRepositoryItemLookUpEdit(gridView, DataHelper.DsDoiTuongUT, "IdDTUT", "Ma", "Id","");
-
             }
 
             panelGrid.RowStyles[1].Height = TenDm.StartsWith("HS") || TenDm.StartsWith("TK") || TenDm.Equals(TuDien.CategoryName.DiemXetTuyenTC) ? 40 : 0;

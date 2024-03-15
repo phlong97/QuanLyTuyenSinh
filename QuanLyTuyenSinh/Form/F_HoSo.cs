@@ -155,7 +155,7 @@ namespace QuanLyTuyenSinh.Form
             HoSoDuTuyenGDTX hsgdtx = _hoSo.ToHoSoGDTX();
             if (hsgdtx != null)
             {
-                F_HoSo_TX f = new(hsgdtx.CloneJson());
+                F_HoSo_TX f = new(hsgdtx.CloneJson(),IdHSTC: _hoSo.Id);
                 f.Show();
             }
         }

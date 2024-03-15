@@ -1,4 +1,7 @@
-﻿using DevExpress.Mvvm.Native;
+﻿using DevExpress.CodeParser;
+using DevExpress.Data.Linq.Helpers;
+using DevExpress.Mvvm.Native;
+using DevExpress.XtraEditors;
 using LiteDB;
 using QuanLyTuyenSinh.Models;
 using System.Data;
@@ -288,8 +291,7 @@ namespace QuanLyTuyenSinh
         internal static List<HoSoDuTuyenGDTXView> GetDSDuTuyenTX(int DotTS)
         {
             List<HoSoDuTuyenGDTXView> lst = new();
-            lst = DSHoSoXetTuyenTX.Where(
-                hs => (DotTS <= 0 ? true : hs.DotTS == DotTS))
+            lst = DSHoSoXetTuyenTX
                 .Select(x => x.ToView())
                 .OrderByDescending(x => x.DotTS).ThenBy(x => x.MaHoSo)
                 .ToList();
@@ -337,14 +339,12 @@ namespace QuanLyTuyenSinh
             List<HoSoTrungTuyenGDTX> lst = new();
             if (KhongTT)
             {
-                var lstHSDT = DSHoSoXetTuyenTX.Where(hs => hs.DotTS == DotTS
-                        && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
+                var lstHSDT = DSHoSoXetTuyenTX.Where(hs => (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                         && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
                         && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)))
                         .Select(x => x.Id).ToList();
-                var lstHSTT = DSHoSoTrungTuyenTX.Where(hs => hs.DotTS == DotTS
-                        && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
+                var lstHSTT = DSHoSoTrungTuyenTX.Where(hs => (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                         && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
                         && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)))
@@ -352,15 +352,14 @@ namespace QuanLyTuyenSinh
                 var lstHSKhongTT = lstHSDT.Except(lstHSTT).ToList();
                 foreach (var id in lstHSKhongTT)
                 {
-                    var hs = DSHoSoXetTuyenTX.FirstOrDefault(x => x.DotTS == DotTS && x.Id == id);
+                    var hs = DSHoSoXetTuyenTX.FirstOrDefault(x =>x.Id == id);
                     if (hs != null)
                         lst.Add(hs.ToHSTT());
                 }
             }
             else
                 lst = DSHoSoTrungTuyenTX.Where(
-                        hs => (DotTS <= 0 ? true : hs.DotTS.Equals(DotTS))
-                        && (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
+                        hs => (string.IsNullOrEmpty(MaTinh) ? true : hs.MaTinh.Equals(MaTinh))
                         && (string.IsNullOrEmpty(MaHuyen) ? true : hs.MaHuyen.Equals(MaHuyen))
                         && (string.IsNullOrEmpty(MaXa) ? true : hs.MaXa.Equals(MaXa))
                         && (string.IsNullOrEmpty(IdTruong) ? true : hs.IdTruong.Equals(IdTruong)))
@@ -379,13 +378,11 @@ namespace QuanLyTuyenSinh
 
             return lst;
         }
-        internal static List<TongHopDiemXetTuyenGDTX> THDiemXetTuyenTX(int DotTS)
+        internal static List<TongHopDiemXetTuyenGDTX> THDiemXetTuyenTX()
         {
             List<TongHopDiemXetTuyenGDTX> lst = new();
-            if (DotTS <= 0)
-                return lst;
-            lst = DSHoSoXetTuyenTX.Where(
-                hs => hs.DotTS.Equals(DotTS)).OrderBy(x => x.MaHoSo).Select(x => x.ToTHDXT()).OrderByDescending(x => x.Tong)
+
+            lst = DSHoSoXetTuyenTX.OrderBy(x => x.MaHoSo).Select(x => x.ToTHDXT()).OrderByDescending(x => x.Tong)
                 .ToList();
 
             return lst;
@@ -441,41 +438,39 @@ namespace QuanLyTuyenSinh
                 }
             }
         }
-        internal static void LapDSTrungTuyenTX(int DotTS)
+        internal static void LapDSTrungTuyenTX()
         {
-            if (DotTS <= 0)
-                return;
             List<HoSoTrungTuyenGDTX> DsTT = new();
-            var HSDT = DSHoSoXetTuyenTX.Where(
-                hs => hs.DotTS.Equals(DotTS)).Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
+            var HSDT = DSHoSoXetTuyenTX.Select(x => x.ToTHDXT()).OrderBy(x => x.MaHoSo)
                 .ToList();
 
-            foreach (var ct in DsChiTieuTX)
+            var chitieu = DsChiTieuTX.FirstOrDefault();
+            if (chitieu == null)
             {
-                var ChitieuTheoNghe = HSDT.Where(x => x.IdNgheNV1.Equals(ct.IdNghe) && x.Tong >= ct.DiemTT).ToList();                
+                XtraMessageBox.Show("Chưa lập chỉ tiêu hệ GDTX");
+                return;
+            }
 
-                int ctmax = (int)(ct.ChiTieu + (ct.ChiTieu * CurrSettings.CHITIEUVUOTMUC));
-                int sl = DSHoSoTrungTuyenTX.Where(x => !x.DotTS.Equals(DotTS) && x.IdNgheTrungTuyen.Equals(ct.IdNghe)).Count();
+            int ctmax = (int)(chitieu.ChiTieu + (chitieu.ChiTieu * CurrSettings.CHITIEUVUOTMUC));
+            double DiemTT = chitieu.DiemTT;
 
-                if (sl < ctmax)
-                {
-                    var lstHSTT = ChitieuTheoNghe.Select(x => x.ToHSTT()).OrderByDescending(x => x.TongDXT).ToList();                    
-
-                    if (sl + lstHSTT.Count() <= ctmax)
-                    {
-                        DsTT.AddRange(lstHSTT);                        
-                    }
-                    else
-                    {
-                        DsTT.AddRange(lstHSTT.GetRange(0, ctmax - sl));
-                    }
-                }
-
-                using (var db = _LiteDb.GetDatabase())
-                {
-                    db.GetCollection<HoSoTrungTuyenGDTX>(TuDien.CategoryName.HoSoTrungTuyenGDTX).DeleteMany(Query.And(Query.EQ("DotTS", DotTS), Query.EQ("NamTS", NamTS)));
-                    db.GetCollection<HoSoTrungTuyenGDTX>(TuDien.CategoryName.HoSoTrungTuyenGDTX).InsertBulk(DsTT);
-                }
+            var lstHSTT = DSHoSoXetTuyenTX
+                .Select(x => x.ToHSTT())
+                .Where(x => x.TongDXT >= DiemTT)
+                .OrderByDescending(x => x.TongDXT)                
+                .ToList();
+            if(lstHSTT.Count <= ctmax)
+            {
+                DsTT.AddRange(lstHSTT);
+            }
+            else
+            {
+                DsTT.AddRange(lstHSTT.GetRange(0,ctmax));
+            }
+            using (var db = _LiteDb.GetDatabase())
+            {
+                db.GetCollection<HoSoTrungTuyenGDTX>(TuDien.CategoryName.HoSoTrungTuyenGDTX).DeleteMany(Query.EQ("NamTS", NamTS));
+                db.GetCollection<HoSoTrungTuyenGDTX>(TuDien.CategoryName.HoSoTrungTuyenGDTX).InsertBulk(DsTT);
             }
         }
 
@@ -652,7 +647,7 @@ namespace QuanLyTuyenSinh
         #endregion
 
         #region Thống kê - GDTX
-        public static DataTable THSLNgheXTTheoTruongGDTX(int madot = 0, bool ToTal = true)
+        public static DataTable THSLNgheXTTheoTruongGDTX(bool ToTal = true)
         {
             List<IDictionary<string, object>> DsThongKe = new();
             var dstruongTHCS = DsTruong.Where(x => x.LoaiTruong == "THCS").ToList();            
@@ -663,16 +658,20 @@ namespace QuanLyTuyenSinh
                 var dynamicObj = new ExpandoObject() as IDictionary<string, object>;
                 dynamicObj.Add("STT", i + 1);
                 dynamicObj.Add("Trường", dstruongTHCS[i].Ten);
-                int tongTHCS = 0;
+                int tong = 0;
                 for (int j = 0; j < DsNghe.Count; j++)
                 {
-                    int sldt = 0;
-                    tongTHCS += sldt;
+                    int sldt = DSHoSoXetTuyenTX.Where(x => x.IdTruong == dstruongTHCS[i].Id && x.IdNgheDT == DsNghe[j].Id).Count();
+                    tong += sldt;
                     dynamicObj.Add(DsNghe[j].Ten, sldt);
                 }
-                if (ToTal) dynamicObj.Add("Tổng", tongTHCS);
+                //Thêm 1 dòng chỉ học văn hóa
+                int sldtvh = DSHoSoXetTuyenTX.Where(x => x.IdTruong == dstruongTHCS[i].Id && string.IsNullOrEmpty(x.IdNgheDT)).Count();                
+                dynamicObj.Add("Chỉ học văn hóa", sldtvh);
+                tong += sldtvh;
+                if (ToTal) dynamicObj.Add("Tổng", tong);
                 DsThongKe.Add(dynamicObj);
-            }            
+            }           
 
             //Thêm 1 dòng tổng cộng
             var objTongCong = new ExpandoObject() as IDictionary<string, object>;
@@ -685,7 +684,9 @@ namespace QuanLyTuyenSinh
                 tongcong += sum;
                 objTongCong.Add(DsNghe[i].Ten, sum);
             }
-
+            int sumVH = DsThongKe.Sum(x => (int)x["Chỉ học văn hóa"]);
+            tongcong += sumVH;
+            objTongCong.Add("Chỉ học văn hóa", sumVH);
             objTongCong.Add("Tổng", tongcong);
             if (ToTal) DsThongKe.Add(objTongCong);
 
@@ -707,14 +708,18 @@ namespace QuanLyTuyenSinh
                 for (int j = 0; j < DsNghe.Count; j++)
                 {
                     int sltt = DSHoSoTrungTuyenTX.Where(x => x.IdTruong.Equals(dstruongTHCS[i].Id) &&
-                    x.IdNgheTrungTuyen == DsNghe[j].Id && (dotts == 0 ? true : x.DotTS == dotts)).Count();
+                    x.IdNgheTrungTuyen == DsNghe[j].Id).Count();
                     tongTHCS += sltt;
                     dynamicObj.Add(DsNghe[j].Ten, sltt);
                 }
+                //Thêm 1 dòng chỉ học văn hóa
+                int sldtvh = DSHoSoTrungTuyenTX.Where(x => x.IdTruong == dstruongTHCS[i].Id && string.IsNullOrEmpty(x.IdNgheTrungTuyen)).Count();
+                dynamicObj.Add("Chỉ học văn hóa", sldtvh);
+                tongTHCS += sldtvh;
                 if (Total) dynamicObj.Add("Tổng", tongTHCS);
                 DsThongKe.Add(dynamicObj);
-            }            
-
+            }
+           
             //Thêm 1 dòng tổng cộng
             var objTongCong = new ExpandoObject() as IDictionary<string, object>;
             if (Total)
@@ -730,17 +735,20 @@ namespace QuanLyTuyenSinh
                 tongcong += sum;
                 objTongCong.Add(DsNghe[i].Ten, sum);
             }
+            int sumVH = DsThongKe.Sum(x => (int)x["Chỉ học văn hóa"]);
+            tongcong += sumVH;
+            objTongCong.Add("Chỉ học văn hóa", sumVH);
             objTongCong.Add("Tổng", tongcong);
             if (Total) DsThongKe.Add(objTongCong);
 
             return DsThongKe.ToDataTable();
         }
 
-        public static DataTable THSLTTTheoXaGDTX(int dotts = 0, string mahuyen = "51103")
+        public static DataTable THSLTTTheoXaGDTX(string mahuyen = "51103")
         {
             List<IDictionary<string, object>> DsThongKe = new();
 
-            var lstTT = DSHoSoTrungTuyenTX.Where(x => (dotts == 0 ? true : x.DotTS == dotts));
+            var lstTT = DSHoSoTrungTuyenTX;
             var lstXa = _Helper.getListWards(mahuyen);
 
             for (int i = 0; i < DsNghe.Count; i++)
@@ -752,13 +760,31 @@ namespace QuanLyTuyenSinh
                 dynamicObj.Add("Tên nghề", DsNghe[i].Ten);
                 for (int j = 0; j < lstXa.Count; j++)
                 {
-                    int sl = lstTT.Where(x => x.MaXa == lstXa[j].AddressCode && x.IdNgheTrungTuyen.Equals(DsNghe[i].Id)).Count();
+                    int sl = lstTT.Where(x => x.MaXa == lstXa[j].AddressCode && 
+                    !string.IsNullOrEmpty(x.IdNgheTrungTuyen) && 
+                    x.IdNgheTrungTuyen.Equals(DsNghe[i].Id)).Count();
                     tongNghe += sl;
                     dynamicObj.Add(lstXa[j].AddressName, sl);
-                }
+                }                
                 dynamicObj.Add("Tổng", tongNghe);
                 DsThongKe.Add(dynamicObj);
             }
+            //Thêm 1 dòng chỉ học văn hóa
+            int sldtvh = DSHoSoTrungTuyenTX.Where(x => string.IsNullOrEmpty(x.IdNgheTrungTuyen)).Count();
+            var dynamicObjVH = new ExpandoObject() as IDictionary<string, object>;
+            dynamicObjVH.Add("STT", DsNghe.Count + 1);
+            dynamicObjVH.Add("Mã nghề", "");
+            dynamicObjVH.Add("Tên nghề", "Chỉ học văn hóa");
+            int tongvh = 0;
+            for (int j = 0; j < lstXa.Count; j++)
+            {
+                int sl = lstTT.Where(x => x.MaXa == lstXa[j].AddressCode &&
+                string.IsNullOrEmpty(x.IdNgheTrungTuyen)).Count();
+                tongvh += sl;
+                dynamicObjVH.Add(lstXa[j].AddressName, sl);
+            }
+            dynamicObjVH.Add("Tổng", tongvh);
+            DsThongKe.Add(dynamicObjVH);
 
             //Thêm dòng tổng cộng
             var tongObj = new ExpandoObject() as IDictionary<string, object>;

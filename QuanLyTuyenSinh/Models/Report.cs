@@ -108,6 +108,32 @@ namespace QuanLyTuyenSinh.Models
     }
     #endregion
     #region GDTX
+    public class THSLTTTheoTruongTX
+    {
+        [Display(Name = "STT")]
+        public string STT { get; set; }
+
+        [Display(Name = "Mã nghề")]
+        public string MaNghe { get; set; }
+
+        [Display(Name = "Tên nghề")]
+        public string TenNghe { get; set; }
+
+        [Display(Name = "Số lượng học sinh")]
+        public int SLHS { get; set; }
+
+        [Display(Name = "Số học sinh nữ")]
+        public int SLHSNu { get; set; }
+        [Display(Name = "Số học sinh nam")]
+        public int SLHSNam { get; set; }
+
+        [Display(Name = "Đối tượng ưu tiên")]
+        public int SLDTUUT { get; set; }
+        [Display(Name = "Chỉ học văn hóa")]
+        public int SLCHVH { get; set; }
+        [Display(Name = "Có học thêm nghề")]
+        public int SLCHTN { get; set; }
+    }
     public class THSLTTTheoNgheTX
     {
         [Display(Name = "STT")]
@@ -189,7 +215,9 @@ namespace QuanLyTuyenSinh.Models
         public double Tong => DiemLop6 + DiemLop7 + DiemLop8 + DiemLop9 + DiemUT;
 
         [Display(Name = "Nghề")]
-        public string IdNgheNV1 { get; set; }
+        public string? IdNgheNV1 { get; set; }
+        [Display(Name = "Loại đăng ký")]
+        public string LoaiXetTuyen { get; set; } // Chỉ học văn hóa/ Học thêm nghề
 
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
