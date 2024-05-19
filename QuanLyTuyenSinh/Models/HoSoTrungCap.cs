@@ -236,7 +236,7 @@ namespace QuanLyTuyenSinh.Models
                 Ten = Ten,
                 NgaySinh = NgaySinh,
                 GT = GioiTinh ? "Nam" : "Nữ",
-                DiaChi = DiaChi,
+                DiaChi = DiaChi,                
                 IdNgheNV1 = DsNguyenVong.First().IdNghe,
                 GhiChu = GhiChu,
                 IdDTUT = string.IsNullOrEmpty(IdDTUT)

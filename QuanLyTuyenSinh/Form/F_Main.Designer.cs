@@ -651,6 +651,7 @@
             barManager1.DockControls.Add(barDockControlBottom);
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
+            barManager1.DockWindowTabFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             barManager1.Form = this;
             barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { txtNamTS, txtUser });
             barManager1.MainMenu = bar2;
@@ -819,9 +820,9 @@
             rdGDTX.AutoSize = true;
             rdGDTX.Location = new Point(139, 1);
             rdGDTX.Name = "rdGDTX";
-            rdGDTX.Size = new Size(93, 17);
+            rdGDTX.Size = new Size(104, 17);
             rdGDTX.TabIndex = 1;
-            rdGDTX.Text = "Thường xuyên";
+            rdGDTX.Text = "Xét tuyển lớp 10";
             rdGDTX.UseVisualStyleBackColor = true;
             // 
             // rdTC
@@ -830,7 +831,7 @@
             rdTC.Checked = true;
             rdTC.Location = new Point(40, 1);
             rdTC.Name = "rdTC";
-            rdTC.Size = new Size(74, 17);
+            rdTC.Size = new Size(73, 17);
             rdTC.TabIndex = 0;
             rdTC.TabStop = true;
             rdTC.Text = "Trung cấp";

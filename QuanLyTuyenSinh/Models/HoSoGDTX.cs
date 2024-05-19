@@ -21,15 +21,24 @@ namespace QuanLyTuyenSinh.Models
             set
             {
                 _IdHoSoDTTC = value;
-                var nghe = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id == _IdHoSoDTTC);
-                if (nghe != null)
+                if (value == null)
                 {
-                    var nv = nghe.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
-                    if (nv != null)
+                    IdNgheDT = null;
+                    DanhSachNgheTrungCap = new();
+                }
+                else
+                {
+                    var nghe = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id == _IdHoSoDTTC);
+                    if (nghe != null)
                     {
-                        IdNgheDT = nv.IdNghe;
+                        var nv = nghe.DsNguyenVong.FirstOrDefault(x => x.NV == 1);
+                        if (nv != null)
+                        {
+                            IdNgheDT = nv.IdNghe;
+                        }
                     }
                 }
+                
             } 
         }
         public string IdNgheDT { get; set; }
@@ -99,6 +108,7 @@ namespace QuanLyTuyenSinh.Models
                 NgaySinh = NgaySinh,
                 GT = GioiTinh ? "Nam" : "Nữ",
                 DiaChi = DiaChi,
+                NoiSinh = NoiSinh,
                 GhiChu = GhiChu,
                 IdDTUT = string.IsNullOrEmpty(IdDTUT)
                         ? string.Empty

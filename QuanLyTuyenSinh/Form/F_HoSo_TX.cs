@@ -35,8 +35,8 @@ namespace QuanLyTuyenSinh.Form
             MaximizeBox = false;
 
             _hoSo = hoSo;
-            Text = DataHelper.CurrSettings.TENTRUONG;     
-            
+            Text = DataHelper.CurrSettings.TENTRUONG;
+
             if (!string.IsNullOrEmpty(_hoSo.MaTinh))
             {
                 lstQuanHuyen = _Helper.getListDistrict(_hoSo.MaTinh);
@@ -61,11 +61,13 @@ namespace QuanLyTuyenSinh.Form
             {
                 chkCoHocNghe.Checked = false;
                 lookMaHoSoTC.Enabled = false;
+                btnXemHSDTTC.Enabled = false;
             }
             else
             {
                 chkCoHocNghe.Checked = true;
                 lookMaHoSoTC.Enabled = true;
+                btnXemHSDTTC.Enabled = true;
                 EnableControls(false);
             }
 
@@ -78,7 +80,7 @@ namespace QuanLyTuyenSinh.Form
         }
         private void F_HoSo_Load(object? sender, EventArgs e)
         {
-            
+
             InitLookupEdits();
             LoadComboBox();
             CreateBinding();
@@ -89,10 +91,10 @@ namespace QuanLyTuyenSinh.Form
         }
         void EnableControls(bool IsEnable = true)
         {
-            string WhiteList = "chkCoHocNghe/lookMaHoSoTC/txtMaHS/txtGhiChi/txtHSGhiChu/chkDKXTGDTX";
+            string WhiteList = "chkCoHocNghe/lookMaHoSoTC/txtMaHS/txtGhiChi/txtHSGhiChu/chkDKXTGDTX/btnXemHSDTTC";
             foreach (Control control in grpControlHSData.Controls)
             {
-                if(!WhiteList.Contains(control.Name))
+                if (!WhiteList.Contains(control.Name))
                     control.Enabled = IsEnable;
             }
             foreach (Control control in grpKTHS.Controls)
@@ -130,7 +132,7 @@ namespace QuanLyTuyenSinh.Form
             if (!string.IsNullOrEmpty(IdHS))
             {
                 var hsxttc = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id == IdHS);
-                if(hsxttc != null)
+                if (hsxttc != null)
                 {
                     _hoSo = hsxttc.ToHoSoGDTX();
                     _hoSo.IdHoSoDTTC = IdHS;
@@ -142,10 +144,15 @@ namespace QuanLyTuyenSinh.Form
         private void ChkCoHocNghe_CheckedChanged(object? sender, EventArgs e)
         {
             lookMaHoSoTC.Enabled = chkCoHocNghe.Checked;
-            if(chkCoHocNghe.Checked)
+            btnXemHSDTTC.Enabled = chkCoHocNghe.Checked;
+            if (chkCoHocNghe.Checked)
                 EnableControls(false);
             else
+            {
                 EnableControls();
+                _hoSo.IdHoSoDTTC = null;
+                CreateBinding();
+            }
 
         }
 
@@ -496,7 +503,7 @@ namespace QuanLyTuyenSinh.Form
             DevForm.CreateSearchLookupEdit(lookTinh, "AddressName", "AddressCode", lstTinh);
             DevForm.CreateSearchLookupEdit(lookQuanHuyen, "AddressName", "AddressCode");
             DevForm.CreateSearchLookupEdit(lookXa, "AddressName", "AddressCode");
-            DevForm.CreateSearchLookupEdit(lookMaHoSoTC, "MaHoSo", "Id", DataHelper.DSHoSoXTTC, fields: new string[] { "MaHoSo","Ho","Ten"},captions:new string[] {"Mã HS","Họ","Tên"});
+            DevForm.CreateSearchLookupEdit(lookMaHoSoTC, "MaHoSo", "Id", DataHelper.DSHoSoXTTC, fields: new string[] { "MaHoSo", "Ho", "Ten" }, captions: new string[] { "Mã HS", "Họ", "Tên" });
         }
 
         private void LoadComboBox()
@@ -535,7 +542,7 @@ namespace QuanLyTuyenSinh.Form
                 }
                 SaveAnh();
                 _hoSo.Save();
-                int nts = _hoSo.NamTS;                
+                int nts = _hoSo.NamTS;
                 var dt = DataHelper.DsDanToc.FirstOrDefault();
                 var qt = DataHelper.DsQuocTich.FirstOrDefault();
                 var tg = DataHelper.DsTonGiao.FirstOrDefault();
@@ -612,6 +619,19 @@ namespace QuanLyTuyenSinh.Form
             if (string.IsNullOrEmpty(word))
                 return;
             txtThonDuong.EditValue = word.ToTitleCase();
+        }
+
+        private void btnXetHSDTTC_Click(object sender, EventArgs e)
+        {            
+            if (!string.IsNullOrEmpty(_hoSo.IdHoSoDTTC))
+            {
+                var hs = DataHelper.DSHoSoXTTC.FirstOrDefault(x => x.Id.Equals(_hoSo.IdHoSoDTTC));
+                if (hs is not null)
+                {
+                    F_HoSo f = new(hs.CloneJson());
+                    f.Show(this);
+                }
+            }
         }
     }
 }

@@ -43,6 +43,7 @@
             DevExpress.Utils.ContextButton contextButton1 = new DevExpress.Utils.ContextButton();
             tablePanelTT = new DevExpress.Utils.Layout.TablePanel();
             grpControlHSData = new DevExpress.XtraEditors.GroupControl();
+            btnXemHSDTTC = new DevExpress.XtraEditors.SimpleButton();
             lookMaHoSoTC = new DevExpress.XtraEditors.SearchLookUpEdit();
             gridView9 = new DevExpress.XtraGrid.Views.Grid.GridView();
             labelControl25 = new DevExpress.XtraEditors.LabelControl();
@@ -269,6 +270,7 @@
             // grpControlHSData
             // 
             tablePanelTT.SetColumn(grpControlHSData, 0);
+            grpControlHSData.Controls.Add(btnXemHSDTTC);
             grpControlHSData.Controls.Add(lookMaHoSoTC);
             grpControlHSData.Controls.Add(labelControl25);
             grpControlHSData.Controls.Add(chkCoHocNghe);
@@ -338,9 +340,18 @@
             grpControlHSData.TabIndex = 4;
             grpControlHSData.Text = "Thông tin học sinh";
             // 
+            // btnXemHSDTTC
+            // 
+            btnXemHSDTTC.Location = new Point(677, 0);
+            btnXemHSDTTC.Name = "btnXemHSDTTC";
+            btnXemHSDTTC.Size = new Size(46, 18);
+            btnXemHSDTTC.TabIndex = 147;
+            btnXemHSDTTC.Text = "Xem";
+            btnXemHSDTTC.Click += btnXetHSDTTC_Click;
+            // 
             // lookMaHoSoTC
             // 
-            lookMaHoSoTC.Location = new Point(585, 1);
+            lookMaHoSoTC.Location = new Point(538, 0);
             lookMaHoSoTC.Name = "lookMaHoSoTC";
             lookMaHoSoTC.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookMaHoSoTC.Properties.NullText = "(Trống)";
@@ -360,7 +371,7 @@
             labelControl25.AllowHtmlString = true;
             labelControl25.Appearance.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             labelControl25.Appearance.Options.UseFont = true;
-            labelControl25.Location = new Point(516, 4);
+            labelControl25.Location = new Point(469, 3);
             labelControl25.Name = "labelControl25";
             labelControl25.Size = new Size(61, 13);
             labelControl25.TabIndex = 145;
@@ -1762,5 +1773,6 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView9;
         private DevExpress.XtraEditors.LabelControl labelControl25;
         private DevExpress.XtraEditors.CheckEdit chkCoHocNghe;
+        private DevExpress.XtraEditors.SimpleButton btnXemHSDTTC;
     }
 }
